@@ -1,0 +1,98 @@
+\documentclass[12pt, openany]{book}
+
+\usepackage[T1]{fontenc}
+\usepackage{savetrees}
+\usepackage{tgbonum}
+\usepackage[inline]{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{lmodern} % more font sizes
+
+% package to format advanced mathematics
+\usepackage{amsmath, amssymb, amsthm}
+\theoremstyle{definition}
+\newtheorem{definition}{Def.}
+\newtheorem{theorem}{Th. }
+% packaeg needed to format lists in a custom defined format called description
+
+\usepackage{calc}
+\newenvironment{altDescription}[1]
+	{\begin{list}{}%
+		{\renewcommand\makelabel[1]{\textsf{##1:}\hfil}%
+			\settowidth\labelwidth{\makelabel{#1}}%
+			\setlength\leftmargin{\labelwidth+\labelsep}}}
+	{\end{list}}
+
+% text over math symbols
+\usepackage{mathtools}
+\usepackage{stackrel}
+
+% package which can create text boxes which span over multiple pages
+\usepackage{mdframed}
+
+% package which can combine columns of a table
+\usepackage{multirow}
+
+% package to extend tables
+\usepackage{array}
+
+%graphics package
+\usepackage{tikz}
+\usetikzlibrary{mindmap}
+
+%slanted roman differentials, following ISO-31
+\newcommand*\dif{\mathop{}\!\textnormal{\slshape d}}
+
+% default font times new roman
+\renewcommand{\familydefault}{\rmdefault}
+
+% shortcut to typeset code
+\newcommand{\code}[1]{{\fontsize{12}{12}\fontfamily{qcr}\selectfont{#1}}}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
+% sizes to better display footnotes
+\setlength{\headheight}{15pt}
+\setlength{\footskip}{15pt}
+\setlength{\headheight}{15pt}
+\setlength{\footskip}{15pt}
+
+% footer setup using fancyhdr package
+\pagestyle{fancy}
+\fancyfoot{} % to clear previous definitions of footer format
+\fancyfoot[LE,RO]{\thepage}
+
+\begin{document}
+I metodi deterministici per la determinazione degli integrali multidimensionali, come i metodi di Newton-Cotes, tra cui la regola del rettangolo, 
+regola del trapezio, formula $\frac{2}{3}$ di Simpson e formula $\frac{3}{8}$ di Simpson, quadratura gaussiana, subiscono la cosiddetta 
+\textit{curse of dimensionality}. Ci\`o significa che il loro tasso di convergenza diminuisce in modo notevole e complessit\`a computazionale aumenta
+in modo esponenziale con la dimensionalit\`a del problema.\par
+Gli algoritmi randomizzati, in particolare i \textit{Metodi di Monte Carlo} per l'integrazione numerica offrono una soluzione a tale problema.
+Prima di tutto, definiamo con rigore tali classi di algoritmi
+\begin{definition}
+    Un \textsl{\textbf{Algoritmo Randomizzato}} \`e un algoritmo che implementa un certo grado di casualit\`a come parte della sua logica.
+    Tali algoritmi si dividono in due classi: \textsl{\textbf{Las Vegas Algorithms}} e \textsl{\textbf{Monte Carlo Algorithms}}
+\end{definition}
+La differenza tra queste due categorie sta nel fatto che nella prima, \`e garantita la correttezza dell'output della procedura, mentre un algoritmo 
+appartenente alla seconda categoria pu\`o sia restituire risultati incorretti oppure non terminare. Ci\`o nonostante, in alcuni casi questi ultimi
+rappresentano l'unica soluzione fattibile in termini di tempo e risorse.\par
+La propriet\`a dell'integrazione di Monte Carlo \`e la sua capacit\`a di stimare l'integrale $\int f(x)\dif{x}$ valutando la funzione
+$f(x)$ in alcuni punti del suo dominio. Tale propriet\`a risulta determinante nelle situazioni in cui non si conosce o \`e impossibile conoscere la
+forma chiusa della soluzione analitica del problema, il che capita nella maggior parte degli integrali che emergono nel rendering, come l'integrale
+per la computazione della radianza emessa da un singolo punto di una superficie:
+\begin{displaymath}
+    L_o\left(\mathbf{x}, \omega_o, \lambda, t\right) = L_e\left(\mathbf{x}, \omega_o, \lambda, t\right) + %
+        \int_\Omega f_r\left(\mathbf(x), \omega_i, \omega_o, \lambda, t\right)L_i\left(\mathbf{x}, \omega_i, \lambda, t\right) %
+        \left(\omega_i \cdot \mathbf{n}\right)\dif{\omega_i}
+\end{displaymath}
+per la quale non conosciamo nemmeno l'espressione analitica della funzione integranda della radianza incidente $L_i$, ed anche se fosse nota, 
+l'integrale non sarebbe facilmente risolvibile.\par
+I maggiori svantaggi dell impiego dell'Integrazione di Monte Carlo sono
+\begin{altDescription}{svantaggi}
+    \item[\textit{Tasso di Convergenza}] se n campioni sono utilizzati per la valutazione dell'integrale, l'algoritmo converge come 
+        $\mathit{O}(n^{-1/2})$, il che significa che per dimezzare l'errore bisogna quadruplicare il numero di samples.
+    \item[\textit{Rumore}] Tipico dell'applicazione dell'algoritmo \`e la presenza del rumore nelle immagini prodotte, che si manifesta come
+        pixels troppo luminosi o troppo scuri.
+\end{altDescription}
+\end{document}
