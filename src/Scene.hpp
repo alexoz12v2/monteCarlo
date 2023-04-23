@@ -41,14 +41,15 @@ enum class VAttribute : uint8_t
     VLAYOUT_SIZE
 };
 
+// used for requires clause
+struct SceneDataTag {};
 
 // TODO add lights, materials, textures
 template <typename Allocator, typename Range> requires (std::ranges::contiguous_range<Range> && allocatorAligned<Allocator>)
-class SceneData
+class SceneData : public SceneDataTag
 {
 public: // typedefs
-    using PointerType = FancyPointerType;
-    using VLayout = StaticVector<VAttribute, static_cast<uint32_t>(VLayout::VLAYOUT_SIZE)>;
+    using VLayout = vkdefs::StaticVector<VAttribute, static_cast<uint32_t>(VAttribute::VLAYOUT_SIZE)>;
 
 public: // constructors
     SceneData() = delete;
@@ -64,20 +65,20 @@ public: // constructors
 public: // member functions
     // called insert_back instead of push_back to signal that the underlying implementation is calling insert at end()
     // done like this to ensure the most compatibility across containers (except forward list)
-    template <typename Range2> requires ((std::ranges::forward_range<Range2> && std::is_same_v<Range2::value_type, Range::value_type>) 
-                                         || std::is_same_v<Range2, std::initializer_list<Range::value_type>>)
+    template <typename Range2> requires ((std::ranges::forward_range<Range2> && std::is_same_v<typename Range2::value_type, typename Range::value_type>) 
+                                         || std::is_same_v<Range2, std::initializer_list<typename Range::value_type>>)
     constexpr auto insertMesh(Range2 const& meshVertices, std::span<uint32_t> meshIndices) -> void
     {
         auto const newMesh_vbegin = m_vData.insert(m_vData.end(), meshVertices.begin(), meshVertices.end());
         auto const newMesh_iBegin = m_meshVertex_indices.insert(m_meshVertex_indices.end(), meshIndices.begin(), meshIndices.end());
-        m_meshes.emplace_back(newMesh_begin, m_vData.end(), newMesh_iBegin, m_meshVertex_indices.end());
+        m_meshes.emplace_back(newMesh_vbegin, m_vData.end(), newMesh_iBegin, m_meshVertex_indices.end());
     }
 
     constexpr auto eraseMesh(uint32_t meshIndex) -> void
     {
         assert(meshIndex < m_meshes.size());
-        m_vData.erase(m_meshes[i].firstVertex, m_meshes[i].pastLastVertex);
-        m_meshVertex_indices(m_meshes[i].firstVertexIndex, m_meshes[i].pastLastVertexIndex);
+        m_vData.erase(m_meshes[meshIndex].firstVertex, m_meshes[meshIndex].pastLastVertex);
+        m_meshVertex_indices(m_meshes[meshIndex].firstVertexIndex, m_meshes[meshIndex].pastLastVertexIndex);
         m_meshes.erase(m_meshes.begin() + meshIndex);
     }
 
@@ -129,8 +130,10 @@ constexpr auto SceneData<Allocator, Range>::computeVertexSize(VLayout const& vLa
     return result;
 }
 
+struct SceneUpdateTag {};
+
 template <typename Range> requires std::ranges::contiguous_range<Range>
-struct SceneUpdate
+struct SceneUpdate : public SceneUpdateTag
 {
     std::span<uint32_t> meshesToRemove_indices;
     std::span<Range> meshesToAdd_vertices;

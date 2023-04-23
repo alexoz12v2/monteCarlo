@@ -5,6 +5,7 @@
 #include <iterator> // std::contiguous_iterator
 #include <cstddef> // std::byte
 #include <new> // std::aligned_val_t
+#include <array>
 
 namespace mxc
 {
@@ -34,8 +35,10 @@ concept allocator =
 	};
 template <typename A>
 concept allocatorAligned = allocator<A> && 
-    requires(Allocator<std::byte> alloc, std::align_val_t align) {{alloc.allocateAligned(0u, align)} -> allocator_pointer;})
+    requires(A alloc, std::align_val_t align) {alloc.allocateAligned(0u, align) -> allocator_pointer;};
 
+namespace vkdefs
+{
     // since I am using clang 16 you could technically remove the dummy variable code here, but I'm keeping it for safety
     template <typename T, uint32_t capacity> // a const qualified object cannot be moved from
         requires (!std::is_const_v<T> && (std::copyable<T> && std::movable<T>)) || (std::is_const_v<T> && std::is_copy_constructible_v<T>)
@@ -146,7 +149,7 @@ concept allocatorAligned = allocator<A> &&
             uint32_t m_size = 0;
         } privateData;
     };
-
+}
 }
 
 #endif // MXC_STATICVECTOR_HPP

@@ -5,3 +5,8 @@ docs/*.log
 docs/*.out
 docs/*.pdf
 docs/*.synctex.gz
+notes.txt
+chatGPT.txt
+sketches/**
+fonti/**
+build/**

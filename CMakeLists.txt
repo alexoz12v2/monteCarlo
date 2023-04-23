@@ -110,6 +110,9 @@ endif()
 add_subdirectory("${PROJECT_SOURCE_DIR}/external/VulkanMemoryAllocator")
 set(VulkanMemoryAllocator_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/external/VulkanMemoryAllocator/include")
 
+# ############ refl ###################
+set(refl_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/external/refl")
+
 # directories
 if(DEFINED ENV{VULKAN_SDK})
     target_include_directories(Project PUBLIC
@@ -120,7 +123,8 @@ if(DEFINED ENV{VULKAN_SDK})
         ${Eigen3_INCLUDE_DIRS}
         ${tinyobjloader_INCLUDE_DIRS}
         ${fmt_INCLUDE_DIRS}
-        ${VulkanMemoryAllocator_INCLUDE_DIRS }
+        ${VulkanMemoryAllocator_INCLUDE_DIRS}
+        ${refl_INCLUDE_DIRS}
         )
 else()
     target_include_directories(Project PUBLIC
@@ -130,31 +134,20 @@ else()
         ${Eigen3_INCLUDE_DIRS}
         ${tinyobjloader_INCLUDE_DIRS}
         ${fmt_INCLUDE_DIRS}
-        ${VulkanMemoryAllocator_INCLUDE_DIRS }
+        ${VulkanMemoryAllocator_INCLUDE_DIRS}
+        ${refl_INCLUDE_DIRS}
         )
 endif()
+
+# my own source
+add_subdirectory("${PROJECT_SOURCE_DIR}/src")
+
 # link
 if(DEFINED ENV{VULKAN_SDK})
     target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt)
     target_link_directories(Project PUBLIC "${VulkanSDK_LIBRARIES}")
 else()
     target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt)
-endif()
-
-####################### Compiler Options ######################################
-if(WIN32)
-    if(DEFINED NDEBUG)
-        target_compile_options(Project PRIVATE /std:c++20 /O2 /W4 /WX)
-    else()
-        target_compile_options(Project PRIVATE /std:c++20 /O0 /W4 /WX /DEBUG)
-    endif()
-else()
-    set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
-    if(DEFINED NDEBUG)
-        target_compile_options(Project PRIVATE -std=c++20 -O2 -Wall -Wextra -Wpedantic -Werror)
-    else()
-        target_compile_options(Project PRIVATE -std=c++20 -O0 -Wall -Wextra -Wpedantic -Werror -g)
-    endif()
 endif()
 
 # Define project properties (From Learning Vulkan by packt)

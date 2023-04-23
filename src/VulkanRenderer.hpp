@@ -2,8 +2,10 @@
 #define MXC_VULKAN_RENDERER_HPP
 
 #include "StaticVector.hpp"
+#include "initializers.hpp"
 #include "utils.hpp"
 #include "Scene.hpp"
+#include "GPUTask.hpp"
 
 #include <Eigen/Core>
 #include <vulkan/vulkan.h>
@@ -12,50 +14,71 @@
 #include <string_view>
 #include <memory>
 
+// TODO replace std::vector or add allocator to it
 namespace mxc
 {
 
 // ------------------- Vulkan Renderer Declaration ------------------------------------------------
+template <typename T> 
+concept DevOrInstExtensionType = std::is_same_v<T, vkdefs::DeviceExtension> || std::is_same_v<T, vkdefs::InstanceExtension>;
 
 // From Sascha Willelms example
 struct VulkanFrameObjects
 {
-	VkCommandBuffer commandBuffer;
-	VkFence renderCompleteFence;
-	VkSemaphore renderCompleteSemaphore;
-	VkSemaphore presentCompleteSemaphore;
+    VkCommandBuffer commandBuffer;
+    VkFence renderCompleteFence;
+    VkSemaphore renderCompleteSemaphore;
+    VkSemaphore presentCompleteSemaphore;
     bool* windowWasResized;
 };
 
 using VulkanCreateFailureCallback = void(*)(std::string_view errorCode, std::string_view info, void* userData);
 
-template <typename Deleter> requires std::is_nothrow_invocable_r<void, Deleter, typename std::unique_ptr<SceneData>::pointer>
-using ResourcesPreparationFunction = void (*)(struct {std::unique_ptr<SceneData, Deleter> pScene; void* pUserData; Status* pOutStatus;} const& scene);
+// TODO create a macro for restrict for different compilers (though right now code works only in clang 16)
+auto logAndAbort([[maybe_unused]] std::string_view const errorCode, [[maybe_unused]] std::string_view const description, 
+                 [[maybe_unused]] void* userData) -> void
+{
+    // TODO log error file __FILE__ : line __LINE__ : Fatal: VkResult is errorCode. Aborting now
+    std::abort();
+}
 
-using CommandBufferBuildingFunction = void(*)(struct {void* pUserData; Status* pOutStatus;});
 
-template <std::semiregular T>
-VulkanRendererResourceData = 
-    requires(T data, VkDevice dev, VmaAllocator alloc, SceneDataUpdate const& sceneUpdate, 
-             VkExtent2D newWinExtent, Eigen::Matrix4f const& viewMat, void(*deleter)(std::unique_ptr<SceneData>::pointer))
+template <typename SceneDataT, typename Deleter> 
+    requires (std::is_nothrow_invocable_r<void, Deleter, typename std::unique_ptr<SceneDataT>::pointer>::value 
+        && std::derived_from<SceneDataT, SceneDataTag>)
+using ResourcesPreparationFunction = void(*)(std::unique_ptr<SceneDataT, Deleter> pScene, void* pUserData, Status* pOutStatus);
+
+using CommandBufferBuildingFunction = void(*)(void* pUserData, Status* pOutStatus);
+
+// TODO the Extension class needs to be reflected with refl library. Therefore use enable_if to make the requirement 
+template <typename T, typename SceneDataT, typename SceneUpdateT, typename TaskType> 
+concept VulkanRendererResourceData = 
+    std::semiregular<T> && 
+    std::derived_from<SceneDataT, SceneDataTag> && 
+    std::derived_from<SceneUpdateT, SceneUpdateTag> && 
+    requires(T data, VkDevice device, VmaAllocator alloc, SceneUpdateT const& sceneUpdate, TaskType const& task,
+             VkExtent2D newWinExtent, Eigen::Matrix4f const& viewMat, void(*deleter)(typename std::unique_ptr<SceneDataT>::pointer))
     {
-        {data.createResourcesPreparationFunction(device, alloc)} -> std::same_as<std::span<ResourcesPreparationFunction<decltype(deleter)>>>;
+        {data.createResourcesPreparationFunction(device, alloc)} -> std::same_as<std::span<ResourcesPreparationFunction<decltype(deleter),SceneDataT>>>;
         {data.createCommandBuffersBuildingFunction(device, alloc)} -> std::same_as<std::span<CommandBufferBuildingFunction>>;
         {data.createBaseFrameObjects()} -> std::same_as<Status>;
 
         {data.onUpdateRenderData(sceneUpdate)} -> std::same_as<Status>;
         {data.onWindowResized(newWinExtent)} -> std::same_as<Status>;
-        {data.onViewChanged(viewMat)} -> std::same_as<void>;
+        {data.onViewChanged(viewMat)} -> std::same_as<Status>;
+        {data.onViewChanged()} -> std::same_as<Status>;
         {data.onNextFrame()} -> std::same_as<Status>;
         {data.onDestroy()} -> std::same_as<void>;
+
+        {data.bindAndsubmit(task)};
     };
 
 // the allocator given here is also capable to be converted to any other allocator of the same type, but with different template arguments
 // thanks to a templated converting constructor
 // TODO how can I be assured that only one vulkan instance is created
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
-    requires (allocatorAligned<Allocator<std::byte>>
-             && VulkanRendererResourceData<ExtensionClass<Allocator>>)
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
 class VulkanRenderer
 {
 public:
@@ -66,7 +89,8 @@ public:
                                               void* pUserData);
     using FeatureCheckCallbackType = bool(*)(VkPhysicalDeviceFeatures2 const& features);
     using QueueFamilyCheckCallback = bool(*)(VkQueueFamilyProperties2 const& queueProperties, VkBool32 supportsPresentation);
-    using std::literals::string_view_literals;
+    struct ConstructorOptions;
+    struct DeviceCreationOptions;
 public:
     // constructor takes care of Instance creation and physical device choice
     // requested layers are ignored in release mode.
@@ -82,10 +106,12 @@ public:
     [[nodiscard]] auto createDevice(std::span<vkdefs::DeviceExtension> extensions, DeviceCreationOptions const& options = defaultDeviceCreationOptions) -> Status;
 
     // calls onNextFrame
-    template <VulkanTask GPUTaskType> requires std::derived_from<GPUTask, RenderTask> // TODO code a RenderTask class
+    template <typename GPUTaskType, typename GPUTask2, typename Data> 
+        requires std::derived_from<GPUTaskType, RenderTask<GPUTask2, Data>>
     [[nodiscard]] auto submit(const GPUTaskType& task) -> VulkanFrameObjects;
 
-    template <VulkanTask GPUTaskType> requires (!std::derived_from<GPUTask, RenderTask>)
+    template <typename GPUTaskType, typename GPUTask2, typename Data> 
+        requires (!std::derived_from<GPUTaskType, RenderTask<GPUTask2, Data>>)
     [[nodiscard]] auto submit(const GPUTaskType& task) -> Status;
 
     // this calls ExtensionClass::onViewChanged
@@ -94,12 +120,21 @@ public:
     // this calls ExtensionClass::onWindowResized and VulkanRenderer::onViewChanged
     [[nodiscard]] auto onWindowResized(VkExtent2D newWindowExtent) -> Status;
 
-    [[nodiscard]] auto onUpdateRenderData(SceneDataUpdate const& sceneDataUpdate) -> Status;
+    template <std::ranges::contiguous_range Range>
+    [[nodiscard]] auto onUpdateRenderData(SceneUpdate<Range> const& sceneDataUpdate) -> Status;
 
     // this calls the three create functions in the ExtensionClass
-    template <typename Deleter> requires std::is_nothrow_invocable_r<void, Deleter, typename std::unique_ptr<SceneData>::pointer>
-    [[nodiscard]] auto prepare(std::unique_ptr<SceneData, Deleter> pScene, void* pSceneAddOnData, void* pCommandBufferAddOnData, Status* pOutStatus) 
-        -> struct { std::span<ResourcesPreparationFunction> resPrepFunctions; std::span<CommandBufferBuildingFunction> cmdBufBuildFunctions; };
+    template <typename SceneDataT, typename Deleter>
+    struct prepareReturnType
+    {
+        std::span<ResourcesPreparationFunction<SceneDataT, Deleter>> resPrepFunctions;
+        std::span<CommandBufferBuildingFunction> cmdBufBuildFunctions;
+    };
+    template <typename SceneDataT, typename Deleter> 
+        requires (std::is_nothrow_invocable_r<void, Deleter, typename std::unique_ptr<SceneDataT>::pointer>::value &&
+                  std::derived_from<SceneDataT, SceneDataTag>)
+    [[nodiscard]] auto prepare(std::unique_ptr<SceneDataT, Deleter> pScene, void* pSceneAddOnData, void* pCommandBufferAddOnData, Status* pOutStatus) 
+        -> prepareReturnType<SceneDataT, Deleter>;
     // guide for format properties and feature support: first you build up the structure, by specifying the entire pNext chain and sType
     // for each element in the chain, leave the rest undefined. Then after the API call, either vkGetPhysicalDeviceFormatProperties2
     // or vkGetPhysicalDeviceFeatures2, the structs will be fully populated with boolean values in each struct the pNext chain, which you
@@ -146,7 +181,7 @@ public:
         VkQueueFamilyProperties2 const& queuePropertiesBlueprint;
     };
 
-    static inline ConstructorOptions constexpr defaultConstructorOptions { 
+    static inline ConstructorOptions defaultConstructorOptions { 
         logAndAbort, nullptr, nullptr, nullptr, nullptr, vkdefs::noFeatures, 
         [](VkPhysicalDeviceFeatures2 const&){return true;}, nullptr, VK_NULL_HANDLE, vkdefs::graphicsTransfer, 1
     };
@@ -159,29 +194,26 @@ public:
         VkPhysicalDeviceFeatures2 const& requestedFeatures;
 
         // in Vulkan 1.3, this is the only possible pNext for VkDeviceQueueCreateInfo
-        StaticVector<VkDeviceQueueGlobalPriorityCreateInfoKHR const*, 4> deviceQueueCI_pNexts; 
+        vkdefs::StaticVector<VkDeviceQueueGlobalPriorityCreateInfoKHR const*, 4> deviceQueueCI_pNexts; 
 
         // TODO don't care for queue priorities for now or protected bits
     };
+    static inline DeviceCreationOptions defaultDeviceCreationOptions = { vkdefs::noFeatures, {nullptr, nullptr, nullptr, nullptr} };
 
 private: // utility functions
-    template <typename T> 
-    concept DevOrInstExtensionType = std::is_same_v<T, vkdefs::DeviceExtension> || std::is_same_v<T, vkdefs::InstanceExtension>;
 
-    template <typename Callable> requires std::is_nothrow_invocable_r<void, Callable>
+    template <typename Callable> requires std::is_nothrow_invocable_r<void, Callable>::value
     constexpr auto checkExtensionDependenciesOtherwise(std::span<vkdefs::InstanceExtension> requestedInstanceExtensions, 
                                                        std::span<vkdefs::DeviceExtension> requestedDeviceExtensions, Callable&& otherwiseCallable
     ) const -> bool;
 
-    // TODO create a macro for restrict for different compilers (though right now code works only in clang 16)
-    auto logAndAbort(std::string_view const errorCode, std::string_view const description, void* userData) const -> void;
+    auto checkVkResult(VkResult const res, std::string_view const msg) -> void;
 
-    auto checkVkResult(VkResult const res, std::string_view const msg) const -> void;
+    // TODO allocator to std vector
+    auto copyPhysicalDeviceFeatures(VkPhysicalDeviceFeatures2 const& features,
+                                    std::vector<vkdefs::DeviceFeatureChainNode>& outFeatures) -> void;
 
-    auto copyPhysicalDeviceFeatures(VkPhysicalDeviceFeatures2 const& features, 
-                                    std::vector<vkdefs::DeviceFeatureChainNode, Allocator<vkdefs::DeviceFeatureChainNode>>& outFeatures) -> void;
-
-    auto copyQueueFamilyProperties_dbg(vkdefs::StaticVector<int32_t, 4> const& selectedQueueFamilies, VkQueueFamilyProperties2 MXC_restrict const* pQueueFamilyProperties) -> void;
+    auto copyQueueFamilyProperties_dbg(vkdefs::StaticVector<int32_t, 4> const& selectedQueueFamilies, VkQueueFamilyProperties2 const* MXC_restrict pQueueFamilyProperties) -> void;
 
     // delegating constructor with the default member initializer list
     VulkanRenderer();
@@ -194,12 +226,12 @@ private:
     struct Queue // is it necessary to store all this information?
     {
         VkQueue handle;
-        VkQueueFlag family;
+        VkQueueFlags family;
         uint32_t familyIndex;
         int32_t index;
         VkBool32 presentationSupported;
     };
-    StaticVector<Queue, 4> m_queues; // how many queues should I create
+    vkdefs::StaticVector<Queue, 4> m_queues; // how many queues should I create
     VmaAllocator m_vmaAllocator;
 
     // stored to check for compatibility with a swapchain
@@ -213,8 +245,8 @@ private:
     // https://registry.khronos.org/vulkan/specs/1.3-extensions/html/chap46.html#limits-minmax
     // refer to table 55 of the link to see required limits for which you are not required to check against
     // TODO allocator aware std vector with union?? Refactor this madness
-    std::vector<vkdefs::DeviceFeatureChainNode, Allocator<vkdefs::DeviceFeatureChainNode>> m_supportedFeatures;
-    std::vector<vkdefs::DeviceFeatureChainNode, Allocator<vkdefs::DeviceFeatureChainNode>> m_enabledFeatures;
+    std::vector<vkdefs::DeviceFeatureChainNode> m_supportedFeatures;
+    std::vector<vkdefs::DeviceFeatureChainNode> m_enabledFeatures;
 
 #ifndef NDEBUG
     VkDebugUtilsMessengerEXT m_messenger_dbg; // used only if 1) VK_EXT_debug_utils is supported and requested and we are in debug mode
@@ -226,43 +258,33 @@ private:
     // example, the VK_KHR_sparse_binding extensions is enabled, we should check whether there is a queue with flag VK_QUEUE_SPARSE_BINDING_BIT
     struct QueueFamilyPropertiesChain 
     { 
-        std::vector<vkdefs::QueueFamilyPropertiesChainNode, Allocator<vkdefs::QueueFamilyPropertiesChainNode>> vec;
+        std::vector<vkdefs::QueueFamilyPropertiesChainNode> vec;
         uint32_t index; // Family index != queueIndex
     };
-    std::vector<QueueFamilyPropertiesChain, Allocator<QueueFamilyPropertiesChain>> m_queueFamilyProperties_dbg; // checked to see if a queue has specific flags
+    std::vector<QueueFamilyPropertiesChain> m_queueFamilyProperties_dbg; // checked to see if a queue has specific flags
 
     // necessary data passed at construction which is needed to create devices
-    std::vector<vkdefs::InstanceExtension, Allocator<vkdefs::InstanceExtension>> m_instanceExtensions;
-    std::vector<vkdefs::DeviceExtension, Allocator<vkdefs::DeviceExtension>> m_deviceExtensions;
+    std::vector<vkdefs::InstanceExtension> m_instanceExtensions;
+    std::vector<vkdefs::DeviceExtension> m_deviceExtensions;
 
     ExtensionClass<Allocator> m_data;
 
-    Allocator<std::byte> m_allocator;
+    Allocator m_alloc;
 
     // given to swapchain instance, which will set is after a present operation. Not atomic because presentation happens on a single thread
     bool windowWasResized = false; 
 };
 
-static_assert(std::is_standard_layout_v<Key> && sizeof(Key) == sizeof(uint64_t));
-
 // -------------------- Vulkan Renderer Utilities -------------------------------------------------
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
-auto VulkanRenderer<Allocator, ExtensionClass>::logAndAbort(std::string_view const errorCode, std::string_view const description, 
-                                                            void* userData) -> void
-{
-    if (res != VK_SUCCESS);
-    {
-        // TODO log error file __FILE__ : line __LINE__ : Fatal: VkResult is errorCode. Aborting now
-        std::abort();
-    }
-}
-
+//
 // if you ever change the std::abort strategy, change the allocation method to not leak memory
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
-template <typename Callable> requires std::is_nothrow_invocable_r<void, Callable>
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
+template <typename Callable> requires std::is_nothrow_invocable_r<void, Callable>::value
 constexpr auto VulkanRenderer<Allocator, ExtensionClass>::checkExtensionDependenciesOtherwise(
-    RangeInstExtsType&& requestedInstanceExtensions, 
-    RangeInstExtsType&& requestedDeviceExtensions, 
+    std::span<vkdefs::InstanceExtension> requestedInstanceExtensions, 
+    std::span<vkdefs::DeviceExtension> requestedDeviceExtensions, 
     Callable&& otherwiseCallable) const -> bool
 {
     // --------- declare lambdas to check extension dependencies ---------------
@@ -280,13 +302,13 @@ constexpr auto VulkanRenderer<Allocator, ExtensionClass>::checkExtensionDependen
                     {
                         auto const iter = vkutils::findOr(std::forward<std::decay_t<decltype(requestedDeviceExtensions)>>(requestedDeviceExtensions), 
                                                           ext, otherwiseCallable);
-                        ret = iter == requestedDeviceExtensions.cend();
+                        ret = iter == requestedDeviceExtensions.end();
                     }
                     else
                     {
                         auto const iter = vkutils::findOr(std::forward<std::decay_t<decltype(requestedInstanceExtensions)>>(requestedInstanceExtensions), 
                                                           ext, otherwiseCallable);
-                        ret = iter == requestedInstanceExtension.cend();
+                        ret = iter == requestedInstanceExtensions.end();
                     }
                 }, requirement);
             }
@@ -307,18 +329,12 @@ constexpr auto VulkanRenderer<Allocator, ExtensionClass>::checkExtensionDependen
     return ret;
 }
 
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
-auto VulkanRenderer<Allocator, ExtensionClass>checkVkResult(VkResult const res, std::string_view const msg) const -> void
-{
-    if (res != VK_SUCCESS) 
-        m_createFailureCallback(vkutils::errorString(res), msg, m_createFailureCallbackUserData);
-}
-
-
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
 auto VulkanRenderer<Allocator, ExtensionClass>::copyPhysicalDeviceFeatures(
     VkPhysicalDeviceFeatures2 const& features, 
-    std::vector<vkdefs::DeviceFeatureChainNode, Allocator<vkdefs::DeviceFeatureChainNode>>& outFeatures) -> void
+    std::vector<vkdefs::DeviceFeatureChainNode>& outFeatures) -> void
 {
     assert(outFeatures.size() == 0);
 
@@ -342,13 +358,15 @@ auto VulkanRenderer<Allocator, ExtensionClass>::copyPhysicalDeviceFeatures(
     }
 }
 
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
 auto VulkanRenderer<Allocator, ExtensionClass>::copyQueueFamilyProperties_dbg(vkdefs::StaticVector<int32_t, 4> const& selectedQueueFamilies, 
-                                                              VkQueueFamilyProperties2 MXC_restrict const* pQueueFamilyProperties) -> void
+                                                              VkQueueFamilyProperties2 const* MXC_restrict pQueueFamilyProperties) -> void
 {
 #ifndef NDEBUG
     assert(m_queueFamilyProperties_dbg.size() == 0);
-    for (uint32_t queueIndex = 0; queueIndex != selectedQueueFamilies.size(); ++i)
+    for (uint32_t queueIndex = 0; queueIndex != selectedQueueFamilies.size(); ++queueIndex)
     {
         if (queueIndex == -1)
             continue;
@@ -373,24 +391,32 @@ auto VulkanRenderer<Allocator, ExtensionClass>::copyQueueFamilyProperties_dbg(vk
 #endif
 }
 
+template <typename Allocator, template <class> typename ExtensionClass>
+auto VulkanRenderer<Allocator, ExtensionClass>::checkVkResult(VkResult const res, std::string_view const msg) -> void
+{
+    if (res != VK_SUCCESS) 
+        m_createFailureCallback(vkutils::errorString(res), msg, m_createFailureCallbackUserData);
+}
+
 // ------------------- Vulkan Renderer Implementation ---------------------------------------------
 
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
 VulkanRenderer<Allocator, ExtensionClass>::~VulkanRenderer()
 {
+    m_data.destroy();
+
     vkDestroyDevice(m_device, m_pAllocationCallbacks);
 
 #ifndef NDEBUG
     if (m_messengerConstructed_dbg)
     {
         auto const pfnDestroyDebugUtilsMessengerEXT = 
-            reinterpret_cast<PFN_vkCreateDebugUtilsMessengerEXT>(vkGetInstanceProcAddr(m_instance, "vkDestroyDebugUtilsMessengerEXT"));
+            reinterpret_cast<PFN_vkDestroyDebugUtilsMessengerEXT>(vkGetInstanceProcAddr(m_instance, "vkDestroyDebugUtilsMessengerEXT"));
         pfnDestroyDebugUtilsMessengerEXT(m_instance, m_messenger_dbg, &m_allocationCallbacks);
     }
 #endif
-
-    if (m_deviceCreationDataConstructed)
-        std::destroy_at<decltype(m_deviceCreationData.extensions)>(&m_deviceCreationData.extensions);
 
     vkDestroyInstance(m_instance, &m_allocationCallbacks);
 }
@@ -398,7 +424,9 @@ VulkanRenderer<Allocator, ExtensionClass>::~VulkanRenderer()
 // TODO reduce stack space usage by creating arbitrary scopes and multiple cleanup sections
 // TODO reduce memory waste by pre allocating a big block and then distributing it across arrays
 // TODO add checks on each allocation
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
 VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
     std::span<vkdefs::InstanceExtension> requestedInstanceExtensions, 
     std::span<std::string_view> requestedLayers, 
@@ -442,27 +470,27 @@ VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
     }
 
     uint32_t extensionProperties_count;
-    vkEnumerateInstanceExtensions(nullptr/*layer*/, &extensionProperties_count, nullptr);
+    vkEnumerateInstanceExtensionProperties(nullptr/*layer*/, &extensionProperties_count, nullptr);
     assert(extensionProperties_count != 0u);
 
     auto pExtensionProperties = reinterpret_cast<VkExtensionProperties const*>(m_alloc.allocateAligned(extensionProperties_count * sizeof(VkExtensionProperties), alignof(VkExtensionProperties)));
-    vkEnumerateInstanceExtensions(nullptr, &extensionProperties_count, pExtensionProperties);
+    vkEnumerateInstanceExtensionProperties(nullptr, &extensionProperties_count, pExtensionProperties);
 
     // check for extension compatibility
-    auto supportedInstanceExtensions = reinterpret_cast<char const**>m_alloc.allocateAligned(requestedInstanceExtensions.size() * sizeof(char const*), alignof(char const*));
+    auto supportedInstanceExtensions = reinterpret_cast<char const**>(m_alloc.allocateAligned(requestedInstanceExtensions.size() * sizeof(char const*), alignof(char const*)));
     uint32_t supportedInstanceExtensions_count = 0;
     for (uint32_t i = 0; i != requestedInstanceExtensions.size(); ++i)
     {
-        *(supportedInstanceExtensions+i) = vkdefs::InstanceExtensionToString(requestedInstanceExtension);
+        *(supportedInstanceExtensions+i) = vkdefs::instanceExtensionToString(requestedInstanceExtensions[i]);
     }
 
     // not using std::find because <algorithm> is included only in debug mode (see checkExtensionDependenciesOtherwise)
 #ifndef NDEBUG
     bool containsDebugUtils;
 #endif
-    for (uint32_t i = 0; i != requestedInstanceExtension.size(); ++i)
+    for (uint32_t i = 0; i != requestedInstanceExtensions.size(); ++i)
     {
-        std::string_view const inputExtension(vkdefs::instanceExtensionToString(requestedInstanceExtension[i]));
+        std::string_view const inputExtension(vkdefs::instanceExtensionToString(requestedInstanceExtensions[i]));
         std::string_view supportedExtension;
         bool supported = false;
         for (uint32_t j = 0; j != extensionProperties_count; ++j)
@@ -472,11 +500,11 @@ VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
             if (inputExtension == supportedExtension)
             {
             #ifndef NDEBUG
-                if (inputExtension == "VK_EXT_debug_utils"sv)
+                if (inputExtension == "VK_EXT_debug_utils")
                     containsDebugUtils = true;
             #endif
                 supported = true;
-                std::strncpy(supportedInstanceExtensions+i, supportedExtension.data(), VK_MAX_EXTENSION_NAME_SIZE);
+                std::strncpy(*(supportedInstanceExtensions+i), supportedExtension.data(), VK_MAX_EXTENSION_NAME_SIZE);
                 ++supportedInstanceExtensions_count;
                 break;
             }
@@ -491,17 +519,16 @@ VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
     instanceCI.enabledExtensionCount = supportedInstanceExtensions_count;
 
     // check for validation layers, debug only
-    auto pEnabledLayers = nullptr;
-    if constexpr (debugMode)
-    {
+    std::conditional_t<debugMode, char const**, nullptr_t> pEnabledLayers = nullptr;
+    std::conditional_t<debugMode, VkLayerProperties*, nullptr_t> pSupportedLayers = nullptr;
+    uint32_t enabledLayers_count = 0;
+    uint32_t supportedLayers_count = 0;
+    #ifndef NDEBUG
         pEnabledLayers = reinterpret_cast<char const**>(m_alloc.allocateAligned(requestedLayers.size() * sizeof(char const*), alignof(char const*)));
-        uint32_t enabledLayers_count = 0;
-
-        uint32_t supportedLayers_count; 
         vkEnumerateInstanceLayerProperties(&supportedLayers_count, nullptr);
         if (supportedLayers_count != 0) [[likely]] 
         {
-            auto pSupportedLayers = reinterpret_cast<VkLayerProperties*>(m_alloc.allocateAligned(supportedLayers_count * sizeof(VkLayerProperties), alignof(VkLayerProperties)));
+            pSupportedLayers = reinterpret_cast<VkLayerProperties*>(m_alloc.allocateAligned(supportedLayers_count * sizeof(VkLayerProperties), alignof(VkLayerProperties)));
             vkEnumerateInstanceLayerProperties(&supportedLayers_count, pSupportedLayers);
 
             for (uint32_t i = 0; i != requestedLayers.size(); ++i)
@@ -511,10 +538,10 @@ VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
                 bool supported = false;
                 for (uint32_t j = 0; j != supportedLayers_count; ++i)
                 {
-                    supportedLayer = pSupportedlayers[j].layerName;
+                    supportedLayer = pSupportedLayers[j].layerName;
                     if (inputLayer == supportedLayer)
                     {
-                        std::strncpy(pEnabledLayers, inputLayer.data(), VK_MAX_EXTENSION_NAME_SIZE);
+                        std::strncpy(pEnabledLayers[i], inputLayer.data(), VK_MAX_EXTENSION_NAME_SIZE);
                         ++enabledLayers_count;
                         supported = true;
                         break;
@@ -533,14 +560,12 @@ VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
         // TODO insert log here
         instanceCI.enabledLayerCount = 0;
         instanceCI.ppEnabledLayerNames = nullptr;
-    }
-    else
-    {
+    #else
         instanceCI.enabledLayerCount = 0;
         instanceCI.ppEnabledLayerNames = nullptr;
-    }
+    #endif
 
-    VkResult res = vkCreateInstance(&instanceCI, options.pAllocationCallbacks, &m_instance;
+    VkResult res = vkCreateInstance(&instanceCI, options.pAllocationCallbacks, &m_instance);
     checkVkResult(res, "failed to create VkInstance");
     
     // --------------- Setup VK_EXT_debug_utils messenger (debug only) --------
@@ -551,8 +576,9 @@ VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
             reinterpret_cast<PFN_vkCreateDebugUtilsMessengerEXT>(vkGetInstanceProcAddr(m_instance, "vkCreateDebugUtilsMessengerEXT"));
         auto messengerCI = vkdefs::debugUtilsMessengerCreateInfo_dbg(); // if you want to check instance creation too, put this in pNext.
 
-        res = pfnCreateDebugUtilsMessengerEXT(m_instance, &messengerCI, m_pAllocationCallbacks);
+        res = pfnCreateDebugUtilsMessengerEXT(m_instance, &messengerCI, m_pAllocationCallbacks, &m_messenger_dbg);
         checkVkResult(res, "failed to create VkDebugUtilsMessengerEXT");
+        m_messengerConstructed_dbg = true;
     }
 #endif
 
@@ -568,7 +594,7 @@ VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
     }
 
     auto pAvailPhysicalDevices = reinterpret_cast<VkPhysicalDevice*>(m_alloc.allocateAligned(availPhysicalDevices_count * sizeof(VkPhysicalDevice), alignof(VkPhysicalDevice)));
-    res = vkEnumeratePhysicalDevices(m_instance, &availPhysicalDevices_count, pAvailPhysicalDevices)
+    res = vkEnumeratePhysicalDevices(m_instance, &availPhysicalDevices_count, pAvailPhysicalDevices);
     checkVkResult(res, "couldn't save physical devices list in local buffer");
 
     // select the first physical device which supports all the requested features and extensions, and that has requested queue families 
@@ -584,7 +610,7 @@ VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
         // Pay attenction to chapter 32.1 of the Vulkan specification, which lists all Features which are mandatory for a valid vulkan implementation
         // therefore we don't need to check for them
         vkGetPhysicalDeviceFeatures2(currentPhysicalDevice, &options.requestedFeatures);
-        if (!options.featureCheckCallback(options.requestedFeatures));
+        if (!options.featureCheckCallback(options.requestedFeatures))
         {
             continue;
         }
@@ -601,7 +627,7 @@ VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
         }
 
         vkdefs::StaticVector<int32_t, 4> selectedQueueFamilies; // TODO StaticVector doesn't have a constructor which takes value and size yet
-        for (uint32_t i = 0; i != requestedFamilyPropertiesCallbacks.size(); ++i)
+        for (uint32_t i = 0; i != options.requestedFamilyPropertiesCallbacks.size(); ++i)
         {
             selectedQueueFamilies.push_back(-1);
         }
@@ -622,15 +648,15 @@ VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
                 if (options.surface != VK_NULL_HANDLE)
                 {
                     PFN_vkGetPhysicalDeviceSurfaceSupportKHR fpGetPhysicalDeviceSurfaceSupportKHR = vkGetInstanceProcAddr(m_instance, u8"vkGetPhysicalDeviceSurfaceSupportKHR");
-                    fpGetPhysicalDeviceSurfaceSupportKHR(currentDevice, queueFamilyIndex, options.surface, &presentationSupported);
+                    fpGetPhysicalDeviceSurfaceSupportKHR(currentPhysicalDevice, queueFamilyIndex, options.surface, &presentationSupported);
                     // won't perform surface queries here, because they are done in the swapchain class
                 }
 
                 for (uint32_t j = lastUpdated; j != options.requestedFamilyPropertiesCallbacks.size(); ++j) // for each condition requirement
                 {
                     // TODO: now this framework suppports 1 queue per queue family. Maybe support for more??
-                    QueueFamilyCallback const& callback = requestedFamilyPropertiesCallbacks[queueFamilyIndex];
-                    if (callback(pQueueFamilyProperties, presentationSupported))
+                    QueueFamilyCheckCallback const& callback = options.requestedFamilyPropertiesCallbacks[queueFamilyIndex];
+                    if (callback(*pQueueFamilyProperties, presentationSupported))
                     {
                         selectedQueueFamilies[lastUpdated++] = queueFamilyIndex;
                         m_queues.push_back( // TODO StaticVector doesn't have emplace back yet
@@ -694,10 +720,12 @@ VulkanRenderer<Allocator, ExtensionClass>::VulkanRenderer(
  
 // TODO maybe some checks
 // VkPhysicalDeviceVulkanMemoryModelFeatures
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
 [[nodiscard]] auto VulkanRenderer<Allocator, ExtensionClass>::createDevice(
     std::span<vkdefs::DeviceExtension> extensions, 
-    DeviceCreationOptions const& options = defaultDeviceCreationOptions) 
+    DeviceCreationOptions const& options) 
     -> Status
 {
     // -------------- Setup Device Create Info --------------------------------
@@ -705,13 +733,13 @@ template <template <class> typename Allocator, template <class> typename Extensi
     deviceCreateInfo.pNext = reinterpret_cast<void const*>(&options.requestedFeatures);
     deviceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
 
-    std::vector<char const*, Allocator<char const*>> pExtensionNames;
+    std::vector<char const*> pExtensionNames;
     pExtensionNames.reserve(extensions.size());
 
     for (auto const& ext : extensions)
         pExtensionNames.push_back(vkdefs::deviceExtensionToString(ext).data());
 
-    deviceCreateInfo.ppEnabledExtensions = pExtensionNames.data();
+    deviceCreateInfo.ppEnabledExtensionNames = pExtensionNames.data();
     
     deviceCreateInfo.queueCreateInfoCount = m_queues.size();
     std::array<VkDeviceQueueCreateInfo, 4> queueCreateInfos{vkdefs::deviceQueueCreateInfo()};
@@ -720,7 +748,7 @@ template <template <class> typename Allocator, template <class> typename Extensi
     for (uint32_t i = 0; i != m_queues.size(); ++i)
     {
         queueCreateInfos[i].pNext = options.deviceQueueCI_pNexts[i];
-        queueCreateInfos[i].familyIndex = m_queues[i].familyIndex;
+        queueCreateInfos[i].queueFamilyIndex = m_queues[i].familyIndex;
         queueCreateInfos[i].queueCount = 1;
         queueCreateInfos[i].pQueuePriorities = &queuePriority;
     }
@@ -734,7 +762,7 @@ template <template <class> typename Allocator, template <class> typename Extensi
     copyPhysicalDeviceFeature(options.requestedFeatures, m_enabledFeatures);
 
     // ---------- Get Device Queues -------------------------------------------
-    StaticVector<VkDeviceQueueInfo2, 4> queueInfos; // TODO StaticVector doesn't support emplace_back yet
+    vkdefs::StaticVector<VkDeviceQueueInfo2, 4> queueInfos; // TODO StaticVector doesn't support emplace_back yet
     for (uint32_t i = 0; i != m_queues.size(); ++i)
     {
         queueInfos[i].queueFamilyIndex = m_queues[i].familyIndex;
@@ -746,62 +774,100 @@ template <template <class> typename Allocator, template <class> typename Extensi
     // ---------- Copy Device Extensions ---------------------------------------
     m_deviceExtensions.resize(extensions.size());
     std::memcpy(m_deviceExtensions.data(), extensions.data(), extensions.size() * sizeof(vkdefs::DeviceExtension));
+
+    return Status::SUCCESS;
 }
 
 // calls onNextFrame
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
-template <VulkanTask GPUTaskType> requires std::derived_from<GPUTask, RenderTask> // TODO code a RenderTask class
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
+template <typename GPUTaskType, typename GPUTask2, typename Data> 
+    requires std::derived_from<GPUTaskType, RenderTask<GPUTask2, Data>>
 [[nodiscard]] auto VulkanRenderer<Allocator, ExtensionClass>::submit(const GPUTaskType& task) -> VulkanFrameObjects
 {
+    if (Status ret = m_data.onNextFrame(); ret != Status::SUCCESS) [[unlikely]]
+    {
+        return VulkanFrameObjects{};
+    }
+    return m_data.bindAndSubmit(task);
 }
 
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
-template <VulkanTask GPUTaskType> requires (!std::derived_from<GPUTask, RenderTask>)
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
+template <typename GPUTaskType, typename GPUTask2, typename Data> 
+    requires (!std::derived_from<GPUTaskType, RenderTask<GPUTask2, Data>>)
 [[nodiscard]] auto VulkanRenderer<Allocator, ExtensionClass>::submit(const GPUTaskType& task) -> Status
 {
+    if (Status ret = m_data.onNextFrame(); ret != Status::SUCCESS) [[unlikely]]
+    {
+        return ret;
+    }
+    return m_data.bindAndSubmit(task);
 }
 
 // this calls ExtensionClass::onViewChanged
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
 [[nodiscard]] auto VulkanRenderer<Allocator, ExtensionClass>::onViewChanged(Eigen::Matrix4f const& newViewTransform) -> Status
 {
+    return m_data.onViewChanged(newViewTransform);
 }
 
 // this calls ExtensionClass::onWindowResized and VulkanRenderer::onViewChanged
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
 [[nodiscard]] auto VulkanRenderer<Allocator, ExtensionClass>::onWindowResized(VkExtent2D newWindowExtent) -> Status
 {
+    if (Status ret = m_data.onWindowResized(newWindowExtent); ret != Status::SUCCESS) [[unlikely]]
+    {
+        return ret;
+    }
+    return m_data.onViewChanged();
 }
 
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
-[[nodiscard]] auto VulkanRenderer<Allocator, ExtensionClass>::onUpdateRenderData(SceneDataUpdate const& sceneDataUpdate) -> Status
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
+template <std::ranges::contiguous_range Range>
+[[nodiscard]] auto VulkanRenderer<Allocator, ExtensionClass>::onUpdateRenderData(SceneUpdate<Range> const& sceneDataUpdate) -> Status
 {
+    return m_data.onUpdateRenderData(sceneDataUpdate);
 }
 
 // this calls the three create functions in the ExtensionClass
-template <template <class> typename Allocator, template <class> typename ExtensionClass>
-template <typename Deleter> requires std::is_nothrow_invocable_r<void, Deleter, typename std::unique_ptr<SceneData>::pointer>
-[[nodiscard]] auto VulkanRenderer<Allocator, ExtensionClass>::prepare(std::unique_ptr<SceneData, Deleter> pScene, 
+template <typename Allocator, template <class> typename ExtensionClass>
+    requires (allocatorAligned<Allocator>
+             && VulkanRendererResourceData<ExtensionClass<Allocator>, SceneDataTag, SceneUpdateTag, TaskTag>)
+template <typename SceneDataT, typename Deleter>
+    requires (std::is_nothrow_invocable_r<void, Deleter, typename std::unique_ptr<SceneDataT>::pointer>::value &&
+              std::derived_from<SceneDataT, SceneDataTag>)
+[[nodiscard]] auto VulkanRenderer<Allocator, ExtensionClass>::prepare(std::unique_ptr<SceneDataT, Deleter> pScene, 
                                                                       void* pSceneAddOnData, void* pCommandBufferAddOnData, Status* pOutStatus) 
-    -> struct { std::span<ResourcesPreparationFunction> resPrepFunctions; std::span<CommandBufferBuildingFunction> cmdBufBuildFunctions; }
+    -> prepareReturnType<SceneDataT, Deleter>
 {
     // ------------ Create VMA Allocator --------------------------------------
     VmaAllocatorCreateInfo allocatorCreateInfo = vkdefs::vmaAllocatorCreateInfo();
     allocatorCreateInfo.instance = m_instance;
     allocatorCreateInfo.device = m_device;
     allocatorCreateInfo.physicalDevice = m_physicalDevice;
+    // TODO finish it
 
-    VkResult res = vmaCreateAllocator();
+    VkResult res = vmaCreateAllocator(&allocatorCreateInfo, &m_vmaAllocator);
     checkVkResult(res, "failed to create VmaAllocator");
 
     // ----------- Call the callbacks of the templetized class instance -------
+    if (Status ret = m_data.createBaseFramebufferObjects(); ret != Status::SUCCESS) [[unlikely]]
+    {
+        return ret;
+    }
     return {m_data.createResourcesPreparationFunction(m_device, m_vmaAllocator),
             m_data.createCommandBuffersBuildingFunction(m_device, m_vmaAllocator)};
 }
 
-}; // namespace mxc
-
-
-}
+} // namespace mxc
 
 #endif // MXC_VULKAN_RENDERER_HPP
