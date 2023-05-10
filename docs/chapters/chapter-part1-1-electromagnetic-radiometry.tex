@@ -1,0 +1,321 @@
+\chapter{Richiami sull'elettromagnetismo e Radiometria}
+\section{Radiazione Elettromagnetica}
+La luce \`e un fenomeno fisico che si propaga come un'onda elettromagnetica ed interagisce con le altre sostanze come una particella. Dal punto di 
+vista ondulatorio, una \textit{onda elettromagnetica} si propaga nel vuoto a velocit\`a costante $c$, la quale \`e correlata alla
+\textit{permeabilit\`a magnetica nel vuoto} $\mu_0$ [\si{H/m}] e \textit{costante dielettrica nel vuoto} $\epsilon_0\ [\si{F/m}]$
+\[ \epsilon_0 = \frac{1}{\mu_0 c^2} \]
+mentre la \textit{Velocit\`a di fase} $v$ [\si{m/s}] \`e similmente legata alla \textit{permittivit\`a dielettrica del mezzo} $\epsilon$ e 
+\textit{permeabilit\`a magnetica nel mezzo}
+\[ \epsilon = \frac{1}{\mu v^2} \]
+il rapporto tra le costanti nel mezzo e le costanti nel vuoto definiscono \textit{permittivit\`a relativa} $\epsilon_r$ e 
+\textit{permeabilit\`a relativa} $\mu_r$\par
+%
+\begin{figure}[t]
+	% ELECTROMAGNETIC SPECTRUM
+	\begin{tikzpicture}[xscale=0.8, yscale=1.2]
+	  \def\h{1}
+	  \def\radio{-4}
+	  \def\micro{0}
+	  \def\IR{3}
+	  \def\red{6.10}  % log(700e-9) = -6.15490196
+	  \def\blue{6.40} % log(400e-9) = -6.39794001
+	  \def\UV{6.40}
+	  \def\Xray{8}
+	  \def\gamm{11}
+	  \def\last{12}
+	  \def\radiof{-5}
+	  \def\dx{0.6}
+	  \def\yE{-1.1*\h}
+	  
+	  \def\tick#1#2#3{\draw[thick,#2] (#1+.08) --++ (0,-.16) node[below=-2pt,scale=1] {\strut #3};}
+	  \def\ticka#1#2#3{\draw[thick,#2] (#1+.08) --++ (0,-.16) node[above=2pt,scale=1] {\strut #3};}
+	  
+	  % MIDDLE
+	  \fill[green!60!black!10] (\radio-0.82*\dx,0) rectangle (\IR,\h);
+	  \fill[yellow!60!black!10] (\micro,0.18*\h) rectangle (\IR,0.8*\h);
+	  \fill[red!60!black!10] (\IR,0) rectangle (\red,\h);
+	  \fill[blue!60!violet!80!black!10] (\UV,0) rectangle (\Xray,\h);
+	  \fill[blue!50!black!15] (\Xray,0) rectangle (\gamm,\h);
+	  \fill[blue!40!black!25] (\gamm,0) rectangle (\last+0.8*\dx,\h);
+	  \shade[shading=rainbow,shading angle=-90] (\red,0) rectangle (\blue,\h);
+	  \node at ({(\radio+\micro)/2},\h/2) {\strut radio};
+	  \node at ({(\micro+\IR)/2},   \h/2) {\strut micro};
+	  \node at ({(\IR+\red)/2},     \h/2) {\strut IR};
+	  %\node at (\red,  \h/2) {red};
+	  %\node at (\red,  \h/2) {blue};
+	  \node at ({(\UV+\Xray)/2},    \h/2) {\strut UV};
+	  \node at ({(\Xray+\gamm)/2},  \h/2) {\strut X ray};
+	  \node at ({(\gamm+\last+0.8*\dx)/2},  \h/2) {\strut gamma};
+	  
+	  % WAVELENGTH
+	  \draw[->,thick,wavecol] (\last+\dx,\h) -- (\radio-1.5*\dx,\h) node[above left=-3,scale=1.1] {$\lambda$ [\si{m}]};
+	  \foreach \x [evaluate={\i=int(-\x)}] in {\radio,...,\last}{
+	    \ifthenelse{\i=0}{ \ticka{\x,\h}{wavecol}{$1$} }
+	                     { \ticka{\x,\h}{wavecol}{$10^{\i}$} }
+	  }
+	  \node[wavecol,scale=1] at (-3,1.71*\h) {\strut km};
+	  \node[wavecol,scale=1] at ( 0,1.71*\h) {\strut m};
+	  \node[wavecol,scale=1] at ( 3,1.71*\h) {\strut mm};
+	  \node[wavecol,scale=1] at ( 6,1.71*\h) {\strut \si{\mu m}};
+	  \node[wavecol,scale=1] at ( 9,1.71*\h) {\strut pm};
+	  \node[wavecol,scale=1] at (12,1.71*\h) {\strut fm};
+	  %\node[wavecol,scale=1] at (15,1.71*\h) {\strut am};
+	  
+	  % FREQUENCY
+	  % log(f) = log(c) - log(lambda)
+	  % log(c) = log(2.997e8) = 8.4766867429
+	  \draw[->,thick,freqcol] (\radio-\dx,0) -- (\last+1.5*\dx,0) node[below right=-3,scale=1.1] {$f$ [\si{Hz}]};
+	  \foreach \x [evaluate={\i=int(\x+9);\X=\x+0.53}] in {\radiof,...,\last}{
+	    \tick{\X,0}{freqcol}{$10^{\i}$}
+	  }
+	  %\node[freqcol,scale=1] at (-8.47+ 3,-0.65*\h) {\strut kHz};
+	  \node[freqcol,scale=1] at (-8.47+ 6,-0.71*\h) {\strut MHz};
+	  \node[freqcol,scale=1] at (-8.47+ 9,-0.71*\h) {\strut GHz};
+	  \node[freqcol,scale=1] at (-8.47+12,-0.71*\h) {\strut THz};
+	  \node[freqcol,scale=1] at (-8.47+15,-0.71*\h) {\strut PHz};
+	  \node[freqcol,scale=1] at (-8.47+18,-0.71*\h) {\strut EHz};
+	  
+	  % ENERGY
+	  % log(E) = log(hc) - log(lambda)
+	  % log(hc) = log(2.997e8*4.135e-15) = -5.9068377432
+	  \draw[->,thick,enercol] (\radio-\dx,\yE) -- (\last+1.5*\dx,\yE) node[below right=-3,scale=1.1] {$E$ [\si{eV}]};
+	  \foreach \x [evaluate={\i=int(\x-6);\X=\x-0.09}] in {\radio,...,\last}{
+	    \ifthenelse{\i=0}{ \tick{\X,\yE}{enercol}{$1$} }
+	                     { \tick{\X,\yE}{enercol}{$10^{\i}$} }
+	  }
+	  %\node[enercol,scale=1] at (5.91-15,\yE-0.69*\h) {\strut feV};
+	  %\node[enercol,scale=1] at (5.91-12,\yE-0.69*\h) {\strut peV};
+	  \node[enercol,scale=1] at (5.91- 9,\yE-0.69*\h) {\strut neV};
+	  \node[enercol,scale=1] at (5.91- 6,\yE-0.69*\h) {\strut \si{\mu eV}};
+	  \node[enercol,scale=1] at (5.91- 3,\yE-0.69*\h) {\strut meV};
+	  \node[enercol,scale=1] at (5.91+ 0,\yE-0.69*\h) {\strut  eV};
+	  \node[enercol,scale=1] at (5.91+ 3,\yE-0.69*\h) {\strut keV};
+	  \node[enercol,scale=1] at (5.91+ 6,\yE-0.69*\h) {\strut MeV};
+	  %\node[enercol,scale=1] at (5.91+9,\yE-0.69*\h) {\strut GeV};
+	  
+	\end{tikzpicture}
+	\label{chapter1:spectrum}
+\end{figure}
+%
+Come osservi in figura \ref{chapter1:spectrum}, un'onda monocromatica \`e caratterizzata da
+\begin{alignat}{2}
+	&\text{frequenza di oscillazione $\nu$ [\si{Hz}] e periodo $T$ [\si{s}]} & \nu = \frac{1}{T} \\
+	&\text{frequenza angolare $\omega$ [\si{rd/s}]} & \omega = 2\pi\nu = \frac{2\pi}{T} \\
+	&\text{lunghezza d'onda $\lambda$ [\si{m}], nel vuoto e nel mezzo} & \lambda_0 = cT = \frac{c}{\ni} \\
+	& & \lambda = vT = \frac{v}{\nu}
+\end{alignat}
+La luce visibile all'\textit{occhio umano} corrisponde al sottoinsieme dello spettro $[383, 783]\ \si{THz}$, equivalentemente $[783, 383]\ \si{nm}$\par
+Inoltre si definisce \textit{numero d'onda angolare} [\si{rd/m}]
+\begin{alignat}{2}
+	& \text{nel vuoto} k_0 &= \frac{2\pi}{\lambda_0} = \frac{2\pi}{c}\nu = \frac{\omega}{c} \\
+	& \text{nel mezzo}  k &= \frac{2\pi}{\lambda} = \frac{2\pi}{v}\nu = \frac{\omega}{v}
+\end{alignat}
+che rappresenta lo shift di fase dell'onda. 
+Assieme alla direzione di propagazione $\hat{k}$ definiscono il \textit{vettore d'onda} $\overrightarrow{k} = k \hat{k}$\par
+Le propriet\`a dell'onda in un mezzo relative alle propriet\`a dell'onda nel vuoto sono determinate dall'\textit{indice di rifrazione} (IOR), dipendente
+dalla lunghezza d'onda
+\[ \eta = \sqrt{\mu_r \epsilon_r} = \sqrt{\frac{\mu \epsilon}{\mu_0 \epsilon_0}} = \frac{c}{v} = \frac{k}{k_0} \]
+\textit{radiazione elettromagnetica} \`e composta da campo elettrico $\overrightarrow{E}$ ed un campo magnetico 
+$\overrightarrow{B}$ oscillanti in fase, perpendicolari tra loro e alla direzione di propagazione $\hat{k}$ (Figura \ref{chapter1:EMwave}). 
+Le propriet\`a di tali campi sono descritti in funzione della posizione $\overrightarrow{r}$ e tempo $t$ dalle \textit{Equazioni di Maxwell}
+\footnote{qui mostrate le equazioni per propagazione nel vuoto}
+\cite{pegoraro}:
+\begin{align}
+	\nabla \cdot \overrightarrow{E}(\overrightarrow{r}, t) &= \frac{\rho}{\epsilon_0} \\
+	\nabla \cdot \overrightarrow{B}(\overrightarrow{r}, t) &= 0 \\
+	\nabla \times \overrightarrow{E}(\overrightarrow{r}, t) &= -\frac{\partial\overrightarrow{B}(\overrightarrow{r}, t)}{\partial t} \\
+	\begin{split}
+	\nabla \times \overrightarrow{B}(\overrightarrow{r}, t) \ 
+	&= \mu_0 \left( \epsilon_0\frac{\partial \overrightarrow{E}(\overrightarrow{r}, t)}{\partial t} + \overrightarrow{J}(\overrightarrow{r}, t) \right)
+	\end{split}
+\end{align}
+dove $\rho$ \`e la densit\`a di carica totale e $\overrightarrow{J}$ la densit\`a di corrente.\par
+Tali equazioni, date le condizioni a contorno e condizioni iniziali, portano ad una equazione differenziale parziale detta equazione d'onda, che 
+per assenza di cariche $\rho = 0$, assenza di corrente $\overrightarrow{J}(\overrightarrow{r}, t) = \overrightarrow{0}$, e propagazione nel vuoto 
+porta a \marginpar{$\overrightarrow{x}$ \`e sostituibile sia con $\overrightarrow{E}$ che con $\overrightarrow{B}$}
+\[ \left(\frac{1}{c^2}\frac{\partial^2}{\partial t^2} - \nabla^2\right) \overrightarrow{x} = 0\]
+la cui soluzione \`e una qualsiasi funzione differenziabile due volte della forma
+\[ \overrightarrow{E}(\overrightarrow{r}, t) = f(\hat{k}\cdot\overrightarrow{r}-ct) 
+	= f\left(\frac{\overrightarrow{k}\cdot\overrightarrow{r} - ct}{k}\right) \]
+Propriet\`a importante per un'onda elettromagnetica \`e la sua \textit{polarizzazione}, la quale specifica l'orientemento nello spazio del campo
+elettrico (per convenzione) nella propagazione nello spazio dell'onda. Il campo elettrico pu\`o avere direzione fissa o essere rotante in base ad una
+data funzione [\cite{rad-phot}]. Esso \`e importante per le propriet\`a ottiche dei materiali, discussi in seguito. Gli stati di polarizzazione 
+fondamentali che citiamo sono \textit{polarizzatione lineare}, nella quale il campo elettromagnetico \`e confinato in un piano dello spazio, 
+\textit{polarizzazione circolare}, nella quale il vettore campo elettrico descrive una circonferenza nella sua rotazione con velocit\`a angolare 
+costante, \textit{polarizzazione ellittica}, la quale \`e una combinazione tra polarizzazoini circolari e planari. Con il termine 
+\textit{polarizzazione casuale} ci riferiamo invece a luce con polarizzazione ellittica, le cui caratteristiche (eccentricit\`a, velocita angolare) 
+sono casuali, diverso da \textit{luce non polarizzata} nella quale le caratteristiche (modulo e orientamento) del campo elettrico sono casuali.
+Un raggio luminoso pu\`o essere costituito dalla sovrapposizione di pi\`u radiazioni aventi differente stato di polarizzazione. Ci sono diversi metodi 
+per scomporre tali componenti e analizzarle \cite{hecht}.\par
+Una delle propriet\`a ottiche cangianti con lo stato di polarizzazione \`e la \textit{Riflettanza}, la quale ha espressioni note differenti per 
+radiazione linearmente polarizzata con piano di vibrazione $\parallel$ e $\perp$ al piano di incidenza.\par
+Tratteremo principalmente luce non polarizzata, la quale \`e una buona approssimazione considerando che la luce del cielo, che si propaga nell'
+atmosfera, \`e parzialmente polarizzata.
+%
+\begin{figure}[t]
+	% Electromagnetic wave - colored
+	\begin{tikzpicture}[x=(-15:1.2), y=(90:1.0), z=(-150:1.0),
+	                    line cap=round, line join=round,
+	                    axis/.style={black, thick,->},
+	                    vector/.style={>=stealth,->}]
+	  \large
+	  \def\A{1.5}
+	  \def\nNodes{5} % use even number
+	  \def\nVectorsPerNode{8}
+	  \def\N{\nNodes*40}
+	  \def\xmax{\nNodes*pi/2*1.01}
+	  \pgfmathsetmacro\nVectors{(\nVectorsPerNode+1)*\nNodes}
+	  
+	  \def\vE{{\color{myblue}\mathbf{E}}}
+	  \def\vB{{\color{myred}\mathbf{B}}}
+	  \def\vk{\mathbf{\hat{k}}}
+	  
+	  \def\drawENode{ % draw E node and vectors with some offset
+	    \draw[myblue,very thick,variable=\t,domain=\iOffset*pi/2:(\iOffset+1)*pi/2*1.01,samples=40]
+	      plot (\t,{\A*sin(\t*360/pi)},0);
+	    \foreach \k [evaluate={\t=\k*pi/2/(\nVectorsPerNode+1);
+	                           \angle=\k*90/(\nVectorsPerNode+1);}]
+	                in {1,...,\nVectorsPerNode}{
+	      \draw[vector,myblue!50]  (\iOffset*pi/2+\t,0,0) -- ++(0,{\A*sin(2*\angle+\iOffset*180)},0);
+	    }
+	  }
+	  \def\drawBNode{ % draw B node and vectors with some offset
+	    \draw[myred,very thick,variable=\t,domain=\iOffset*pi/2:(\iOffset+1)*pi/2*1.01,samples=40]
+	      plot (\t,0,{\A*sin(\t*360/pi)});
+	    \foreach \k [evaluate={\t=\k*pi/2/(\nVectorsPerNode+1);
+	                           \angle=\k*90/(\nVectorsPerNode+1);}]
+	                in {1,...,\nVectorsPerNode}{
+	      \draw[vector,myred!50]  (\iOffset*pi/2+\t,0,0) -- ++(0,0,{\A*sin(2*\angle+\iOffset*180)});
+	    }
+	  }
+	  
+	  % MAIN AXES
+	  \draw[axis] (0,0,0) -- ++(\xmax*1.1,0,0) node[right] {$x$};
+	  \draw[axis] (0,-\A*1.4,0) -- (0,\A*1.4,0) node[right] {$y$};
+	  \draw[axis] (0,0,-\A*1.4) -- (0,0,\A*1.4) node[above left] {$z$};
+	  
+	  % SMALL AXES
+	  \def\xOffset{{(\nNodes-2)*pi/2}}
+	  \def\yOffset{\A*1.2}
+	  \def\zOffset{\A*1.2}
+	  \draw[axis,black] (\xOffset,\yOffset,-\zOffset) -- ++(\A*0.6,0,0) node[right,align=center] {$\mathbf{\hat{k}}$}; %\\propagation
+	  \draw[axis,myblue]  (\xOffset,\yOffset,-\zOffset) -- ++(0,\A*0.6,0) node[right] {$\mathbf{E}$};
+	  \draw[axis,myred]   (\xOffset,\yOffset,-\zOffset) -- ++(0,0,\A*0.6) node[above left] {$\mathbf{B}$};
+	  
+	  % equation
+	  \node[above right] at (\xOffset,-0.5*\yOffset,4*\zOffset)
+	    {$\begin{aligned}
+	      \vE &= {\color{myblue}\mathbf{E_0}}\sin(\vk\cdot\mathbf{x}-c_0t)\\
+	      \vB &= {\color{myred} \mathbf{B_0}}\sin(\vk\cdot\mathbf{x}-c_0t)\\
+	      \end{aligned}$};
+	  \node[below right] at (\xOffset,-0.5*\yOffset,4*\zOffset)
+	    {$\vE\cdot\vk = 0,\;\; \vB\cdot\vk = 0,\;\; \vB = \frac{1}{c_0}\vk\times\vE$};
+	  
+	  % draw (anti-)nodes
+	  \foreach \iNode [evaluate={\iOffset=\iNode-1;}] in {1,...,\nNodes}{
+	    \ifodd\iNode \drawBNode \drawENode % E overlaps B
+	    \else        \drawENode \drawBNode % B overlaps E
+	    \fi
+	  }
+	\end{tikzpicture}
+	\label{chapter1:EMwave}
+\end{figure}
+%
+\section{Dualit\`a onda-particella}
+Una radiazione elettromagnetica mostra sia aspetti ondulatori che aspetti particellari. Tale fenomeno \`e detto \textit{dualit\`a onda-particella}.
+La luce \`e assorbita ed emessa in pacchetti discreti di energia elettromagnetica chiamati \textit{fotoni}. Dunque il campo elettromagnetico
+\footnote{inteso come spostamento di energia} \`e quantizzato. Ciascuna delle sue particelle elementari costituenti ha energia definita dall'
+\textit{equazione di Planck-Einstein} 
+\[\xi = h\nu\] 
+dove $h$ costante di Plank. Si osservi come l'energia di un singolo fotone \`e dipendente dallalunghezza d'onda.\par
+
+Il modello fornito dall'elettrodinamica quantistica \`e stato citato in quanto esso ci suggerisce un nuovo modello operativo della luce, orientato 
+alla misurazione piuttosto che alla formulazione da primi principi, nel quale ci disinteressiamo dell'origine fisica della luce e misuriamo
+l'energia aggregata trasportata dai fotoni contenuti in una radiazione. Tale scienza \`e la \textit{Radiometria} (sezione \nameref{radiometria})\par
+
+\section{Introduzione all'assorbimento di radiazione}
+\begin{table}[tb]
+	\begin{tabular}{cccp{6cm}}
+		\toprule
+		Materiale & $\lambda$ [\si{nm}] & $\kappa_a$ [\si{cm^{-1}}] & Osservazioni \\
+		\midrule
+		Vapore Acqueo & $10.6\cdot 10^3$ (infrarossi) & $1.5$ & Ogni centimetro la luce che passa per vapore acqueo l'1.5\% dell'energia \`e assorbita\\
+		Vetro & $550$ (verde) & $0.1$ & Cos\`i basso che \`e praticamente trascurabile. Il vetro \`e praticamente trasparente alla luce \\
+		Ferro & $400$ (violetto) & $2.5\cdot 10^4$ & Assorbe fortemente la luce violetta, motivo per cui appare grigio scuro \\
+		Clorofilla & $680$ (rosso) & $10^5$ & Assorbe fortemente luce rossa, motivo per cui appare verde \\
+		Diossido di Carbonio & $4.3\cdot 10^3$ (infrarossi) & $7$ & Assorbe fortemente radiazione infrarossa, motivo per cui contribuisce al riscaldamento globale \\
+		\bottomrule
+	\end{tabular}
+	\label{chapter1:absorption-table}
+	\caption{Esempi di coefficiente di assorbimento per alcuni materiali a date lunghezze d'onda}
+\end{table}
+Quando la luce passa per un mezzo, parte di essa viene rifratta e riflessa (capitolo 3). In alcuni materiali\footnote{come i metalli}, quando la 
+luce passa attraverso il mezzo \`e assorbita, e il wavelength-dependent \textit{coefficiente di assorbimento} $\kappa_a$ [\si{m^{-1}}], il quale 
+indica la percentuale di energia di onda elettromagnetica assorbita, per una data lunghezza d'onda, nella propagazione nel materiale.
+Alcuni esempi di coefficiente di assorbimento sono mostrati in Tabella \nameref{chapter1:absorption-table}\par
+Dall'coefficiente di assorbimento, caratterizzante il decadimento della energia nella propagazione dell'onda, e il numero d'onda, caratterizzante 
+lo shift di fase dell'onda stessa, si definisce il \textit{numero d'onda complesso}
+\[ \underline{k} = k + \iu\frac{\kappa_a}{2} \]
+Ricordiamo l'equazione di un'onda elettromagnetica linearmente polarizzata, in assenza di assorbimento
+\[\overrightarrow{E}(\overrightarrow{r}, t) = \Re\left( \overrightarrow{E}_0 e^{\iu (\overrightarrow{k}\cdot\overrightarrow{r}-\omega t)} \right)\]
+Introducendo un coefficiente di assorbimento non-nullo, e supponendo propagazione nell'asse z, $\hat{k} = [0, 0, 1]^T$
+\[\overrightarrow{E}(z, t) = \Re\left( \overrightarrow{E}_0 e^{\iu (\underline{k}\cdot z-\omega t)} \right) = 
+	\Re\left( e^{-\frac{\kappa_a}{2}z} \overrightarrow{E}_0 e^{\iu ( kz-\omega t )}\right)\]
+Da cui l'\textit{intensit\`a}\footnotemark dell'onda (potenza media nel periodo trasferita per unit\`a di superficie) [\si{W/m^2}] 
+diventa \cite{pegoraro}
+\begin{align}
+	I(z) &= \frac{1}{T} \int_T \lvert \overrightarrow{E}_0 e^{\iu (\underline{k}z-\omega t)} \rvert^2 \mathrm{d}t = 
+	\frac{1}{T} \lvert e^{-\frac{\kappa_a}{2}z} \overrightarrow{E}_0 e^{\iu ( kz-\omega t )} \rvert \\ 
+	&= \lvert e^{-\frac{\kappa_a}{2}z} \rvert \frac{1}{T} \int_T \lvert \overrightarrow{E}_0 e^{-\iu (kz-\omega t)} \rvert^2 \mathrm{d}t = 
+	e^{-\kappa_az} I_0
+\end{align}
+dove $I_0$ \`e l'intensit\`a in assenza di assorbimento. La distanza alla quale l'intensit\`a si riduce di un fattore $e^{-1}$, ($z=\kappa_a^{-1}$),
+\`e detta \textit{profondit\`a di penetrazione}\par
+Altro coefficiente caratterizzante il materiale e la sua interazione con radiazione incidente, contando anche l'assorbimento, \`e l'
+\textit{indice di rifrazione complesso}
+\[\underline{\eta} = \frac{k}{k_0} + \iu \frac{\kappa_a}{2k_0} = \eta + \iu\kappa\]
+dove $\kappa = \frac{\kappa_a}{2k_0}$ \`e l'\textit{indice di assorbimento} della superficie
+\footnotetext{In fotometria e radiometria \textit{intensit\`a} ha un altro significato: essa \`e la potenza radiante o luminosa per unit\`a di 
+	angolo solido. In Ottica e Termodinamica, \textit{intensit\`a} essa \`e associata alla potenza media nel periodo per unit\`a di superficie, come 
+	in questo caso, altre volte all'intensit\`a radiante o luminosa, oppure all'irradianza o alla radianza. Per Radiometria, vedi \nameref{radiometria}}
+\section{Radiometria}
+\label{radiometria}
+Branche dell'ottica prese come riferimento dal physically based rendering sono la \textit{Radiometria} e \textit{Radiative Transfer}.
+La \textit{Radiometria} \`e il modello matematico per studiare e misurare la propagazione delle radiazioni elettromagnetiche. In tale modello, ci 
+disinteressiamo degli aspetti ondulatori delle onde elettromagnetiche e guardiamo la radiazione come energia fluente nello spazio. Ci\`o suggerisce
+che la Radiometria opera a livello dell'ottica geometrica, assumendo dunque propagazione rettilinea della luce e trascurando fenomeni dovuti alla 
+natura ondulatoria della radiazione. Si considerado solamente gli effetti della riflessione, trasmissione, scattering ed assorbimento.
+In particolare, le assunzioni fatte sono le seguenti[\cite{pharr}]:
+\begin{altDescription}{chapter1:radiometria-assunzioni}
+	\item[Linearit\`a] La combinazione lineare di pi\`u input ad un sistema ottico \`e pari alla combinazione lineare degli effetti dei singoli input
+	\item[Conservazione dell'energia] Quando una fonte di radiazioni scatters da una superficie o mezzo trasmissivo, gli \textit{scattering events}
+		[\cite{pegoraro}], non possono produrre pi\`u energia di quella iniziale
+	\item[No polarizzazione] Ignoriamo la polarizzazione del campo elettromagnetico di una radiazione, rendendo l'unica propriet\`a rilevante di
+		una radiazione la sua \textit{Distribuzione Spettrale} [\nameref{chapter2}]
+	\item[No fluorescenza o fosforescenza] Il comportamento della radiazione ad una lunghezza d'onda \`e indipendente dal comportamento della 
+		radiazione ad altre lunghezze d'onda
+	\item[A regime] Il \textit{Light Field} (\nameref{radianza}) nell'ambiente \`e assunto a regime, indipendente dal tempo. Nota che la 
+		fosforescenza viola anche questo presupposto
+\end{altDescription}
+Il \textit{Radiative Transfer}, qui solo accennato, \`e lo studio dei fenomeni legati al trasferimento di energia radiante, basato sulla radiometria,
+ed utilizzato nella computer grafica per introdurre fenomeni legati all'ottica fisica e modellare la propagazione in un mezzo diverso dal vuoto.\par
+Le unit\`a fondamentali della radiometria sono riassunte nella tabella \ref{chapter1:radiometric-quantities}
+\begin{table}[tb]
+	\begin{tabularx}{\linewidth}{cccY}
+		\toprule
+		Quantit\`a & Simbolo & unit\`a S.I. & Note \\
+		\midrule
+		Energia Radiante & $Q_e$ & \si{J} & Energia aggregata di tutti i fotoni in una radiazione elettromagnetica\\
+		Flusso Radiante  & $\Phi_e$ & \si{W} & Energia Radiante \textit{emessa, riflessa, trasmessa, incidente}, per unit\`a di tempo\\
+		Intensit\`a Radiante & $I_{e,\Omega}$ & \si{W/sr} & Flusso Radiante emesso, riflesso, trasmesso, per uni\`a di angolo solido\\
+		Irradianza & $E_e$ & \si{W/m^2} & Flusso Radiante incidente per unit\`a di area\\
+		Emittanza Radiante & $M_e$ & \si{W/m^2} & Flusso Radiante emesso per unit\`a di area\\
+		Radiosit\`a & $J_e$ & \si{W/m^2} & Flusso Radiante \textit{uscente} (emesso, riflesso e trasmesso) per unita di area\\
+		Radianza & $L_{e,\Omega}$ & \si{W/(sr.m^2)} & Flusso Radiante emesso, riflesso, trasmesso, incidente da/su una superficie, per unit\`a di 
+			angolo solido per unita di \textit{area proiettata}\\
+		\bottomrule
+	\end{tabularx}
+	\caption{nomenclatura e misure delle quantit\`a radiometriche per noi rilevanti}
+	\label{chapter1:radiometric-quantities}
+\end{table}
+\label{radianza}

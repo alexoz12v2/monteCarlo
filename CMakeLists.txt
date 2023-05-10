@@ -23,6 +23,7 @@ if(DEFINED ENV{VULKAN_SDK})
     set(VulkanSDK_FOUND ON CACHE BOOL "VulkanSDK_FOUND")
     set(VulkanSDK_INCLUDE_DIRS "$ENV{VULKAN_SDK}/include")
     set(VulkanSDK_LIBRARIES "$ENV{VULKAN_SDK}/lib")
+    message(STATUS "VulkanSDK found at $ENV{VULKAN_SDK}")
 endif()
 
 if(AUTO_LOCATE_VULKAN)
@@ -113,18 +114,29 @@ set(VulkanMemoryAllocator_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/external/VulkanMem
 # ############ refl ###################
 set(refl_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/external/refl")
 
+# ######### bgfx ######################
+find_package(bgfx)
+if(NOT bgfx_FOUND)
+    # fallback to git submodule
+    message(FATAL_ERROR "package bgfx couldn't be found") 
+    return()
+else()
+    message(STATUS "installed package bgfx found at ${bgfx_DIR}")
+endif()
+
 # directories
 if(DEFINED ENV{VULKAN_SDK})
     target_include_directories(Project PUBLIC
         ${PROJECT_SOURCE_DIR}/src
         ${Vulkan_INCLUDE_DIRS}
-        ${VulkanSDK_INCLUDE_DIRS}
+        $ENV{VulkanSDK_INCLUDE_DIRS}
         ${glfw3_INCLUDE_DIRS}
         ${Eigen3_INCLUDE_DIRS}
         ${tinyobjloader_INCLUDE_DIRS}
         ${fmt_INCLUDE_DIRS}
         ${VulkanMemoryAllocator_INCLUDE_DIRS}
         ${refl_INCLUDE_DIRS}
+        ${bgfx_INCLUDE_DIRS}
         )
 else()
     target_include_directories(Project PUBLIC
@@ -136,6 +148,7 @@ else()
         ${fmt_INCLUDE_DIRS}
         ${VulkanMemoryAllocator_INCLUDE_DIRS}
         ${refl_INCLUDE_DIRS}
+        ${bgfx_INCLUDE_DIRS}
         )
 endif()
 
@@ -144,10 +157,11 @@ add_subdirectory("${PROJECT_SOURCE_DIR}/src")
 
 # link
 if(DEFINED ENV{VULKAN_SDK})
-    target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt)
-    target_link_directories(Project PUBLIC "${VulkanSDK_LIBRARIES}")
+    target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt bgfx "/run/media/alessio/5b5d3976-c146-4dae-b622-58b92b81d64f/HDD/DownloadsHDD/vulkansdk-linux-x86_64-1.3.243.0/1.3.243.0/x86_64/lib/libdxcompiler.so") 
+    target_link_directories(Project PUBLIC "$ENV{VulkanSDK_LIBRARIES}")
 else()
-    target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt)
+    # TODO find dxc
+    target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt bgfx)
 endif()
 
 # Define project properties (From Learning Vulkan by packt)

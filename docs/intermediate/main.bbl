@@ -1,0 +1,138 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{ynt/global//global/global}
+    \entry{hecht}{book}{}
+      \name{author}{1}{}{%
+        {{hash=9a6efa2d012e3aaa08e4b6a8cf6a8b4c}{%
+           family={Hecht},
+           familyi={H\bibinitperiod},
+           given={Eugene},
+           giveni={E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Addison Wesley}%
+      }
+      \strng{namehash}{9a6efa2d012e3aaa08e4b6a8cf6a8b4c}
+      \strng{fullhash}{9a6efa2d012e3aaa08e4b6a8cf6a8b4c}
+      \strng{bibnamehash}{9a6efa2d012e3aaa08e4b6a8cf6a8b4c}
+      \strng{authorbibnamehash}{9a6efa2d012e3aaa08e4b6a8cf6a8b4c}
+      \strng{authornamehash}{9a6efa2d012e3aaa08e4b6a8cf6a8b4c}
+      \strng{authorfullhash}{9a6efa2d012e3aaa08e4b6a8cf6a8b4c}
+      \field{labelalpha}{Hec02}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Optics}
+      \field{year}{2002}
+    \endentry
+    \entry{rad-phot}{book}{}
+      \name{author}{1}{}{%
+        {{hash=605c8f9d9753f2875a450070f1d94f6e}{%
+           family={McCluney},
+           familyi={M\bibinitperiod},
+           given={Ross},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Artech House Publishers}%
+      }
+      \strng{namehash}{605c8f9d9753f2875a450070f1d94f6e}
+      \strng{fullhash}{605c8f9d9753f2875a450070f1d94f6e}
+      \strng{bibnamehash}{605c8f9d9753f2875a450070f1d94f6e}
+      \strng{authorbibnamehash}{605c8f9d9753f2875a450070f1d94f6e}
+      \strng{authornamehash}{605c8f9d9753f2875a450070f1d94f6e}
+      \strng{authorfullhash}{605c8f9d9753f2875a450070f1d94f6e}
+      \field{labelalpha}{McC14}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2}
+      \field{title}{Introduction to Radiometry and Photometry}
+      \field{year}{2014}
+    \endentry
+    \entry{pegoraro}{book}{}
+      \name{author}{1}{}{%
+        {{hash=f8165013881080f7a1e339c74105777e}{%
+           family={Pegoraro},
+           familyi={P\bibinitperiod},
+           given={Vincent},
+           giveni={V\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {A K Peters/CRC Press}%
+      }
+      \strng{namehash}{f8165013881080f7a1e339c74105777e}
+      \strng{fullhash}{f8165013881080f7a1e339c74105777e}
+      \strng{bibnamehash}{f8165013881080f7a1e339c74105777e}
+      \strng{authorbibnamehash}{f8165013881080f7a1e339c74105777e}
+      \strng{authornamehash}{f8165013881080f7a1e339c74105777e}
+      \strng{authorfullhash}{f8165013881080f7a1e339c74105777e}
+      \field{labelalpha}{Peg16}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{1}
+      \field{title}{Handbook of Digital Image Synthesis: Scientific Foundations of Rendering}
+      \field{year}{2016}
+    \endentry
+    \entry{pharr}{book}{}
+      \name{author}{3}{}{%
+        {{hash=c69ff00a5e1719a4ad2dddd6254ac3c9}{%
+           family={Pharr},
+           familyi={P\bibinitperiod},
+           given={Matt},
+           giveni={M\bibinitperiod}}}%
+        {{hash=5f630e56bb6a31ced5d442a3b40cc68d}{%
+           family={Jakob},
+           familyi={J\bibinitperiod},
+           given={Wenzel},
+           giveni={W\bibinitperiod}}}%
+        {{hash=51e2894a269d907342539becd626aaed}{%
+           family={Humphreys},
+           familyi={H\bibinitperiod},
+           given={Greg},
+           giveni={G\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Morgan Kaufmann}%
+      }
+      \strng{namehash}{560e3c41490c75198ea30b388f4f7912}
+      \strng{fullhash}{560e3c41490c75198ea30b388f4f7912}
+      \strng{bibnamehash}{560e3c41490c75198ea30b388f4f7912}
+      \strng{authorbibnamehash}{560e3c41490c75198ea30b388f4f7912}
+      \strng{authornamehash}{560e3c41490c75198ea30b388f4f7912}
+      \strng{authorfullhash}{560e3c41490c75198ea30b388f4f7912}
+      \field{labelalpha}{PJH23}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{4}
+      \field{title}{Physically Based Rendering: From Theory to Implementation}
+      \field{year}{2023}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

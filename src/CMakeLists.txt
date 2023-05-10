@@ -13,5 +13,3 @@ else()
         target_compile_options(Project PRIVATE -std=c++20 -O0 -Wall -Wextra -Wpedantic -Werror -g)
     endif()
 endif()
-
-

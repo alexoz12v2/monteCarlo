@@ -1,0 +1,212 @@
+\documentclass[12pt, openany]{book}
+
+% --------- math packages
+% theorems
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage[inline]{enumitem}
+\usepackage[svgnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{calc}
+\usepackage{mdframed}
+
+% ------------ font related packages
+% stuff for utf16
+\usepackage{unicode-math-luatex}
+\usepackage{fontspec}
+\setmainfont{Helvetica Neue}
+\usepackage{lmodern} % more font sizes
+
+\setmathfont[mathrm=sym]{Latin Modern Math}
+
+% ------------------ page layout
+\usepackage{geometry}
+\geometry{
+  inner=37.125mm,
+  outer=33.4125mm,
+  top=37.125mm,
+  bottom=37.125mm,
+  heightrounded,
+  marginparwidth=51pt,
+  marginparsep=17pt,
+  headsep=24pt,
+}
+
+% ------------- beautiful tables
+\usepackage{booktabs}
+
+% -------------- the bibliography
+\usepackage[
+	backend=biber,
+	style=alphabetic,
+	sorting=ynt
+]{biblatex}
+
+% ------------------- graphics
+\usepackage{tikz}
+\usepackage{physics}
+\usepackage{ifthen}
+\usetikzlibrary{shadings}
+\tikzset{>=latex} % for LaTex arrow head
+
+% ------------------------- colors and other stuff for figures
+% EM wavw
+\colorlet{myblue}{black!40!blue}
+\colorlet{myred}{black!40!red}
+\colorlet{vcol}{green!50!black}
+\colorlet{Ecol}{orange!90!black}
+\colorlet{EVcol}{orange!80!black!60}
+\colorlet{Bcol}{violet!90}
+
+% EM spectrum
+\colorlet{wavecol}{orange!35!black}
+\colorlet{freqcol}{green!25!black}
+\colorlet{enercol}{blue!35!black}
+\pgfdeclareverticalshading{rainbow}{100bp}{
+  color(0bp)=(red); color(25bp)=(red); color(35bp)=(yellow);
+  color(45bp)=(green); color(55bp)=(cyan); color(65bp)=(blue);
+  color(75bp)=(violet); color(100bp)=(violet)
+}
+
+% ------------------- units of measurements consistent style
+\sisetup{
+  detect-all,
+  inter-unit-product=\ensuremath{{}\cdot{}},
+  separate-uncertainty=true,
+  uncertainty-separator={\,},
+  range-units=single,
+  per-mode=symbol,
+  exponent-product=\cdot,
+  output-decimal-marker={,},
+}
+
+% ----------------------------------- symbol definitions
+% imaginary unit
+\newcommand{\iu}{{i\mkern1mu}}
+
+% ---------------- glossaries
+\usepackage[toc]{glossaries}
+\usepackage{monte-carlo-glossary}
+\makeglossaries
+
+% -------------------------- better management of larger projects
+\usepackage{import}
+
+% ----------------- stuff for customized title page
+\usepackage{titling}
+\usepackage{titlesec}
+
+% -------------------------- tables
+\usepackage{tabularx} % equal spacing
+\usepackage{tabulary} % spacing proportional to content
+
+% left-justified text in tables, and allow newlines
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{U}{>{\raggedright\arraybackslash}c}
+
+% bibliography declaration
+\addbibresource{references.bib}
+
+% default font times new roman
+\renewcommand{\familydefault}{\rmdefault}
+
+% definition environment
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% shortcut to typeset code
+\newcommand{\code}[1]{{\fontsize{10pt}{12pt}\fontfamily{qcr}\selectfont{#1}}}
+\newfontfamily\codefont{DejaVu Sans}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\newcommand{\littext}[1]{{\color{Rhodamine}{#1}}}
+
+% footer setup using fancyhdr package
+\setlength{\headheight}{15pt} % shut the warning up
+\pagestyle{fancy}
+\fancyfoot{} % to clear previous definitions of footer format
+\fancyfoot[LE,RO]{\thepage}
+
+\newenvironment{altDescription}[1]
+	{\begin{list}{}%
+		{\renewcommand\makelabel[1]{\textsf{##1:}\hfil}%
+			\settowidth\labelwidth{\makelabel{#1}}%
+			\setlength\leftmargin{\labelwidth+\labelsep}}}
+	{\end{list}}
+
+% stuff for the title page of the document
+\title{Metodi di Monte Carlo Applicati Alla Computer Grafica}
+\author{Tanzi Alessio}
+\newcommand{\professor}{Prof.ssa Marina Popolizio}
+\date{Anno Accademico 2022/2023}
+
+\begin{document}
+	\begin{titlepage}
+		\begin{center}
+			\vspace*{1cm}
+			{\Huge \bfseries \thetitle}\\ % title
+			\vspace*{1cm}
+			{\Large Tesi in Calcolo Numerico}
+		\end{center}
+		\vspace*{1cm}
+		\begin{flushright}
+			{\Large\bfseries Presentata da:\\\theauthor}
+		\end{flushright}
+		\begin{flushleft}
+			{\Large\bfseries Relatore:\\\professor} 
+		\end{flushleft}
+		\vspace*{1cm}
+		\begin{center}
+			{\Large\thedate}
+		\end{center}
+	\end{titlepage}
+
+	\frontmatter
+	\section*{Abstract}
+
+	\section*{Acknowledgements}
+
+	\tableofcontents
+
+	\mainmatter
+	\part{Fondamenti fisici e presentazione del problema}
+	\import{chapters/}{chapter-part1-1-electromagnetic-radiometry.tex}
+	\import{chapters/}{chapter-part1-2-color-camera.tex}
+	\import{chapters/}{chapter-part1-3-light-surface.tex}
+	\import{chapters/}{chapter-part1-4-volume-transport-no-alg.tex}
+
+	\part{Metodi di Monte Carlo}
+	\import{chapters/}{chapter-part2-1-quasirandom-gen.tex}
+	\import{chapters/}{chapter-part2-2-sampling-montecarlo.tex}
+	\import{chapters/}{chapter-part2-3-variance-reduction.tex}
+
+	\part{Applicazione}
+	\import{chapters/}{chapter-part3-1-light-transportintro.tex}
+	\import{chapters/}{chapter-part3-2-light-transport-impl.tex}
+
+	\part{Appendici}
+	\appendix
+	\import{chapters/}{chapter-Appendix-A-prob-stat.tex}
+	\import{chapters/}{chapter-Appendix-B-geo-alg.tex}
+	\import{chapters/}{chapter-Appendix-C-random-num.tex}
+	\import{chapters/}{chapter-Appendix-D-vulkan-code.tex}
+	\import{chapters/}{chapter-Appendix-E-materials-impldetails.tex}
+
+	\backmatter
+	% Add bibliography to TOC
+	\addcontentsline{toc}{chapter}{\bibname}
+	\printbibliography
+
+	\printglossaries
+\end{document}
+
