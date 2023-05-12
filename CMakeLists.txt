@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
-
+set(CMAKE_VERBOSE_MAKEFILE ON)
 # inputs to this cmake file:
 #   VULKAN_SDK              path to the vulkan sdk root, where the setup_env.sh file is located. Optional if VULKAN_SDK enviroment variables are 
 #                           already set by the user, eg in ~/.zshrc
 # macros you can define:
 #   NDEBUG                  standard C++ macro which i'll use to define whether to compile with debug symbols or not    
 
-project("MonteCarlo")
+project(Project)
 add_executable(Project main.cpp)
 
 # using cmake module FindVulkan
@@ -17,6 +17,16 @@ include(FindVulkan)
 # ON  - Use CMake to auto locate the Vulkan SDK.
 # OFF - Vulkan SDK path can be specified manually. This is helpful to test the build on various Vulkan version.
 option(AUTO_LOCATE_VULKAN "AUTO_LOCATE_VULKAN" ON) # equivalent to set(AUTO_LOCATE_VULKAN true CACHE BOOL "AUTO_LOCATE_VULKAN")
+
+# TODO clean up macro defs
+############### Code Debugging Macros #########################################
+add_compile_definitions(
+    MXC_LOGLEVEL_INFO
+    MXC_LOGLEVEL_WARN
+    MXC_LOGLEVEL_ERROR
+    MXC_LOGLEVEL_TRACE
+    _DEBUG
+)
 
 ############# Locate Vulkan ###################################################
 if(DEFINED ENV{VULKAN_SDK})
@@ -47,6 +57,20 @@ endif()
 
 string(REGEX REPLACE "/include" "" VULKAN_PATH "${Vulkan_INCLUDE_DIRS}")
 message(STATUS "Vulkan Library found at ${VULKAN_PATH} include ${Vulkan_INCLUDE_DIRS}")
+
+################## Define Platform Macros #####################################
+if(WIN32)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_WIN32_KHR")
+elseif(LINUX)
+    if(USE_WAYLAND) # doesn't work probably
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_WAYLAND_KHR")
+    else()
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_XCB_KHR")
+        find_package(X11 REQUIRED)
+    endif()
+elseif(APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_USE_PLATFORM_MACOS_MVK")
+endif()
 
 ##################### Find any other external dependencies ####################
 # TODO could be refactored in a function
@@ -114,19 +138,10 @@ set(VulkanMemoryAllocator_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/external/VulkanMem
 # ############ refl ###################
 set(refl_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/external/refl")
 
-# ######### bgfx ######################
-find_package(bgfx)
-if(NOT bgfx_FOUND)
-    # fallback to git submodule
-    message(FATAL_ERROR "package bgfx couldn't be found") 
-    return()
-else()
-    message(STATUS "installed package bgfx found at ${bgfx_DIR}")
-endif()
-
 # directories
 if(DEFINED ENV{VULKAN_SDK})
-    target_include_directories(Project PUBLIC
+    # target_include_directories(Project PUBLIC
+    include_directories(PUBLIC
         ${PROJECT_SOURCE_DIR}/src
         ${Vulkan_INCLUDE_DIRS}
         $ENV{VulkanSDK_INCLUDE_DIRS}
@@ -136,10 +151,10 @@ if(DEFINED ENV{VULKAN_SDK})
         ${fmt_INCLUDE_DIRS}
         ${VulkanMemoryAllocator_INCLUDE_DIRS}
         ${refl_INCLUDE_DIRS}
-        ${bgfx_INCLUDE_DIRS}
         )
 else()
-    target_include_directories(Project PUBLIC
+    # target_include_directories(Project PUBLIC
+    include_directories(PUBLIC
         ${PROJECT_SOURCE_DIR}/src
         ${Vulkan_INCLUDE_DIRS}
         ${glfw3_INCLUDE_DIRS}
@@ -148,7 +163,6 @@ else()
         ${fmt_INCLUDE_DIRS}
         ${VulkanMemoryAllocator_INCLUDE_DIRS}
         ${refl_INCLUDE_DIRS}
-        ${bgfx_INCLUDE_DIRS}
         )
 endif()
 
@@ -157,11 +171,12 @@ add_subdirectory("${PROJECT_SOURCE_DIR}/src")
 
 # link
 if(DEFINED ENV{VULKAN_SDK})
-    target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt bgfx "/run/media/alessio/5b5d3976-c146-4dae-b622-58b92b81d64f/HDD/DownloadsHDD/vulkansdk-linux-x86_64-1.3.243.0/1.3.243.0/x86_64/lib/libdxcompiler.so") 
+    target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt "/run/media/alessio/5b5d3976-c146-4dae-b622-58b92b81d64f/HDD/DownloadsHDD/vulkansdk-linux-x86_64-1.3.243.0/1.3.243.0/x86_64/lib/libdxcompiler.so" Renderer X11-xcb xcb) 
+
     target_link_directories(Project PUBLIC "$ENV{VulkanSDK_LIBRARIES}")
 else()
     # TODO find dxc
-    target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt bgfx)
+    target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt Renderer X11-xcb xcb)
 endif()
 
 # Define project properties (From Learning Vulkan by packt)
