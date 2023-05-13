@@ -6,9 +6,9 @@
 #include <vector>
 
 #include <vulkan/vulkan.h>
-#define VMA_STATIC_VULKAN_FUNCTIONS 0
-#define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
 
+#define VMA_STATIC_VULKAN_FUNCTIONS 1
+#define VMA_DYNAMIC_VULKAN_FUNCTIONS 0
 #include <vk_mem_alloc.h>
 
 namespace mxc 
@@ -74,18 +74,20 @@ namespace mxc
 
 	public:
 		auto create(VulkanContext* ctx, PhysicalDeviceRequirements const& requirements) -> bool;
-		auto destroy(VulkanContext* ctx) -> bool; // to be called after vkDeviceWaitIdle
-		auto querySwapchainSupport(VulkanContext* ctx, VkSurfaceKHR surface) -> bool;
+		auto destroy([[maybe_unused]] VulkanContext* ctx) -> bool; // to be called after vkDeviceWaitIdle
+
+		auto updateSwapchainSupport(VulkanContext* ctx) -> bool;
 
 	private:
 		auto selectPhysicalDevice(VulkanContext* ctx, PhysicalDeviceRequirements const& requirements) -> bool;
 		auto checkPhysicalDeviceRequirements(VulkanContext* ctx, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, 
 											 PhysicalDeviceRequirements const& requirements, 
 											 VkPhysicalDeviceProperties const& properties, 
-											 VkPhysicalDeviceFeatures const& features, PhysicalDeviceQueueFamiliesSupport* outFamilySupport, 
+											 [[maybe_unused]] VkPhysicalDeviceFeatures const& features, 
+											 PhysicalDeviceQueueFamiliesSupport* outFamilySupport, 
 											 SwapchainSupport* outSwapchainSupport) const -> bool;
+		auto querySwapchainSupport(VulkanContext* ctx, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, SwapchainSupport* outSwapchainSupport) const -> bool;
 		auto selectDepthFormat() -> bool;
-		auto internalQuerySwapchainSupport(VulkanContext* ctx, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, SwapchainSupport* outSwapchainSupport) const -> bool;
 	};
 }
 

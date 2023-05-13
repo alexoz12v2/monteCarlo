@@ -40,15 +40,14 @@ namespace mxc
 		// set output color according to level
 		switch (level)
 		{
-			case LogLevel::info: break; // white info 
-			case LogLevel::debug: fmt::print("\033[32m"); break; // green debug
-			case LogLevel::warn: fmt::print("\033[33m"); break; // yellow warn
-			case LogLevel::error: fmt::print("\033[31m"); break; // red error
-			case LogLevel::trace: break; // white trace
+			case LogLevel::info:  fmt::print("\033[37m{} {} [{}]: ", file, line, "INFO");  break; // white info 
+			case LogLevel::debug: fmt::print("\033[32m{} {} [{}]: ", file, line, "DEBUG"); break; // green debug
+			case LogLevel::warn:  fmt::print("\033[33m{} {} [{}]: ", file, line, "WARN");  break; // yellow warn
+			case LogLevel::error: fmt::print("\033[31m{} {} [{}]: ", file, line, "ERROR"); break; // red error
+			case LogLevel::trace: fmt::print("\033[37m{} {} [{}]: ", file, line, "TRACE"); break; // white trace
 		}
 		
 		// actually print the stuff
-		fmt::print("{} {} [DEBUG]: ", file, line);
 		fmt::print("{}", outMessage);
 
 		// reset output color according to level

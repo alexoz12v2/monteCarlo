@@ -1,13 +1,20 @@
 // most of the code is inspired from https://github.com/travisvroman/kohi/
 #include "Device.h"
 
-#define VMA_IMPLEMENTATION
-#include <vk_mem_alloc.h>
-
-#include <array>
-
 #include "VulkanContext.inl"
 #include "logging.h"
+
+// TODO create macros for pragmas
+#define VMA_IMPLEMENTATION
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
+#pragma clang diagnostic ignored "-Wunused-variable"
+#pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#include <vk_mem_alloc.h>
+#pragma clang diagnostic pop
+
+#include <array>
+#include <utility>
 
 namespace mxc
 {
@@ -38,7 +45,9 @@ namespace mxc
             MXC_INFO("Evaluating device: '%s', index %u.", properties.deviceName, i);
 
             PhysicalDeviceQueueFamiliesSupport queueFamiliesInfo = {};
-            bool result = checkPhysicalDeviceRequirements(ctx, physicalDevices[i], ctx->surface, requirements, properties, features, &queueFamiliesInfo, &swapchainSupport);
+            SwapchainSupport swapSup;
+            bool result = checkPhysicalDeviceRequirements(ctx, physicalDevices[i], ctx->surface, requirements, properties, features, &queueFamiliesInfo, &swapSup);
+            swapchainSupport = std::move(swapSup);
 
             if (result) {
                 MXC_INFO("Selected device: '%s'.", properties.deviceName);
@@ -108,7 +117,7 @@ namespace mxc
         return true;
     }
 
-    auto Device::destroy(VulkanContext* ctx) -> bool
+    auto Device::destroy([[maybe_unused]] VulkanContext* ctx) -> bool
     {
         // Unset queues
         graphicsQueue = VK_NULL_HANDLE;
@@ -131,6 +140,8 @@ namespace mxc
         queueFamilies.graphics= -1;
         queueFamilies.present = -1;
         queueFamilies.transfer= -1;
+
+        return true;
     }
 
     auto Device::create(VulkanContext* ctx, PhysicalDeviceRequirements const& requirements) -> bool
@@ -240,14 +251,9 @@ namespace mxc
         return true;
     }
     
-    auto Device::querySwapchainSupport(VulkanContext* ctx, VkSurfaceKHR surface) -> bool
-    {
-        internalQuerySwapchainSupport(ctx, physical, surface, &swapchainSupport);
-    }
-
     auto Device::checkPhysicalDeviceRequirements(
         VulkanContext* ctx, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, PhysicalDeviceRequirements const& requirements,
-        VkPhysicalDeviceProperties const& properties, VkPhysicalDeviceFeatures const& features,
+        VkPhysicalDeviceProperties const& properties, [[maybe_unused]] VkPhysicalDeviceFeatures const& features,
         PhysicalDeviceQueueFamiliesSupport* outFamilySupport, SwapchainSupport* outSwapchainSupport) const -> bool
     {
         // Discrete GPU?
@@ -260,6 +266,7 @@ namespace mxc
         uint32_t queueFamilyProp_count = 0;
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyProp_count, 0);
         VkQueueFamilyProperties queueFamiliesProps[32];
+        assert(queueFamilyProp_count <= 32);
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyProp_count, queueFamiliesProps);
 
         // Look at each queue and see what queues it supports
@@ -278,6 +285,7 @@ namespace mxc
 
                 // If also a present queue, this prioritizes grouping of the 2.
                 VkBool32 supportsPresent = VK_FALSE;
+                assert(ctx->swapchain.fpGetPhysicalDeviceSurfaceSupportKHR);
                 VK_CHECK(ctx->swapchain.fpGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, surface, &supportsPresent));
                 if (supportsPresent) 
                 {
@@ -354,7 +362,7 @@ namespace mxc
         MXC_TRACE("Compute Family Index:  %i", outFamilySupport->computeFamily);
 
         // Query swapchain support.
-        internalQuerySwapchainSupport(ctx, physicalDevice, surface, outSwapchainSupport);
+        querySwapchainSupport(ctx, physicalDevice, surface, outSwapchainSupport);
 
         if (outSwapchainSupport->formats.size() < 1 || outSwapchainSupport->presentModes.size() < 1) 
         {
@@ -402,10 +410,12 @@ namespace mxc
         return true;
     }
     
-    auto Device::internalQuerySwapchainSupport(VulkanContext* ctx, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, 
+    auto Device::querySwapchainSupport(VulkanContext* ctx, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, 
                                                SwapchainSupport* outSwapchainSupport) const -> bool
     {
         // Surface capabilities
+        assert(ctx->swapchain.fpGetPhysicalDeviceSurfaceCapabilitiesKHR && ctx->swapchain.fpGetPhysicalDeviceSurfaceFormatsKHR
+               && ctx->swapchain.fpGetPhysicalDeviceSurfacePresentModesKHR);
         VK_CHECK(ctx->swapchain.fpGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &outSwapchainSupport->surfCaps));
 
         // Surface formats
@@ -427,6 +437,16 @@ namespace mxc
             VK_CHECK(ctx->swapchain.fpGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice, surface, &presentModeCount, outSwapchainSupport->presentModes.data()));
         }
 
+        return true;
+    }
+
+	auto Device::updateSwapchainSupport(VulkanContext* ctx) -> bool
+    {
+        SwapchainSupport swapSup;
+        querySwapchainSupport(ctx, physical, ctx->surface, &swapSup);
+        swapchainSupport.surfCaps     = swapSup.surfCaps;
+        swapchainSupport.formats      = std::move(swapSup.formats);
+        swapchainSupport.presentModes = std::move(swapSup.presentModes);
         return true;
     }
 }

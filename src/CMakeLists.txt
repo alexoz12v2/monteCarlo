@@ -2,13 +2,18 @@ add_library(Renderer Renderer.h Renderer.cpp)
 
 # generate position independent code for this library, which allows the linker to merge the output with 
 # the main executable output. 
-set_target_properties(Renderer PROPERTIES POSITION_INDEPENDENT_CODE ON)
+# current compilers default to position independent for everything due to security advantages
+# set_target_properties(Renderer PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 ####################### Compiler Options ######################################
 option(USE_WAYLAND "" OFF)
 
+if (DEFINED _DEBUG)
+    message(STATUS "debug mode ON")
+endif()
+
 if(WIN32)
-    if(DEFINED NDEBUG)
+    if(NOT DEFINED _DEBUG)
         target_compile_options(Renderer PRIVATE /std:c++20 /O2 /W4 )
     else()
         target_compile_options(Renderer PRIVATE /std:c++20 /O0 /W4 /DEBUG)
@@ -17,10 +22,21 @@ else()
     # Set the C and C++ compilers to Clang
     set(CMAKE_C_COMPILER "/usr/bin/clang")
     set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
-    if(DEFINED NDEBUG)
-        target_compile_options(Renderer PRIVATE -std=c++20 -O2 -Wall -Wextra -Wpedantic)
+    if(NOT DEFINED _DEBUG)
+        target_compile_options(Renderer PRIVATE -std=c++20 -O2 -Wall -Wextra -Wpedantic -Werror
+            # VMA generates these warnings
+            -Wno-nullability-extension -Wno-nullability-completeness
+            # TODO logging generates these warnings. Fix it
+            -Wno-gnu-zero-variadic-macro-arguments
+            -Wno-switch)
     else()
-        target_compile_options(Renderer PRIVATE -std=c++20 -O0 -Wall -Wextra -Wpedantic -g)
+        target_compile_options(Renderer PRIVATE -std=c++20 -O0 -Wall -Wextra -Wpedantic -g -Werror
+            # VMA generates these warnings
+            -Wno-nullability-extension -Wno-nullability-completeness
+            # TODO logging generates these warnings. Fix it
+            -Wno-gnu-zero-variadic-macro-arguments
+            # this is useless when working with Vulkan
+            -Wno-switch)
     endif()
 endif()
 
@@ -32,4 +48,3 @@ target_sources(Renderer PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/Swapchain.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/logging.cpp"
     )
-

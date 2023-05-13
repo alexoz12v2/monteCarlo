@@ -17,21 +17,29 @@ namespace mxc
         VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
         VkDebugUtilsMessageTypeFlagsEXT messageType,
         const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-        void* pUserData)
+        [[maybe_unused]] void* pUserData)
     {
+        char const* msgTypeStr;
+        switch (messageType)
+        {
+            case VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT: msgTypeStr = "VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT"; break;
+            case VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT: msgTypeStr = "VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT"; break;
+            case VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT: msgTypeStr = "VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT"; break;
+        }
+        
         switch (messageSeverity)
         {
 	    case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT: 
-                MXC_TRACE("%s", pCallbackData->pMessage);
+                MXC_TRACE("Vulkan Validation of type %s: %s", msgTypeStr, pCallbackData->pMessage);
                 break;
 	    case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT: 
-                MXC_INFO("%s", pCallbackData->pMessage);
+                MXC_INFO("Vulkan Validation of type %s: %s", msgTypeStr, pCallbackData->pMessage);
                 break;
 	    case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT: 
-                MXC_WARN("%s", pCallbackData->pMessage);
+                MXC_WARN("Vulkan Validation of type %s: %s", msgTypeStr, pCallbackData->pMessage);
                 break;
 	    case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT: 
-                MXC_ERROR("%s", pCallbackData->pMessage);
+                MXC_ERROR("Vulkan Validation of type %s: %s", msgTypeStr, pCallbackData->pMessage);
                 break;
         }
 
@@ -94,7 +102,7 @@ namespace mxc
 
         MXC_DEBUG("Required extensions:");
         for (uint32_t i = 0; i < requiredExtensions.size(); ++i) {
-            MXC_DEBUG(required_extensions[i]);
+            MXC_DEBUG(requiredExtensions[i]);
         }
 #endif
 
@@ -185,6 +193,9 @@ namespace mxc
         MXC_INFO("Vulkan Instance created.");
 
         // Debugger
+#ifndef _DEBUG
+    #error "fhoiewrhf"
+#endif
 #if defined(_DEBUG)
         MXC_DEBUG("Creating Vulkan debugger...");
         uint32_t log_severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT |
@@ -226,7 +237,7 @@ namespace mxc
 #endif
 
         // Surface
-        MXC_DEBUG("Creating Vulkan surface...");
+        MXC_INFO("Creating Vulkan surface...");
         if (!
 #if defined(VK_USE_PLATFORM_WIN32_KHR)
             m_ctx.swapchain.initSurface(&m_ctx, config.platformHandle, config.platformWindow)
@@ -243,7 +254,10 @@ namespace mxc
             MXC_ERROR("Failed to create platform surface!");
             return false;
         }
-        MXC_DEBUG("Vulkan surface created.");
+        MXC_INFO("Vulkan surface created.");
+
+        // initialize swapchain extension function pointers for instance level functions
+        m_ctx.swapchain.initInstanceFunctionPointers(&m_ctx);
 
         // Device creation
         PhysicalDeviceRequirements requirements;
@@ -255,7 +269,7 @@ namespace mxc
         }
 
         // Swapchain
-        m_ctx.swapchain.initFunctionPointers(&m_ctx);
+        m_ctx.swapchain.initDeviceFunctionPointers(&m_ctx);
         m_ctx.framebufferWidth = config.windowWidth;
         m_ctx.framebufferHeight = config.windowHeight;
         m_ctx.swapchain.create(&m_ctx, m_ctx.framebufferWidth, m_ctx.framebufferHeight, /*vsync*/true);

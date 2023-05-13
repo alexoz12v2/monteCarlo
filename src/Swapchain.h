@@ -45,7 +45,8 @@ namespace mxc
 		auto create(VulkanContext* ctx, uint32_t width, uint32_t height, bool vsync) -> bool;
 		auto destroy(VulkanContext* ctx) -> void; // call only if vkDeviceIdle
 
-		auto initFunctionPointers(VulkanContext* ctx) -> bool;
+		auto initInstanceFunctionPointers(VulkanContext* ctx) -> bool;
+		auto initDeviceFunctionPointers(VulkanContext* ctx) -> bool;
 		auto acquireNextImage(VulkanContext* ctx, VkSemaphore imageAvailableSemaphore, uint32_t timeout_ns, VkFence signalFence, uint32_t* outIndex) -> bool;
 		auto present(VulkanContext* ctx, VkSemaphore renderCompleteSemaphore);
 

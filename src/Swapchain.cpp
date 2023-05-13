@@ -62,13 +62,17 @@ namespace mxc
         return true;
     }
 
-    auto Swapchain::initFunctionPointers(VulkanContext* ctx) -> bool
+    auto Swapchain::initInstanceFunctionPointers(VulkanContext* ctx) -> bool
     {
         fpGetPhysicalDeviceSurfaceSupportKHR = reinterpret_cast<PFN_vkGetPhysicalDeviceSurfaceSupportKHR>(vkGetInstanceProcAddr(ctx->instance, "vkGetPhysicalDeviceSurfaceSupportKHR"));
         fpGetPhysicalDeviceSurfaceCapabilitiesKHR =  reinterpret_cast<PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR>(vkGetInstanceProcAddr(ctx->instance, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR"));
         fpGetPhysicalDeviceSurfaceFormatsKHR = reinterpret_cast<PFN_vkGetPhysicalDeviceSurfaceFormatsKHR>(vkGetInstanceProcAddr(ctx->instance, "vkGetPhysicalDeviceSurfaceFormatsKHR"));
         fpGetPhysicalDeviceSurfacePresentModesKHR = reinterpret_cast<PFN_vkGetPhysicalDeviceSurfacePresentModesKHR>(vkGetInstanceProcAddr(ctx->instance, "vkGetPhysicalDeviceSurfacePresentModesKHR"));
+        return true;
+    }
 
+    auto Swapchain::initDeviceFunctionPointers(VulkanContext* ctx) -> bool
+    {
         fpCreateSwapchainKHR = reinterpret_cast<PFN_vkCreateSwapchainKHR>(vkGetDeviceProcAddr(ctx->device.logical, "vkCreateSwapchainKHR"));
         fpDestroySwapchainKHR = reinterpret_cast<PFN_vkDestroySwapchainKHR>(vkGetDeviceProcAddr(ctx->device.logical, "vkDestroySwapchainKHR"));
         fpGetSwapchainImagesKHR = reinterpret_cast<PFN_vkGetSwapchainImagesKHR>(vkGetDeviceProcAddr(ctx->device.logical, "vkGetSwapchainImagesKHR"));
@@ -121,7 +125,7 @@ namespace mxc
             presentMode = VK_PRESENT_MODE_FIFO_KHR; // guaranteed by vulkan specs
 
         // Requery swapchain support.
-        ctx->device.querySwapchainSupport(ctx, ctx->surface);
+        ctx->device.updateSwapchainSupport(ctx);
 
         // Swapchain extent
         if (ctx->device.swapchainSupport.surfCaps.currentExtent.width != UINT32_MAX) {

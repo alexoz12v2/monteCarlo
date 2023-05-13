@@ -19,12 +19,14 @@ include(FindVulkan)
 option(AUTO_LOCATE_VULKAN "AUTO_LOCATE_VULKAN" ON) # equivalent to set(AUTO_LOCATE_VULKAN true CACHE BOOL "AUTO_LOCATE_VULKAN")
 
 # TODO clean up macro defs
+# these are also added in the src/CMakeLists 
 ############### Code Debugging Macros #########################################
 add_compile_definitions(
     MXC_LOGLEVEL_INFO
     MXC_LOGLEVEL_WARN
     MXC_LOGLEVEL_ERROR
     MXC_LOGLEVEL_TRACE
+    MXC_LOGLEVEL_DEBUG
     _DEBUG
 )
 

@@ -203,7 +203,6 @@ auto main() -> int32_t
     config.window = glfwGetX11Window(window);
 
     assert(renderer.init(config));
-    assert(false);
 
     // main loop
     while (!glfwWindowShouldClose(window))
