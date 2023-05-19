@@ -13,6 +13,12 @@
 
 namespace mxc 
 {
+	struct Buffer;
+	struct Image;
+	struct ImageView;
+
+	class CommandBuffer;
+	
 	struct SwapchainSupport
 	{
 		VkSurfaceCapabilitiesKHR surfCaps;
@@ -37,11 +43,26 @@ namespace mxc
 		// bool samplerAnisotropy ...
 	};
 
+	enum class StorageUniformMemoryOptions : uint8_t
+	{
+		STAGING_AND_TRANSFER = 0,
+		SYSTEM_MEMORY = 1,
+		DEVICE_LOCAL_HOST_VISIBLE = 2 // Note: not always supported, see https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/usage_patterns.html#usage_patterns_gpu_only
+	};
+
+	enum class CommandType : uint8_t
+	{
+		GRAPHICS,
+		TRANSFER,
+		COMPUTE
+	};
+
 	class Device
 	{
         static uint32_t constexpr QUEUE_FAMILIES_COUNT = 4;
+		static uint32_t constexpr INITIAL_ALLOCATIONS_VECTOR_CAPACITY = 64;
 	public:
-		VkDevice logical;
+		VkDevice logical = VK_NULL_HANDLE;
 		VkPhysicalDevice physical = VK_NULL_HANDLE;
 		SwapchainSupport swapchainSupport;
 
@@ -67,6 +88,12 @@ namespace mxc
 		VkCommandPool commandPool; // used for graphics, compute, transfer
 		VmaAllocator vmaAllocator;
 
+		enum class DepthFormatProperties : uint8_t	
+		{
+			NONE = 0,
+			SUPPORTS_STENCIL = 1
+		};
+
 	public: // maybe heap
 		VkPhysicalDeviceProperties properties;
         VkPhysicalDeviceFeatures features;
@@ -75,8 +102,45 @@ namespace mxc
 	public:
 		auto create(VulkanContext* ctx, PhysicalDeviceRequirements const& requirements) -> bool;
 		auto destroy([[maybe_unused]] VulkanContext* ctx) -> bool; // to be called after vkDeviceWaitIdle
+		
+		auto createBuffer(Buffer* inOutBuffer, StorageUniformMemoryOptions options) -> bool;
+		auto copyBuffer(VulkanContext* ctx, Buffer const* src, Buffer* dst) -> bool;
+		auto destroyBuffer(Buffer* inOutBuffer) -> void;
+
+		// TODO when you add overloads to the CommandBuffer allocate and free functions, remove the context parameter
+		auto createImage(
+			VulkanContext* ctx, 
+			VkImageTiling tiling,
+			Image* inOutImage, 
+			VkImageLayout const* targetLayout = nullptr, 
+			ImageView* inOutView = nullptr) -> bool;
+		auto insertImageMemoryBarrier(
+            CommandBuffer* pCmdBuf,
+            Image* pImage,
+            VkImageLayout oldImageLayout,
+            VkImageLayout newImageLayout,
+            VkImageSubresourceRange subresourceRange,
+            VkPipelineStageFlags srcStageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+            VkPipelineStageFlags dstStageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT) -> void;
+		// version with subresourceRange With baseMipLevel = 0, levelCount = 1, baseArrayLayer = 0, layerCount = 1, and aspectMask given
+		auto insertImageMemoryBarrier(
+            CommandBuffer* pCmdBuf,
+            Image* pImage,
+            VkImageLayout oldImageLayout,
+            VkImageLayout newImageLayout,
+			VkImageAspectFlags imageAspectMask,
+            VkPipelineStageFlags srcStageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+            VkPipelineStageFlags dstStageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT) -> void;
+		auto destroyImage(Image* inOutImage) -> void;
+
+		auto createImageView(Image const* pImage, ImageView* pOutView) -> bool;
+		auto destroyImageView(ImageView* pOutView) -> void;
+
+		// submits and synchronizes with a fence
+		auto flushCommandBuffer(CommandBuffer* pCmdBuf, CommandType type) -> bool;
 
 		auto updateSwapchainSupport(VulkanContext* ctx) -> bool;
+		auto selectDepthFormat(VkFormat* outDepthFormat, DepthFormatProperties* outFormatProps) const -> bool;
 
 	private:
 		auto selectPhysicalDevice(VulkanContext* ctx, PhysicalDeviceRequirements const& requirements) -> bool;
@@ -86,8 +150,16 @@ namespace mxc
 											 [[maybe_unused]] VkPhysicalDeviceFeatures const& features, 
 											 PhysicalDeviceQueueFamiliesSupport* outFamilySupport, 
 											 SwapchainSupport* outSwapchainSupport) const -> bool;
-		auto querySwapchainSupport(VulkanContext* ctx, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, SwapchainSupport* outSwapchainSupport) const -> bool;
-		auto selectDepthFormat() -> bool;
+		auto querySwapchainSupport(VulkanContext* ctx, VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, 
+								   SwapchainSupport* outSwapchainSupport) const -> bool;
+	
+	private:
+		struct TaggedAllocations 
+		{
+			VmaAllocation allocation;
+			bool freed;
+		};
+		std::vector<TaggedAllocations> m_allocations;
 	};
 }
 

@@ -13,6 +13,7 @@ if (DEFINED _DEBUG)
 endif()
 
 if(WIN32)
+    # TODO C++ compilation with \Wx
     if(NOT DEFINED _DEBUG)
         target_compile_options(Renderer PRIVATE /std:c++20 /O2 /W4 )
     else()
@@ -26,6 +27,8 @@ else()
         target_compile_options(Renderer PRIVATE -std=c++20 -O2 -Wall -Wextra -Wpedantic -Werror
             # VMA generates these warnings
             -Wno-nullability-extension -Wno-nullability-completeness
+            # used by dxc
+            -Wno-language-extension-token -fms-extensions -Wno-ambiguous-reversed-operator
             # TODO logging generates these warnings. Fix it
             -Wno-gnu-zero-variadic-macro-arguments
             -Wno-switch)
@@ -35,6 +38,8 @@ else()
             -Wno-nullability-extension -Wno-nullability-completeness
             # TODO logging generates these warnings. Fix it
             -Wno-gnu-zero-variadic-macro-arguments
+            # used by dxc
+            -Wno-language-extension-token -fms-extensions -Wno-ambiguous-reversed-operator
             # this is useless when working with Vulkan
             -Wno-switch)
     endif()
@@ -46,5 +51,7 @@ target_sources(Renderer PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/Device.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Renderer.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Swapchain.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/CommandBuffer.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/logging.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Shader.cpp"
     )

@@ -8,19 +8,11 @@
 #include <fmt/core.h>
 #include <X11/Xlib-xcb.h>
 
-// shader stuff
-#include <dxc/dxcapi.h>
-
 #include <cstdint>
 #include <cstdlib>
 #include <string>
 #include <array>
 #include <memory>
-
-#define CHECK_DXC_RESULT(idxcblob) \
-    do{HRESULT status;\
-    idxcblob->GetStatus(&status);\
-    assert(status == S_OK);}while(0)
 
 // stolen cube data
 struct PosColorVertex
@@ -76,98 +68,6 @@ auto createAppWindow(GLFWwindow** outWindow) -> bool
     return true;
 }
 
-// https://registry.khronos.org/vulkan/site/guide/latest/hlsl.html
-auto compileShader(std::wstring filename) -> CComPtr<IDxcBlob> // TODO remove string
-{
-    // TODO RELEASE ALL MEMORY
-    static bool compilerUninitialized = true;
-    static CComPtr<IDxcLibrary> pLibrary{nullptr};
-    static CComPtr<IDxcUtils> pUtils{nullptr};
-    static CComPtr<IDxcCompiler3> pCompiler{nullptr};
-
-    HRESULT hres;
-
-    if (compilerUninitialized) [[unlikely]]
-    {
-        compilerUninitialized = false;
-
-        // Initialize DXC library
-        hres = DxcCreateInstance(CLSID_DxcLibrary, IID_PPV_ARGS(&pLibrary));
-        assert(!FAILED(hres));
-
-        // initialize DXC compiler
-        hres = DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&pCompiler));
-        assert(!FAILED(hres));
-
-        // initialize DXC utility
-        hres = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&pUtils));
-        assert(!FAILED(hres));
-    }
-
-    // Load HLSL shader from disk
-    uint32_t codePage = DXC_CP_ACP; // ansi code page i.e. the default for the system
-    CComPtr<IDxcBlobEncoding> pSourceBlob{nullptr};
-    hres = pUtils->LoadFile(filename.c_str(), &codePage, &pSourceBlob);
-    assert(!FAILED(hres));
-
-    // select shader target profile based on extension (basically the version of the shader language, model, type of shader)
-    LPCWSTR targetProfile{};
-    size_t idx = filename.rfind('.');
-    if (idx != std::string::npos)
-    {
-        std::wstring extension = filename.substr(idx+1);
-        if (extension == L"vert")
-            targetProfile = L"vs_6_1";
-        else if (extension == L"frag")
-            targetProfile = L"ps_6_1";
-        else if (extension == L"comp")
-            targetProfile = L"cs_6_1";
-        // TODO anything else
-    }
-
-    // compile shader
-    std::array args { (LPCWSTR)
-        filename.c_str(),               // optional filename to be displayed in case of compilation error
-        L"-Zpc",                        // matrices in column-major order
-        L"-HV", L"2021",                // HLSL version 2021
-        L"-T", targetProfile,           // targetProfile       
-        L"-E", L"main",                 // entryPoint TODO might expose as parameter
-        L"-spirv",                      // compile to spirv
-        L"-fspv-target-env=vulkan1.3"   // use vulkan1.3 environment
-    };
-
-    DxcBuffer srcBuffer {
-        .Ptr = pSourceBlob->GetBufferPointer(),
-        .Size = pSourceBlob->GetBufferSize(),
-        .Encoding = DXC_CP_ACP // 
-    };
-
-    CComPtr<IDxcResult> pResult{nullptr};
-    hres = pCompiler->Compile(
-        &srcBuffer,         // DxcBuffer containing the shader source
-        args.data(),        // arguments passed to the dxc compiler
-        static_cast<uint32_t>(args.size()),
-        nullptr,            // optional include handler to manage #includes in the shaders TODO 
-        IID_PPV_ARGS(&pResult)
-    );
-
-    // Compilation failure handling
-    if (FAILED(hres) && (pResult)) // checking result because the compile function might fail because of a compilation error or memory exhaustion
-    {
-        CComPtr<IDxcBlobEncoding> pErrorBlob;
-        hres = pResult->GetErrorBuffer(&pErrorBlob);
-        if (SUCCEEDED(hres) && pErrorBlob) [[likely]]
-        {
-            fmt::print("\033[31m[ERROR] Vertex Shader Compilation Error: {}\033[0m\n", reinterpret_cast<char*>(&pErrorBlob));
-            assert(false);
-        }
-    }
-
-    // get the compilation result
-    CComPtr<IDxcBlob> spirvBinaryCode;
-    pResult->GetResult(&spirvBinaryCode);
-    return spirvBinaryCode;
-}
 
 auto main() -> int32_t
 {
@@ -191,8 +91,8 @@ auto main() -> int32_t
     glfwGetFramebufferSize(window, &width, &height);
 
     // load program from shaders step1: compile HLSL shaders to SPIR-V
-    CComPtr<IDxcBlob> shaderObjVs = compileShader(L"../shaders/cubes.vert");
-    CComPtr<IDxcBlob> shaderObjFs = compileShader(L"../shaders/cubes.frag");
+    // CComPtr<IDxcBlob> shaderObjVs = compileShader(L"../shaders/cubes.vert");
+    // CComPtr<IDxcBlob> shaderObjFs = compileShader(L"../shaders/cubes.frag");
 
     mxc::Renderer renderer;
     mxc::RendererConfig config {};

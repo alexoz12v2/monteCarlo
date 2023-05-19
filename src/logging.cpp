@@ -8,9 +8,12 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <cassert>
 
 namespace mxc
 {
+	auto printLog(LogLevel level, char const* file, int32_t const line, char const* outMessage) -> void;
+
 	auto stringFormat_v(char* dest, const char* format, va_list* va_listp)  -> int32_t
 	{
 		if (dest) {
@@ -37,6 +40,29 @@ namespace mxc
 		stringFormat_v(outMessage, message, &args);
 		va_end(args);
 		
+		printLog(level, file, line, outMessage);
+	}
+
+	auto assertCondition(char const* file, int32_t const line, bool condition, char const* message, ...) -> void
+	{
+		if (!condition)
+		{
+			va_list args;
+			va_start(args, message);
+			
+			char outMessage[32000] = {'\0'};
+
+			stringFormat_v(outMessage, message, &args);
+			va_end(args);
+			
+			printLog(LogLevel::error, file, line, outMessage);
+			
+			assert(false);
+		}
+	}
+
+	auto printLog(LogLevel level, char const* file, int32_t const line, char const* outMessage) -> void
+	{
 		// set output color according to level
 		switch (level)
 		{

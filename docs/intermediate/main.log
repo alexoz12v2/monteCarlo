@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  9 MAY 2023 15:19
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  13 MAY 2023 23:17
  restricted system commands enabled.
 **main.tex
 (./main.tex
@@ -1633,7 +1633,8 @@ Package: tabulary 2014/06/11 v0.10 tabulary package (DPC)
 \tymax=\dimen318
 \TY@tablewidth=\dimen319
 )
-\c@theorem=\count505
+\c@definitionS=\count505
+\c@definitionC=\count506
 luaotfload | aux : font no 56 (nil) does not define feature smcp for script latn
  with language dflt
 luaotfload | aux : font no 57 (nil) does not define feature smcp for script latn
@@ -1663,33 +1664,33 @@ Package fontspec Info: Font family 'DejaVuSans(0)' created for font 'DejaVu
 (fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
 
 Package translations Info: No language package found. I am going to use `englis
-h' as default language. on input line 153.
-\@quotelevel=\count506
-\@quotereset=\count507
+h' as default language. on input line 155.
+\@quotelevel=\count507
+\@quotereset=\count508
 
 (./intermediate/main.aux)
 \openout1 = main.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 153.
-LaTeX Font Info:    ... okay on input line 153.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 155.
+LaTeX Font Info:    ... okay on input line 155.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 155.
+LaTeX Font Info:    ... okay on input line 155.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 155.
+LaTeX Font Info:    ... okay on input line 155.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 155.
+LaTeX Font Info:    ... okay on input line 155.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 155.
+LaTeX Font Info:    ... okay on input line 155.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 155.
+LaTeX Font Info:    ... okay on input line 155.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 155.
+LaTeX Font Info:    ... okay on input line 155.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 155.
+LaTeX Font Info:    ... okay on input line 155.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 155.
+LaTeX Font Info:    ... okay on input line 155.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 155.
+LaTeX Font Info:    ... okay on input line 155.
 
 
 Package siunitx Warning: Detected the "physics" package:
@@ -1709,19 +1710,19 @@ File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `english'. on input line 153.
+or `english'. on input line 155.
  (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count508
+\scratchcounter=\count509
 \scratchdimen=\dimen320
 \scratchbox=\box88
-\nofMPsegments=\count509
-\nofMParguments=\count510
+\nofMPsegments=\count510
+\nofMParguments=\count511
 \everyMPshowfont=\toks58
-\MPscratchCnt=\count511
+\MPscratchCnt=\count512
 \MPscratchDim=\dimen321
-\MPnumerator=\count512
-\makeMPintoPDFobject=\count513
+\MPnumerator=\count513
+\makeMPintoPDFobject=\count514
 \everyMPtoPDFconversion=\toks59
 ) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -1732,20 +1733,20 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 153.
+Package hyperref Info: Link coloring OFF on input line 155.
 
 (./intermediate/main.out) (./intermediate/main.out)
 \@outlinefile=\write7
 
 \openout7 = main.out
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 153.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 155.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 153.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 155.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 153.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 155.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 153.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 155.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: luatex
@@ -1796,8 +1797,8 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
 
 (./intermediate/main.bbl)
-Package biblatex Info: Reference section=0 on input line 153.
-Package biblatex Info: Reference segment=0 on input line 153.
+Package biblatex Info: Reference section=0 on input line 155.
+Package biblatex Info: Reference segment=0 on input line 155.
  [1
 
 
@@ -2039,7 +2040,7 @@ Appendix E.
 ) [25
 
 ]
-Overfull \hbox (3.5825pt too wide) in paragraph at lines 209--209
+Overfull \hbox (3.5825pt too wide) in paragraph at lines 211--211
 []\TU/lmr/m/n/12 Vin-cent Pe-go-raro. \TU/lmr/m/it/12 Hand-book of Dig-i-tal Im-
 age Syn-the-sis: Sci-en-tific Foun-
  []
@@ -2056,14 +2057,14 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 46652 strings out of 478285
+ 46642 strings out of 478285
  125163,1977958 words of node,token memory allocated
  2840 words of node memory still in use:
    76 hlist, 18 vlist, 5 rule, 6 math, 49 glue, 21 kern, 7 sub_mlist, 78 glyph, 
 50 attribute, 124 glue_spec, 50 attribute_list, 2 write nodes
    avail lists: 2:5502,3:2699,4:680,5:378,6:57,7:5556,8:48,9:2127,10:13,11:412
- 65133 multiletter control sequences out of 65536+600000
- 105 fonts using 43077451 bytes
+ 65122 multiletter control sequences out of 65536+600000
+ 105 fonts using 43077335 bytes
  91i,17n,114p,2265b,1237s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/opentype/public/lm/lmsans12-regular.otf></usr/share
 /texmf-dist/fonts/opentype/public/lm/lmroman10-italic.otf></usr/share/texmf-dist
@@ -2079,10 +2080,10 @@ e/public/lm/lmroman12-regular.otf></usr/share/texmf-dist/fonts/opentype/public/l
 m/lmroman17-regular.otf></usr/share/texmf-dist/fonts/opentype/public/lm/lmromand
 emi10-regular.otf></usr/share/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/
 share/texmf-dist/fonts/type1/public/lm/lmbx12.pfb>
-Output written on main.pdf (32 pages, 144608 bytes).
+Output written on main.pdf (32 pages, 144720 bytes).
 
-PDF statistics: 416 PDF objects out of 1000 (max. 8388607)
- 336 compressed objects within 4 object streams
- 77 named destinations out of 1000 (max. 131072)
+PDF statistics: 417 PDF objects out of 1000 (max. 8388607)
+ 337 compressed objects within 4 object streams
+ 78 named destinations out of 1000 (max. 131072)
  210 words of extra memory for PDF output out of 10000 (max. 100000000)
 

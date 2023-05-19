@@ -6,6 +6,7 @@
 #include "VulkanCommon.h"
 #include "Device.h"
 #include "Swapchain.h"
+#include "CommandBuffer.h"
 
 #include "VulkanContext.inl"
 
@@ -31,9 +32,6 @@ namespace mxc
 #endif
     };
 
-
-	struct VulkanContext;
-
 	class Renderer
 	{
 	public:
@@ -51,7 +49,16 @@ namespace mxc
         PFN_vkCmdEndDebugUtilsLabelEXT m_pfnCmdEndDebugUtilsLabelEXT;
 #endif
 	private:
-		// auto createDepthImages() -> bool;
+		auto createDepthImages() -> bool;
+        auto destroyDepthImages() -> void;
+
+        // TODO encapsulate renderpass in VulkanContext
+        auto createRenderPass() -> bool;
+        auto destroyRenderPass() -> void;
+        
+        // TODO maybe: more flexible
+        auto createPresentFramebuffers() -> bool;
+        auto destroyPresentFramebuffers() -> void;
 	};
 
 	// https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkResult.html, only some
@@ -59,45 +66,3 @@ namespace mxc
 }
 
 #endif // MXC_RENDERER_H
-        // Depth resources
-        // if (!vulkan_device_detect_depth_format(&context->device)) {
-        //     context->device.depth_format = VK_FORMAT_UNDEFINED;
-        //     KFATAL("Failed to find a supported format!");
-        // }
-
-        // if (!swapchain->depth_textures) {
-        //     swapchain->depth_textures = (texture*)kallocate(sizeof(texture) * swapchain->image_count, MEMORY_TAG_RENDERER);
-        // }
-
-        // for (u32 i = 0; i < context->swapchain.image_count; ++i) {
-        //     // Create depth image and its view.
-        //     char formatted_name[TEXTURE_NAME_MAX_LENGTH] = {0};
-        //     string_format(formatted_name, "swapchain_image_%u", i);
-
-        //     vulkan_image* image = kallocate(sizeof(vulkan_image), MEMORY_TAG_TEXTURE);
-        //     vulkan_image_create(
-        //         context,
-        //         TEXTURE_TYPE_2D,
-        //         swapchain_extent.width,
-        //         swapchain_extent.height,
-        //         context->device.depth_format,
-        //         VK_IMAGE_TILING_OPTIMAL,
-        //         VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
-        //         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-        //         true,
-        //         VK_IMAGE_ASPECT_DEPTH_BIT,
-        //         formatted_name,
-        //         image);
-
-        //     // Wrap it in a texture.
-        //     texture_system_wrap_internal(
-        //         "__kohi_default_depth_texture__",
-        //         swapchain_extent.width,
-        //         swapchain_extent.height,
-        //         context->device.depth_channel_count,
-        //         false,
-        //         true,
-        //         false,
-        //         image,
-        //         &context->swapchain.depth_textures[i]);
-        // }

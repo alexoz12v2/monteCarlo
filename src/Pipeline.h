@@ -1,0 +1,3 @@
+#ifndef MXC_PIPELINE_H
+#define MXC_PIPELINE_H
+#endif // MXC_PIPELINE_H

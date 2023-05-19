@@ -1,17 +1,24 @@
 #include "Renderer.h"
 #include "VulkanCommon.h"
 
-#include <logging.h>
+#define MXC_VULKAN_CONTEXT_INL_IMPLEMENTATION
+#include <VulkanContext.inl>
+
+#include "logging.h"
+
 #include <cstdlib>
 #include <cstring>
 #include <vector>
-
-#define MXC_VULKAN_CONTEXT_INL_IMPLEMENTATION
-#include <VulkanContext.inl>
-#include <stdio.h>
+#include <array>
 
 namespace mxc 
 {
+    auto createCommandBuffers(VulkanContext* ctx) -> void;
+    constexpr auto renderPassCreateInfo2() -> VkRenderPassCreateInfo2;
+    constexpr auto attachmentDescription2() -> VkAttachmentDescription2;
+    constexpr auto subpassDependency2() -> VkSubpassDependency2;
+    constexpr auto attachmentReference2() -> VkAttachmentReference2;
+    constexpr auto subpassDescription2() -> VkSubpassDescription2;
 
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
         VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
@@ -193,9 +200,6 @@ namespace mxc
         MXC_INFO("Vulkan Instance created.");
 
         // Debugger
-#ifndef _DEBUG
-    #error "fhoiewrhf"
-#endif
 #if defined(_DEBUG)
         MXC_DEBUG("Creating Vulkan debugger...");
         uint32_t log_severity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT |
@@ -274,25 +278,68 @@ namespace mxc
         m_ctx.framebufferHeight = config.windowHeight;
         m_ctx.swapchain.create(&m_ctx, m_ctx.framebufferWidth, m_ctx.framebufferHeight, /*vsync*/true);
 
-        // Create command buffers.
-//        create_command_buffers(context);
-//
-//        // Create sync objects.
-//        context->image_available_semaphores = darray_reserve(VkSemaphore, context->swapchain.max_frames_in_flight);
-//        context->queue_complete_semaphores = darray_reserve(VkSemaphore, context->swapchain.max_frames_in_flight);
-//
-//        for (u8 i = 0; i < context->swapchain.max_frames_in_flight; ++i) {
-//            VkSemaphoreCreateInfo semaphore_create_info = {VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO};
-//            vkCreateSemaphore(context->device.logical_device, &semaphore_create_info, context->allocator, &context->image_available_semaphores[i]);
-//            vkCreateSemaphore(context->device.logical_device, &semaphore_create_info, context->allocator, &context->queue_complete_semaphores[i]);
-//
-//            // Create the fence in a signaled state, indicating that the first frame has already been "rendered".
-//            // This will prevent the application from waiting indefinitely for the first frame to render since it
-//            // cannot be rendered until a frame is "rendered" before it.
-//            VkFenceCreateInfo fence_create_info = {VK_STRUCTURE_TYPE_FENCE_CREATE_INFO};
-//            fence_create_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-//            VK_CHECK(vkCreateFence(context->device.logical_device, &fence_create_info, context->allocator, &context->in_flight_fences[i]));
-//        }
+        // Query for depth format and create depth image TODO: do it and make it configurable
+        MXC_ASSERT(m_ctx.device.selectDepthFormat(&m_ctx.depthFormat, nullptr), "no supported depth image format found");
+        //... create depth image
+
+        // Create command buffers. TODO configurable
+        createCommandBuffers(&m_ctx);
+
+        // Create sync objects.
+        m_ctx.syncObjs.reserve(m_ctx.swapchain.images.size());
+
+        VkSemaphoreTypeCreateInfo const semaphoreTypeCI {
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO,
+            .pNext = nullptr,
+            .semaphoreType = VK_SEMAPHORE_TYPE_BINARY,
+            .initialValue = 0 // ignored if binary
+        };
+        VkSemaphoreCreateInfo const semaphoreCI {
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
+            .pNext = reinterpret_cast<void const*>(&semaphoreTypeCI),
+            .flags = 0
+        };
+        VkFenceCreateInfo const fenceCI {
+            .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
+            .pNext = nullptr,
+            .flags = VK_FENCE_CREATE_SIGNALED_BIT
+        };
+        for (uint8_t i = 0; i != m_ctx.swapchain.images.size(); ++i)
+        {
+            VkSemaphore semaphore[2];
+            VK_CHECK(vkCreateSemaphore(m_ctx.device.logical, &semaphoreCI, nullptr, &semaphore[0]));
+            VK_CHECK(vkCreateSemaphore(m_ctx.device.logical, &semaphoreCI, nullptr, &semaphore[1]));
+
+            VkFence fence;
+            VK_CHECK(vkCreateFence(m_ctx.device.logical, &fenceCI, nullptr, &fence));
+            FrameObjects f = {m_ctx.commandBuffers[i].handle, fence, semaphore[0], semaphore[1]};
+            // m_ctx.syncObjs.emplace_back(m_ctx.commandBuffers[i].handle, fence, semaphore[0], semaphore[1]); substitution failure?
+            m_ctx.syncObjs.push_back(f); // TODO cmdBuffers configurable
+        }
+        MXC_DEBUG("Created Vulkan Synchronization primitives");
+        
+        // Create Depth Images (logging is in there)
+        if (!createDepthImages())
+        {
+            MXC_ERROR("failed to create depth images");
+            return false;
+        }
+        MXC_DEBUG("Created Depth Images");
+
+        // create renderpass
+        if (!createRenderPass())
+        {
+            MXC_ERROR("failed to create renderPass");
+            return false;
+        }
+        MXC_DEBUG("Created default renderPass");
+
+        // create framebuffers
+        if (!createPresentFramebuffers())
+        {
+            MXC_ERROR("failed to create present framebuffers!");
+        }
+        MXC_DEBUG("creates present framebuffers");
 //
 //        // In flight fences should not yet exist at this point, so clear the list. These are stored in pointers
 //        // because the initial state should be 0, and will be 0 when not in use. Acutal fences are not owned
@@ -331,54 +378,37 @@ namespace mxc
     auto Renderer::cleanup() -> void
     {
         vkDeviceWaitIdle(m_ctx.device.logical);
-//        // Cold-cast the context
-//        vulkan_context* context = (vulkan_context*)plugin->internal_context;
-//        vkDeviceWaitIdle(context->device.logical_device);
 //
 //        // Destroy in the opposite order of creation.
 //        // Destroy buffers
 //        renderer_renderbuffer_destroy(&context->object_vertex_buffer);
 //        renderer_renderbuffer_destroy(&context->object_index_buffer);
 //
-//        // Sync objects
-//        for (u8 i = 0; i < context->swapchain.max_frames_in_flight; ++i) {
-//            if (context->image_available_semaphores[i]) {
-//                vkDestroySemaphore(
-//                    context->device.logical_device,
-//                    context->image_available_semaphores[i],
-//                    context->allocator);
-//                context->image_available_semaphores[i] = 0;
-//            }
-//            if (context->queue_complete_semaphores[i]) {
-//                vkDestroySemaphore(
-//                    context->device.logical_device,
-//                    context->queue_complete_semaphores[i],
-//                    context->allocator);
-//                context->queue_complete_semaphores[i] = 0;
-//            }
-//            vkDestroyFence(context->device.logical_device, context->in_flight_fences[i], context->allocator);
-//        }
-//        darray_destroy(context->image_available_semaphores);
-//        context->image_available_semaphores = 0;
-//
-//        darray_destroy(context->queue_complete_semaphores);
-//        context->queue_complete_semaphores = 0;
-//
-//        // Command buffers
-//        for (u32 i = 0; i < context->swapchain.image_count; ++i) {
-//            if (context->graphics_command_buffers[i].handle) {
-//                vulkan_command_buffer_free(
-//                    context,
-//                    context->device.graphics_command_pool,
-//                    &context->graphics_command_buffers[i]);
-//                context->graphics_command_buffers[i].handle = 0;
-//            }
-//        }
-//        darray_destroy(context->graphics_command_buffers);
-//        context->graphics_command_buffers = 0;
+        // TODO move elsewhere: Renderpass and framebuffers
+        MXC_DEBUG("Destroying Framebuffers and RenderPass...");
+        destroyPresentFramebuffers();
+        destroyRenderPass();
+
+        // Destroy Depth Images
+        MXC_DEBUG("Destroying Depth images");
+        destroyDepthImages();
+
+        // Sync objects
+        MXC_DEBUG("Destroying Vulkan Synchronization Primitives...");
+        for (uint8_t i = 0; i != m_ctx.syncObjs.size(); --i)
+        {
+            vkDestroySemaphore(m_ctx.device.logical, m_ctx.syncObjs[i].renderCompleteSemaphore, nullptr);
+            vkDestroySemaphore(m_ctx.device.logical, m_ctx.syncObjs[i].presentCompleteSemaphore, nullptr);
+
+            vkDestroyFence(m_ctx.device.logical, m_ctx.syncObjs[i].renderCompleteFence, nullptr);
+        }
+
+        // Command buffers
+        MXC_DEBUG("Freeing %zu command buffers...", m_ctx.commandBuffers.size());
+        CommandBuffer::freeMany(&m_ctx, m_ctx.commandBuffers.data(), static_cast<uint32_t>(m_ctx.commandBuffers.size()));
 
         // Swapchain
-        MXC_DEBUG("Destroying the Swapchain");
+        MXC_DEBUG("Destroying the Swapchain...");
         m_ctx.swapchain.destroy(&m_ctx);
 
         MXC_DEBUG("Destroying Vulkan device...");
@@ -403,5 +433,247 @@ namespace mxc
 
         MXC_DEBUG("Destroying Vulkan instance...");
         vkDestroyInstance(m_ctx.instance, nullptr);
+    }
+
+    // https://www.reddit.com/r/vulkan/comments/s80reu/subpass_dependencies_what_are_those_and_why_do_i/
+    auto Renderer::createRenderPass() -> bool
+    {
+        // ----------- Define Attachment Descriptions------------------------------
+        std::array attachmentDescriptions {
+            attachmentDescription2(), // color attachment
+            attachmentDescription2() // depth attachment
+        };
+        attachmentDescriptions[0].format = m_ctx.swapchain.imageFormat.format;
+        attachmentDescriptions[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        attachmentDescriptions[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+        attachmentDescriptions[0].finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+        attachmentDescriptions[1].format = m_ctx.depthFormat;
+        attachmentDescriptions[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        attachmentDescriptions[1].finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+        // The source scope refers to the pipeline stages or memory access operations that occur before a synchronization command, while the 
+        // destination scope refers to the pipeline stages or memory access operations that occur after the synchronization command.
+        // --------------- Define Subpass Dependencies ----------------------------
+        std::array subpassDependencies {
+            subpassDependency2(), // color attachment
+            subpassDependency2()  // depth attachment
+        };
+        // The source subpass is the subpass that generates the data or resource that is being used by the destination subpass. The destination subpass is the subpass that consumes the data or resource       
+        // dependency between external usage (presentation) and the subpass
+        // color attachment layout transition synchronization
+        subpassDependencies[0].srcSubpass = VK_SUBPASS_EXTERNAL; // dependency is relative to the operations that happen after (logically) the specified stages in the the external subpass(presentation) (before the synchronization command)
+        subpassDependencies[0].dstSubpass = 0; // ... and before (logically) the first subpass (the only one) in the specified stages. This means that this synchronization operation happens before the renderpass begins
+        subpassDependencies[0].srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // transition can happen after color output stage of the srcSubpass
+        subpassDependencies[0].dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // transition can happen before color output stage of the dstSubpass
+        subpassDependencies[0].srcAccessMask = 0; // memory access cannot happen after the srcStageMask of the srcSubpass
+        subpassDependencies[0].dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT; // memory access that chan happen in dstStageMask of dstSubpass, after the synchronization command
+
+        // depth attachment
+        subpassDependencies[1].srcSubpass = VK_SUBPASS_EXTERNAL;
+        subpassDependencies[1].dstSubpass = 0;
+        subpassDependencies[1].srcStageMask = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT;
+        subpassDependencies[1].dstStageMask = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT;
+        subpassDependencies[1].srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+        subpassDependencies[1].dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT;
+
+        // --------------- Define subpass descriptions ----------------------------
+        std::array attachmentReferences {
+            attachmentReference2(),
+            attachmentReference2()
+        };
+
+        attachmentReferences[0].attachment = 0;
+        attachmentReferences[0].layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        attachmentReferences[0].aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+
+        attachmentReferences[1].attachment = 1;
+        attachmentReferences[1].layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+        attachmentReferences[1].aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
+
+        VkSubpassDescription2 subpassDescription = subpassDescription2();
+        subpassDescription.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+        subpassDescription.colorAttachmentCount = 1;
+        subpassDescription.pColorAttachments = &attachmentReferences[0];
+        subpassDescription.pDepthStencilAttachment = &attachmentReferences[1];
+
+        // ---------------- Create RenderPass--------------------------------------
+        VkRenderPassCreateInfo2 renderPassCI = renderPassCreateInfo2();
+        renderPassCI.attachmentCount = static_cast<uint32_t>(attachmentDescriptions.size());
+        renderPassCI.pAttachments = attachmentDescriptions.data();
+        renderPassCI.subpassCount = 1;
+        renderPassCI.pSubpasses = &subpassDescription;
+        renderPassCI.dependencyCount = static_cast<uint32_t>(subpassDependencies.size());
+        renderPassCI.pDependencies = subpassDependencies.data();
+
+        VK_CHECK(vkCreateRenderPass2(m_ctx.device.logical, &renderPassCI, nullptr, &m_ctx.renderPass));
+        MXC_INFO("Created a RenderPass"); // TODO add information
+        return true;
+    }
+
+    auto Renderer::destroyRenderPass() -> void
+    {
+        vkDestroyRenderPass(m_ctx.device.logical, m_ctx.renderPass, nullptr);
+        m_ctx.renderPass = VK_NULL_HANDLE;
+        MXC_DEBUG("Destroyed RenderPass");
+    }
+
+    auto Renderer::createPresentFramebuffers() -> bool
+    {
+        static uint32_t constexpr ATTACHMENT_COUNT = 2; // TODO configurable
+        m_ctx.presentFramebuffers.resize(m_ctx.swapchain.images.size());
+
+        VkFramebufferCreateInfo createInfo {
+            .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
+            .pNext = nullptr, // imageless
+            .flags = 0,
+            .renderPass = m_ctx.renderPass,
+            .attachmentCount = ATTACHMENT_COUNT,
+            .pAttachments = nullptr,
+            .width = m_ctx.framebufferWidth,
+            .height = m_ctx.framebufferHeight,
+            .layers = 1,
+        };
+
+        for (uint8_t i = 0; i != m_ctx.swapchain.images.size(); ++i)
+        {
+            std::array<VkImageView, ATTACHMENT_COUNT> attachments{m_ctx.swapchain.images[i].view, m_ctx.depthImages[i].view.handle};
+            createInfo.pAttachments = attachments.data();
+            VK_CHECK(vkCreateFramebuffer(m_ctx.device.logical, &createInfo, nullptr, &m_ctx.presentFramebuffers[i]));
+        }
+        return true;
+    }
+    
+    auto Renderer::destroyPresentFramebuffers() -> void
+    {
+        for (uint8_t i = 0; i != m_ctx.presentFramebuffers.size(); ++i)
+        {   
+            vkDestroyFramebuffer(m_ctx.device.logical, m_ctx.presentFramebuffers[i], nullptr);
+        }
+    }
+
+    auto Renderer::createDepthImages() -> bool
+    {
+        VkFormat depthFormat = VK_FORMAT_UNDEFINED;
+        if (!m_ctx.device.selectDepthFormat(&depthFormat, nullptr))
+        {
+            MXC_ERROR("Couldn't find suitable depth format");
+            return false;
+        }
+            
+        m_ctx.depthImages.reserve(m_ctx.swapchain.images.size());
+        for (uint32_t i = 0; i != m_ctx.swapchain.images.size(); ++i)
+        {
+            // create depth images and views. TODO I can use emplace back if I write a custom constructor for the ImageViewPair
+            Image depthImage(
+                VK_IMAGE_TYPE_2D, 
+                {.width = m_ctx.framebufferWidth, .height = m_ctx.framebufferHeight, .depth = 1}, 
+                depthFormat, 
+                VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
+            ImageView depthView(
+                VK_IMAGE_VIEW_TYPE_2D,
+                VK_IMAGE_ASPECT_DEPTH_BIT);
+            VkImageLayout targetLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+            // Note: you can hard code tiling because in selectDepthFormat tiling is hardcoded
+            m_ctx.device.createImage(&m_ctx, VK_IMAGE_TILING_OPTIMAL, &depthImage, &targetLayout, &depthView);
+            m_ctx.depthImages.push_back({depthImage, depthView});
+        }
+
+        MXC_DEBUG("Vulkan depth images created");
+        return true;
+    }
+
+    auto Renderer::destroyDepthImages() -> void
+    {
+        for (uint32_t i = 0; i != m_ctx.depthImages.size(); ++i)
+        {   
+            m_ctx.device.destroyImageView(&m_ctx.depthImages[i].view);
+            m_ctx.device.destroyImage(&m_ctx.depthImages[i].image);
+        }
+        MXC_DEBUG("Vulkan depth images destroyed");
+    }
+
+    auto createCommandBuffers(VulkanContext* ctx) -> void
+    {
+        uint32_t const count = static_cast<uint32_t>(ctx->swapchain.images.size());
+        ctx->commandBuffers.resize(count);
+        CommandBuffer::allocateMany(ctx, ctx->commandBuffers.data(), count);
+        MXC_DEBUG("Vulkan Command Buffers Allocated");
+    }
+
+    
+    constexpr auto renderPassCreateInfo2() -> VkRenderPassCreateInfo2
+    {
+        return {
+            .sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO_2,
+            .pNext = nullptr,
+            .flags = 0,
+            .attachmentCount = 0,
+            .pAttachments = nullptr,
+            .subpassCount = 0,
+            .pSubpasses = nullptr,
+            .dependencyCount = 0,
+            .pDependencies = nullptr,
+            .correlatedViewMaskCount = 0,
+            .pCorrelatedViewMasks = nullptr
+        };
+    }
+
+    constexpr auto attachmentDescription2() -> VkAttachmentDescription2
+    {
+        return {
+            .sType = VK_STRUCTURE_TYPE_ATTACHMENT_DESCRIPTION_2,
+            .pNext = nullptr,
+            .flags = 0,
+            .format = VK_FORMAT_UNDEFINED,
+            .samples = VK_SAMPLE_COUNT_1_BIT,
+            .loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+            .storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+            .stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+            .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+            .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED, // expected layout
+            .finalLayout = VK_IMAGE_LAYOUT_UNDEFINED, // transitioned layout (performed by render pass)
+        };
+    }
+
+    constexpr auto subpassDependency2() -> VkSubpassDependency2
+    {
+        return {
+            .sType = VK_STRUCTURE_TYPE_SUBPASS_DEPENDENCY_2,
+            .pNext = nullptr,
+            .srcSubpass = UINT32_MAX,
+            .dstSubpass = UINT32_MAX,
+            .srcStageMask = 0,
+            .dstStageMask = 0
+        };
+    }
+        
+    constexpr auto attachmentReference2() -> VkAttachmentReference2
+    {
+        return {
+            .sType = VK_STRUCTURE_TYPE_ATTACHMENT_REFERENCE_2,
+            .pNext = nullptr,
+            .attachment = VK_ATTACHMENT_UNUSED,
+            .layout = VK_IMAGE_LAYOUT_UNDEFINED,
+            .aspectMask = VK_IMAGE_ASPECT_NONE
+        };
+    }
+
+    constexpr auto subpassDescription2() -> VkSubpassDescription2
+    {
+        return {
+            .sType = VK_STRUCTURE_TYPE_SUBPASS_DESCRIPTION_2,
+            .pNext = nullptr,
+            .flags = 0,
+            .pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS,
+            .viewMask = 0,
+            .inputAttachmentCount = 0,
+            .pInputAttachments = nullptr,
+            .colorAttachmentCount = 0,
+            .pColorAttachments = nullptr,
+            .pResolveAttachments = nullptr,
+            .pDepthStencilAttachment = nullptr,
+            .preserveAttachmentCount = 0,
+            .pPreserveAttachments = nullptr
+        };
     }
 }

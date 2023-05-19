@@ -114,16 +114,18 @@
 \renewcommand{\familydefault}{\rmdefault}
 
 % definition environment
-\newtheorem{theorem}{Theorem}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
+\newtheoremstyle{theoremdd}% name of the style to be used
+  {\topsep}% measure of space to leave above the theorem. E.g.: 3pt
+  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
+  {}% name of font to use in the body of the theorem
+  {0pt}% measure of space to indent
+  {\bfseries}% name of head font
+  {. ---}% punctuation between head and body
+  { }% space after theorem head; " " = normal interword space
+  {\thmname{#1}\thmnumber{ #2}\textnormal{\thmnote{ (#3)}}}
+\theoremstyle{theoremdd}
+\newtheorem{definitionS}{Def.}[section] % numbered by section
+\newtheorem{definitionC}{Def.}[chapter] % numbered by chapter, to use when I need a def in beginning of chapter
 
 % shortcut to typeset code
 \newcommand{\code}[1]{{\fontsize{10pt}{12pt}\fontfamily{qcr}\selectfont{#1}}}
