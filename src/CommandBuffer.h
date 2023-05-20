@@ -14,8 +14,9 @@ namespace mxc
 	{
 	public:
 		// TODO add overloads to the free and allocate functions which take device and pool
-		static auto allocateMany(VulkanContext* ctx, CommandBuffer* outCmdBuffers, uint32_t count) -> bool;
-		auto allocate(VulkanContext* ctx) -> bool;
+		static auto allocateMany(VulkanContext* ctx, CommandType const type, CommandBuffer* outCmdBuffers, uint32_t count) -> bool;
+		auto allocate(VulkanContext* ctx, CommandType const type) -> bool;
+		// assumes they have all the same type
 		static auto freeMany(VulkanContext* ctx, CommandBuffer* inOutCmdBuffers, uint32_t count) -> void;
 		auto free(VulkanContext* ctx) -> void;
 
@@ -45,6 +46,7 @@ namespace mxc
 		// Note: 1) there is just one resettable command pool now, stored in the Device class. modify this if you multithread this thing
 		//		 2) now it is hard coded to create one command buffer per allocation
 		VkCommandBufferLevel m_level; // for now hardcoded to primary
+		CommandType m_type;
 		State m_state = State::NOT_ALLOCATED;
 	};
 

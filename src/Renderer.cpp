@@ -279,8 +279,8 @@ namespace mxc
         m_ctx.swapchain.create(&m_ctx, m_ctx.framebufferWidth, m_ctx.framebufferHeight, /*vsync*/true);
 
         // Query for depth format and create depth image TODO: do it and make it configurable
-        MXC_ASSERT(m_ctx.device.selectDepthFormat(&m_ctx.depthFormat, nullptr), "no supported depth image format found");
-        //... create depth image
+        DepthFormatProperties_t formatProperties;
+        MXC_ASSERT(m_ctx.device.selectDepthFormat(&m_ctx.depthFormat, &formatProperties), "no supported depth image format found");
 
         // Create command buffers. TODO configurable
         createCommandBuffers(&m_ctx);
@@ -319,7 +319,7 @@ namespace mxc
         MXC_DEBUG("Created Vulkan Synchronization primitives");
         
         // Create Depth Images (logging is in there)
-        if (!createDepthImages())
+        if (!createDepthImages(formatProperties))
         {
             MXC_ERROR("failed to create depth images");
             return false;
@@ -395,7 +395,7 @@ namespace mxc
 
         // Sync objects
         MXC_DEBUG("Destroying Vulkan Synchronization Primitives...");
-        for (uint8_t i = 0; i != m_ctx.syncObjs.size(); --i)
+        for (uint8_t i = 0; i != m_ctx.syncObjs.size(); ++i)
         {
             vkDestroySemaphore(m_ctx.device.logical, m_ctx.syncObjs[i].renderCompleteSemaphore, nullptr);
             vkDestroySemaphore(m_ctx.device.logical, m_ctx.syncObjs[i].presentCompleteSemaphore, nullptr);
@@ -551,8 +551,12 @@ namespace mxc
         }
     }
 
-    auto Renderer::createDepthImages() -> bool
+    auto Renderer::createDepthImages(DepthFormatProperties_t const depthFormatProperties) -> bool
     {
+        VkImageAspectFlags stencil = (depthFormatProperties & DepthFormatProperties_v::SUPPORTS_STENCIL) == DepthFormatProperties_v::SUPPORTS_STENCIL 
+                                    ? VK_IMAGE_ASPECT_STENCIL_BIT 
+                                    : VK_IMAGE_ASPECT_DEPTH_BIT;
+        
         VkFormat depthFormat = VK_FORMAT_UNDEFINED;
         if (!m_ctx.device.selectDepthFormat(&depthFormat, nullptr))
         {
@@ -571,7 +575,7 @@ namespace mxc
                 VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT);
             ImageView depthView(
                 VK_IMAGE_VIEW_TYPE_2D,
-                VK_IMAGE_ASPECT_DEPTH_BIT);
+                VK_IMAGE_ASPECT_DEPTH_BIT | stencil);
             VkImageLayout targetLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
             // Note: you can hard code tiling because in selectDepthFormat tiling is hardcoded
             m_ctx.device.createImage(&m_ctx, VK_IMAGE_TILING_OPTIMAL, &depthImage, &targetLayout, &depthView);
@@ -596,7 +600,7 @@ namespace mxc
     {
         uint32_t const count = static_cast<uint32_t>(ctx->swapchain.images.size());
         ctx->commandBuffers.resize(count);
-        CommandBuffer::allocateMany(ctx, ctx->commandBuffers.data(), count);
+        CommandBuffer::allocateMany(ctx, CommandType::GRAPHICS, ctx->commandBuffers.data(), count);
         MXC_DEBUG("Vulkan Command Buffers Allocated");
     }
 

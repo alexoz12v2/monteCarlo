@@ -50,12 +50,16 @@ namespace mxc
 		DEVICE_LOCAL_HOST_VISIBLE = 2 // Note: not always supported, see https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/usage_patterns.html#usage_patterns_gpu_only
 	};
 
-	enum class CommandType : uint8_t
+	namespace DepthFormatProperties_v
 	{
-		GRAPHICS,
-		TRANSFER,
-		COMPUTE
-	};
+		enum T : uint8_t	
+		{
+			NONE = 0,
+			SUPPORTS_STENCIL = 1
+		};
+	}
+
+	using DepthFormatProperties_t = DepthFormatProperties_v::T;
 
 	class Device
 	{
@@ -85,14 +89,10 @@ namespace mxc
 		VkQueue transferQueue;
 		VkQueue computeQueue;
 
-		VkCommandPool commandPool; // used for graphics, compute, transfer
+		VkCommandPool graphicsCmdPool; // used for graphics, compute, transfer
+		VkCommandPool computeCmdPool; // used for graphics, compute, transfer
+		VkCommandPool transferCmdPool; // used for graphics, compute, transfer
 		VmaAllocator vmaAllocator;
-
-		enum class DepthFormatProperties : uint8_t	
-		{
-			NONE = 0,
-			SUPPORTS_STENCIL = 1
-		};
 
 	public: // maybe heap
 		VkPhysicalDeviceProperties properties;
@@ -140,7 +140,7 @@ namespace mxc
 		auto flushCommandBuffer(CommandBuffer* pCmdBuf, CommandType type) -> bool;
 
 		auto updateSwapchainSupport(VulkanContext* ctx) -> bool;
-		auto selectDepthFormat(VkFormat* outDepthFormat, DepthFormatProperties* outFormatProps) const -> bool;
+		auto selectDepthFormat(VkFormat* outDepthFormat, DepthFormatProperties_t* outFormatProps) const -> bool;
 
 	private:
 		auto selectPhysicalDevice(VulkanContext* ctx, PhysicalDeviceRequirements const& requirements) -> bool;

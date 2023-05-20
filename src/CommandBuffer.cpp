@@ -30,17 +30,22 @@ namespace mxc
         }
     }
     
-	auto CommandBuffer::allocateMany(VulkanContext* ctx, CommandBuffer* outCmdBuffers, uint32_t count) -> bool 
+	auto CommandBuffer::allocateMany(VulkanContext* ctx, CommandType const type, CommandBuffer* outCmdBuffers, uint32_t count) -> bool 
     {
         MXC_ASSERT(!any(outCmdBuffers, count, [](CommandBuffer const& c) -> bool { return c.m_state != State::NOT_ALLOCATED; }), 
                    "Cannot Allocate new Command Buffer without freeing existing one!");
-        VkCommandBufferAllocateInfo const allocateInfo {
-            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-            .pNext = nullptr,
-            .commandPool = ctx->device.commandPool, // TODO might refactor
-            .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
-            .commandBufferCount = count
-        };
+        VkCommandBufferAllocateInfo allocateInfo {};
+        allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        allocateInfo.pNext = nullptr;
+        allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        allocateInfo.commandBufferCount = count;
+
+        switch (type)
+        {
+            case CommandType::GRAPHICS: allocateInfo.commandPool = ctx->device.graphicsCmdPool; break;
+            case CommandType::TRANSFER: allocateInfo.commandPool = ctx->device.transferCmdPool; break;
+            case CommandType::COMPUTE:  allocateInfo.commandPool = ctx->device.computeCmdPool; break;
+        }
 
         std::vector<VkCommandBuffer> tempCmdBufs(count);
         VK_CHECK(vkAllocateCommandBuffers(ctx->device.logical, &allocateInfo, tempCmdBufs.data()));
@@ -49,21 +54,28 @@ namespace mxc
             outCmdBuffers[i].handle = tempCmdBufs[i];
             outCmdBuffers[i].m_state = State::INITIAL;
             outCmdBuffers[i].m_level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+            outCmdBuffers[i].m_type = type;
         }
 
         return true;
     }
     
-    auto CommandBuffer::allocate(VulkanContext* ctx) -> bool 
+    auto CommandBuffer::allocate(VulkanContext* ctx, CommandType const type) -> bool 
     {
         MXC_ASSERT(m_state == State::NOT_ALLOCATED, "Cannot Allocate new Command Buffer without freeing existing one!");
-        VkCommandBufferAllocateInfo const allocateInfo {
-            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-            .pNext = nullptr,
-            .commandPool = ctx->device.commandPool, // TODO might refactor
-            .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
-            .commandBufferCount = 1
-        };
+        VkCommandBufferAllocateInfo allocateInfo {};
+        allocateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        allocateInfo.pNext = nullptr;
+        allocateInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        allocateInfo.commandBufferCount = 1;
+
+        m_type = type;
+        switch (type)
+        {
+            case CommandType::GRAPHICS: allocateInfo.commandPool = ctx->device.graphicsCmdPool; break;
+            case CommandType::TRANSFER: allocateInfo.commandPool = ctx->device.transferCmdPool; break;
+            case CommandType::COMPUTE:  allocateInfo.commandPool = ctx->device.computeCmdPool; break;
+        }
 
         VK_CHECK(vkAllocateCommandBuffers(ctx->device.logical, &allocateInfo, &handle));
         m_state = State::INITIAL;
@@ -75,10 +87,15 @@ namespace mxc
     {
         MXC_ASSERT(!(m_state == State::RECORDING || m_state == State::PENDING || m_state == State::NOT_ALLOCATED), 
                    "Cannot free a busy/not allocated Command Buffer!");
-        vkFreeCommandBuffers(ctx->device.logical, ctx->device.commandPool, 1, &handle);
+        VkCommandPool cmdPool = m_type == CommandType::GRAPHICS ? ctx->device.graphicsCmdPool :
+                                m_type == CommandType::TRANSFER ? ctx->device.transferCmdPool :
+                                m_type == CommandType::COMPUTE  ? ctx->device.computeCmdPool  :
+                                VK_NULL_HANDLE;
+        vkFreeCommandBuffers(ctx->device.logical, cmdPool, 1, &handle);
         m_state = State::NOT_ALLOCATED;
     }
 
+    // TODO add check such that all types are equal, and if they are not either crash or fallback to free throwing a warning
     auto CommandBuffer::freeMany(VulkanContext* ctx, CommandBuffer* inOutCmdBuffers, uint32_t count) -> void 
     {
         MXC_ASSERT(!any(inOutCmdBuffers, count, 
@@ -90,8 +107,12 @@ namespace mxc
         {
             tempCmdBufs[i] = inOutCmdBuffers[i].handle;
         }
+        VkCommandPool cmdPool = inOutCmdBuffers[0].m_type == CommandType::GRAPHICS ? ctx->device.graphicsCmdPool :
+                                inOutCmdBuffers[0].m_type == CommandType::TRANSFER ? ctx->device.transferCmdPool :
+                                inOutCmdBuffers[0].m_type == CommandType::COMPUTE  ? ctx->device.computeCmdPool  :
+                                VK_NULL_HANDLE;
 
-        vkFreeCommandBuffers(ctx->device.logical, ctx->device.commandPool, count, tempCmdBufs.data());
+        vkFreeCommandBuffers(ctx->device.logical, cmdPool, count, tempCmdBufs.data());
         for (uint32_t i = 0; i != count; ++i)
         {
             inOutCmdBuffers[i].handle = VK_NULL_HANDLE;

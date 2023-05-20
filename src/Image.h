@@ -37,15 +37,14 @@ namespace mxc
 			, baseMipLevel(baseMipLevel), levelCount(levelCount)
 			, baseArrayLayer(baseArrayLayer), layerCount(layerCount) {}
 
-		// potentially unsafe
-		Image const* pImage = nullptr;
 		VkImageView handle = VK_NULL_HANDLE;
 		VkImageViewType viewType;
 		// subresourcerange, but with uint8_t
 		VkImageAspectFlags aspectMask; 
 		uint8_t baseMipLevel, levelCount, baseArrayLayer, layerCount;
 
-		auto isValid() -> bool { return handle != VK_NULL_HANDLE && pImage && pImage->handle != VK_NULL_HANDLE; }
+		// TODO this is still not enough to guarantee that the image hasn't been destroyed
+		auto isValid() -> bool { return handle != VK_NULL_HANDLE; }
 	};
 	
 	struct Texture

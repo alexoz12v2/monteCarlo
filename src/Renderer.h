@@ -49,7 +49,7 @@ namespace mxc
         PFN_vkCmdEndDebugUtilsLabelEXT m_pfnCmdEndDebugUtilsLabelEXT;
 #endif
 	private:
-		auto createDepthImages() -> bool;
+		auto createDepthImages(DepthFormatProperties_t const depthFormatProperties) -> bool;
         auto destroyDepthImages() -> void;
 
         // TODO encapsulate renderpass in VulkanContext

@@ -126,14 +126,13 @@ namespace mxc
     auto Device::destroy([[maybe_unused]] VulkanContext* ctx) -> bool
     {
         // free all allocations.
-        if (m_allocations.size() != 0)
-        {
-            MXC_WARN("Freeing %zu allocations on device. This may mean that some Vulkan Handles have not been destroyed yet...", m_allocations.size());
-        }
         for (uint32_t i = 0; i != m_allocations.size(); ++i)
         {
             if (!m_allocations[i].freed)
+            {
+                MXC_WARN("Freeing an allocation on device. This may mean that some Vulkan Handles have not been destroyed yet...");
                 vmaFreeMemory(vmaAllocator, m_allocations[i].allocation);
+            }
         }
 
         // Unset queues
@@ -142,8 +141,12 @@ namespace mxc
         transferQueue = VK_NULL_HANDLE;
 
         MXC_INFO("Destroying command pools...");
-        vkDestroyCommandPool(logical, commandPool, nullptr);
-        commandPool = VK_NULL_HANDLE;
+        vkDestroyCommandPool(logical, graphicsCmdPool, nullptr);
+        vkDestroyCommandPool(logical, computeCmdPool, nullptr);
+        vkDestroyCommandPool(logical, transferCmdPool, nullptr);
+        graphicsCmdPool = VK_NULL_HANDLE; 
+        computeCmdPool  = VK_NULL_HANDLE; 
+        transferCmdPool = VK_NULL_HANDLE; 
 
         MXC_INFO("Destroying VMA allocator...");
         vmaDestroyAllocator(vmaAllocator);
@@ -203,11 +206,18 @@ namespace mxc
         }
 
         // Request device features. TODO maybe
-        // VkPhysicalDeviceFeatures device_features = {};
-        // device_features.samplerAnisotropy = VK_TRUE;  // Request anistropy
+        VkPhysicalDeviceFeatures2 features2{};
+        features2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
+
+        VkPhysicalDeviceVulkan13Features features13{};
+        features13.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
+        features13.synchronization2 = VK_TRUE;
+        
+        features2.pNext = &features13;
 
         VkDeviceCreateInfo deviceCreateInfo = {};
         deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        deviceCreateInfo.pNext = &features2;
         deviceCreateInfo.queueCreateInfoCount = uniqueFamily_count;
         deviceCreateInfo.pQueueCreateInfos = queueCreateInfos;
         deviceCreateInfo.pEnabledFeatures = nullptr;
@@ -230,13 +240,20 @@ namespace mxc
         vkGetDeviceQueue(logical, queueFamilies.compute, 0, &computeQueue);
         MXC_INFO("Queues obtained.");
 
-        // Create command pool for graphics queue. TODO create a queue for each unique family
+        // Create command pool for graphics queue. TODO create for each unique family
         VkCommandPoolCreateInfo poolCreateInfo = {};
         poolCreateInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        poolCreateInfo.queueFamilyIndex = queueFamilies.graphics;
         poolCreateInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-        VK_CHECK(vkCreateCommandPool(logical, &poolCreateInfo, nullptr, &commandPool));
-        MXC_INFO("command pool created.");
+
+        poolCreateInfo.queueFamilyIndex = queueFamilies.graphics;
+        VK_CHECK(vkCreateCommandPool(logical, &poolCreateInfo, nullptr, &graphicsCmdPool));
+
+        poolCreateInfo.queueFamilyIndex = queueFamilies.compute;
+        VK_CHECK(vkCreateCommandPool(logical, &poolCreateInfo, nullptr, &computeCmdPool));
+
+        poolCreateInfo.queueFamilyIndex = queueFamilies.transfer;
+        VK_CHECK(vkCreateCommandPool(logical, &poolCreateInfo, nullptr, &transferCmdPool));
+        MXC_INFO("command pools created.");
         
         // Create VMA Allocator
         VmaAllocatorCreateInfo allocatorCreateInfo = {};
@@ -404,7 +421,21 @@ namespace mxc
             }
         }
 
-        // Features TODO
+        // Features TODO: configurable. Now I will hardcode request for synchronization2 feature
+        VkPhysicalDeviceFeatures2 features2{};
+        features2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
+
+        VkPhysicalDeviceVulkan13Features features13{};
+        features13.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES;
+        
+        features2.pNext = &features13;
+        vkGetPhysicalDeviceFeatures2(physicalDevice, &features2);
+
+        if (features13.synchronization2 != VK_TRUE)
+        {
+            MXC_TRACE("device doesn't support synchronization2 feature, skipping device...");
+            return false;
+        }
 
         // Device meets all requirements.
         return true;
@@ -450,7 +481,7 @@ namespace mxc
         return true;
     }
 
-    auto Device::selectDepthFormat(VkFormat* outDepthFormat, DepthFormatProperties* outDepthFormatProps) const -> bool
+    auto Device::selectDepthFormat(VkFormat* outDepthFormat, DepthFormatProperties_t* outDepthFormatProps) const -> bool
     {
         // Format candidates
         // Since all depth formats may be optional, we need to find a suitable depth format to use
@@ -479,17 +510,17 @@ namespace mxc
                     (candidateDepthFormats[i] == VK_FORMAT_D32_SFLOAT_S8_UINT ||
                     candidateDepthFormats[i] == VK_FORMAT_D32_SFLOAT ||
                     candidateDepthFormats[i] == VK_FORMAT_D24_UNORM_S8_UINT ||
-                    candidateDepthFormats[i] == VK_FORMAT_D16_UNORM_S8_UINT) ? DepthFormatProperties::SUPPORTS_STENCIL : DepthFormatProperties::NONE;
+                    candidateDepthFormats[i] == VK_FORMAT_D16_UNORM_S8_UINT) ? DepthFormatProperties_v::SUPPORTS_STENCIL: DepthFormatProperties_v::NONE;
                 return true;
             } 
-            else if (tiling == VK_IMAGE_TILING_LINEAR && (properties.optimalTilingFeatures & flags) == flags) 
+            else if (tiling == VK_IMAGE_TILING_OPTIMAL && (properties.optimalTilingFeatures & flags) == flags) 
             {
                 *outDepthFormat = candidateDepthFormats[i];
                 if (outDepthFormatProps) *outDepthFormatProps =
                     (candidateDepthFormats[i] == VK_FORMAT_D32_SFLOAT_S8_UINT ||
                     candidateDepthFormats[i] == VK_FORMAT_D32_SFLOAT ||
                     candidateDepthFormats[i] == VK_FORMAT_D24_UNORM_S8_UINT ||
-                    candidateDepthFormats[i] == VK_FORMAT_D16_UNORM_S8_UINT) ? DepthFormatProperties::SUPPORTS_STENCIL : DepthFormatProperties::NONE;
+                    candidateDepthFormats[i] == VK_FORMAT_D16_UNORM_S8_UINT) ? DepthFormatProperties_v::SUPPORTS_STENCIL: DepthFormatProperties_v::NONE;
                 return true;
             }
         }
@@ -547,8 +578,6 @@ namespace mxc
             inOutBuffer->memoryPropertyFlags = chooseMemoryPropertyFlags(options);
         }
         
-        VK_CHECK(vkCreateBuffer(logical, &bufferCreateInfo, nullptr, &inOutBuffer->handle));
-
         // memory index, memory requirements, mapped
         // Note TODO: might need to make this configurable
         MXC_DEBUG("Allocating memory for the Buffer...");
@@ -558,8 +587,7 @@ namespace mxc
         // TODO use vmaSetAllocationName for debug
         VmaAllocation allocation;
         VmaAllocationInfo allocationInfo;
-        VK_CHECK(vmaAllocateMemoryForBuffer(vmaAllocator, inOutBuffer->handle, &allocationCreateInfo, &allocation, &allocationInfo));
-        VK_CHECK(vmaBindBufferMemory(vmaAllocator, allocation, inOutBuffer->handle));
+        VK_CHECK(vmaCreateBuffer(vmaAllocator, &bufferCreateInfo, &allocationCreateInfo, &inOutBuffer->handle, &allocation, &allocationInfo));
         if ((inOutBuffer->type & BufferType_v::STAGING) == BufferType_v::STAGING) inOutBuffer->mapped = allocationInfo.pMappedData;
 
         inOutBuffer->allocationIndex = static_cast<uint32_t>(m_allocations.size());
@@ -576,14 +604,13 @@ namespace mxc
         MXC_ASSERT(inOutBuffer, "destroyBuffer function requires a valid Buffer object");
         MXC_ASSERT(inOutBuffer->type != BufferType_v::INVALID, "Cannot free an invalid buffer");
         MXC_DEBUG("Destroying a Buffer");
-        vmaFreeMemory(vmaAllocator, m_allocations[inOutBuffer->allocationIndex].allocation);
+        vmaDestroyBuffer(vmaAllocator, inOutBuffer->handle, m_allocations[inOutBuffer->allocationIndex].allocation);
+
         m_allocations[inOutBuffer->allocationIndex].freed = true;
         inOutBuffer->allocationIndex = UINT32_MAX;
         inOutBuffer->mapped = nullptr;
         inOutBuffer->type = BufferType_v::INVALID; // these 2 need to be reset manually if you want to reuse this buffer again
         inOutBuffer->size = 0;
-
-        vkDestroyBuffer(logical, inOutBuffer->handle, nullptr);
         inOutBuffer->handle = VK_NULL_HANDLE;
     }
 
@@ -599,9 +626,9 @@ namespace mxc
         VkQueue queue;
         switch (type)
         {
-            case CommandType::GRAPHICS: queue = graphicsQueue;
-            case CommandType::TRANSFER: queue = transferQueue;
-            case CommandType::COMPUTE:  queue = computeQueue;
+            case CommandType::GRAPHICS: queue = graphicsQueue; break;
+            case CommandType::TRANSFER: queue = transferQueue; break;
+            case CommandType::COMPUTE:  queue = computeQueue;  break;
         }
 
         MXC_ASSERT(pCmdBuf->isPrimary(), "Cannot submit a secondary command buffer");
@@ -633,7 +660,7 @@ namespace mxc
 
         // Note TODO: creating a command buffer each copy op might hurt performance if copy ops are invoked during render loop
         CommandBuffer copyCmdBuf;
-        MXC_ASSERT(copyCmdBuf.allocate(ctx), "couldn't allocate copy Command Buffer");
+        MXC_ASSERT(copyCmdBuf.allocate(ctx, CommandType::TRANSFER), "couldn't allocate copy Command Buffer");
         VkBufferCopy2 bufferCopy {
             .sType = VK_STRUCTURE_TYPE_BUFFER_COPY_2,
             .pNext = nullptr,
@@ -689,18 +716,14 @@ namespace mxc
             .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
         };
 
-        VK_CHECK(vkCreateImage(logical, &imageCreateInfo, nullptr, &inOutImage->handle));
-
         MXC_DEBUG("Allocating memory for the image");
         VmaAllocationCreateInfo allocationCreateInfo{};
-        VK_CHECK(vmaFindMemoryTypeIndexForImageInfo(vmaAllocator, &imageCreateInfo, &allocationCreateInfo, &inOutImage->memoryIndex));
 
         // TODO use vmaSetAllocationName for debug
         VmaAllocation allocation;
         VmaAllocationInfo allocationInfo{};
         allocationCreateInfo.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
-        VK_CHECK(vmaAllocateMemoryForImage(vmaAllocator, inOutImage->handle, &allocationCreateInfo, &allocation, &allocationInfo));
-        VK_CHECK(vmaBindImageMemory(vmaAllocator, allocation, inOutImage->handle));
+        VK_CHECK(vmaCreateImage(vmaAllocator, &imageCreateInfo, &allocationCreateInfo, &inOutImage->handle, &allocation, &allocationInfo));    
 
         inOutImage->allocationIndex = static_cast<uint32_t>(m_allocations.size());
         // m_allocations.emplace_back(allocation, false); error: no matching function for call to 'construct_at'
@@ -713,7 +736,7 @@ namespace mxc
             MXC_TRACE("Target Layout given to image Creation, performing memory barrier operation");
 
             CommandBuffer cmdBuf;
-            MXC_ASSERT(cmdBuf.allocate(ctx), "Couldn't allocate image memory barrier command buffer");
+            MXC_ASSERT(cmdBuf.allocate(ctx, CommandType::GRAPHICS), "Couldn't allocate image memory barrier command buffer");
 
             cmdBuf.begin();
             MXC_ASSERT(cmdBuf.canRecord(), "Image memory barrier Command Buffer is not in recording state");
@@ -738,13 +761,12 @@ namespace mxc
     auto Device::destroyImage(Image* inOutImage) -> void
     {
         // free associated memory TODO add more debug info  
-        MXC_ASSERT(inOutImage, "destroyImage function requires a valid Image object");
-        MXC_DEBUG("Destroying a Image");
-        vmaFreeMemory(vmaAllocator, m_allocations[inOutImage->allocationIndex].allocation);
+        MXC_ASSERT(inOutImage && (inOutImage->handle != VK_NULL_HANDLE), "destroyImage function requires a valid Image object");
+        MXC_DEBUG("Destroying a Image %p", inOutImage->handle);
+        vmaDestroyImage(vmaAllocator, inOutImage->handle, m_allocations[inOutImage->allocationIndex].allocation);
+
         m_allocations[inOutImage->allocationIndex].freed = true;
         inOutImage->allocationIndex = UINT32_MAX;
-
-        vkDestroyImage(logical, inOutImage->handle, nullptr);
         inOutImage->handle = VK_NULL_HANDLE;
     }
 
@@ -987,6 +1009,8 @@ namespace mxc
             res.flags = GPUonlyResource ? VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT : (VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT | VMA_ALLOCATION_CREATE_HOST_ACCESS_ALLOW_TRANSFER_INSTEAD_BIT);
         }
         
+        if (GPUonlyResource && (type & BufferType_v::STAGING) != BufferType_v::STAGING) res.requiredFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+        else res.requiredFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
         return res;
     }
 }
