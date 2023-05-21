@@ -11,7 +11,7 @@ namespace mxc
         {
             case ApplicationSignal_v::NONE: break;
             case ApplicationSignal_v::REMOVE_LAYER: 
-                m_layers[emitterLayerIndex].layer.shutdown(); 
+                m_layers[emitterLayerIndex].layer.shutdown(*this); 
                 removeLayerEventHandlers(m_layers[emitterLayerIndex].name);
                 m_layers.erase(m_layers.cbegin() + emitterLayerIndex);
                 break;
@@ -35,9 +35,11 @@ namespace mxc
     auto Application::pushLayer(ApplicationLayer const& layer, LayerName name, bool initializeNow) -> bool
     {
         m_layers.push_back({layer, name, false});
+        MXC_TRACE("Pushing layer \"%s\"", name);
+        MXC_TRACE("Now the application has %zu layers", m_layers.size());
         if (initializeNow) 
         {
-            if (!m_layers.back().layer.init())
+            if (!m_layers.back().layer.init(*this))
             {
                 m_layers.pop_back();
                 return false;
@@ -56,7 +58,7 @@ namespace mxc
             if (!layer.isInit)
             {
                 // TODO how to handle errors, maybe add error handler to ApplicationLayer
-                layer.layer.init();
+                layer.layer.init(*this);
                 layer.isInit = true;
             }
         }
@@ -65,7 +67,7 @@ namespace mxc
 
     auto Application::run() -> void
     {
-        while (m_layers.empty())
+        while (!m_layers.empty())
         {
             ApplicationSignal_t sig = tick();
             if ((sig & ApplicationSignal_v::FATAL_ERROR) == ApplicationSignal_v::FATAL_ERROR) 
@@ -77,12 +79,12 @@ namespace mxc
 
     auto Application::tick() -> ApplicationSignal_t
     {
-        for (uint32_t i = 0; i != m_layers.size(); ++i)
+        for (uint32_t i = 0; !m_layers.empty() && i != m_layers.size(); ++i)
         {
             if (m_layers[i].isInit)
             {
                 // TODO how to handle errors, maybe add error handler to ApplicationLayer
-                ApplicationSignal_t sig = m_layers[i].layer.tick();
+                ApplicationSignal_t sig = m_layers[i].layer.tick(*this);
                 handleSignal(sig, i);
             }
         }
@@ -97,7 +99,7 @@ namespace mxc
             std::vector<std::vector<InternalLayer>::iterator>& layerReferences = m_eventHandlers.find(name)->second;
             for (uint32_t i = 0; i != layerReferences.size(); ++i)
             {
-                ApplicationSignal_t sig = layerReferences[i]->layer.handler(name, data);
+                ApplicationSignal_t sig = layerReferences[i]->layer.handler(*this, name, data);
                 handleSignal(sig, i);
             }
         }
@@ -134,7 +136,7 @@ namespace mxc
         {
             if (layer.isInit)
             {
-                layer.layer.shutdown();
+                layer.layer.shutdown(*this);
             }
         }
     }
@@ -156,7 +158,7 @@ auto main([[maybe_unused]]int32_t argc, [[maybe_unused]]char** argv) -> int32_t
 	mxc::Application app;
 
 	MXC_INFO("Initializing application...");
-	if (!initializeApplication(app))
+	if (!initializeApplication(app) || !app.init())
 	{	
 		MXC_ERROR("Couldn't initialize application");
 		return 1;

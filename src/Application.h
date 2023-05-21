@@ -29,10 +29,10 @@ namespace mxc
 	using LayerName = char const*;
 	using EventName = char const*;
 
-	using PFN_LayerInit = bool(*)();
-	using PFN_LayerTick = ApplicationSignal_t(*)();
-	using PFN_LayerShutdown = void(*)();
-	using PFN_EventHandler = ApplicationSignal_t(*)(EventName name, void* data);
+	using PFN_LayerInit = bool(*)(Application& app);
+	using PFN_LayerTick = ApplicationSignal_t(*)(Application& app);
+	using PFN_LayerShutdown = void(*)(Application& app);
+	using PFN_EventHandler = ApplicationSignal_t(*)(Application& app, EventName name, void* data);
 
 	// TODO define tags and metadata for layers to have priority execution. 
 	// TODO It could also be multithreaded. 
