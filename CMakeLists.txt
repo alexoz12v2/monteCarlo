@@ -7,7 +7,6 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 #   NDEBUG                  standard C++ macro which i'll use to define whether to compile with debug symbols or not    
 
 project(Project)
-add_executable(Project main.cpp)
 
 # using cmake module FindVulkan
 include(FindVulkan)
@@ -173,12 +172,12 @@ add_subdirectory("${PROJECT_SOURCE_DIR}/src")
 
 # link
 if(DEFINED ENV{VULKAN_SDK})
-    target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt "/run/media/alessio/5b5d3976-c146-4dae-b622-58b92b81d64f/HDD/DownloadsHDD/vulkansdk-linux-x86_64-1.3.243.0/1.3.243.0/x86_64/lib/libdxcompiler.so" Renderer X11-xcb xcb) 
+    set(EXEC_LIBS "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt "/run/media/alessio/5b5d3976-c146-4dae-b622-58b92b81d64f/HDD/DownloadsHDD/vulkansdk-linux-x86_64-1.3.243.0/1.3.243.0/x86_64/lib/libdxcompiler.so" Renderer X11-xcb xcb) 
 
-    target_link_directories(Project PUBLIC "$ENV{VulkanSDK_LIBRARIES}")
+    #target_link_directories(Project PUBLIC "$ENV{VulkanSDK_LIBRARIES}")
 else()
     # TODO find dxc
-    target_link_libraries(Project PUBLIC "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt Renderer X11-xcb xcb)
+    set(EXEC_LIBS "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt Renderer X11-xcb xcb)
 endif()
 
 # Define project properties (From Learning Vulkan by packt)
@@ -187,3 +186,19 @@ set_property(TARGET ${Recipe_Name} PROPERTY RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMA
 set_property(TARGET ${Recipe_Name} PROPERTY RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/build)
 set_property(TARGET ${Recipe_Name} PROPERTY RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_CURRENT_SOURCE_DIR}/build)
 set_property(TARGET ${Recipe_Name} PROPERTY RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_CURRENT_SOURCE_DIR}/build)
+
+# build executables
+set(INCLUDE_HEADERS 
+    "${CMAKE_CURRENT_SOURCE_DIR}/Device.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Renderer.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Swapchain.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/CommandBuffer.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/logging.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Shader.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Pipeline.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Application.h"
+    )
+
+set(SHADER_PARENT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/shaders")
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/execSrc)

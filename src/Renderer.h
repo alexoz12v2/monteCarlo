@@ -6,6 +6,7 @@
 #include "VulkanCommon.h"
 #include "Device.h"
 #include "Swapchain.h"
+#include "Pipeline.h"
 #include "CommandBuffer.h"
 
 #include "VulkanContext.inl"
@@ -49,7 +50,7 @@ namespace mxc
         PFN_vkCmdEndDebugUtilsLabelEXT m_pfnCmdEndDebugUtilsLabelEXT;
 #endif
 	private:
-		auto createDepthImages(DepthFormatProperties_t const depthFormatProperties) -> bool;
+        auto createDepthImages(DepthFormatProperties_t const depthFormatProperties) -> bool;
         auto destroyDepthImages() -> void;
 
         // TODO encapsulate renderpass in VulkanContext
@@ -60,9 +61,6 @@ namespace mxc
         auto createPresentFramebuffers() -> bool;
         auto destroyPresentFramebuffers() -> void;
 	};
-
-	// https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkResult.html, only some
-	auto VulkanResultToString(VkResult) -> char const*;
 }
 
 #endif // MXC_RENDERER_H

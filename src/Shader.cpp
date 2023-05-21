@@ -106,7 +106,7 @@ namespace mxc
                        || config.stageFlags[i] == VK_SHADER_STAGE_FRAGMENT_BIT 
                        || config.stageFlags[i] == VK_SHADER_STAGE_COMPUTE_BIT
                        , "Provided Shader Stage not supported");
-            stages[i].shaderStageCI = {
+            stages[i] = {
     		.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
     		.pNext = nullptr, // TODO maybe debug utils
     		.flags = 0,
@@ -120,10 +120,14 @@ namespace mxc
         }
 
         // save inputs to vertex shader
-        attributeDescriptions_count = config.attributeDescriptions_count;
-        for (uint32_t i = 0; i != attributeDescriptions_count; ++i)
+        if (attributeDescriptions_count != 0)
         {
-            attributeDescriptions[i] = config.attributeDescriptions[i];
+            bindingDescription = config.bindingDescription;
+            attributeDescriptions_count = config.attributeDescriptions_count;
+            for (uint32_t i = 0; i != attributeDescriptions_count; ++i)
+            {
+                attributeDescriptions[i] = config.attributeDescriptions[i];
+            }
         }
         return true;
     }
@@ -133,7 +137,7 @@ namespace mxc
         resources.destroy(ctx);
         for (uint8_t i = 0; i != stages.size(); ++i)
         {
-            vkDestroyShaderModule(ctx->device.logical, stages[i].shaderStageCI.module, nullptr);
+            vkDestroyShaderModule(ctx->device.logical, stages[i].module, nullptr);
         }
     }
 

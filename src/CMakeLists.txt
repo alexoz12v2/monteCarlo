@@ -54,4 +54,6 @@ target_sources(Renderer PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/CommandBuffer.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/logging.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/Shader.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Pipeline.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Application.cpp"
     )

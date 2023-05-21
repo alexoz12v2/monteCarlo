@@ -34,7 +34,7 @@ namespace mxc
 		auto copy(VulkanContext* ctx, uint8_t srcDescriptorSet, uint8_t dstDescriptorSet, uint8_t binding, uint8_t arrayElement, uint8_t count) -> void;
 
 	public:
-		VkDescriptorPool descriptorPool;
+		VkDescriptorPool descriptorPool; // TODO remove this bottleneck
 		VkDescriptorSetLayout descriptorSetLayout;
 		VkDescriptorSet descriptorSets[MAX_DESCRIPTOR_SETS_COUNT]; // as many as framebuffers/command buffers
 		VkDescriptorUpdateTemplate descriptorUpdateTemplate;
@@ -60,13 +60,12 @@ namespace mxc
 
 		VkVertexInputAttributeDescription const* attributeDescriptions; 
 		uint32_t attributeDescriptions_count;
+
+		VkVertexInputBindingDescription bindingDescription;
 	};
 
-	struct ShaderStage
-	{
-		VkPipelineShaderStageCreateInfo shaderStageCI;
-	};
-
+	// Note TODO Maybe add support for storage of more shader resources, and then choose one? Or sets with different layouts?
+	// TODO refactor resorces and vertices out of this class
 	class ShaderSet
 	{
 		static uint32_t constexpr MAX_SHADER_ATTRIBUTES = 16;
@@ -74,10 +73,11 @@ namespace mxc
 		auto create(VulkanContext* ctx, ShaderConfiguration const& config, ResourceConfiguration const& resConfig) -> bool;
 		auto destroy(VulkanContext* ctx) -> void;
 
-		std::vector<ShaderStage> stages;
+		std::vector<VkPipelineShaderStageCreateInfo> stages;
 
 		ShaderResources resources;
 		VkVertexInputAttributeDescription attributeDescriptions[MAX_SHADER_ATTRIBUTES];
+		VkVertexInputBindingDescription bindingDescription;
 		uint32_t attributeDescriptions_count = 0;
 	};
 }

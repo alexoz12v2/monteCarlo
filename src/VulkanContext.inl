@@ -7,6 +7,7 @@
 #include "Image.h"
 #include "Swapchain.h"
 #include "CommandBuffer.h"
+#include "Pipeline.h"
 
 // TODO remove vector
 #include <vector>
