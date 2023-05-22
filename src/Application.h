@@ -21,7 +21,8 @@ namespace mxc
 		{
 			NONE = 0,
 			REMOVE_LAYER = 1,
-			FATAL_ERROR = 1<<1
+			FATAL_ERROR = 1<<1,
+			CLOSE_APP = 1<<2
 		};
 	}
 	using ApplicationSignal_t = ApplicationSignal_v::T;
@@ -29,10 +30,10 @@ namespace mxc
 	using LayerName = char const*;
 	using EventName = char const*;
 
-	using PFN_LayerInit = bool(*)(Application& app);
-	using PFN_LayerTick = ApplicationSignal_t(*)(Application& app);
-	using PFN_LayerShutdown = void(*)(Application& app);
-	using PFN_EventHandler = ApplicationSignal_t(*)(Application& app, EventName name, void* data);
+	using PFN_LayerInit = bool(*)(Application& app, void* layerData);
+	using PFN_LayerTick = ApplicationSignal_t(*)(Application& app, float deltaTime, void* layerData);
+	using PFN_LayerShutdown = void(*)(Application& app, void* layerData);
+	using PFN_EventHandler = ApplicationSignal_t(*)(Application& app, EventName name, void* layerData, void* eventData);
 
 	// TODO define tags and metadata for layers to have priority execution. 
 	// TODO It could also be multithreaded. 
@@ -58,6 +59,8 @@ namespace mxc
 	class Application
 	{
 		static uint32_t constexpr INITIAL_LAYERS_CAPACITY = 16;
+		static float constexpr MIN_DELTA_TIME = 1.f/500; 
+		static float constexpr MAX_DELTA_TIME = 0.4f;
 
 		friend auto ::main([[maybe_unused]]int32_t argc, [[maybe_unused]]char** argv) -> int32_t;
 	public:
@@ -67,31 +70,39 @@ namespace mxc
 		auto emitEvent(EventName name, void* data) -> void;
 		auto registerHandler(EventName name, LayerName listener) -> void;
 
+		static inline auto isEvent(EventName x, EventName y) -> bool { return strcmp(x,y) == 0; }
+
 	private:
-		Application();
-
-		auto run() -> void;
-		
-		auto init() -> bool;
-		auto tick() -> ApplicationSignal_t;
-		auto shutdown() -> void;
-
-		auto handleSignal(ApplicationSignal_t sig, uint32_t emitterLayerIndex) -> void;
-		auto removeLayerEventHandlers(LayerName name) -> void;
-
 		struct InternalLayer
 		{
 			ApplicationLayer layer;
 			LayerName name;
 			bool isInit;
 		};
+		using InternalLayerPointer = std::vector<InternalLayer>::iterator;
 
+		enum class ApplicationState {OK, ERR, CLOSING};
+
+	private:
+		Application();
+
+		auto run() -> void;
+		
+		auto init() -> bool;
+		auto tick(float deltaTime) -> void;
+		auto shutdown() -> void;
+
+		auto handleSignal(ApplicationSignal_t sig, uint32_t emitterLayerIndex) -> bool;
+		auto removeLayerEventHandlers(LayerName name) -> void;
+
+		std::unordered_map<EventName, std::vector<InternalLayerPointer>> m_eventHandlers;
 		std::vector<InternalLayer> m_layers;
-		std::unordered_map<EventName, std::vector<std::vector<InternalLayer>::iterator>> m_eventHandlers;
+		std::vector<uint32_t> m_removeIndices;
+		ApplicationState m_state = ApplicationState::OK;
 	};
 }
 
 // defined by user. Adds all necessary layers to the application
-auto initializeApplication(mxc::Application& app) -> bool;
+auto initializeApplication(mxc::Application& app, int32_t argc, char** argv) -> bool;
 
 #endif
