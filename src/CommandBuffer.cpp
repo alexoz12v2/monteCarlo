@@ -85,8 +85,9 @@ namespace mxc
 
     auto CommandBuffer::free(VulkanContext* ctx) -> void
     {
-        MXC_ASSERT(!(m_state == State::RECORDING || m_state == State::PENDING || m_state == State::NOT_ALLOCATED), 
-                   "Cannot free a busy/not allocated Command Buffer!");
+        // TODO remove and put queue idle based on type of command buffer
+        reset();
+        VK_CHECK(vkDeviceWaitIdle(ctx->device.logical));
         VkCommandPool cmdPool = m_type == CommandType::GRAPHICS ? ctx->device.graphicsCmdPool :
                                 m_type == CommandType::TRANSFER ? ctx->device.transferCmdPool :
                                 m_type == CommandType::COMPUTE  ? ctx->device.computeCmdPool  :
@@ -98,13 +99,11 @@ namespace mxc
     // TODO add check such that all types are equal, and if they are not either crash or fallback to free throwing a warning
     auto CommandBuffer::freeMany(VulkanContext* ctx, CommandBuffer* inOutCmdBuffers, uint32_t count) -> void 
     {
-        MXC_ASSERT(!any(inOutCmdBuffers, count, 
-                        [](CommandBuffer const& c)->bool
-                        { return c.m_state == State::RECORDING || c.m_state == State::PENDING || c.m_state == State::NOT_ALLOCATED; })
-                   , "Cannot free a busy/not allocated Command Buffer!");
+        VK_CHECK(vkDeviceWaitIdle(ctx->device.logical));
         std::vector<VkCommandBuffer> tempCmdBufs(count);
         for (uint32_t i = 0; i != count; ++i)
         {
+            inOutCmdBuffers[i].reset();
             tempCmdBufs[i] = inOutCmdBuffers[i].handle;
         }
         VkCommandPool cmdPool = inOutCmdBuffers[0].m_type == CommandType::GRAPHICS ? ctx->device.graphicsCmdPool :

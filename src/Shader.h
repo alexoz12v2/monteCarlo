@@ -34,8 +34,8 @@ namespace mxc
 		auto copy(VulkanContext* ctx, uint8_t srcDescriptorSet, uint8_t dstDescriptorSet, uint8_t binding, uint8_t arrayElement, uint8_t count) -> void;
 
 	public:
-		VkDescriptorPool descriptorPool; // TODO remove this bottleneck
-		VkDescriptorSetLayout descriptorSetLayout;
+		VkDescriptorPool descriptorPool = VK_NULL_HANDLE; // TODO remove this bottleneck
+		VkDescriptorSetLayout descriptorSetLayout = VK_NULL_HANDLE;
 		VkDescriptorSet descriptorSets[MAX_DESCRIPTOR_SETS_COUNT]; // as many as framebuffers/command buffers
 		VkDescriptorUpdateTemplate descriptorUpdateTemplate;
 		uint8_t descriptorSets_count = 0;
@@ -59,9 +59,9 @@ namespace mxc
 		uint32_t stage_count;
 
 		VkVertexInputAttributeDescription const* attributeDescriptions; 
+		VkVertexInputBindingDescription const* bindingDescriptions;
+		uint32_t bindingDescriptions_count;
 		uint32_t attributeDescriptions_count;
-
-		VkVertexInputBindingDescription bindingDescription;
 	};
 
 	// Note TODO Maybe add support for storage of more shader resources, and then choose one? Or sets with different layouts?
@@ -77,8 +77,10 @@ namespace mxc
 
 		ShaderResources resources;
 		VkVertexInputAttributeDescription attributeDescriptions[MAX_SHADER_ATTRIBUTES];
-		VkVertexInputBindingDescription bindingDescription;
+		VkVertexInputBindingDescription bindingDescriptions[MAX_SHADER_ATTRIBUTES];
 		uint32_t attributeDescriptions_count = 0;
+		uint32_t bindingDescriptions_count = 0;
+		bool noResources = false;
 	};
 }
 

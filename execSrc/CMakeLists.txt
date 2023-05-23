@@ -13,14 +13,17 @@ function(buildExec EXEC_NAME)
 
 	#add shader directories
 	set(SHADER_DIR ${SHADER_PARENT_DIR}/${EXEC_NAME})
+	message(STATUS ${CMAKE_CXX_FLAGS})
 
 	#executable, libraries
 	add_executable(${EXEC_NAME} ${EXEC_CPP})
+	target_compile_definitions(${EXEC_NAME} PRIVATE SHADER_DIR="${SHADER_DIR}")
+	target_compile_features(${EXEC_NAME} PRIVATE cxx_std_20)
 	target_link_libraries(${EXEC_NAME} ${EXEC_LIBS})
 
 endfunction(buildExec)
 
-set(EXECS test)
+set(EXECS test cubeTest)
 
 foreach(EXEC ${EXECS})
 	buildExec(${EXEC})

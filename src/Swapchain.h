@@ -47,8 +47,8 @@ namespace mxc
 
 		auto initInstanceFunctionPointers(VulkanContext* ctx) -> bool;
 		auto initDeviceFunctionPointers(VulkanContext* ctx) -> bool;
-		auto acquireNextImage(VulkanContext* ctx, VkSemaphore imageAvailableSemaphore, uint32_t timeout_ns, VkFence signalFence, uint32_t* outIndex) -> bool;
-		auto present(VulkanContext* ctx, VkSemaphore renderCompleteSemaphore);
+		auto acquireNextImage(VulkanContext* ctx, VkSemaphore imageAvailableSemaphore, uint32_t timeout_ns = 100000, VkFence signalFence = VK_NULL_HANDLE, uint32_t* outIndex = nullptr) -> bool;
+		auto present(VulkanContext* ctx, VkSemaphore renderCompleteSemaphore) -> void;
 
 	public:
 		VkSurfaceFormatKHR imageFormat;

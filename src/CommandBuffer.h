@@ -29,6 +29,7 @@ namespace mxc
 
 		auto canRecord() const -> bool { return m_state == State::RECORDING; }
 		auto isExecutable() const -> bool { return m_state == State::EXECUTABLE; }
+		auto isPending() const -> bool { return m_state == State::PENDING; }
 		auto isPrimary() const -> bool { return m_level == VK_COMMAND_BUFFER_LEVEL_PRIMARY; }
 
 		VkCommandBuffer handle = VK_NULL_HANDLE;

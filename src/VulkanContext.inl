@@ -35,6 +35,7 @@ namespace mxc
 		VkSurfaceKHR surface = VK_NULL_HANDLE;
 		Swapchain swapchain;
 
+		// TODO maybe to change to some other structure, cause we need command buffers for compute too
 		std::vector<CommandBuffer> commandBuffers; // as many as frames in flight, ie maxSwapchainImages-1 in the common case
 		std::vector<FrameObjects> syncObjs;
 
@@ -42,6 +43,7 @@ namespace mxc
 		std::vector<VkFramebuffer> presentFramebuffers;
 		uint32_t framebufferWidth;
 		uint32_t framebufferHeight;
+		uint32_t currentFramebufferIndex = 0;
 		
 		VkFormat depthFormat;
 		struct ImageViewPair {Image image; ImageView view;};

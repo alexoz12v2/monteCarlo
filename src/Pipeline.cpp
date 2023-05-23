@@ -22,7 +22,7 @@ namespace mxc
             ComputePipelineConfig const config {
                 .descriptorSetLayouts = &shaderSet.resources.descriptorSetLayout,
                 .stage = shaderSet.stages[0],
-                .descriptorSetLayoutCount = 1, // TODO remove this limitation
+                .descriptorSetLayoutCount = shaderSet.noResources ? 0 : 1, // TODO remove this limitation
             };
 
             return create(ctx, config);
@@ -48,12 +48,12 @@ namespace mxc
                 .attributes = shaderSet.attributeDescriptions,
                 .descriptorSetLayouts = &shaderSet.resources.descriptorSetLayout,
                 .stages = shaderSet.stages.data(),
-                .vertexBuffersBindingDescs = &shaderSet.bindingDescription,
+                .vertexBuffersBindingDescs = shaderSet.bindingDescriptions,
                 .initialViewport = viewport,
                 .initialScissor = scissor,
-                .vertexBuffersCount = 1, // Note might give limitations
+                .vertexBuffersCount = shaderSet.bindingDescriptions_count,
                 .attributeCount = shaderSet.attributeDescriptions_count,
-                .descriptorSetLayoutCount = 1,
+                .descriptorSetLayoutCount = shaderSet.noResources ? 0 : 1,
                 .stageCount = static_cast<uint16_t>(shaderSet.stages.size()),
                 .subpass = 0
             };
@@ -86,6 +86,10 @@ namespace mxc
         vertexInputState.pVertexBindingDescriptions = config.vertexBuffersBindingDescs;
         vertexInputState.vertexAttributeDescriptionCount = config.attributeCount;
         vertexInputState.pVertexAttributeDescriptions = config.attributes;
+
+        MXC_ASSERT(vertexInputState.pVertexAttributeDescriptions[0].location == 0 &&
+                   vertexInputState.pVertexAttributeDescriptions[1].location == 1, "what, they are %u and %u",
+                   vertexInputState.pVertexAttributeDescriptions[0].location, vertexInputState.pVertexAttributeDescriptions[1].location);
 
         // input assembly state
         VkPipelineInputAssemblyStateCreateInfo inputAssemblyState{};

@@ -449,7 +449,8 @@ namespace mxc
         attachmentDescriptions[0].finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
         attachmentDescriptions[1].format = m_ctx.depthFormat;
-        attachmentDescriptions[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	attachmentDescriptions[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+	attachmentDescriptions[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
         attachmentDescriptions[1].finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
         // The source scope refers to the pipeline stages or memory access operations that occur before a synchronization command, while the 
         // destination scope refers to the pipeline stages or memory access operations that occur after the synchronization command.
@@ -542,6 +543,55 @@ namespace mxc
         }
         return true;
     }
+
+    auto Renderer::submitFrame() -> void
+    {
+        if (!m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].isExecutable()) m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].signalCompletion();
+        MXC_ASSERT(m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].isExecutable(), "command buffer is not executable");
+        
+        VkSemaphoreSubmitInfo waitSemaphoreInfo {
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO,
+            .pNext = nullptr,
+            .semaphore = m_ctx.syncObjs[m_ctx.currentFramebufferIndex].presentCompleteSemaphore,
+            .value = 0, // ignored for binary semaphores
+            .stageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+            .deviceIndex = 0, // index of a device within a group
+        };
+        VkCommandBufferSubmitInfo commandBufferInfo {
+            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO,
+            .pNext = nullptr,
+            .commandBuffer = m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].handle,
+            .deviceMask = 0
+        };
+        VkSemaphoreSubmitInfo signalSemaphoreInfo {
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO,
+            .pNext = nullptr,
+            .semaphore = m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore,
+            .value = 0, // ignored for binary semaphores
+            .stageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+            .deviceIndex = 0, // index of a device within a group
+        };
+        VkSubmitInfo2 submitInfo {
+            .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2,
+            .pNext = nullptr,
+            .flags = 0,
+            .waitSemaphoreInfoCount = 1, // presentCompleteSemaphores[m_ctx.currentFramebufferIndex]
+            .pWaitSemaphoreInfos = &waitSemaphoreInfo,
+            .commandBufferInfoCount = 1,
+            .pCommandBufferInfos = &commandBufferInfo,
+            .signalSemaphoreInfoCount = 1, // renderCompleteSemaphores[m_ctx.currentFramebufferIndex]
+            .pSignalSemaphoreInfos = &signalSemaphoreInfo
+        };
+
+        VK_CHECK(vkQueueSubmit2(m_ctx.device.graphicsQueue, 1, &submitInfo, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteFence));
+        m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].signalSubmit();
+        
+        // swapchain checks for resize and calls it if necessary
+        m_ctx.swapchain.present(&m_ctx, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore);
+
+        if (++m_ctx.currentFramebufferIndex >= m_ctx.presentFramebuffers.size())
+            m_ctx.currentFramebufferIndex = 0;
+    }
     
     auto Renderer::destroyPresentFramebuffers() -> void
     {
@@ -596,6 +646,24 @@ namespace mxc
         MXC_DEBUG("Vulkan depth images destroyed");
     }
 
+    auto Renderer::resetCommandBuffers() -> void
+    {
+        for (uint32_t i = 0; i != m_ctx.commandBuffers.size(); ++i)
+        {
+            m_ctx.commandBuffers[i].reset();
+        }
+    }
+
+    auto Renderer::resetCommandBuffersForDestruction() -> void
+    {
+        VK_CHECK(vkDeviceWaitIdle(m_ctx.device.logical));
+        for (uint32_t i = 0; i != m_ctx.commandBuffers.size(); ++i)
+        {
+            m_ctx.commandBuffers[i].signalCompletion();
+            m_ctx.commandBuffers[i].reset();
+        }
+    }
+
     auto createCommandBuffers(VulkanContext* ctx) -> void
     {
         uint32_t const count = static_cast<uint32_t>(ctx->swapchain.images.size());
@@ -604,7 +672,6 @@ namespace mxc
         MXC_DEBUG("Vulkan Command Buffers Allocated");
     }
 
-    
     constexpr auto renderPassCreateInfo2() -> VkRenderPassCreateInfo2
     {
         return {
@@ -680,4 +747,4 @@ namespace mxc
             .pPreserveAttachments = nullptr
         };
     }
-}
+} // namespace mxc

@@ -43,11 +43,12 @@ namespace mxc
 		// bool samplerAnisotropy ...
 	};
 
-	enum class StorageUniformMemoryOptions : uint8_t
+	enum class BufferMemoryOptions : uint8_t
 	{
-		STAGING_AND_TRANSFER = 0,
+		TRANSFER_DST = 0,
 		SYSTEM_MEMORY = 1,
-		DEVICE_LOCAL_HOST_VISIBLE = 2 // Note: not always supported, see https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/usage_patterns.html#usage_patterns_gpu_only
+		DEVICE_LOCAL_HOST_VISIBLE = 2, // Note: not always supported, see https://gpuopen-librariesandsdks.github.io/VulkanMemoryAllocator/html/usage_patterns.html#usage_patterns_gpu_only
+		GPU_ONLY = 3
 	};
 
 	namespace DepthFormatProperties_v
@@ -103,7 +104,8 @@ namespace mxc
 		auto create(VulkanContext* ctx, PhysicalDeviceRequirements const& requirements) -> bool;
 		auto destroy([[maybe_unused]] VulkanContext* ctx) -> bool; // to be called after vkDeviceWaitIdle
 		
-		auto createBuffer(Buffer* inOutBuffer, StorageUniformMemoryOptions options) -> bool;
+		auto createBuffer(Buffer* inOutBuffer, BufferMemoryOptions options = BufferMemoryOptions::GPU_ONLY) -> bool;
+		auto copyToBuffer(void const* data, VkDeviceSize size, Buffer* dst) -> bool;
 		auto copyBuffer(VulkanContext* ctx, Buffer const* src, Buffer* dst) -> bool;
 		auto destroyBuffer(Buffer* inOutBuffer) -> void;
 

@@ -6,6 +6,11 @@
 #include <array>
 #include <string>
 
+// TODO support for wchar_t logging
+#if defined(_DEBUG)
+#include <iostream>
+#endif
+
 #define CHECK_DXC_RESULT(idxcblob) \
     do{HRESULT status;\
     idxcblob->GetStatus(&status);\
@@ -98,7 +103,7 @@ namespace mxc
             CComPtr<IDxcBlob> compiledShader = compileShader(config.filenames[i]);
             VkShaderModule shaderModule;
 
-            createInfo.codeSize = static_cast<uint32_t>(compiledShader->GetBufferSize() / sizeof(uint32_t));
+            createInfo.codeSize = static_cast<uint32_t>(compiledShader->GetBufferSize()); // code size IN BYTES
             createInfo.pCode = reinterpret_cast<uint32_t const*>(compiledShader->GetBufferPointer());
             VK_CHECK(vkCreateShaderModule(ctx->device.logical, &createInfo, nullptr, &shaderModule));
 
@@ -116,17 +121,31 @@ namespace mxc
     		.pSpecializationInfo = nullptr // Note: might be useful in the future
             };
             
-            resources.create(ctx, resConfig, config.stageFlags);
+            if (resConfig.poolSizes_count != 0)
+            {
+                #if defined(_DEBUG)
+                if (!resConfig.pPoolSizes)
+                    MXC_WARN("creating shader resources with a poolSizes count > 0 but pPoolSizes == nullptr");
+                #endif
+                resources.create(ctx, resConfig, config.stageFlags);
+                noResources = false;
+            }
+            else
+                noResources = true;
         }
 
         // save inputs to vertex shader
-        if (attributeDescriptions_count != 0)
+        if (config.attributeDescriptions_count != 0)
         {
-            bindingDescription = config.bindingDescription;
             attributeDescriptions_count = config.attributeDescriptions_count;
+            bindingDescriptions_count = config.bindingDescriptions_count;
             for (uint32_t i = 0; i != attributeDescriptions_count; ++i)
             {
                 attributeDescriptions[i] = config.attributeDescriptions[i];
+            }
+            for (uint32_t i = 0; i != bindingDescriptions_count; ++i)
+            {
+                bindingDescriptions[i] = config.bindingDescriptions[i];
             }
         }
         return true;
@@ -134,7 +153,8 @@ namespace mxc
 
     auto ShaderSet::destroy(VulkanContext* ctx) -> void
     {
-        resources.destroy(ctx);
+        if (!noResources)
+            resources.destroy(ctx);
         for (uint8_t i = 0; i != stages.size(); ++i)
         {
             vkDestroyShaderModule(ctx->device.logical, stages[i].module, nullptr);
@@ -199,7 +219,10 @@ namespace mxc
     // https://registry.khronos.org/vulkan/site/guide/latest/hlsl.html
     auto compileShader(std::wstring filename) -> CComPtr<IDxcBlob> // TODO remove string
     {
-        // TODO RELEASE ALL MEMORY
+    #if defined(_DEBUG)
+        std::wcout << __FILE__ << L' ' << __LINE__ << L" [TRACE]: " << "filename of shader to compile = " << filename << L'\n';
+    #endif
+
         static bool compilerUninitialized = true;
         static CComPtr<IDxcLibrary> pLibrary{nullptr};
         static CComPtr<IDxcUtils> pUtils{nullptr};
@@ -286,7 +309,6 @@ namespace mxc
         // get the compilation result
         CComPtr<IDxcBlob> spirvBinaryCode;
         pResult->GetResult(&spirvBinaryCode);
-        MXC_TRACE("shader at %s compiled successfully", filename.c_str());
         return spirvBinaryCode;
     }
 

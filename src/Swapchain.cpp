@@ -248,7 +248,10 @@ namespace mxc
     auto Swapchain::acquireNextImage(VulkanContext* ctx, VkSemaphore imageAvailableSemaphore, 
                                      uint32_t timeout_ns, VkFence signalFence, uint32_t* outIndex) -> bool
     {
-        VkResult result = vkAcquireNextImageKHR(ctx->device.logical, handle, timeout_ns, imageAvailableSemaphore, signalFence, outIndex);
+        uint32_t imageIndex;
+        VkResult result = vkAcquireNextImageKHR(ctx->device.logical, handle, timeout_ns, imageAvailableSemaphore, signalFence, &imageIndex);
+        if (outIndex) *outIndex = imageIndex;
+        if (imageIndex != currentImageIndex) currentImageIndex = imageIndex;
 
         if (result == VK_ERROR_OUT_OF_DATE_KHR) {
             // Trigger swapchain recreation, then boot out of the render loop.
@@ -262,7 +265,7 @@ namespace mxc
         return true;
     }
 
-    auto Swapchain::present(VulkanContext* ctx, VkSemaphore renderCompleteSemaphore)
+    auto Swapchain::present(VulkanContext* ctx, VkSemaphore renderCompleteSemaphore) -> void
     {
         // Return the image to the swapchain for presentation.
         VkPresentInfoKHR presentInfo = {};

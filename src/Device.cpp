@@ -22,7 +22,7 @@
 namespace mxc
 {
     constexpr auto chooseVmaAllocationCI(BufferType_t type, bool preferCPUmemory, bool GPUonlyResource) -> VmaAllocationCreateInfo;
-    constexpr auto chooseMemoryPropertyFlags(StorageUniformMemoryOptions options) -> VkMemoryPropertyFlags;
+    constexpr auto chooseMemoryPropertyFlags(BufferMemoryOptions options) -> VkMemoryPropertyFlags;
 
     auto Device::selectPhysicalDevice(VulkanContext* ctx, PhysicalDeviceRequirements const& requirements) -> bool
     {
@@ -528,7 +528,7 @@ namespace mxc
         return false;
     }
 
-    auto Device::createBuffer(Buffer* inOutBuffer, StorageUniformMemoryOptions options) -> bool
+    auto Device::createBuffer(Buffer* inOutBuffer, BufferMemoryOptions options) -> bool
     {
         MXC_ASSERT(inOutBuffer, "createBuffer function requires a valid blank Buffer object");
         MXC_ASSERT(inOutBuffer->type != BufferType_v::INVALID, "Cannot free an invalid buffer");
@@ -564,6 +564,8 @@ namespace mxc
         {
             bufferCreateInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
             inOutBuffer->memoryPropertyFlags = chooseMemoryPropertyFlags(options);
+            MXC_ASSERT((inOutBuffer->memoryPropertyFlags & (VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)) != 0,
+                       "Staging buffer memory property flags set uncorrectly!");
         }
 
         // buffers can be read-write too, therefore no else if here
@@ -588,13 +590,28 @@ namespace mxc
         VmaAllocation allocation;
         VmaAllocationInfo allocationInfo;
         VK_CHECK(vmaCreateBuffer(vmaAllocator, &bufferCreateInfo, &allocationCreateInfo, &inOutBuffer->handle, &allocation, &allocationInfo));
-        if ((inOutBuffer->type & BufferType_v::STAGING) == BufferType_v::STAGING) inOutBuffer->mapped = allocationInfo.pMappedData;
+        if ((inOutBuffer->type & BufferType_v::STAGING) == BufferType_v::STAGING) 
+        {
+            inOutBuffer->mapped = allocationInfo.pMappedData;
+            MXC_TRACE("Mapping staging buffer to %p", inOutBuffer->mapped);
+            MXC_ASSERT(inOutBuffer->mapped, "Staging buffer mapped incorrectly (it's nullptr)");
+        }
 
         inOutBuffer->allocationIndex = static_cast<uint32_t>(m_allocations.size());
         // m_allocations.emplace_back(allocation, false); error: no matching function for call to 'construct_at'
         m_allocations.push_back({allocation, false});
 
         MXC_DEBUG("Buffer creation complete.");
+        return true;
+    }
+
+	auto Device::copyToBuffer(void const* data, VkDeviceSize size, Buffer* dst) -> bool
+    {
+        MXC_ASSERT( dst && dst->mapped && dst->type == BufferType_v::STAGING && 
+                    (dst->memoryPropertyFlags & (VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)) != 0,
+                    "need a valid, host visible, host coherent, staging buffer as destination for system memory data");
+        MXC_ASSERT(size <= dst->size, "Cannot copy more than what the buffer can contain");
+        memcpy(dst->mapped, data, size);
         return true;
     }
     
@@ -608,7 +625,7 @@ namespace mxc
 
         m_allocations[inOutBuffer->allocationIndex].freed = true;
         inOutBuffer->allocationIndex = UINT32_MAX;
-        inOutBuffer->mapped = nullptr;
+        inOutBuffer->mapped = nullptr; // Note: hoping that vmaDestroyBuffer also unbinds the buffer...
         inOutBuffer->type = BufferType_v::INVALID; // these 2 need to be reset manually if you want to reuse this buffer again
         inOutBuffer->size = 0;
         inOutBuffer->handle = VK_NULL_HANDLE;
@@ -659,6 +676,11 @@ namespace mxc
         MXC_ASSERT(dst->size <= src->size, "Cannot copy a buffer into a smaller one");
 
         // Note TODO: creating a command buffer each copy op might hurt performance if copy ops are invoked during render loop
+        VkDeviceSize copySize = src->size <= dst->size ? src->size : dst->size;
+    #if defined(_DEBUG)
+        if (src->size > dst->size)
+            MXC_WARN("the source buffer you are trying to copy from is bigger (%zu) than the destination buffer (%zu)", src->size, dst->size);
+    #endif
         CommandBuffer copyCmdBuf;
         MXC_ASSERT(copyCmdBuf.allocate(ctx, CommandType::TRANSFER), "couldn't allocate copy Command Buffer");
         VkBufferCopy2 bufferCopy {
@@ -666,7 +688,7 @@ namespace mxc
             .pNext = nullptr,
             .srcOffset = 0,
             .dstOffset = 0,
-            .size = src->size
+            .size = copySize
         };
         VkCopyBufferInfo2 copyBufferInfo {
             .sType = VK_STRUCTURE_TYPE_COPY_BUFFER_INFO_2,
@@ -957,13 +979,14 @@ namespace mxc
             1, &imageMemoryBarrier);
     }
 
-    constexpr auto chooseMemoryPropertyFlags(StorageUniformMemoryOptions options) -> VkMemoryPropertyFlags
+    constexpr auto chooseMemoryPropertyFlags(BufferMemoryOptions options) -> VkMemoryPropertyFlags
     {
         switch (options)
         {
-            case StorageUniformMemoryOptions::STAGING_AND_TRANSFER:      return VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-            case StorageUniformMemoryOptions::SYSTEM_MEMORY:             return VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
-            case StorageUniformMemoryOptions::DEVICE_LOCAL_HOST_VISIBLE: return VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+            case BufferMemoryOptions::TRANSFER_DST:              return VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+            case BufferMemoryOptions::SYSTEM_MEMORY:             return VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+            case BufferMemoryOptions::DEVICE_LOCAL_HOST_VISIBLE: return VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+            case BufferMemoryOptions::GPU_ONLY:                  return VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
         }
     }
     
