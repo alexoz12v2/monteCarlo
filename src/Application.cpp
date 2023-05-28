@@ -218,6 +218,7 @@ namespace mxc
 auto main([[maybe_unused]]int32_t argc, [[maybe_unused]]char** argv) -> int32_t
 {
     mxc::Application app;
+    // TODO add EventProxy layer
 
     MXC_INFO("Initializing application...");
     if (!initializeApplication(app, argc, argv) || !app.init())

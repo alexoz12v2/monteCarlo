@@ -48,20 +48,7 @@ namespace mxc
 		VkFormat depthFormat;
 		struct ImageViewPair {Image image; ImageView view;};
 		std::vector<ImageViewPair> depthImages; // as many as command buffers. Type to be replaced
-
-		// event handlers
-		auto resized() -> bool;
 	};
 }
 
 #endif // MXC_VULKAN_CONTEXT_INL
-
-#if defined(MXC_VULKAN_CONTEXT_INL_IMPLEMENTATION)
-namespace mxc
-{
-	auto VulkanContext::resized() -> bool
-	{
-		return true;
-	}
-}
-#endif // MXC_VULKAN_CONTEXT_INL_IMPLEMENTATION

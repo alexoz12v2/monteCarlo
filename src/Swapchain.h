@@ -23,6 +23,11 @@
 
 namespace mxc
 {
+	enum class SwapchainStatus : uint8_t 
+	{
+		OK, FATAL, WINDOW_RESIZED
+	};
+
 	struct SwapchainImage
 	{
 		VkImage handle;
@@ -42,13 +47,13 @@ namespace mxc
 #elif defined(VK_USE_PLATFORM_MACOS_MVK)
 		auto initSurface(VulkanContext* ctx, void* view) -> bool;
 #endif
-		auto create(VulkanContext* ctx, uint32_t width, uint32_t height, bool vsync) -> bool;
+		auto create(VulkanContext* ctx, uint32_t width, uint32_t height, bool vsync = true) -> bool;
 		auto destroy(VulkanContext* ctx) -> void; // call only if vkDeviceIdle
 
 		auto initInstanceFunctionPointers(VulkanContext* ctx) -> bool;
 		auto initDeviceFunctionPointers(VulkanContext* ctx) -> bool;
-		auto acquireNextImage(VulkanContext* ctx, VkSemaphore imageAvailableSemaphore, uint32_t timeout_ns = 100000, VkFence signalFence = VK_NULL_HANDLE, uint32_t* outIndex = nullptr) -> bool;
-		auto present(VulkanContext* ctx, VkSemaphore renderCompleteSemaphore) -> void;
+		[[nodiscard]] auto acquireNextImage(VulkanContext* ctx, VkSemaphore imageAvailableSemaphore, uint32_t timeout_ns = 100000, VkFence signalFence = VK_NULL_HANDLE, uint32_t* outIndex = nullptr) -> SwapchainStatus;
+		[[nodiscard]] auto present(VulkanContext* ctx, VkSemaphore renderCompleteSemaphore) -> SwapchainStatus;
 
 	public:
 		VkSurfaceFormatKHR imageFormat;

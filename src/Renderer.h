@@ -9,10 +9,18 @@
 #include "Pipeline.h"
 #include "CommandBuffer.h"
 
+// TODO remove
+#include "logging.h"
+
 #include "VulkanContext.inl"
 
 namespace mxc
 {
+    enum class RendererStatus: uint8_t
+    {
+        OK, FATAL, WINDOW_RESIZED
+    };
+    
     struct RendererConfig
     {
         char const* platformSurfaceExtensionName;
@@ -33,36 +41,39 @@ namespace mxc
 #endif
     };
 
-	class Renderer
-	{
+    class Renderer
+    {
         static uint32_t constexpr OUT_ATTACHMENT_COUNT = 2;
-	public:
-		auto init(RendererConfig const&) -> bool;
-		auto cleanup() -> void;
+    public:
+        auto init(RendererConfig const&) -> bool;
+        auto cleanup() -> void;
 
         // TODO cleanup
         auto getContextPointer() -> VulkanContext* { return &m_ctx; }
         auto getRenderPass() -> VkRenderPass { return m_ctx.renderPass; }
 
         template <typename F> requires std::is_invocable_r<VkResult, F, VkCommandBuffer>::value
-        auto recordGraphicsCommands(F&& func) -> bool;
+        auto recordGraphicsCommands(F&& func) -> RendererStatus;
 
-        auto submitFrame() -> void;
+        [[nodiscard]] auto submitFrame() -> RendererStatus;
 
         auto resetCommandBuffers() -> void;
         auto resetCommandBuffersForDestruction() -> void; //difference from previous is that this calls vkDeviceWaitIdle()
 
-	private:
-		VulkanContext m_ctx;
+    public: // events
+        auto onResize(uint32_t const newWidth, uint32_t const newHeight) -> void;
 
-	private: // function pointers
+    private:
+            VulkanContext m_ctx;
+
+    private: // function pointers
 #if defined(_DEBUG)
         PFN_vkSetDebugUtilsObjectNameEXT m_pfnSetDebugUtilsObjectNameEXT;
         PFN_vkSetDebugUtilsObjectTagEXT m_pfnSetDebugUtilsObjectTagEXT;
         PFN_vkCmdBeginDebugUtilsLabelEXT m_pfnCmdBeginDebugUtilsLabelEXT;
         PFN_vkCmdEndDebugUtilsLabelEXT m_pfnCmdEndDebugUtilsLabelEXT;
 #endif
-	private:
+    private:
         auto createDepthImages(DepthFormatProperties_t const depthFormatProperties) -> bool;
         auto destroyDepthImages() -> void;
 
@@ -73,18 +84,25 @@ namespace mxc
         // TODO maybe: more flexible
         auto createPresentFramebuffers() -> bool;
         auto destroyPresentFramebuffers() -> void;
-	};
+    };
 
     // records commands to the next command buffer. NOT all
     template <typename F> requires std::is_invocable_r<VkResult, F, VkCommandBuffer>::value
-    auto Renderer::recordGraphicsCommands(F&& func) -> bool
+    auto Renderer::recordGraphicsCommands(F&& func) -> RendererStatus
     {
+        uint32_t i = m_ctx.currentFramebufferIndex;
+        SwapchainStatus acquireImageStatus = m_ctx.swapchain.acquireNextImage(&m_ctx, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].presentCompleteSemaphore, UINT32_MAX, VK_NULL_HANDLE, nullptr);
+        if (acquireImageStatus == SwapchainStatus::WINDOW_RESIZED)
+        {
+            m_ctx.currentFramebufferIndex = 0;
+            return RendererStatus::WINDOW_RESIZED;
+        }
+        else if (acquireImageStatus == SwapchainStatus::FATAL)
+            return RendererStatus::FATAL;
+
         VK_CHECK(vkWaitForFences(m_ctx.device.logical, 1, &m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteFence, VK_TRUE, UINT64_MAX));
         VK_CHECK(vkResetFences(m_ctx.device.logical, 1, &m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteFence));
 
-        m_ctx.swapchain.acquireNextImage(&m_ctx, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].presentCompleteSemaphore, UINT32_MAX, VK_NULL_HANDLE,
-                                         &m_ctx.currentFramebufferIndex);
-        uint32_t i = m_ctx.currentFramebufferIndex;
         if (m_ctx.commandBuffers[i].isPending())
             m_ctx.commandBuffers[i].signalCompletion();
         m_ctx.commandBuffers[i].reset();
@@ -127,9 +145,9 @@ namespace mxc
         m_ctx.commandBuffers[i].end();
         
         if (res != VK_SUCCESS)
-            return false;
+            return RendererStatus::FATAL;
 
-        return true;
+        return RendererStatus::OK;
     }
 
 } // namespace mxc

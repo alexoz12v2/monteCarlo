@@ -81,7 +81,7 @@ namespace mxc
         return true;
     }
 
-	auto Swapchain::create(VulkanContext* ctx, uint32_t width, uint32_t height, bool vsync) -> bool
+    auto Swapchain::create(VulkanContext* ctx, uint32_t width, uint32_t height, bool vsync) -> bool
     {
         VkExtent2D swapchainExtent = {width, height};
 
@@ -99,9 +99,8 @@ namespace mxc
             }
         }
 
-        if (!found) {
+        if (!found)
             imageFormat = ctx->device.swapchainSupport.formats[0];
-        }
 
         // FIFO and MAILBOX support vsync, IMMEDIATE does not.
         VkPresentModeKHR presentMode;
@@ -128,9 +127,8 @@ namespace mxc
         ctx->device.updateSwapchainSupport(ctx);
 
         // Swapchain extent
-        if (ctx->device.swapchainSupport.surfCaps.currentExtent.width != UINT32_MAX) {
+        if (ctx->device.swapchainSupport.surfCaps.currentExtent.width != UINT32_MAX)
             swapchainExtent = ctx->device.swapchainSupport.surfCaps.currentExtent;
-        }
 
         // Clamp to the value allowed by the GPU.
         VkExtent2D min = ctx->device.swapchainSupport.surfCaps.minImageExtent;
@@ -188,7 +186,8 @@ namespace mxc
         VkSwapchainKHR oldSwapchain = handle;
         VK_CHECK(fpCreateSwapchainKHR(ctx->device.logical, &swapchainCreateInfo, nullptr, &handle));
         
-        // destroy old swapchain
+        // destroy old swapchain (works the first time too because if a destroy has a null handle is no-op)
+        MXC_TRACE("cleaning up old swapchain images");
         for (uint32_t i = 0; i < images.size(); ++i)
         {
             vkDestroyImageView(ctx->device.logical, images[i].view, nullptr);
@@ -199,6 +198,7 @@ namespace mxc
         currentImageIndex = 0;
 
         // Images
+        MXC_TRACE("getting swapchain images");
         uint32_t swapchainImageCount = 0;
         VK_CHECK(vkGetSwapchainImagesKHR(ctx->device.logical, handle, &swapchainImageCount, nullptr));
         VkImage swapchainImages[32];
@@ -226,6 +226,7 @@ namespace mxc
             viewInfo.subresourceRange.layerCount = 1;
 
             VK_CHECK(vkCreateImageView(ctx->device.logical, &viewInfo, nullptr, &images[i].view));
+            MXC_TRACE("created swapchain image view %p", images[i].view);
         }
 
         MXC_INFO("Swapchain created successfully.");
@@ -245,27 +246,29 @@ namespace mxc
         fpDestroySwapchainKHR(ctx->device.logical, handle, nullptr);
     }
 
-    auto Swapchain::acquireNextImage(VulkanContext* ctx, VkSemaphore imageAvailableSemaphore, 
-                                     uint32_t timeout_ns, VkFence signalFence, uint32_t* outIndex) -> bool
+    [[nodiscard]] auto Swapchain::acquireNextImage(VulkanContext* ctx, VkSemaphore imageAvailableSemaphore, 
+                                     uint32_t timeout_ns, VkFence signalFence, uint32_t* outIndex) -> SwapchainStatus
     {
         uint32_t imageIndex;
         VkResult result = vkAcquireNextImageKHR(ctx->device.logical, handle, timeout_ns, imageAvailableSemaphore, signalFence, &imageIndex);
         if (outIndex) *outIndex = imageIndex;
         if (imageIndex != currentImageIndex) currentImageIndex = imageIndex;
 
-        if (result == VK_ERROR_OUT_OF_DATE_KHR) {
-            // Trigger swapchain recreation, then boot out of the render loop.
-            ctx->resized();
-            return false;
-        } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR)
+        {
+            MXC_DEBUG("vkAcquireNextImageKHR VkResult: %s", vulkanResultToString(result));
+            return SwapchainStatus::WINDOW_RESIZED;
+        } 
+        else if (result != VK_SUCCESS)
+        {
             MXC_ERROR("Failed to acquire swapchain image!");
-            return false;
+            return SwapchainStatus::FATAL;
         }
 
-        return true;
+        return SwapchainStatus::OK;
     }
 
-    auto Swapchain::present(VulkanContext* ctx, VkSemaphore renderCompleteSemaphore) -> void
+    [[nodiscard]] auto Swapchain::present(VulkanContext* ctx, VkSemaphore renderCompleteSemaphore) -> SwapchainStatus
     {
         // Return the image to the swapchain for presentation.
         VkPresentInfoKHR presentInfo = {};
@@ -278,16 +281,20 @@ namespace mxc
         presentInfo.pResults = 0;
 
         VkResult result = vkQueuePresentKHR(ctx->device.presentQueue, &presentInfo);
-        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR) {
-            // Swapchain is out of date, suboptimal or a framebuffer resize has occurred. Trigger swapchain recreation.
-            ctx->resized();
-            MXC_DEBUG("Swapchain recreated because swapchain returned out of date or suboptimal.");
-        } else if (result != VK_SUCCESS) {
+        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR)
+        {
+            MXC_DEBUG("vkQueuePresentKHR VkResult: %s", vulkanResultToString(result));
+            return SwapchainStatus::WINDOW_RESIZED;
+        } 
+        else if (result != VK_SUCCESS) 
+        {
             MXC_ERROR("Failed to present swap chain image!");
+            return SwapchainStatus::FATAL;
         }
 
         // Increment (and loop) the index.
         currentImageIndex = (currentImageIndex + 1) % maxFramesInFlight;
+        return SwapchainStatus::OK;
     }
     
 }

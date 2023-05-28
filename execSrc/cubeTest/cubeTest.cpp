@@ -26,14 +26,14 @@ static_assert(std::is_standard_layout_v<PosColorVertex> && sizeof(PosColorVertex
 
 [[maybe_unused]] static PosColorVertex s_cubeVertices[] =
 {
-    {-0.5f,  0.5f,  0.5f, 0xff00ffff },
-    { 0.5f,  0.5f,  0.5f, 0xff00ffff },
-    {-0.5f, -0.5f,  0.5f, 0xff00ffff },
-    { 0.5f, -0.5f,  0.5f, 0xff00ffff },
-    {-0.5f,  0.5f, -0.5f, 0xff00ffff },
-    { 0.5f,  0.5f, -0.5f, 0xff00ffff },
-    {-0.5f, -0.5f, -0.5f, 0xff00ffff },
-    { 0.5f, -0.5f, -0.5f, 0xff00ffff },
+    {-0.5f,  0.5f,  0.5f, 0xffffffff },
+    { 0.5f,  0.5f,  0.5f, 0xffffffff },
+    {-0.5f, -0.5f,  0.5f, 0xffffffff },
+    { 0.5f, -0.5f,  0.5f, 0xffffffff },
+    {-0.5f,  0.5f, -0.5f, 0xffffffff },
+    { 0.5f,  0.5f, -0.5f, 0xffffffff },
+    {-0.5f, -0.5f, -0.5f, 0xffffffff },
+    { 0.5f, -0.5f, -0.5f, 0xffffffff },
 };
 
 [[maybe_unused]] static const uint16_t s_cubeTriList[] =
@@ -66,6 +66,7 @@ struct CubeTestLayer_data
 	mxc::ShaderSet shaderSet;
 	mxc::Pipeline graphicsPipeline;
 	mxc::Buffer vertexBuffer, indexBuffer, stagingBuffer;
+
 };
 
 CubeTestLayer_data data(sizeof(s_cubeVertices), sizeof(s_cubeTriList));
@@ -94,6 +95,12 @@ auto initializeApplication(mxc::Application& app, int32_t argc, char** argv) -> 
 
 static auto keyCallback([[maybe_unused]] GLFWwindow* window, [[maybe_unused]] int32_t key, 
 						[[maybe_unused]] int32_t scancode, [[maybe_unused]] int32_t action, [[maybe_unused]] int32_t mods) -> void;
+auto windowResized(GLFWwindow *window, int width, int height) -> void
+{
+	auto cubeTestLayerData = reinterpret_cast<CubeTestLayer_data*>(glfwGetWindowUserPointer(window));
+
+	cubeTestLayerData->renderer.onResize(static_cast<uint32_t>(width), static_cast<uint32_t>(height));
+}
 
 auto cubeTestLayer_init(mxc::Application& app, void* layerData) -> bool
 {
@@ -150,12 +157,12 @@ auto cubeTestLayer_init(mxc::Application& app, void* layerData) -> bool
 			.location = 0,
 			.binding = 0,
 			.format = VK_FORMAT_R32G32B32_SFLOAT,
-			.offset = 0 // TODO DANGEROUS
+			.offset = 0 
 		},
 		{
 			.location = 1,
 			.binding = 0,
-			.format = VK_FORMAT_A8B8G8R8_USCALED_PACK32,
+			.format = VK_FORMAT_A8B8G8R8_USCALED_PACK32,//  VK_FORMAT_R8G8B8A8_UINT,
 			.offset = offsetof(PosColorVertex, abgr)
 		}
 	};
@@ -192,6 +199,10 @@ auto cubeTestLayer_init(mxc::Application& app, void* layerData) -> bool
 	vulkanDevice.copyToBuffer(s_cubeTriList, sizeof(s_cubeTriList), &cubeTestLayerData->stagingBuffer);
 	vulkanDevice.copyBuffer(ctx, &cubeTestLayerData->stagingBuffer, &cubeTestLayerData->indexBuffer);
 
+	// Set framebuffer resize callback ----------------------------------------
+	glfwSetWindowUserPointer(cubeTestLayerData->window, layerData);
+	glfwSetFramebufferSizeCallback(cubeTestLayerData->window, windowResized);
+
 	if (!res)
 		return false;
 
@@ -205,6 +216,8 @@ auto cubeTestLayer_tick(mxc::Application& app, float deltaTime, void* layerData)
 		return mxc::ApplicationSignal_v::CLOSE_APP;
 
 	auto* ctx = cubeTestLayerData->renderer.getContextPointer();
+
+	mxc::RendererStatus status = 
 	cubeTestLayerData->renderer.recordGraphicsCommands([&ct = cubeTestLayerData, ctx](VkCommandBuffer cmdBuf) -> VkResult 
 	{
 		VkDeviceSize vertexBufferOffset = 0, vertexBufferStride = sizeof(PosColorVertex);
@@ -239,7 +252,27 @@ auto cubeTestLayer_tick(mxc::Application& app, float deltaTime, void* layerData)
 		return VK_SUCCESS;
 	});
 
-	cubeTestLayerData->renderer.submitFrame();
+	if (status == mxc::RendererStatus::FATAL)
+		return mxc::ApplicationSignal_v::CLOSE_APP;
+	else if (status == mxc::RendererStatus::WINDOW_RESIZED)
+	{
+		int32_t width, height;
+		glfwGetFramebufferSize(data.window, &width, &height);
+		data.renderer.onResize(static_cast<uint32_t>(width), static_cast<uint32_t>(height)); 
+		return mxc::ApplicationSignal_v::NONE;
+	}
+
+	status = cubeTestLayerData->renderer.submitFrame();
+
+	if (status == mxc::RendererStatus::FATAL)
+		return mxc::ApplicationSignal_v::CLOSE_APP;
+	else if (status == mxc::RendererStatus::WINDOW_RESIZED)
+	{
+		int32_t width, height;
+		glfwGetFramebufferSize(data.window, &width, &height);
+		data.renderer.onResize(static_cast<uint32_t>(width), static_cast<uint32_t>(height)); 
+		return mxc::ApplicationSignal_v::NONE;
+	}
 
 	// TODO refactor in application. The application class should have control of things like vsync. the app should encapsulate platform events
 	glfwWaitEventsTimeout(0.016666666f);

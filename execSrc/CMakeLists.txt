@@ -23,7 +23,7 @@ function(buildExec EXEC_NAME)
 
 endfunction(buildExec)
 
-set(EXECS test cubeTest)
+set(EXECS test cubeTest spectrumTest)
 
 foreach(EXEC ${EXECS})
 	buildExec(${EXEC})

@@ -544,7 +544,7 @@ namespace mxc
         return true;
     }
 
-    auto Renderer::submitFrame() -> void
+    [[nodiscard]] auto Renderer::submitFrame() -> RendererStatus
     {
         if (!m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].isExecutable()) m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].signalCompletion();
         MXC_ASSERT(m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].isExecutable(), "command buffer is not executable");
@@ -587,10 +587,16 @@ namespace mxc
         m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].signalSubmit();
         
         // swapchain checks for resize and calls it if necessary
-        m_ctx.swapchain.present(&m_ctx, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore);
+        SwapchainStatus status = m_ctx.swapchain.present(&m_ctx, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore);
+        if (status == SwapchainStatus::WINDOW_RESIZED)
+            return RendererStatus::WINDOW_RESIZED;
+        if (status == SwapchainStatus::FATAL)
+            return RendererStatus::FATAL;
 
         if (++m_ctx.currentFramebufferIndex >= m_ctx.presentFramebuffers.size())
             m_ctx.currentFramebufferIndex = 0;
+
+        return RendererStatus::OK;
     }
     
     auto Renderer::destroyPresentFramebuffers() -> void
@@ -630,6 +636,8 @@ namespace mxc
             // Note: you can hard code tiling because in selectDepthFormat tiling is hardcoded
             m_ctx.device.createImage(&m_ctx, VK_IMAGE_TILING_OPTIMAL, &depthImage, &targetLayout, &depthView);
             m_ctx.depthImages.push_back({depthImage, depthView});
+            MXC_ASSERT(depthImage.handle != VK_NULL_HANDLE && depthView.handle != VK_NULL_HANDLE, "after creating depth image and view %u null", i);
+            MXC_TRACE("created depth image %p and view %p", depthImage.handle, depthView.handle);
         }
 
         MXC_DEBUG("Vulkan depth images created");
@@ -643,6 +651,7 @@ namespace mxc
             m_ctx.device.destroyImageView(&m_ctx.depthImages[i].view);
             m_ctx.device.destroyImage(&m_ctx.depthImages[i].image);
         }
+        m_ctx.depthImages.clear();
         MXC_DEBUG("Vulkan depth images destroyed");
     }
 
@@ -659,9 +668,53 @@ namespace mxc
         VK_CHECK(vkDeviceWaitIdle(m_ctx.device.logical));
         for (uint32_t i = 0; i != m_ctx.commandBuffers.size(); ++i)
         {
-            m_ctx.commandBuffers[i].signalCompletion();
+            if (m_ctx.commandBuffers[i].isPending())
+                m_ctx.commandBuffers[i].signalCompletion();
             m_ctx.commandBuffers[i].reset();
         }
+    }
+
+    // TODO add function pointer
+    auto Renderer::onResize(uint32_t const newWidth, uint32_t const newHeight) -> void
+    {
+        // wait previous pending command buffers on the device 
+        vkDeviceWaitIdle(m_ctx.device.logical);
+        MXC_DEBUG("Resizing the Renderer...");
+
+        // recreate swapchain
+        MXC_DEBUG("Recreating the swapchain with extent %u x %u...", newWidth, newHeight);
+        m_ctx.swapchain.create(&m_ctx, newWidth, newHeight);
+        
+        MXC_DEBUG("Recreated the swapchain");
+
+        // recreate framebuffers
+        m_ctx.framebufferWidth = newWidth; 
+        m_ctx.framebufferHeight = newHeight;
+
+        MXC_DEBUG("Recreating depth images...");
+        destroyDepthImages();
+        createDepthImages(DepthFormatProperties_v::SUPPORTS_STENCIL);
+        MXC_DEBUG("Recreated depth images");
+
+        MXC_DEBUG("Recreating present framebuffers...");
+        destroyPresentFramebuffers();
+        createPresentFramebuffers();
+        MXC_DEBUG("recreated present framebuffers");
+
+        // recreate command buffers, because they may store references to the destroyed framebuffers
+        // specified as a parameter in vkCmdBeginRenderPass2
+        // TODO now they are hardcoded to be graphics command buffers
+        MXC_DEBUG("Recreating command buffers...");
+        resetCommandBuffersForDestruction();
+        CommandBuffer::freeMany(&m_ctx, m_ctx.commandBuffers.data(), static_cast<uint32_t>(m_ctx.commandBuffers.size()));
+        createCommandBuffers(&m_ctx);
+        MXC_DEBUG("Recreated command buffers");
+
+        // If renderpass becomes incompatible (i.e. attachments of framebuffer) change, we need to recreate
+        // renderpass and graphics pipeline as well. Won't handle that now TODO?
+
+        vkDeviceWaitIdle(m_ctx.device.logical);
+        MXC_DEBUG("Resized the Renderer");
     }
 
     auto createCommandBuffers(VulkanContext* ctx) -> void
