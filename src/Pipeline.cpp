@@ -20,9 +20,9 @@ namespace mxc
 
             bindPoint = VK_PIPELINE_BIND_POINT_COMPUTE;
             ComputePipelineConfig const config {
-                .descriptorSetLayouts = &shaderSet.resources.descriptorSetLayout,
+                .descriptorSetLayouts = shaderSet.noResources ? nullptr : shaderSet.resources.descriptorSetLayouts.data(),
                 .stage = shaderSet.stages[0],
-                .descriptorSetLayoutCount = shaderSet.noResources ? 0 : 1, // TODO remove this limitation
+                .descriptorSetLayoutCount = shaderSet.noResources ? 0 : static_cast<uint32_t>(shaderSet.resources.descriptorSetLayouts.size())
             };
 
             return create(ctx, config);
@@ -46,14 +46,14 @@ namespace mxc
             GraphicsPipelineConfig const config {
                 .renderPass = renderPass,
                 .attributes = shaderSet.attributeDescriptions,
-                .descriptorSetLayouts = &shaderSet.resources.descriptorSetLayout,
+                .descriptorSetLayouts = shaderSet.noResources ? nullptr : shaderSet.resources.descriptorSetLayouts.data(),
                 .stages = shaderSet.stages.data(),
                 .vertexBuffersBindingDescs = shaderSet.bindingDescriptions,
                 .initialViewport = viewport,
                 .initialScissor = scissor,
                 .vertexBuffersCount = shaderSet.bindingDescriptions_count,
                 .attributeCount = shaderSet.attributeDescriptions_count,
-                .descriptorSetLayoutCount = shaderSet.noResources ? 0 : 1,
+                .descriptorSetLayoutCount = shaderSet.noResources ? 0 : static_cast<uint32_t>(shaderSet.resources.descriptorSetLayouts.size()),
                 .stageCount = static_cast<uint16_t>(shaderSet.stages.size()),
                 .subpass = 0
             };

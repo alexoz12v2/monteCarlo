@@ -22,6 +22,13 @@ namespace mxc
 
 	// https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkResult.html, only some
 	auto vulkanResultToString(VkResult) -> char const*;
+
+    inline auto clamp(float value, float min, float max) -> float
+    {
+        return  value < min ? min :
+                value > max ? max :
+                value;
+    }
 }
 
 #endif // MXC_VULAKN_COMMONS_H

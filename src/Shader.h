@@ -31,13 +31,14 @@ namespace mxc
 		// stride is the size of each descriptor in bytes, returned from vkGet*MemoryRequirements. assumed to be equal to the count of descriptor sets
 		auto createUpdateTemplate(VulkanContext* ctx, VkPipelineBindPoint bindPoint, VkPipelineLayout layout, uint32_t const* strides) -> bool;
 		auto updateAll(VulkanContext* ctx, void const* data) -> bool;
+		auto update(VulkanContext* ctx, uint32_t descriptorIndex, void const* data) -> bool;
 		auto copy(VulkanContext* ctx, uint8_t srcDescriptorSet, uint8_t dstDescriptorSet, uint8_t binding, uint8_t arrayElement, uint8_t count) -> void;
 
 	public:
 		VkDescriptorPool descriptorPool = VK_NULL_HANDLE; // TODO remove this bottleneck
-		VkDescriptorSetLayout descriptorSetLayout = VK_NULL_HANDLE;
+		std::vector<VkDescriptorSetLayout> descriptorSetLayouts;
 		VkDescriptorSet descriptorSets[MAX_DESCRIPTOR_SETS_COUNT]; // as many as framebuffers/command buffers
-		VkDescriptorUpdateTemplate descriptorUpdateTemplate;
+		std::vector<VkDescriptorUpdateTemplate> descriptorUpdateTemplates;
 		uint8_t descriptorSets_count = 0;
 
 	private:

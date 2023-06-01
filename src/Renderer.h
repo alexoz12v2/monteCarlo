@@ -18,7 +18,7 @@ namespace mxc
 {
     enum class RendererStatus: uint8_t
     {
-        OK, FATAL, WINDOW_RESIZED
+        OK, FATAL, WINDOW_RESIZED, NOT_PREPARED
     };
     
     struct RendererConfig
@@ -55,16 +55,24 @@ namespace mxc
         template <typename F> requires std::is_invocable_r<VkResult, F, VkCommandBuffer>::value
         auto recordGraphicsCommands(F&& func) -> RendererStatus;
 
+        template <typename F> requires std::is_invocable_r<VkResult, F, VkCommandBuffer, VkImage, VkImageView, uint32_t>::value
+        auto recordComputeCommands(F&& func) -> RendererStatus;
+
         [[nodiscard]] auto submitFrame() -> RendererStatus;
+        [[nodiscard]] auto presentFrame() -> RendererStatus;
 
         auto resetCommandBuffers() -> void;
         auto resetCommandBuffersForDestruction() -> void; //difference from previous is that this calls vkDeviceWaitIdle()
+        
+    public:
+        PFN_vkCmdPushDescriptorSetWithTemplateKHR fpCmdPushDescriptorSetWithTemplateKHR = nullptr;
 
     public: // events
         auto onResize(uint32_t const newWidth, uint32_t const newHeight) -> void;
 
     private:
-            VulkanContext m_ctx;
+        VulkanContext m_ctx;
+        bool m_prepared = false; // false on resize
 
     private: // function pointers
 #if defined(_DEBUG)
@@ -84,6 +92,9 @@ namespace mxc
         // TODO maybe: more flexible
         auto createPresentFramebuffers() -> bool;
         auto destroyPresentFramebuffers() -> void;
+
+        auto createSynchronizationPrimitives() -> bool;
+        auto destroySynchronizationPrimitives() -> void;
     };
 
     // records commands to the next command buffer. NOT all
@@ -149,6 +160,41 @@ namespace mxc
 
         return RendererStatus::OK;
     }
+
+    template <typename F> requires std::is_invocable_r<VkResult, F, VkCommandBuffer, VkImage, VkImageView, uint32_t>::value
+    auto Renderer::recordComputeCommands(F&& func) -> RendererStatus
+    {
+        uint32_t i = m_ctx.currentFramebufferIndex;
+        SwapchainStatus acquireImageStatus = m_ctx.swapchain.acquireNextImage(&m_ctx, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].presentCompleteSemaphore, UINT32_MAX, VK_NULL_HANDLE, nullptr);
+        if (acquireImageStatus == SwapchainStatus::WINDOW_RESIZED)
+        {
+            m_ctx.currentFramebufferIndex = 0;
+            return RendererStatus::WINDOW_RESIZED;
+        }
+        else if (acquireImageStatus == SwapchainStatus::FATAL)
+            return RendererStatus::FATAL;
+
+        VK_CHECK(vkWaitForFences(m_ctx.device.logical, 1, &m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteFence, VK_TRUE, UINT64_MAX));
+        VK_CHECK(vkResetFences(m_ctx.device.logical, 1, &m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteFence));
+
+        if (m_ctx.commandBuffers[i].isPending())
+            m_ctx.commandBuffers[i].signalCompletion();
+        m_ctx.commandBuffers[i].reset();
+
+        // MXC_ASSERT(m_ctx.commandBuffers.size() == m_ctx.presentFramebuffers.size(), "assuming framebuffer number = graphics command buffer number");
+        // begin command buffer
+        m_ctx.commandBuffers[i].begin();
+        
+        VkResult res = func(m_ctx.commandBuffers[i].handle, m_ctx.swapchain.images[i].handle, m_ctx.swapchain.images[i].view, i);
+
+        bool succ = m_ctx.commandBuffers[i].end();
+        
+        if (res != VK_SUCCESS || !succ)
+            return RendererStatus::FATAL;
+
+        return RendererStatus::OK;
+    }
+
 
 } // namespace mxc
 

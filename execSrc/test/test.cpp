@@ -15,38 +15,44 @@ struct PrintHello_data
 
 TestLayer_data data;
 
-auto testLayer_init(mxc::Application& app, void* layerData) -> bool
+auto testLayer_init(mxc::ApplicationPtr appPtr, void* layerData) -> bool
 {
+	auto& app = appPtr.get<mxc::Application>();
 	auto testLayerData = reinterpret_cast<TestLayer_data*>(layerData);
 	app.registerHandler("PrintHello", testLayer_name);
 	return true;
 }
 
-auto testLayer_tick(mxc::Application& app, float deltaTime, void* layerData) -> mxc::ApplicationSignal_t
+auto testLayer_tick(mxc::ApplicationPtr appPtr, float deltaTime, void* layerData) -> mxc::ApplicationSignal_t
 {
+	auto& app = appPtr.get<mxc::Application>();
 	auto testLayerData = reinterpret_cast<TestLayer_data*>(layerData);
 	MXC_INFO(testLayerData->str);
 
 	PrintHello_data eventData {.str = "wow, events!"};
-	app.emitEvent("PrintHello", reinterpret_cast<void*>(&eventData));
+	mxc::EventData evData{};
+	evData.data.p[0] = reinterpret_cast<void*>(&eventData);
+	app.emitEvent("PrintHello", evData);
 
 	return mxc::ApplicationSignal_v::REMOVE_LAYER;
 }
 
-auto testLayer_shutdown(mxc::Application& app, void* layerData) -> void
+auto testLayer_shutdown(mxc::ApplicationPtr appPtr, void* layerData) -> void
 {
+	auto& app = appPtr.get<mxc::Application>();
 	auto testLayerData = reinterpret_cast<TestLayer_data*>(layerData);
 }
 
-auto testLayer_handler(mxc::Application& app, mxc::EventName name, void* layerData, void* eventData) -> mxc::ApplicationSignal_t
+auto testLayer_handler(mxc::ApplicationPtr appPtr, mxc::EventName name, void* layerData, mxc::EventData eventData) -> mxc::ApplicationSignal_t
 {
+	auto& app = appPtr.get<mxc::Application>();
 	auto testLayerData = reinterpret_cast<TestLayer_data*>(layerData);
 	MXC_INFO("from the event, %s", testLayerData->str);
 
 	// handlers
-	if (mxc::Application::isEvent(name, "PrintHello"))
+	if (name == "PrintHello")
 	{
-		auto printHelloData = reinterpret_cast<PrintHello_data*>(eventData);
+		auto printHelloData = reinterpret_cast<PrintHello_data*>(eventData.data.p[0]);
 		MXC_DEBUG(printHelloData->str);
 	}
 
@@ -63,15 +69,18 @@ mxc::ApplicationLayer testLayer {
 };
 
 mxc::ApplicationLayer printHelloEmitterLayer {
-	.init = [](mxc::Application& app, void* layerData) -> bool { return true; },
-	.tick = [](mxc::Application& app, float deltaTime, void* layerData) -> mxc::ApplicationSignal_t
+	.init = [](mxc::ApplicationPtr appPtr, void* layerData) -> bool { return true; },
+	.tick = [](mxc::ApplicationPtr appPtr, float deltaTime, void* layerData) -> mxc::ApplicationSignal_t
 	{
+		auto& app = appPtr.get<mxc::Application>();
 		PrintHello_data eventData {.str = "emitting events..."};
-		app.emitEvent("PrintHello", reinterpret_cast<void*>(&eventData)); 
+		mxc::EventData evData{};
+		evData.data.p[0] = reinterpret_cast<void*>(&eventData);
+		app.emitEvent("PrintHello", evData); 
 		return mxc::ApplicationSignal_v::NONE;
 	},
-	.shutdown = [](mxc::Application& app, void* layerData) {MXC_ERROR("Shutting down the printHelloEmitterLayer");},
-	.handler = [](mxc::Application& app, mxc::EventName name, void* layerData, void* eventData) -> mxc::ApplicationSignal_t 
+	.shutdown = [](mxc::ApplicationPtr appPtr, void* layerData) {MXC_ERROR("Shutting down the printHelloEmitterLayer");},
+	.handler = [](mxc::ApplicationPtr appPtr, mxc::EventName name, void* layerData, mxc::EventData eventData) -> mxc::ApplicationSignal_t 
 	{ return mxc::ApplicationSignal_v::NONE; },
 
 	.data = nullptr

@@ -763,7 +763,7 @@ namespace mxc
             cmdBuf.begin();
             MXC_ASSERT(cmdBuf.canRecord(), "Image memory barrier Command Buffer is not in recording state");
 
-            insertImageMemoryBarrier(&cmdBuf, inOutImage, VK_IMAGE_LAYOUT_UNDEFINED, *targetLayout, inOutView->aspectMask);
+            insertImageMemoryBarrier(cmdBuf.handle, inOutImage->handle, VK_IMAGE_LAYOUT_UNDEFINED, *targetLayout, inOutView->aspectMask);
 
             MXC_ASSERT(cmdBuf.end(), "Couldn't end recording of image memory barrier Command Buffer");
 
@@ -833,9 +833,10 @@ namespace mxc
         vkDestroyImageView(logical, pOutView->handle, nullptr);
     }
     
+    // TODO reintroduce overloads with checked command buffer
     auto Device::insertImageMemoryBarrier(
-        CommandBuffer* pCmdBuf,
-        Image* pImage,
+        VkCommandBuffer cmdBuf,
+        VkImage image,
         VkImageLayout oldImageLayout,
         VkImageLayout newImageLayout,
         VkImageAspectFlags imageAspectMask,
@@ -849,26 +850,26 @@ namespace mxc
             .baseArrayLayer = 0,
             .layerCount = 1
         };
-        insertImageMemoryBarrier(pCmdBuf, pImage, oldImageLayout, newImageLayout, subresourceRange, srcStageMask, dstStageMask);
+        insertImageMemoryBarrier(cmdBuf, image, oldImageLayout, newImageLayout, subresourceRange, srcStageMask, dstStageMask);
     }
 
     // Taken from Sascha Willelms examples
     auto Device::insertImageMemoryBarrier(
-        CommandBuffer* pCmdBuf,
-        Image* pImage,
+        VkCommandBuffer cmdBuf,
+        VkImage image,
         VkImageLayout oldImageLayout,
         VkImageLayout newImageLayout,
         VkImageSubresourceRange subresourceRange,
         VkPipelineStageFlags srcStageMask,
         VkPipelineStageFlags dstStageMask) -> void
     {
-        MXC_ASSERT(pCmdBuf && pImage && pCmdBuf->canRecord(), "Invalid arguments passed into Device::insertImageMemoryBarrier");
+        // MXC_ASSERT(pCmdBuf && (image != VK_NULL_HANDLE) && pCmdBuf->canRecord(), "Invalid arguments passed into Device::insertImageMemoryBarrier");
         // Create an image barrier object
         VkImageMemoryBarrier imageMemoryBarrier{};
         imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
         imageMemoryBarrier.oldLayout = oldImageLayout;
         imageMemoryBarrier.newLayout = newImageLayout;
-        imageMemoryBarrier.image = pImage->handle;
+        imageMemoryBarrier.image = image;
         imageMemoryBarrier.subresourceRange = subresourceRange;
         imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
         imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
@@ -921,6 +922,15 @@ namespace mxc
                 // Make sure any shader reads from the image have been finished
                 imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
                 break;
+            case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR:
+                // Image is presented by the presentation engine
+                // Make sure present operation on the image has completed
+                imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+                break;
+            case VK_IMAGE_LAYOUT_GENERAL:
+                // Image is being used as storage image in a compute shader
+                // Make sure any writes to the image are finihed
+                imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT;
             default:
                 // Other source layouts aren't handled (yet)
                 break;
@@ -959,10 +969,27 @@ namespace mxc
                 // Make sure any writes to the image have been finished
                 if (imageMemoryBarrier.srcAccessMask == 0)
                 {
-                        imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+                    imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
                 }
                 imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
                 break;
+            case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR:
+                // Image will be presented by the presentation engine
+                // Make sure any writes are completed
+                if (imageMemoryBarrier.srcAccessMask == 0)
+                {
+                    imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT;
+                }
+                imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+                break;
+            case VK_IMAGE_LAYOUT_GENERAL:
+                // Image will be used as storage image in a compute shader
+                // Make sure any writes to the image are finihed
+                if (imageMemoryBarrier.srcAccessMask == 0)
+                {
+                    imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+                }
+                imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT;
             default:
                 // Other source layouts aren't handled (yet)
                 break;
@@ -970,7 +997,7 @@ namespace mxc
 
         // Put barrier inside setup command buffer
         vkCmdPipelineBarrier(
-            pCmdBuf->handle,
+            cmdBuf,
             srcStageMask,
             dstStageMask,
             0,

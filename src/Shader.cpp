@@ -21,6 +21,7 @@ namespace mxc
     constexpr auto vkCopyDescriptorSet(VkDescriptorSet srcSet = VK_NULL_HANDLE, VkDescriptorSet dstSet = VK_NULL_HANDLE, uint8_t binding = UINT8_MAX, uint8_t arrayElement = 0, uint8_t count = 0) -> VkCopyDescriptorSet;
     auto compileShader(std::wstring filename) -> CComPtr<IDxcBlob>;
 
+    // TODO FIX IT IMMEDIATELY. BINDING NUMBERS SIZE != POOLSIZES COUNT
     auto ShaderResources::create(VulkanContext* ctx, ResourceConfiguration const& config, VkShaderStageFlagBits const* stageFlags) -> bool
     {
         // TODO: separate pool and set creation
@@ -40,44 +41,47 @@ namespace mxc
         };
         VK_CHECK(vkCreateDescriptorPool(ctx->device.logical, &createInfo, nullptr, &descriptorPool));
 
-        std::vector<VkDescriptorSetLayoutBinding> setLayoutBindings(config.poolSizes_count); 
-        for (uint32_t i = 0; i != setLayoutBindings.size(); ++i)
+        // TODO REFACTOR SO THAT IT CREATES REQUESTED STUFF
+        VkDescriptorSetLayoutBinding setLayoutBinding;
+        descriptorSetLayouts.resize(config.poolSizes_count);
+        for (uint32_t i = 0; i != config.poolSizes_count; ++i)
         {
-            setLayoutBindings[i].binding = config.pBindingNumbers[i];
-            setLayoutBindings[i].descriptorType = config.pPoolSizes[i].type;
+            setLayoutBinding.binding = config.pBindingNumbers[i];
+            setLayoutBinding.descriptorType = config.pPoolSizes[i].type;
             // This allows you to create arrays of descriptors and bind them to a single binding number.
-            setLayoutBindings[i].descriptorCount = config.poolSizes_count; 
-            setLayoutBindings[i].stageFlags = stageFlags[i];
-            setLayoutBindings[i].pImmutableSamplers = nullptr;
-        }
+            setLayoutBinding.descriptorCount = 1;//config.poolSizes_count; 
+            setLayoutBinding.stageFlags = stageFlags[i];
+            setLayoutBinding.pImmutableSamplers = nullptr;
 
-        VkDescriptorSetLayoutCreateInfo const layoutCreateInfo {
-            .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
-            .pNext = nullptr,
-            .flags = 0,
-            .bindingCount = static_cast<uint32_t>(setLayoutBindings.size()),
-            .pBindings = setLayoutBindings.data(),
-        };
-        VK_CHECK(vkCreateDescriptorSetLayout(ctx->device.logical, &layoutCreateInfo, nullptr, &descriptorSetLayout));
+            VkDescriptorSetLayoutCreateInfo const layoutCreateInfo {
+                .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
+                .pNext = nullptr,
+                .flags = VK_DESCRIPTOR_SET_LAYOUT_CREATE_PUSH_DESCRIPTOR_BIT_KHR,
+                .bindingCount = 1,
+                .pBindings = &setLayoutBinding,
+            };
+            VK_CHECK(vkCreateDescriptorSetLayout(ctx->device.logical, &layoutCreateInfo, nullptr, &descriptorSetLayouts[i]));
+        }
 
         MXC_ASSERT(ctx->swapchain.images.size() <= 3, "More than three swapchain images. Not allowed");
         descriptorSets_count = static_cast<uint8_t>(ctx->swapchain.images.size());
 
-        VkDescriptorSetLayout layouts[3] {descriptorSetLayout};
-        
-        VkDescriptorSetAllocateInfo allocateInfo {
+        [[maybe_unused]] VkDescriptorSetAllocateInfo allocateInfo {
             .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
             .pNext = nullptr,
             .descriptorPool = descriptorPool,
             .descriptorSetCount = descriptorSets_count,
-            .pSetLayouts = layouts
+            .pSetLayouts = descriptorSetLayouts.data() 
         };
-        VK_CHECK(vkAllocateDescriptorSets(ctx->device.logical, &allocateInfo, descriptorSets));
+        // TODO: clean up interface so that you can choose to use either regular desctiptor sets or push desctiptor sets
+        // VK_CHECK(vkAllocateDescriptorSets(ctx->device.logical, &allocateInfo, descriptorSets));
 
         // copy all descriptor pool sizes in descriptor info
         m_descriptorsInfo.reserve(config.poolSizes_count);
         for (uint32_t i = 0; i != config.poolSizes_count; ++i)
         {
+            MXC_DEBUG("binding number: %u", i);
+            // TODO refactor
             m_descriptorsInfo.push_back({config.pPoolSizes[i].type, config.pPoolSizes[i].descriptorCount, config.pBindingNumbers[i]});
         }
  
@@ -86,9 +90,14 @@ namespace mxc
 
     auto ShaderResources::destroy(VulkanContext* ctx) -> void
     {
-        if (m_updateTemplateCreated) vkDestroyDescriptorUpdateTemplate(ctx->device.logical, descriptorUpdateTemplate, nullptr);
-        vkFreeDescriptorSets(ctx->device.logical, descriptorPool, descriptorSets_count, descriptorSets);
-        vkDestroyDescriptorSetLayout(ctx->device.logical, descriptorSetLayout, nullptr);
+        if (m_updateTemplateCreated) 
+            for (auto dTemplate : descriptorUpdateTemplates)
+                vkDestroyDescriptorUpdateTemplate(ctx->device.logical, dTemplate, nullptr);
+        // TODO remember to uncomment this when working with regular descriptors
+        //vkFreeDescriptorSets(ctx->device.logical, descriptorPool, descriptorSets_count, descriptorSets);
+        for (auto layout : descriptorSetLayouts)
+            vkDestroyDescriptorSetLayout(ctx->device.logical, layout, nullptr);
+
         vkDestroyDescriptorPool(ctx->device.logical, descriptorPool, nullptr);
     }
 
@@ -167,6 +176,7 @@ namespace mxc
         descriptorUpdateTemplateEntries.reserve(m_descriptorsInfo.size());
         for (uint32_t i = 0; i != m_descriptorsInfo.size(); ++i)
         {
+            MXC_WARN("update entry %u binding number: %u", i, m_descriptorsInfo[i].bindingNumber);
             descriptorUpdateTemplateEntries.push_back({
                 .dstBinding = m_descriptorsInfo[i].bindingNumber,
                 .dstArrayElement = 0,
@@ -177,31 +187,49 @@ namespace mxc
             });
         }
 
-        VkDescriptorUpdateTemplateCreateInfo const templateCreateInfo {
+        // create a template for each set
+        VkDescriptorUpdateTemplateCreateInfo templateCreateInfo {
             .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_UPDATE_TEMPLATE_CREATE_INFO,
             .pNext = nullptr,
             .flags = 0,
             .descriptorUpdateEntryCount = static_cast<uint32_t>(descriptorUpdateTemplateEntries.size()),
             .pDescriptorUpdateEntries = descriptorUpdateTemplateEntries.data(), // structs describing descriptors
-            .templateType = VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_DESCRIPTOR_SET, // <- only update descriptor sets with fixed layouts. i.e. no push descriptors
-            .descriptorSetLayout = descriptorSetLayout,
+            .templateType = VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_PUSH_DESCRIPTORS_KHR,
+            .descriptorSetLayout = descriptorSetLayouts[0],
             .pipelineBindPoint = bindPoint,
             .pipelineLayout = layout,
-            .set = 0// NUMBER of descriptor sets in the pipeline layout to be updated, ignored if templateType is not VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_PUSH_DESCRIPTORS_KHR
+            .set = 0// set number of descriptor set in the pipeline layout to be updated, ignored if templateType is not VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_PUSH_DESCRIPTORS_KHR
         };
-        VK_CHECK(vkCreateDescriptorUpdateTemplate(ctx->device.logical, &templateCreateInfo, nullptr, &descriptorUpdateTemplate));
+        descriptorUpdateTemplates.resize(descriptorSets_count);
+        // TODO: when using push descriptor sets, 1 layout == one push descriptor set. Handle case in which regular descriptor sets are created
+        for (uint32_t i = 0; i != descriptorSets_count; ++i) 
+        {
+            // TODO refactor
+            templateCreateInfo.set = 0;//i;
+            templateCreateInfo.descriptorSetLayout = descriptorSetLayouts[i];
+            VK_CHECK(vkCreateDescriptorUpdateTemplate(ctx->device.logical, &templateCreateInfo, nullptr, &descriptorUpdateTemplates[i]));
+        }
         m_updateTemplateCreated = true;
         
         return true;
     }
 
+    // pData is a pointer to memory containing one or more VkDescriptorImageInfo, VkDescriptorBufferInfo, or VkBufferView structures or VkAccelerationStructureKHR or VkAccelerationStructureNV handles used to write the descriptors.
     auto ShaderResources::updateAll(VulkanContext* ctx, void const* data) -> bool
     {
         MXC_ASSERT(m_updateTemplateCreated, "Cannot Update Descriptor Set without a template");
         for (uint8_t i = 0; i != descriptorSets_count; ++i)
         {
-            vkUpdateDescriptorSetWithTemplate(ctx->device.logical, descriptorSets[i], descriptorUpdateTemplate, data);
+            vkUpdateDescriptorSetWithTemplate(ctx->device.logical, descriptorSets[i], descriptorUpdateTemplates[i], data);
         }
+        return true;
+    }
+
+    auto ShaderResources::update(VulkanContext* ctx, uint32_t descriptorIndex, void const* data) -> bool
+    {
+        MXC_DEBUG("updating descriptor %u", descriptorIndex);
+        MXC_ASSERT(m_updateTemplateCreated, "Cannot Update Descriptor Set without a template");
+        vkUpdateDescriptorSetWithTemplate(ctx->device.logical, descriptorSets[descriptorIndex], descriptorUpdateTemplates[descriptorIndex], data);
         return true;
     }
     

@@ -171,14 +171,22 @@ endif()
 add_subdirectory("${PROJECT_SOURCE_DIR}/src")
 
 # link
-if(DEFINED ENV{VULKAN_SDK})
-    set(EXEC_LIBS "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt "/run/media/alessio/5b5d3976-c146-4dae-b622-58b92b81d64f/HDD/DownloadsHDD/vulkansdk-linux-x86_64-1.3.243.0/1.3.243.0/x86_64/lib/libdxcompiler.so" Renderer X11-xcb xcb) 
+#TODO fix issue with dxc. Also remove refl
+set(EXEC_LIBS "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt "/run/media/alessio/5b5d3976-c146-4dae-b622-58b92b81d64f/HDD/DownloadsHDD/vulkansdk-linux-x86_64-1.3.243.0/1.3.243.0/x86_64/lib/libdxcompiler.so" Renderer) 
 
-    #target_link_directories(Project PUBLIC "$ENV{VulkanSDK_LIBRARIES}")
-else()
-    # TODO find dxc
-    set(EXEC_LIBS "${Vulkan_LIBRARIES}" glfw Eigen3::Eigen fmt::fmt Renderer X11-xcb xcb)
-endif()
+if(LINUX)
+    if(USE_WAYLAND)
+        set(EXEC_LIBS ${EXEC_LIBS} wayland-client wayland-egl)
+    else()
+        set(EXEC_LIBS ${EXEC_LIBS} X11-xcb xcb) 
+    endif(USE_WAYLAND)
+elseif(APPLE)
+    set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -framework Cocoa")
+elseif(WIN32)
+    set(EXEC_LIBS ${EXEC_LIBS} User32 Gdi32)
+endif(LINUX)
+
+#target_link_directories(Project PUBLIC "$ENV{VulkanSDK_LIBRARIES}")
 
 # Define project properties (From Learning Vulkan by packt)
 set_property(TARGET ${Recipe_Name} PROPERTY RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)

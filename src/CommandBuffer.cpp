@@ -151,7 +151,11 @@ namespace mxc
     auto CommandBuffer::end() -> bool 
     {
         MXC_ASSERT(m_state == State::RECORDING, "Cannot end recording of a non-recording command buffer!");
-        VK_CHECK(vkEndCommandBuffer(handle));
+        if (VK_SUCCESS != vkEndCommandBuffer(handle))
+        {   
+            MXC_ERROR("Couldn't end the command buffer");
+            return false;
+        }
         m_state = State::EXECUTABLE;
         return true;
     }

@@ -266,9 +266,26 @@ namespace mxc
         // Device creation
         PhysicalDeviceRequirements requirements;
         requirements.extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+        requirements.extensions.push_back(VK_KHR_PUSH_DESCRIPTOR_EXTENSION_NAME);
+        MXC_INFO("required device extensions:");
+        for (uint32_t i = 0; i != requirements.extensions.size(); ++i)
+        {
+            MXC_INFO("\t%s", requirements.extensions[i]);
+        }
+
         if (!m_ctx.device.create(&m_ctx, requirements))
         {
             MXC_ERROR("Failed to create device!");
+            return false;
+        }
+
+        // Retrieve the function pointer
+        fpCmdPushDescriptorSetWithTemplateKHR = reinterpret_cast<PFN_vkCmdPushDescriptorSetWithTemplateKHR>(
+            vkGetInstanceProcAddr(m_ctx.instance, "vkCmdPushDescriptorSetWithTemplateKHR")
+        );
+
+        if (!fpCmdPushDescriptorSetWithTemplateKHR) {
+            MXC_ERROR("failed to find vkCmdPushDescriptorSetWithTemplateKHR");
             return false;
         }
 
@@ -286,36 +303,7 @@ namespace mxc
         createCommandBuffers(&m_ctx);
 
         // Create sync objects.
-        m_ctx.syncObjs.reserve(m_ctx.swapchain.images.size());
-
-        VkSemaphoreTypeCreateInfo const semaphoreTypeCI {
-            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO,
-            .pNext = nullptr,
-            .semaphoreType = VK_SEMAPHORE_TYPE_BINARY,
-            .initialValue = 0 // ignored if binary
-        };
-        VkSemaphoreCreateInfo const semaphoreCI {
-            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
-            .pNext = reinterpret_cast<void const*>(&semaphoreTypeCI),
-            .flags = 0
-        };
-        VkFenceCreateInfo const fenceCI {
-            .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
-            .pNext = nullptr,
-            .flags = VK_FENCE_CREATE_SIGNALED_BIT
-        };
-        for (uint8_t i = 0; i != m_ctx.swapchain.images.size(); ++i)
-        {
-            VkSemaphore semaphore[2];
-            VK_CHECK(vkCreateSemaphore(m_ctx.device.logical, &semaphoreCI, nullptr, &semaphore[0]));
-            VK_CHECK(vkCreateSemaphore(m_ctx.device.logical, &semaphoreCI, nullptr, &semaphore[1]));
-
-            VkFence fence;
-            VK_CHECK(vkCreateFence(m_ctx.device.logical, &fenceCI, nullptr, &fence));
-            FrameObjects f = {m_ctx.commandBuffers[i].handle, fence, semaphore[0], semaphore[1]};
-            // m_ctx.syncObjs.emplace_back(m_ctx.commandBuffers[i].handle, fence, semaphore[0], semaphore[1]); substitution failure?
-            m_ctx.syncObjs.push_back(f); // TODO cmdBuffers configurable
-        }
+        createSynchronizationPrimitives();
         MXC_DEBUG("Created Vulkan Synchronization primitives");
         
         // Create Depth Images (logging is in there)
@@ -340,43 +328,16 @@ namespace mxc
             MXC_ERROR("failed to create present framebuffers!");
         }
         MXC_DEBUG("creates present framebuffers");
-//
-//        // In flight fences should not yet exist at this point, so clear the list. These are stored in pointers
-//        // because the initial state should be 0, and will be 0 when not in use. Acutal fences are not owned
-//        // by this list.
-//        for (u32 i = 0; i < context->swapchain.image_count; ++i) {
-//            context->images_in_flight[i] = 0;
-//        }
-//
-//        // Create buffers
-//
-//        // Geometry vertex buffer
-//        const u64 vertex_buffer_size = sizeof(vertex_3d) * 1024 * 1024;
-//        if (!renderer_renderbuffer_create(RENDERBUFFER_TYPE_VERTEX, vertex_buffer_size, true, &context->object_vertex_buffer)) {
-//            KERROR("Error creating vertex buffer.");
-//            return false;
-//        }
-//        renderer_renderbuffer_bind(&context->object_vertex_buffer, 0);
-//
-//        // Geometry index buffer
-//        const u64 index_buffer_size = sizeof(u32) * 1024 * 1024;
-//        if (!renderer_renderbuffer_create(RENDERBUFFER_TYPE_INDEX, index_buffer_size, true, &context->object_index_buffer)) {
-//            KERROR("Error creating index buffer.");
-//            return false;
-//        }
-//        renderer_renderbuffer_bind(&context->object_index_buffer, 0);
-//
-//        // Mark all geometries as invalid
-//        for (u32 i = 0; i < VULKAN_MAX_GEOMETRY_COUNT; ++i) {
-//            context->geometries[i].id = INVALID_ID;
-//        }
-//
-//        KINFO("Vulkan renderer initialized successfully.");
+        
+        m_prepared = true;
+
+        MXC_INFO("Vulkan renderer initialized successfully.");
         return true;
     }
 
     auto Renderer::cleanup() -> void
     {
+        m_prepared = false;
         vkDeviceWaitIdle(m_ctx.device.logical);
 //
 //        // Destroy in the opposite order of creation.
@@ -395,13 +356,7 @@ namespace mxc
 
         // Sync objects
         MXC_DEBUG("Destroying Vulkan Synchronization Primitives...");
-        for (uint8_t i = 0; i != m_ctx.syncObjs.size(); ++i)
-        {
-            vkDestroySemaphore(m_ctx.device.logical, m_ctx.syncObjs[i].renderCompleteSemaphore, nullptr);
-            vkDestroySemaphore(m_ctx.device.logical, m_ctx.syncObjs[i].presentCompleteSemaphore, nullptr);
-
-            vkDestroyFence(m_ctx.device.logical, m_ctx.syncObjs[i].renderCompleteFence, nullptr);
-        }
+        destroySynchronizationPrimitives();
 
         // Command buffers
         MXC_DEBUG("Freeing %zu command buffers...", m_ctx.commandBuffers.size());
@@ -586,7 +541,26 @@ namespace mxc
         VK_CHECK(vkQueueSubmit2(m_ctx.device.graphicsQueue, 1, &submitInfo, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteFence));
         m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].signalSubmit();
         
-        // swapchain checks for resize and calls it if necessary
+        if (m_prepared)
+        {
+            // swapchain checks for resize and calls it if necessary
+            SwapchainStatus status = m_ctx.swapchain.present(&m_ctx, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore);
+            if (status == SwapchainStatus::WINDOW_RESIZED)
+                return RendererStatus::WINDOW_RESIZED;
+            if (status == SwapchainStatus::FATAL)
+                return RendererStatus::FATAL;
+
+            if (++m_ctx.currentFramebufferIndex >= m_ctx.presentFramebuffers.size())
+                m_ctx.currentFramebufferIndex = 0;
+        }
+        
+        m_prepared = true;
+
+        return RendererStatus::OK;
+    }
+
+    [[nodiscard]] auto Renderer::presentFrame() -> RendererStatus
+    {
         SwapchainStatus status = m_ctx.swapchain.present(&m_ctx, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore);
         if (status == SwapchainStatus::WINDOW_RESIZED)
             return RendererStatus::WINDOW_RESIZED;
@@ -595,7 +569,6 @@ namespace mxc
 
         if (++m_ctx.currentFramebufferIndex >= m_ctx.presentFramebuffers.size())
             m_ctx.currentFramebufferIndex = 0;
-
         return RendererStatus::OK;
     }
     
@@ -677,6 +650,7 @@ namespace mxc
     // TODO add function pointer
     auto Renderer::onResize(uint32_t const newWidth, uint32_t const newHeight) -> void
     {
+        m_prepared = false;
         // wait previous pending command buffers on the device 
         vkDeviceWaitIdle(m_ctx.device.logical);
         MXC_DEBUG("Resizing the Renderer...");
@@ -710,11 +684,63 @@ namespace mxc
         createCommandBuffers(&m_ctx);
         MXC_DEBUG("Recreated command buffers");
 
+        MXC_DEBUG("Recreating synchronization primitives...");
+        destroySynchronizationPrimitives();
+        createSynchronizationPrimitives();
+        MXC_DEBUG("Recreated synchronization primitives");
+
         // If renderpass becomes incompatible (i.e. attachments of framebuffer) change, we need to recreate
         // renderpass and graphics pipeline as well. Won't handle that now TODO?
 
         vkDeviceWaitIdle(m_ctx.device.logical);
         MXC_DEBUG("Resized the Renderer");
+    }
+    
+    auto Renderer::createSynchronizationPrimitives() -> bool
+    {
+        m_ctx.syncObjs.reserve(m_ctx.swapchain.images.size());
+
+        VkSemaphoreTypeCreateInfo const semaphoreTypeCI {
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO,
+            .pNext = nullptr,
+            .semaphoreType = VK_SEMAPHORE_TYPE_BINARY,
+            .initialValue = 0 // ignored if binary
+        };
+        VkSemaphoreCreateInfo const semaphoreCI {
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
+            .pNext = reinterpret_cast<void const*>(&semaphoreTypeCI),
+            .flags = 0
+        };
+        VkFenceCreateInfo const fenceCI {
+            .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
+            .pNext = nullptr,
+            .flags = VK_FENCE_CREATE_SIGNALED_BIT
+        };
+        for (uint8_t i = 0; i != m_ctx.swapchain.images.size(); ++i)
+        {
+            VkSemaphore semaphore[2];
+            VK_CHECK(vkCreateSemaphore(m_ctx.device.logical, &semaphoreCI, nullptr, &semaphore[0]));
+            VK_CHECK(vkCreateSemaphore(m_ctx.device.logical, &semaphoreCI, nullptr, &semaphore[1]));
+
+            VkFence fence;
+            VK_CHECK(vkCreateFence(m_ctx.device.logical, &fenceCI, nullptr, &fence));
+            FrameObjects f = {m_ctx.commandBuffers[i].handle, fence, semaphore[0], semaphore[1]};
+            // m_ctx.syncObjs.emplace_back(m_ctx.commandBuffers[i].handle, fence, semaphore[0], semaphore[1]); substitution failure?
+            m_ctx.syncObjs.push_back(f); // TODO cmdBuffers configurable
+        }
+        return true;
+    }
+
+    auto Renderer::destroySynchronizationPrimitives() -> void
+    {
+        for (uint8_t i = 0; i != m_ctx.syncObjs.size(); ++i)
+        {
+            vkDestroySemaphore(m_ctx.device.logical, m_ctx.syncObjs[i].renderCompleteSemaphore, nullptr);
+            vkDestroySemaphore(m_ctx.device.logical, m_ctx.syncObjs[i].presentCompleteSemaphore, nullptr);
+
+            vkDestroyFence(m_ctx.device.logical, m_ctx.syncObjs[i].renderCompleteFence, nullptr);
+        }
+        m_ctx.syncObjs.clear();
     }
 
     auto createCommandBuffers(VulkanContext* ctx) -> void

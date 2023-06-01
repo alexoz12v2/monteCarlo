@@ -1,8 +1,11 @@
+#define MXC_PREVENT_APPLICATION_DEFINE_MAIN
 #include "Application.h"
 
 #include <cstring>
 #include <algorithm>
 #include <chrono>
+
+
 
 namespace mxc 
 {
@@ -15,7 +18,7 @@ namespace mxc
             case ApplicationSignal_v::NONE: 
                 break;
             case ApplicationSignal_v::REMOVE_LAYER: 
-                m_layers[emitterIndex].layer.shutdown(*this, m_layers[emitterIndex].layer.data); 
+                m_layers[emitterIndex].layer.shutdown(ApplicationPtr(this), m_layers[emitterIndex].layer.data); 
                 m_layers[emitterIndex].isInit = false;
                 m_removeIndices.push_back(emitterIndex);
                 removeLayerEventHandlers(m_layers[emitterIndex].name);
@@ -48,11 +51,11 @@ namespace mxc
     auto Application::pushLayer(ApplicationLayer const& layer, LayerName name, bool initializeNow) -> bool
     {
         m_layers.push_back({layer, name, false});
-        MXC_TRACE("Pushing layer \"%s\"", name);
+        MXC_TRACE("Pushing layer \"%s\"", name.data());
         MXC_TRACE("Now the application has %zu layers", m_layers.size());
         if (initializeNow) 
         {
-            if (!m_layers.back().layer.init(*this, m_layers.back().layer.data))
+            if (!m_layers.back().layer.init(ApplicationPtr(this), m_layers.back().layer.data))
             {
                 m_layers.pop_back();
                 return false;
@@ -71,7 +74,7 @@ namespace mxc
             if (!layer.isInit)
             {
                 // TODO how to handle errors, maybe add error handler to ApplicationLayer
-                layer.layer.init(*this, layer.layer.data);
+                layer.layer.init(ApplicationPtr(this), layer.layer.data);
                 layer.isInit = true;
             }
         }
@@ -102,7 +105,7 @@ namespace mxc
         {
             if (m_layers[i].isInit)
             {
-                ApplicationSignal_t sig = m_layers[i].layer.tick(*this, deltaTime, m_layers[i].layer.data);
+                ApplicationSignal_t sig = m_layers[i].layer.tick(ApplicationPtr(this), deltaTime, m_layers[i].layer.data);
                 if (!handleSignal(sig, i))
                 {
                     m_state = ApplicationState::ERR;
@@ -131,15 +134,15 @@ namespace mxc
         }
     }
 
-    auto Application::emitEvent(EventName name, void* data) -> void
+    auto Application::emitEvent(EventName name, EventData data) -> void
     {
-        MXC_TRACE("Emitting event %s", name);
+        MXC_TRACE("Emitting event %s", name.data());
         if (m_eventHandlers.contains(name))
         {
             std::vector<InternalLayerPointer>& layerReferences = m_eventHandlers.find(name)->second;
             for (auto internalLayerPointer : layerReferences)
             {
-                ApplicationSignal_t sig = internalLayerPointer->layer.handler(*this, name, internalLayerPointer->layer.data, data);
+                ApplicationSignal_t sig = internalLayerPointer->layer.handler(ApplicationPtr(this), name, internalLayerPointer->layer.data, data);
                 uint32_t layerIndex = static_cast<uint32_t>(std::distance(m_layers.begin(), internalLayerPointer));
                 if (!handleSignal(sig, layerIndex))
                 {
@@ -152,9 +155,9 @@ namespace mxc
 
     auto Application::registerHandler(EventName name, LayerName listener) -> void
     {
-        auto findLayerByName = [listener](InternalLayer const& internalLayer) -> bool { return strcmp(internalLayer.name, listener) == 0; };
+        auto findLayerByName = [listener](InternalLayer const& internalLayer) -> bool { return internalLayer.name == listener; };
         auto findLayerRefByName = [listener](std::vector<InternalLayer>::iterator const& internalLayerRef) -> bool 
-        { return strcmp(internalLayerRef->name, listener) == 0; };
+        { return internalLayerRef->name == listener; };
 
         std::vector<InternalLayer>::iterator iter = std::find_if(m_layers.begin(), m_layers.end(), findLayerByName);
 
@@ -182,7 +185,7 @@ namespace mxc
         {
             if (layer.isInit)
             {
-                layer.layer.shutdown(*this, layer.layer.data);
+                layer.layer.shutdown(ApplicationPtr(this), layer.layer.data);
             }
         }
     }
@@ -190,7 +193,7 @@ namespace mxc
     auto Application::removeLayerEventHandlers(LayerName listener) -> void
     {
         auto findLayerRefByName = [listener](InternalLayerPointer const& internalLayerRef) -> bool 
-        { return strcmp(internalLayerRef->name, listener) == 0; };
+        { return internalLayerRef->name ==  listener; };
 
         // std::unordered_map<EventName, std::vector<InternalLayerPointer>>::iterator
         for (auto pairIter = m_eventHandlers.begin(); pairIter != m_eventHandlers.end(); /**/)
@@ -206,27 +209,4 @@ namespace mxc
             }
         }
     }
-    
-    auto clamp(float value, float min, float max) -> float
-    {
-        return  value < min ? min :
-                value > max ? max :
-                value;
-    }
-}
-
-auto main([[maybe_unused]]int32_t argc, [[maybe_unused]]char** argv) -> int32_t
-{
-    mxc::Application app;
-    // TODO add EventProxy layer
-
-    MXC_INFO("Initializing application...");
-    if (!initializeApplication(app, argc, argv) || !app.init())
-    {	
-        MXC_ERROR("Couldn't initialize application");
-        return 1;
-    }
-
-    MXC_INFO("Running the application...");
-    app.run();
 }

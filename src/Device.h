@@ -117,8 +117,8 @@ namespace mxc
 			VkImageLayout const* targetLayout = nullptr, 
 			ImageView* inOutView = nullptr) -> bool;
 		auto insertImageMemoryBarrier(
-            CommandBuffer* pCmdBuf,
-            Image* pImage,
+            VkCommandBuffer cmdBuf,
+            VkImage image,
             VkImageLayout oldImageLayout,
             VkImageLayout newImageLayout,
             VkImageSubresourceRange subresourceRange,
@@ -126,8 +126,8 @@ namespace mxc
             VkPipelineStageFlags dstStageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT) -> void;
 		// version with subresourceRange With baseMipLevel = 0, levelCount = 1, baseArrayLayer = 0, layerCount = 1, and aspectMask given
 		auto insertImageMemoryBarrier(
-            CommandBuffer* pCmdBuf,
-            Image* pImage,
+            VkCommandBuffer cmdBuf,
+            VkImage image,
             VkImageLayout oldImageLayout,
             VkImageLayout newImageLayout,
 			VkImageAspectFlags imageAspectMask,

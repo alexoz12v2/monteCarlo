@@ -1,0 +1,11 @@
+// test.compute
+
+#pragma kernel main
+
+[[vk::binding(0, 0)]] RWTexture2D<float4> res;
+
+[numthreads(16,16,1)]
+void main(uint3 dispatchTreadID : SV_DispatchThreadID)
+{
+    res[dispatchTreadID.xy] = float4(1,0,0,1);
+}

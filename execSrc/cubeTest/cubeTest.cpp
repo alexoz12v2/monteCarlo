@@ -5,6 +5,7 @@
 #include "Buffer.h"
 #include "logging.h"
 
+//TODO handle all cases, not only X11
 #include <GLFW/glfw3.h>
 #define GLFW_EXPOSE_NATIVE_X11
 #include <GLFW/glfw3native.h>
@@ -71,10 +72,10 @@ struct CubeTestLayer_data
 
 CubeTestLayer_data data(sizeof(s_cubeVertices), sizeof(s_cubeTriList));
 
-auto cubeTestLayer_init(mxc::Application& app, void* layerData) -> bool;
-auto cubeTestLayer_tick(mxc::Application& app, float deltaTime, void* layerData) -> mxc::ApplicationSignal_t;
-auto cubeTestLayer_shutdown(mxc::Application& app, void* layerData) -> void;
-auto cubeTestLayer_handler(mxc::Application& app, mxc::EventName name, void* layerData, void* eventData) -> mxc::ApplicationSignal_t;
+auto cubeTestLayer_init(mxc::ApplicationPtr appPtr, void* layerData) -> bool;
+auto cubeTestLayer_tick(mxc::ApplicationPtr appPtr, float deltaTime, void* layerData) -> mxc::ApplicationSignal_t;
+auto cubeTestLayer_shutdown(mxc::ApplicationPtr appPtr, void* layerData) -> void;
+auto cubeTestLayer_handler(mxc::ApplicationPtr appPtr, mxc::EventName name, void* layerData, mxc::EventData eventData) -> mxc::ApplicationSignal_t;
 
 static mxc::ApplicationLayer s_cubeTestLayer {
 	.init = cubeTestLayer_init,
@@ -102,8 +103,9 @@ auto windowResized(GLFWwindow *window, int width, int height) -> void
 	cubeTestLayerData->renderer.onResize(static_cast<uint32_t>(width), static_cast<uint32_t>(height));
 }
 
-auto cubeTestLayer_init(mxc::Application& app, void* layerData) -> bool
+auto cubeTestLayer_init(mxc::ApplicationPtr appPtr, void* layerData) -> bool
 {
+	auto& app = appPtr.get<mxc::Application>();
 	auto cubeTestLayerData = reinterpret_cast<CubeTestLayer_data*>(layerData);
 	if (!glfwInit())
 		return false;
@@ -209,8 +211,9 @@ auto cubeTestLayer_init(mxc::Application& app, void* layerData) -> bool
 	return true;
 }
 
-auto cubeTestLayer_tick(mxc::Application& app, float deltaTime, void* layerData) -> mxc::ApplicationSignal_t
+auto cubeTestLayer_tick(mxc::ApplicationPtr appPtr, float deltaTime, void* layerData) -> mxc::ApplicationSignal_t
 {
+	auto& app = appPtr.get<mxc::Application>();
 	auto cubeTestLayerData = reinterpret_cast<CubeTestLayer_data*>(layerData);
 	if (glfwWindowShouldClose(cubeTestLayerData->window))
 		return mxc::ApplicationSignal_v::CLOSE_APP;
@@ -279,8 +282,9 @@ auto cubeTestLayer_tick(mxc::Application& app, float deltaTime, void* layerData)
 	return mxc::ApplicationSignal_v::NONE;
 }
 
-auto cubeTestLayer_shutdown(mxc::Application& app, void* layerData) -> void
+auto cubeTestLayer_shutdown(mxc::ApplicationPtr appPtr, void* layerData) -> void
 {
+	auto& app = appPtr.get<mxc::Application>();
 	auto cubeTestLayerData = reinterpret_cast<CubeTestLayer_data*>(layerData);
 	auto& renderer = cubeTestLayerData->renderer;
 	auto& vulkanDevice = cubeTestLayerData->renderer.getContextPointer()->device;
@@ -300,8 +304,8 @@ auto cubeTestLayer_shutdown(mxc::Application& app, void* layerData) -> void
 	glfwTerminate();
 }
 
-auto cubeTestLayer_handler([[maybe_unused]] mxc::Application& app, [[maybe_unused]]mxc::EventName name, 
-						   [[maybe_unused]] void* layerData, [[maybe_unused]]void* eventData) -> mxc::ApplicationSignal_t
+auto cubeTestLayer_handler([[maybe_unused]] mxc::ApplicationPtr app, [[maybe_unused]]mxc::EventName name, 
+						   [[maybe_unused]] void* layerData, [[maybe_unused]]mxc::EventData eventData) -> mxc::ApplicationSignal_t
 {
 	return mxc::ApplicationSignal_v::NONE;
 }

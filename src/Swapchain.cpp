@@ -148,6 +148,13 @@ namespace mxc
         // setting max images simultaneously being rendered to max - 1 (the one being presented)
         maxFramesInFlight = imageCount - 1;
 
+        // control swapchain surface capabilites support VK_IMAGE_USAGE_STORAGE_BIT
+        if ((ctx->device.swapchainSupport.surfCaps.supportedUsageFlags & VK_IMAGE_USAGE_STORAGE_BIT) != VK_IMAGE_USAGE_STORAGE_BIT)
+        {
+            MXC_ERROR("surface doesn't support VK_IMAGE_USAGE_STORAGE_BIT. Aborting swapchain creation");
+            return false;
+        }
+
         // Swapchain create info
         VkSwapchainCreateInfoKHR swapchainCreateInfo{};
         swapchainCreateInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -157,7 +164,7 @@ namespace mxc
         swapchainCreateInfo.imageColorSpace = imageFormat.colorSpace;
         swapchainCreateInfo.imageExtent = swapchainExtent;
         swapchainCreateInfo.imageArrayLayers = 1;
-        swapchainCreateInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+        swapchainCreateInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_STORAGE_BIT;
 
         // Setup the queue family indices
         if (ctx->device.queueFamilies.graphics!= ctx->device.queueFamilies.present) 
