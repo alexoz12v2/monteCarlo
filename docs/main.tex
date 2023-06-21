@@ -4,6 +4,7 @@
 % theorems
 \usepackage{amsthm}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{siunitx}
 \usepackage[inline]{enumitem}
 \usepackage[svgnames]{xcolor}
@@ -73,14 +74,14 @@
 
 % ------------------- units of measurements consistent style
 \sisetup{
-  detect-all,
-  inter-unit-product=\ensuremath{{}\cdot{}},
-  separate-uncertainty=true,
-  uncertainty-separator={\,},
-  range-units=single,
-  per-mode=symbol,
-  exponent-product=\cdot,
-  output-decimal-marker={,},
+	detect-all,
+	inter-unit-product=\ensuremath{{}\cdot{}},
+  	separate-uncertainty=true,
+  	uncertainty-separator={\,},
+  	range-units=single,
+  	per-mode=symbol,
+  	exponent-product=\cdot,
+  	output-decimal-marker={,},
 }
 
 % ----------------------------------- symbol definitions
@@ -115,14 +116,14 @@
 
 % definition environment
 \newtheoremstyle{theoremdd}% name of the style to be used
-  {\topsep}% measure of space to leave above the theorem. E.g.: 3pt
-  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
-  {}% name of font to use in the body of the theorem
-  {0pt}% measure of space to indent
-  {\bfseries}% name of head font
-  {. ---}% punctuation between head and body
-  { }% space after theorem head; " " = normal interword space
-  {\thmname{#1}\thmnumber{ #2}\textnormal{\thmnote{ (#3)}}}
+	{\topsep}% measure of space to leave above the theorem. E.g.: 3pt
+  	{\topsep}% measure of space to leave below the theorem. E.g.: 3pt
+  	{}% name of font to use in the body of the theorem
+  	{0pt}% measure of space to indent
+  	{\bfseries}% name of head font
+  	{. ---}% punctuation between head and body
+  	{ }% space after theorem head; " " = normal interword space
+  	{\thmname{#1}\thmnumber{ #2}\textnormal{\thmnote{ (#3)}}}
 \theoremstyle{theoremdd}
 \newtheorem{definitionS}{Def.}[section] % numbered by section
 \newtheorem{definitionC}{Def.}[chapter] % numbered by chapter, to use when I need a def in beginning of chapter
@@ -132,6 +133,8 @@
 \newfontfamily\codefont{DejaVu Sans}
 \newcommand\tab[1][1cm]{\hspace*{#1}}
 \newcommand{\littext}[1]{{\color{Rhodamine}{#1}}}
+\newcommand{\hemi}[1]{\ensuremath{\mathfrak{H}^2(#1)}}
+%\newcommand{\vector}[1]{\ensuremath{\mathbf{\overrightarrow{#1}}}}
 
 % footer setup using fancyhdr package
 \setlength{\headheight}{15pt} % shut the warning up

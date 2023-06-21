@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  13 MAY 2023 23:17
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  21 JUN 2023 20:14
  restricted system commands enabled.
 **main.tex
 (./main.tex
@@ -139,6 +139,17 @@ LaTeX Info: Redefining \Relbar on input line 971.
 LaTeX Info: Redefining \[ on input line 2953.
 LaTeX Info: Redefining \] on input line 2954.
 )
+(/usr/share/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/share/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
 (/usr/share/texmf-dist/tex/latex/siunitx/siunitx.sty
 Package: siunitx 2023-03-04 v3.2.2 A comprehensive (SI) units package
 \l__siunitx_angle_tmp_dim=\dimen149
@@ -641,13 +652,13 @@ Package fontspec Info: Font family 'HelveticaNeue(1)' created for font
 
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
 (Font)                  OT1/cmr/m/n --> TU/HelveticaNeue(1)/m/n on input line 2
-1.
+2.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
 (Font)                  OT1/cmr/m/it --> TU/HelveticaNeue(1)/m/it on input line
- 21.
+ 22.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
 (Font)                  OT1/cmr/bx/n --> TU/HelveticaNeue(1)/b/n on input line 
-21.
+22.
 
 (/usr/share/texmf-dist/tex/latex/lm/lmodern.sty
 Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
@@ -734,15 +745,15 @@ flt;"<7.2-10.2>"LatinModernMath:mode=base;script=math;language=dflt;+ssty=0;"<-
 (fontspec)             \__um_luatex_copy_fontdimens: 
 
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 24.
+(Font)              `operators' in the math version `normal' on input line 25.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/LatinModernMath(1)/m/n on input line
- 24.
+ 25.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 24.
+(Font)              `operators' in the math version `bold' on input line 25.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/LatinModernMath(1)/b/n on input lin
-e 24.
+e 25.
 
 Package fontspec Info: LatinModernMath scale = 1.0001.
 
@@ -803,15 +814,15 @@ ge=dflt;+ssty=1;"
 (fontspec)             21\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 24.
+(Font)              `symbols' in the math version `normal' on input line 25.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/LatinModernMath(2)/m/n on input lin
-e 24.
+e 25.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 24.
+(Font)              `symbols' in the math version `bold' on input line 25.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/LatinModernMath(2)/b/n on input lin
-e 24.
+e 25.
 
 Package fontspec Info: LatinModernMath scale = 0.9999.
 
@@ -861,35 +872,46 @@ ge=dflt;+ssty=1;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 2
-4.
+5.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/LatinModernMath(3)/m/n on input lin
-e 24.
+e 25.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 24.
+(Font)              `largesymbols' in the math version `bold' on input line 25.
 
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/LatinModernMath(3)/b/n on input lin
-e 24.
+e 25.
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
-4.
+5.
 
 (/usr/share/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 12.00128pt on input line 24.
+(Font)              scaled to size 12.00128pt on input line 25.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 8.40088pt on input line 24.
+(Font)              scaled to size 8.40088pt on input line 25.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 6.00064pt on input line 24.
+(Font)              scaled to size 6.00064pt on input line 25.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 24.
+(Font)              scaled to size 11.99872pt on input line 25.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 8.3991pt on input line 24.
+(Font)              scaled to size 8.3991pt on input line 25.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 24.
+(Font)              scaled to size 5.99936pt on input line 25.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 25.
 
+
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 25.
+
+
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
 (/usr/share/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
 
@@ -1594,7 +1616,7 @@ Package: monte-carlo-glossary
 \glo@main@file=\write6
 
 \openout6 = main.glo
-Package glossaries Info: Writing glossary file main.glo on input line 93.
+Package glossaries Info: Writing glossary file main.glo on input line 94.
  (/usr/share/texmf-dist/tex/latex/import/import.sty
 Package: import 2020/04/01  v 6.2
 ) (/usr/share/texmf-dist/tex/latex/titling/titling.sty
@@ -1635,13 +1657,13 @@ Package: tabulary 2014/06/11 v0.10 tabulary package (DPC)
 )
 \c@definitionS=\count505
 \c@definitionC=\count506
-luaotfload | aux : font no 56 (nil) does not define feature smcp for script latn
+luaotfload | aux : font no 62 (nil) does not define feature smcp for script latn
  with language dflt
-luaotfload | aux : font no 57 (nil) does not define feature smcp for script latn
+luaotfload | aux : font no 63 (nil) does not define feature smcp for script latn
  with language dflt
-luaotfload | aux : font no 58 (nil) does not define feature smcp for script latn
+luaotfload | aux : font no 64 (nil) does not define feature smcp for script latn
  with language dflt
-luaotfload | aux : font no 59 (nil) does not define feature smcp for script latn
+luaotfload | aux : font no 65 (nil) does not define feature smcp for script latn
  with language dflt
 
 Package fontspec Info: Font family 'DejaVuSans(0)' created for font 'DejaVu
@@ -1664,33 +1686,33 @@ Package fontspec Info: Font family 'DejaVuSans(0)' created for font 'DejaVu
 (fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
 
 Package translations Info: No language package found. I am going to use `englis
-h' as default language. on input line 155.
+h' as default language. on input line 158.
 \@quotelevel=\count507
 \@quotereset=\count508
 
 (./intermediate/main.aux)
 \openout1 = main.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 155.
-LaTeX Font Info:    ... okay on input line 155.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 155.
-LaTeX Font Info:    ... okay on input line 155.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 155.
-LaTeX Font Info:    ... okay on input line 155.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 155.
-LaTeX Font Info:    ... okay on input line 155.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 155.
-LaTeX Font Info:    ... okay on input line 155.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 155.
-LaTeX Font Info:    ... okay on input line 155.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 155.
-LaTeX Font Info:    ... okay on input line 155.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 155.
-LaTeX Font Info:    ... okay on input line 155.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 155.
-LaTeX Font Info:    ... okay on input line 155.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 155.
-LaTeX Font Info:    ... okay on input line 155.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 158.
+LaTeX Font Info:    ... okay on input line 158.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 158.
+LaTeX Font Info:    ... okay on input line 158.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 158.
+LaTeX Font Info:    ... okay on input line 158.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 158.
+LaTeX Font Info:    ... okay on input line 158.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 158.
+LaTeX Font Info:    ... okay on input line 158.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 158.
+LaTeX Font Info:    ... okay on input line 158.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 158.
+LaTeX Font Info:    ... okay on input line 158.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 158.
+LaTeX Font Info:    ... okay on input line 158.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 158.
+LaTeX Font Info:    ... okay on input line 158.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 158.
+LaTeX Font Info:    ... okay on input line 158.
 
 
 Package siunitx Warning: Detected the "physics" package:
@@ -1710,7 +1732,7 @@ File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `english'. on input line 155.
+or `english'. on input line 158.
  (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count509
@@ -1733,20 +1755,20 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 155.
+Package hyperref Info: Link coloring OFF on input line 158.
 
 (./intermediate/main.out) (./intermediate/main.out)
 \@outlinefile=\write7
 
 \openout7 = main.out
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 155.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 158.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 155.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 158.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 155.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 158.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 155.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 158.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: luatex
@@ -1797,8 +1819,8 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
 
 (./intermediate/main.bbl)
-Package biblatex Info: Reference section=0 on input line 155.
-Package biblatex Info: Reference segment=0 on input line 155.
+Package biblatex Info: Reference section=0 on input line 158.
+Package biblatex Info: Reference segment=0 on input line 158.
  [1
 
 
@@ -1901,17 +1923,17 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
 
 [5]
-Underfull \hbox (badness 1490) in paragraph at lines 245--246
+Underfull \hbox (badness 1490) in paragraph at lines 246--247
 []|\TU/lmr/m/n/12 As-sorbe forte-mente luce rossa,
  []
 
 
-Underfull \hbox (badness 2310) in paragraph at lines 246--247
+Underfull \hbox (badness 2310) in paragraph at lines 247--248
 \TU/lmr/m/n/12 frarossa, mo-tivo per cui con-
  []
 
 
-Overfull \hbox (70.77127pt too wide) in paragraph at lines 238--250
+Overfull \hbox (70.77127pt too wide) in paragraph at lines 239--251
 [][]
  []
 
@@ -1924,7 +1946,7 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
 
 [6]
-Overfull \hbox (6.62463pt too wide) in paragraph at lines 260--262
+Overfull \hbox (6.62463pt too wide) in paragraph at lines 261--263
 \TU/lmr/m/n/12 In-tro-ducendo un co-ef-fi-ciente di as-sor-bi-mento non-nullo, 
 e sup-po-nendo propagazione
  []
@@ -1938,32 +1960,37 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
 
 [7]
-Overfull \hbox (4.58858pt too wide) in paragraph at lines 291--293
+Overfull \hbox (4.58858pt too wide) in paragraph at lines 292--294
 \TU/lmr/m/n/12 su-per-fi-cie o mezzo trasmis-sivo, gli \TU/lmr/m/it/12 scat-ter-
 ing events
  []
 
 
-Overfull \hbox (3.92865pt too wide) in paragraph at lines 293--295
+Overfull \hbox (3.92865pt too wide) in paragraph at lines 294--296
 \TU/lmr/m/n/12 mag-netico di una ra-di-azione, ren-dendo l’unica pro-
  []
 
 
-Overfull \hbox (16.71584pt too wide) in paragraph at lines 293--295
+Overfull \hbox (16.71584pt too wide) in paragraph at lines 294--296
 \TU/lmr/m/n/12 pri-età ril-e-vante di una ra-di-azione la sua \TU/lmr/m/it/12 
 Dis-tribuzione
  []
 
 
-Overfull \hbox (11.64784pt too wide) in paragraph at lines 295--297
+Overfull \hbox (11.64784pt too wide) in paragraph at lines 296--298
 []\TU/lmr/m/n/12 Il com-por-ta-mento della ra-di-azione ad una lunghezza
  []
 
 
 LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 3
-17.
+18.
 
-) (./chapters/chapter-part1-2-color-camera.tex
+
+Overfull \hbox (0.93188pt too wide) in paragraph at lines 325--326
+[]\TU/lmr/m/n/12 Cias-cuno di questi fo-toni trasporta en-er-gia pari all’Equa
+zione di plank-Einstein
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (15.0pt): 
 (fancyhdr)                Make it at least 27.41803pt, for example:
@@ -1981,90 +2008,147 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
 
-[9]
+[9
+Missing character: There is no 𝜆 (U+1D706) in font [lmroman10-regular]:+tlig;
+!
+]
+
+Package fancyhdr Warning: \headheight is too small (15.0pt): 
+(fancyhdr)                Make it at least 27.41803pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.41803pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
+
+[10]
+
+Package fancyhdr Warning: \headheight is too small (15.0pt): 
+(fancyhdr)                Make it at least 27.41803pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.41803pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
+
+[11]
+
+Package fancyhdr Warning: \headheight is too small (15.0pt): 
+(fancyhdr)                Make it at least 27.41803pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.41803pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
+
+[12]
+
+Package fancyhdr Warning: \headheight is too small (15.0pt): 
+(fancyhdr)                Make it at least 27.41803pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.41803pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
+
+[13]
+Overfull \hbox (60.49684pt too wide) detected at line 490
+[]
+ []
+
+) (./chapters/chapter-part1-2-color-camera.tex
+
+Package fancyhdr Warning: \headheight is too small (15.0pt): 
+(fancyhdr)                Make it at least 27.41803pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.41803pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
+
+[14]
 Chapter 2.
-) (./chapters/chapter-part1-3-light-surface.tex [10
+) (./chapters/chapter-part1-3-light-surface.tex [15
 
 ]
 Chapter 3.
-) (./chapters/chapter-part1-4-volume-transport-no-alg.tex [11
+) (./chapters/chapter-part1-4-volume-transport-no-alg.tex [16
 
 ]
 Chapter 4.
-) [12
+) [17
 
-] [13
+] [18
 
 ] (./chapters/chapter-part2-1-quasirandom-gen.tex
 Chapter 5.
-) (./chapters/chapter-part2-2-sampling-montecarlo.tex [14
+) (./chapters/chapter-part2-2-sampling-montecarlo.tex [19
 
 ]
 Chapter 6.
-) (./chapters/chapter-part2-3-variance-reduction.tex [15
+) (./chapters/chapter-part2-3-variance-reduction.tex [20
 
 ]
 Chapter 7.
-) [16
+) [21
 
-] [17
+] [22
 
 ] (./chapters/chapter-part3-1-light-transportintro.tex
 Chapter 8.
-) (./chapters/chapter-part3-2-light-transport-impl.tex [18
+) (./chapters/chapter-part3-2-light-transport-impl.tex [23
 
 ]
 Chapter 9.
-) [19
+) [24
 
-] [20
+] [25
 
 ] (./chapters/chapter-Appendix-A-prob-stat.tex
 Appendix A.
-) (./chapters/chapter-Appendix-B-geo-alg.tex [21
+) (./chapters/chapter-Appendix-B-geo-alg.tex [26
 
 ]
 Appendix B.
-) (./chapters/chapter-Appendix-C-random-num.tex [22
+) (./chapters/chapter-Appendix-C-random-num.tex [27
 
 ]
 Appendix C.
-) (./chapters/chapter-Appendix-D-vulkan-code.tex [23
+) (./chapters/chapter-Appendix-D-vulkan-code.tex [28
 
 ]
 Appendix D.
-) (./chapters/chapter-Appendix-E-materials-impldetails.tex [24
+) (./chapters/chapter-Appendix-E-materials-impldetails.tex [29
 
 ]
 Appendix E.
-) [25
+) [30
 
 ]
-Overfull \hbox (3.5825pt too wide) in paragraph at lines 211--211
+Overfull \hbox (3.5825pt too wide) in paragraph at lines 214--214
 []\TU/lmr/m/n/12 Vin-cent Pe-go-raro. \TU/lmr/m/it/12 Hand-book of Dig-i-tal Im-
 age Syn-the-sis: Sci-en-tific Foun-
  []
 
-(./intermediate/main.gls) [26
+(./intermediate/main.gls [31
+
+
+]) [32
 
 
 ] (./intermediate/main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 18E389C476C0A469D11189D4E13B3C59;5110.
+(rerunfilecheck)             Checksum: 9A119C76E9A330C9A621DD5AC570FD9C;5774.
 Package logreq Info: Writing requests to 'main.run.xml'.
 
 \openout1 = main.run.xml
 )
 
 Here is how much of LuaTeX's memory you used:
- 46642 strings out of 478285
+ 47258 strings out of 478285
  125163,1977958 words of node,token memory allocated
- 2840 words of node memory still in use:
-   76 hlist, 18 vlist, 5 rule, 6 math, 49 glue, 21 kern, 7 sub_mlist, 78 glyph, 
-50 attribute, 124 glue_spec, 50 attribute_list, 2 write nodes
-   avail lists: 2:5502,3:2699,4:680,5:378,6:57,7:5556,8:48,9:2127,10:13,11:412
- 65122 multiletter control sequences out of 65536+600000
- 105 fonts using 43077335 bytes
+ 3025 words of node memory still in use:
+   76 hlist, 18 vlist, 5 rule, 6 math, 56 glue, 21 kern, 7 sub_mlist, 78 glyph, 
+84 attribute, 124 glue_spec, 84 attribute_list, 2 write nodes
+   avail lists: 1:2,2:5434,3:2703,4:680,5:432,6:66,7:6092,8:48,9:2127,10:23,11:4
+77
+ 65661 multiletter control sequences out of 65536+600000
+ 123 fonts using 44190007 bytes
  91i,17n,114p,2265b,1237s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/opentype/public/lm/lmsans12-regular.otf></usr/share
 /texmf-dist/fonts/opentype/public/lm/lmroman10-italic.otf></usr/share/texmf-dist
@@ -2080,10 +2164,10 @@ e/public/lm/lmroman12-regular.otf></usr/share/texmf-dist/fonts/opentype/public/l
 m/lmroman17-regular.otf></usr/share/texmf-dist/fonts/opentype/public/lm/lmromand
 emi10-regular.otf></usr/share/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/
 share/texmf-dist/fonts/type1/public/lm/lmbx12.pfb>
-Output written on main.pdf (32 pages, 144720 bytes).
+Output written on main.pdf (38 pages, 177624 bytes).
 
-PDF statistics: 417 PDF objects out of 1000 (max. 8388607)
- 337 compressed objects within 4 object streams
- 78 named destinations out of 1000 (max. 131072)
- 210 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 545 PDF objects out of 1000 (max. 8388607)
+ 442 compressed objects within 5 object streams
+ 123 named destinations out of 1000 (max. 131072)
+ 242 words of extra memory for PDF output out of 10000 (max. 100000000)
 

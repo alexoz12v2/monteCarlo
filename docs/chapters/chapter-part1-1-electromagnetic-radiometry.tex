@@ -107,8 +107,8 @@ Come osservi in figura \ref{chapter1:spectrum}, un'onda monocromatica \`e caratt
 La luce visibile all'\textit{occhio umano} corrisponde al sottoinsieme dello spettro $[383, 783]\ \si{THz}$, equivalentemente $[783, 383]\ \si{nm}$\par
 Inoltre si definisce \textit{numero d'onda angolare} [\si{rd/m}]
 \begin{alignat}{2}
-	& \text{nel vuoto} k_0 &= \frac{2\pi}{\lambda_0} = \frac{2\pi}{c}\nu = \frac{\omega}{c} \\
-	& \text{nel mezzo}  k &= \frac{2\pi}{\lambda} = \frac{2\pi}{v}\nu = \frac{\omega}{v}
+	& \text{nel vuoto } k_0 &= \frac{2\pi}{\lambda_0} = \frac{2\pi}{c}\nu = \frac{\omega}{c} \\
+	& \text{nel mezzo }  k &= \frac{2\pi}{\lambda} = \frac{2\pi}{v}\nu = \frac{\omega}{v}
 \end{alignat}
 che rappresenta lo shift di fase dell'onda. 
 Assieme alla direzione di propagazione $\hat{k}$ definiscono il \textit{vettore d'onda} $\overrightarrow{k} = k \hat{k}$\par
@@ -226,6 +226,7 @@ Una radiazione elettromagnetica mostra sia aspetti ondulatori che aspetti partic
 La luce \`e assorbita ed emessa in pacchetti discreti di energia elettromagnetica chiamati \textit{fotoni}. Dunque il campo elettromagnetico
 \footnote{inteso come spostamento di energia} \`e quantizzato. Ciascuna delle sue particelle elementari costituenti ha energia definita dall'
 \textit{equazione di Planck-Einstein} 
+\label{chapter1:plankEinstein}
 \[\xi = h\nu\] 
 dove $h$ costante di Plank. Si osservi come l'energia di un singolo fotone \`e dipendente dallalunghezza d'onda.\par
 
@@ -294,7 +295,7 @@ In particolare, le assunzioni fatte sono le seguenti[\cite{pharr}]:
 		una radiazione la sua \textit{Distribuzione Spettrale} [\nameref{chapter2}]
 	\item[No fluorescenza o fosforescenza] Il comportamento della radiazione ad una lunghezza d'onda \`e indipendente dal comportamento della 
 		radiazione ad altre lunghezze d'onda
-	\item[A regime] Il \textit{Light Field} (\nameref{radianza}) nell'ambiente \`e assunto a regime, indipendente dal tempo. Nota che la 
+	\item[A regime] Il \textit{Light Field} (\nameref{chapter1:radianza}) nell'ambiente \`e assunto a regime, indipendente dal tempo. Nota che la 
 		fosforescenza viola anche questo presupposto
 \end{altDescription}
 Il \textit{Radiative Transfer}, qui solo accennato, \`e lo studio dei fenomeni legati al trasferimento di energia radiante, basato sulla radiometria,
@@ -305,13 +306,13 @@ Le unit\`a fondamentali della radiometria sono riassunte nella tabella \ref{chap
 		\toprule
 		Quantit\`a & Simbolo & unit\`a S.I. & Note \\
 		\midrule
-		Energia Radiante & $Q_e$ & \si{J} & Energia aggregata di tutti i fotoni in una radiazione elettromagnetica\\
-		Flusso Radiante  & $\Phi_e$ & \si{W} & Energia Radiante \textit{emessa, riflessa, trasmessa, incidente}, per unit\`a di tempo\\
-		Intensit\`a Radiante & $I_{e,\Omega}$ & \si{W/sr} & Flusso Radiante emesso, riflesso, trasmesso, per uni\`a di angolo solido\\
-		Irradianza & $E_e$ & \si{W/m^2} & Flusso Radiante incidente per unit\`a di area\\
-		Emittanza Radiante & $M_e$ & \si{W/m^2} & Flusso Radiante emesso per unit\`a di area\\
-		Radiosit\`a & $J_e$ & \si{W/m^2} & Flusso Radiante \textit{uscente} (emesso, riflesso e trasmesso) per unita di area\\
-		Radianza & $L_{e,\Omega}$ & \si{W/(sr.m^2)} & Flusso Radiante emesso, riflesso, trasmesso, incidente da/su una superficie, per unit\`a di 
+		\Gls{Energia Radiante} & $Q_e$ & \si{J} & Energia aggregata di tutti i fotoni in una radiazione elettromagnetica\\
+		\Gls{Flusso Radiante}  & $\Phi_e$ & \si{W} & Energia Radiante \textit{emessa, riflessa, trasmessa, incidente}, per unit\`a di tempo\\
+		\Gls{Intensita Radiante} & $I_{e,\Omega}$ & \si{W/sr} & Flusso Radiante emesso, riflesso, trasmesso, per uni\`a di angolo solido\\
+		\Gls{Irradianza} & $E_e$ & \si{W/m^2} & Flusso Radiante incidente per unit\`a di area\\
+		\Gls{Emittanza Radiante} & $M_e$ & \si{W/m^2} & Flusso Radiante emesso per unit\`a di area\\
+		\Gls{Radiosita} & $J_e$ & \si{W/m^2} & Flusso Radiante \textit{uscente} (emesso, riflesso e trasmesso) per unita di area\\
+		\Gls{Radianza} & $L_{e,\Omega}$ & \si{W/(sr.m^2)} & Flusso Radiante emesso, riflesso, trasmesso, incidente da/su una superficie, per unit\`a di 
 			angolo solido per unita di \textit{area proiettata}\\
 		\bottomrule
 	\end{tabularx}
@@ -319,6 +320,174 @@ Le unit\`a fondamentali della radiometria sono riassunte nella tabella \ref{chap
 	\label{chapter1:radiometric-quantities}
 \end{table}
 \begin{definitionS}
-	L'\textit{Energia Radiante}
+	L'\textit{Energia Radiante} $Q_e$ \`e l'energia aggregata di tutti i fotoni, ognuno ad una particolare lunghezza d'onda con contributo energetico
+	diverso, \textit{verso/attraverso/da} una superficie in un dato intervallo di tempo\par
+	Ciascuno di questi fotoni trasporta energia pari all'Equazione di plank-Einstein $Q_\lambda=\frac{hc}{\lambda}$\ref{chapter1:plankEinstein}
 \end{definitionS}
-\label{radianza}
+\begin{definitionS}
+	L'\textit{Energia Radiante Spettrale} $Q_{e,\lambda}$\footnotemark{} \`e il contributo di una singola lunghezza d'onda all'energia radiante 
+	complessiva
+	\[ Q_{e,\lambda}= \frac{\partial Q_e}{\partial\lambda} \]
+\end{definitionS}
+\footnotetext{Le grandezze spettrali possono essere espresse in funzione della lunghezza d'onda \lambda ( e.g. $Q_{e,\lambda}$ ) o del suo inverso, la
+	frequenza ( e.g. $Q_{e,\nu}$ )}
+Data l'assunzione di sistema a regime, siamo interessati a misurare l'energia radiante in un istante piuttosto che per un periodo definito di tempo.
+Dunque definiamo
+\begin{definitionS}
+	Il \textit{Flusso Radiante} $\Phi_e$ \`e la quantit\`a di energia radiante passante attraverso una superficie per unit\`a di tempo
+	\[ \Phi_e = \frac{\partial Q_e}{\partial t} \]
+	La cui derivata rispetto alle frequenze fornisce il \textit{Flusso Radiante Spettrale}
+	\[ \Phi_{e,\lambda} = \frac{\partial\Phi_e}{\partial\lambda} \]
+\end{definitionS}
+Ogni misurazione di un flusso richiede un area ben definita per attribuirle senso. Nei sistemi di rendering, non \`e insolito invece compiere delle 
+misure "puntuali" di un flusso radiante, cio\`e \textit{flusso radiante per unit\`a di area}.
+\begin{definitionS}
+	La densit\`a superficiale del flusso radiante (energia per unit\`a di tempo, per unit\`a di superficie) \`e detta \textit{Irradianza} $E_e$ se tale 
+	flusso \`e entrante la superficie, \textit{Emittanza Radiante} $M_e$ se emesso dalla superficie, \textit{Radiosit\`a} $J_e$ se uscente (emesso, 
+	riflesso o trasmesso) dalla superficie
+	\[ E_e | J_e | M_e = \frac{\partial\Phi_e}{\partial A} \]
+	La cui derivata rispetto alle frequenze fornisce la rispettiva grandezza spettrale
+	\[ E_{e,\lambda} | J_{e,\lambda} | M_{e,\lambda} = \frac{\partial E_e | J_e | M_e}{\partial\lambda} \]
+	Si noti infine che l'Irradianza, per definizione, \`e pari alla media temporale in un periodo del vettore di Pointing perpendicolare alla 
+	superficie \[ E_e = \langle |\vec{S}| \rangle \]
+\end{definitionS}
+Piuttosto che concentrarci su un unico punto della superficie, possiamo concentrarci su una singola direzione, considerando il flusso radiante per 
+unit\'a di angolo solido.
+\begin{definitionS}
+	La \textit{Intensit\`a Radiante} $I_{e,\Omega}$ \`e la densit\`a angolare del flusso radiante emesso, riflesso, trasmesso o incidente da/verso un 
+	punto dello spazio e propagante lungo una direzione specificati
+	\[ I_{e,\Omega} = \frac{\partial\Phi_e}{\partial\Omega} \]
+	L'\textit{Intensit\`a (Radiante) Spettrale} \`e l'intensit\`a radiante per unit\`a di lunghezza d'onda
+	\[ I_{e,\Omega,\lambda} = \frac{\partial I_{e,\Omega}}{\partial\lambda} \]
+\end{definitionS}
+Tale grandezza \`e utile per la modellazione, ad esempio, delle sorgenti luminose puntuali omnidirezionali, le quali distribuiscono il loro 
+flusso radiante emesso, inversamente proporzionale al quadrato della distanza dalla sorgente, in modo uniforme il ogni direzione 
+$I_{e,\Omega} = \frac{\Phi_e}{4\pi}$.\par
+La descrizione pi\`u granulare dell'energia emessa da un'onda elettromagnetica \`e fornita dalla \textit{Radianza}, definita come
+\label{chapter1:radianza}
+\begin{definitionS}
+	La \textit{Radianza} $L_{e,\Omega}$ \`e definita come flusso radiante emesso, riflesso, trasmesso o incidente da/su una dato punto della 
+	superficie, da/verso una data direzione, dunque per unit\`a di angolo solido per unit\`a di area \textit{proiettata}
+	\[ L_{e,\Omega} = \frac{\partial^2\Phi_e}{\partial\Omega\partial(A\cos\theta)} \]
+	dove $\theta$ angolo tra la direzione perpendicolare alla superficie sul punto considerato e la direzione del flusso
+\end{definitionS}
+Significativa ai nostri fini \`e la relazione inversa che sussiste tra Irradianza e Radianza, che sfrutteremo per definire l'equazione del rendering
+\begin{align}
+	E_e(\vec{p}) &= \int_\Omega L_{e,\Omega}(\vec{p},\hat{\omega})\cos\theta\mathrm{d}\hat{\omega}\footnotemark 
+				 &= \int_{\theta_1}^{\theta_2} \int_{\varphi_1}^{\varphi_2} L_{e,\Omega}(\vec{p}, \theta, \varphi)
+						\cos\theta\sin\theta\mathrm{d}\theta\mathrm{d}\varphi
+\end{align}
+\footnotetext{Si noti la distinzione tra $\hat\omega$ e $\mathrm{d}\hat\omega$. Il primo \`e un vettore unitario dal punto $\vec{p}$ ad un 
+	punto della porzione di sfera unitaria costituente il dominio di integrazione, il secondo \`e un elemento di angolo angolo solido. 
+	Un angolo solido \`e  un  numero adimensionale rappresentante la porzione di area di sfera coperta, nell'intervallo $[0,4\pi]$.
+	Il suo differenziale rappresenta un piccolo quadratino della superficie della sfera, spesso approssimato ad un quadrato ai fini 
+	di dimostrazioni geometriche}
+\subsection{Propriet\`a Particolari}
+Ciascuna di queste grandezze assume il suo ruolo in un sistema di rendering e possiede propriet\`a particolari. Ad esempio, il \textit{Flusso Radiante}
+pu\`o essere utilizzato al fine di poter campionare una fonte luminosa con probabilit\`a proporzionale alla potenza emessa dalla sua superficie.\par
+Relazione significativa che coinvolge l'\textit{Irradianza} \`e la \textit{Legge del coseno di Lambert}
+\begin{definitionS}
+	La \textit{Legge del coseno di Lambert} afferma che L'\textit{Intensit\`a Radiante}\footnote{o Intensit\`a Luminosa} osservata da un 
+	\textit{Radiatore Lambertiano}/verso una \textit{Superficie Lambertiana} \`e direttamente proporzionale all'angolo $\theta$ tra l'osservatore e la
+	normale alla superficie
+	\[ I = I_0\cos\theta \]\footnote{da cui $E = E_0\cos\theta$}
+\end{definitionS}
+Dove per \textit{Radiatore Lambertiano} si intende ogni superficie radiante la cui radianza emessa \`e indipendente dalla direzione considerata, mentre
+per \textit{Superficie Lambertiana} si intende ogni superficie che obbedisce alla legge del coseno, e riflette radianza incidente in tutte le direzioni
+in modo uniforme, e tale tipologia di riflessione \`e detta \textit{Riflessione diffusa}, che riprendiamo in seguito.\par 
+La \textit{Radiosit\`a}, la quale pu\`o essere scomposta in 
+\[ J_e(\vec{p}) = \frac{\partial \Phi_e}{\partial A} = M_e(\vec{p}) + J_{e,r}(\vec{p}) + J_{e,t}(\vec{p}) \]
+dove 
+\begin{itemize}[topsep=0pt, noitemsep]
+	\item $M_e$ Emittanza Radiante dalla superficie nel punto $\vec{p}$, componente emessa della radiosit\`a
+	\item $J_{e,r}$ Componente riflessa della radiosit\`a
+	\item $J_{e,t}$ Componente trasmessa della radiosit\`a, nullo per superfici opache
+\end{itemize}
+\`e la grandezza protagonista dell'algoritmo di rendering deterministico che porta il suo nome, \textit{Metodo della radiosit\`a}, nel quale \`e 
+possibile, mediante la risoluzione di un sistema di equazioni, renderizzare un scena contenenti superfici caratterizzate da riflessione diffusa.\par
+Definiamo brevemente \textit{Etend\`ue}
+\begin{definitionS}
+	\textit{Etendue} \`e una propriet\`a geometrica di un sistema ottico che quantifica quanto spazio la luce occupa in termini di area e angolari.
+	Essa quantifica dunque il throughput di una sorgente luminosa. Matematicamente, essa \`e pari al prodotto tra l'area della sorgente/osservatore 
+	e l'angolo solido della sorgente/osservatore che tale area sottende, tenendo conto del mezzo in cui la luce si propaga (indice di rifrazione)
+	\[ \mathrm{d}G = \eta^2\langle \hat{n_s},\hat{\omega} \rangle\mathrm{d}A(\vec{p})\mathrm{d}\hat{\omega}\]
+\end{definitionS}
+Considerando una sorgente luminosa $\Sigma$, e un osservatore $S$, entrambi superfici separate da un mezzo con indice di rifrazione $\eta$, omogeneo,
+isotropico, senza perdite (cio\`e in assenza di scattering\footnote{anche detto mezzo trasparente} e assorbimento) e distanti $d$, l'etendue \`e dato da
+\[ \mathrm{d}G_\Sigma = \eta^2\mathrm{d}\Sigma\cos\theta_\Sigma\mathrm{d}\omega_\Sigma 
+					  = \eta^2\mathrm{d}\Sigma\cos\theta_\Sigma\frac{\mathrm{d}S\cos\theta_S}{d^2} \]
+per ogni punto della superficie della sorgente. Im modo simile, l'etendue da un particolare punto della superficie di osservazione (e.g. una lente, o
+un camera film) \`e dato da
+\[ \mathrm{d}G_S = \eta^2\mathrm{d}S\cos\theta_S\mathrm{d}\omega_S 
+				 = \eta^2\mathrm{d}S\cos\theta_S\frac{\mathrm{d}\Sigma\cos\theta_\Sigma}{d^2}\]
+Da cui si osserva che $\mathrm{d}G_\Sigma = \mathrm{d}G_S$, cio\`e che \textit{L'etendue}, il throughput di una sorgente, \textit{si conserva}.\par
+Dalla conservazione dell'etendue segue la \textit{Conservazione della radianza di base}, in quanto, dalla definizione di \gls{Radianza}
+\begin{align}
+	L_{e,\Omega}(\vec{p}, \hat{\omega}) &= \frac{\partial^2\Phi_e}{\langle\hat{n},\hat{\omega}\rangle\partial A(\vec{p})\partial\hat{\omega}} 
+						   = \eta^2\frac{\partial^2\Phi_e}{\mathrm{d}G(\vec{p},\hat{w})}\\
+	\frac{L_{e,\Omega}(\vec{p}, \hat{\omega})}{\eta^2} &= \frac{\partial^2\Phi_e}{\mathrm{d}G(\vec{p},\hat{w})}
+		= \frac{\partial^2\Phi_e}{\mathrm{d}G(\vec{q},-\hat{w})} = \frac{L_{e,\Omega}(\vec{q}, -\hat{\omega})}{\eta^2}
+\end{align}
+In quanto la potenza e l'etendue si conservano, anche il rapporto tra radianza e indice di rifrazione, detto radianza di base, si conserva nella 
+propagazione in un mezzo ideale.\par
+\subsection{Radianza incidente ed uscente}
+La radianza $L$ \`e generalmente una funzione discontinua sulle superfici di separazione tra due mezzi, dette interfacce.
+\begin{align}
+	L^+ &= \lim_{t\rightarrow 0^+} L(\vec{p}+t\hat{n},\hat{\omega})\\
+	L^- &= \lim_{t\rightarrow 0^-} L(\vec{p}+t\hat{n},\hat{\omega})
+\end{align}
+dunque, piuttosto che lavorare con un unica funzione discontinua, si preferisce distinguere tra \textit{radianza incidente} $L_i$ e 
+\textit{radianza uscente}\footnote{emessa, riflessa, trasmessa}.
+\begin{align}
+	L_i(\vec{p},\hat{\omega})&=\left\{
+	\begin{aligned}
+		L^+(\vec{p},-\hat{w}),\text{ }\langle\omega,\hat{n}\rangle>0\\
+		L^-(\vec{p},-\hat{w}),\text{ }\langle\omega,\hat{n}\rangle<0
+	\end{aligned}\right.\footnotemark{}\\
+	L_o(\vec{p},\hat{\omega})&=\left\{
+	\begin{aligned}
+		L^+(\vec{p},\hat{w}),\text{ }\langle\omega,\hat{n}\rangle>0\\
+		L^-(\vec{p},\hat{w}),\text{ }\langle\omega,\hat{n}\rangle<0
+	\end{aligned}\right.
+\end{align}
+\footnotetext{Si noti come per convenzione, la radianza incidente la direzione $\hat{\omega}$ sia uscente dal punto $vec{p}$, nonostante 
+	il flusso radiante abbia direzione opposta. In altre parole, la radianza incidente ha come argomento la direzione di provenienza del flusso}
+Si noti che in punti dello spazio non giacenti su una superficie, la radianza \`e invece continua, $L^+=L^-$, da cui
+\begin{equation}
+	L_o(\vec{p},\hat{\omega}) = L_i(\vec{p},-\hat{\omega})
+\end{equation}
+Si pu\`o riscrivere la conservazione della radiaza di base in termini della radianza incidente e radianza uscente
+\begin{equation}
+	\frac{L_o(\vec{p}, \hat{\omega})}{\eta^2_1} = \frac{L_i(\vec{q}, \hat{\omega})}{\eta^2_2}
+\end{equation}
+\section{Radiazione di Corpo Nero}
+Tutti i corpi con temperatura superiore allo zero assoluto emettono radiazione, in quantit\`a proporzionale alla temperatura assoulta in quanto essa 
+corrisponde allo stato di agitazione delle molecole, causando accelerazione di elettroni e protoni degli atomi costituenti, portando all'emissione 
+di campo elettromagnetico secondo le equazioni di Maxwell. Tale flusso radiante spettrale emesso costituisce una \textit{Spectral Power Distribution}
+(SPD). \par
+Un \textit{Corpo Nero} corpo ideale che assorbe ogni tipo di radiazione incidente, indipendentemente da frequenza o angolo di incidenza. In
+equilibrio termico, esso emette radiazioni che seguono la \textit{Legge di Planck}\ref{chapter1:planckLaw}. Esso \`e un 
+\textit{Radiatore Ideale e diffusore}, cio\`e emette radiazioni uniformemente in tutte le direzioni (superficie lambertiana).\par
+per tali corpi neri, l'Emittanza radiante $M_{bb}$ dalla superficie obbedisce alla \textit{Legge di Stefan-Boltzmann}
+\begin{equation}
+	M_{bb} = \sigma T^4
+\end{equation}
+dove $\sigma = 5.67032\cdot 10^{-8} \si{W/(m^2 K^4)}$ costante di Stefan-Boltzmann\\
+Dunque tale corpo nero \`e una superficie opaca (trasmittanza nulla), perfettamente assorbente (absorptance unitaria) che non riflette alcuna radiazione
+incidente (riflettanza nulla). Ci\`o vuol dire che emette tutta la radiazione che assorbe ($A+R+T=1$).\par
+Essendo una superficie lambertiana, anche la radianza emessa deve essere constante. Sapendo che un emisfera unitaria ha integrale pari a $\pi$,
+\begin{equation}
+	M_{bb\lambda} = \pi L_{bb\lambda}
+\end{equation}
+In equilibrio termico, tale radianza ha espressione detta \textit{Legge di Planck}
+\begin{equation}\label{chapter1:planckLaw}
+	L_{bb\lambda}(T,\lambda) = \frac{2hc^2}{\lambda^5\left(e^{\frac{hc}{\lambda kT}}-1\right)}
+\end{equation}
+dove
+\begin{align}
+	h &= 6.626176\cdot 10^{-34} \si{J/s}\text{ costante di Planck}
+	k &= 1.380662\cdot 10^{-23} \si{J/K}\text{ costante di Boltzmann}
+\end{align}
+\`E facile dimostrare come, integrando nell'emisfera unitaria, si ottiene un emittanza radiante corrispondente alla legge di Stefan-Boltzmann\par
+Tali corpi neri si dimostrano utili non solo come modelli per parametrizzare, tramite temperatura, una sorgente luminosa, ma risultano rilevanti 
+anche per la colorimetria, in quanto costituenti il luogo plankiano.\par
