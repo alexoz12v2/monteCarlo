@@ -1,0 +1,74 @@
+%% Creator: Inkscape 1.2.2 (b0a8486541, 2022-12-01), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'chapter2_colorimetry_RGB_color_matching_functions_svg-tex.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{971.8125bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.62738954)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{chapter2_colorimetry_RGB_color_matching_functions_svg-tex.pdf}}%
+    \put(0.86349604,0.52892919){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}r (λ)\end{tabular}}}}%
+    \put(0.86349604,0.48262396){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}g (λ)\end{tabular}}}}%
+    \put(0.86349604,0.43631873){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}b (λ)\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{chapter2_colorimetry_RGB_color_matching_functions_svg-tex.pdf}}%
+    \put(0.01842562,0.6022458){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0.40\end{tabular}}}}%
+    \put(0.01842562,0.49342852){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0.30\end{tabular}}}}%
+    \put(0.01842562,0.37766544){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0.20\end{tabular}}}}%
+    \put(0.01842562,0.26190237){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0.10\end{tabular}}}}%
+    \put(0.01842562,0.1461393){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0.00\end{tabular}}}}%
+    \put(-0.00086822,0.04272429){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}−0.10\end{tabular}}}}%
+    \put(0.14267799,0.00799537){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}400\end{tabular}}}}%
+    \put(0.33561644,0.00799537){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}500\end{tabular}}}}%
+    \put(0.46604283,0.00027783){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}λ\end{tabular}}}}%
+    \put(0.52855489,0.00799537){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}600\end{tabular}}}}%
+    \put(0.72149334,0.00799537){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}700\end{tabular}}}}%
+    \put(0.9144318,0.00799537){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}800\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

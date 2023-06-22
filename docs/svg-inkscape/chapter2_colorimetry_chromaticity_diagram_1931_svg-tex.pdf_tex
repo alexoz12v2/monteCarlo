@@ -1,0 +1,137 @@
+%% Creator: Inkscape 1.2.2 (b0a8486541, 2022-12-01), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'chapter2_colorimetry_chromaticity_diagram_1931_svg-tex.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{352.62307923bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.03636384)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{chapter2_colorimetry_chromaticity_diagram_1931_svg-tex.pdf}}%
+    \put(0.62019325,0.31448007){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Purplish\\Red\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{chapter2_colorimetry_chromaticity_diagram_1931_svg-tex.pdf}}%
+    \put(0.50806044,-0){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}x\end{tabular}}}}%
+    \put(-0.00006231,0.51671684){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}y\end{tabular}}}}%
+    \put(0.20848297,0.63579628){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Green\end{tabular}}}}%
+    \put(0.21304064,0.48311405){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Bluish\\Green\end{tabular}}}}%
+    \put(0.37407862,0.68441153){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Yellowish\\Green\end{tabular}}}}%
+    \put(0.51384747,0.63047899){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Yellow\\Green\end{tabular}}}}%
+    \put(0.21987718,0.34486444){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Greenish\\Blue\end{tabular}}}}%
+    \put(0.22367526,0.23168206){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Blue\end{tabular}}}}%
+    \put(0.25254052,0.16255726){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Purplish\\Blue\end{tabular}}}}%
+    \put(0.50928974,0.35929708){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Purplish\\Pink\end{tabular}}}}%
+    \put(0.46447253,0.41930654){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Equal\\Energy\end{tabular}}}}%
+    \put(0.38699201,0.24155709){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Purple\end{tabular}}}}%
+    \put(0.31938646,0.19218221){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Violet\end{tabular}}}}%
+    \put(0.48650132,0.26054745){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Reddish\\Purple\end{tabular}}}}%
+    \put(0.60955867,0.39955674){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Pink\end{tabular}}}}%
+    \put(0.72046225,0.38968185){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Red\end{tabular}}}}%
+    \put(0.72122187,0.45804709){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Reddish\\Orange\end{tabular}}}}%
+    \put(0.61563565,0.4527298){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Yellowish\\Pink\end{tabular}}}}%
+    \put(0.57689536,0.59553681){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Greenish\\Yellow\end{tabular}}}}%
+    \put(0.64829902,0.54160426){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Orange\\Yellow\end{tabular}}}}%
+    \put(0.60955873,0.56211387){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Yellow\end{tabular}}}}%
+    \put(0.67108737,0.49754668){\color[rgb]{1,1,1}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}Orange\end{tabular}}}}%
+    \put(0.82704689,0.08045559){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}1000K →\end{tabular}}}}}%
+    \put(0.75245292,0.08045559){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}1500K →\end{tabular}}}}}%
+    \put(0.69925844,0.08045559){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}1900K →\end{tabular}}}}}%
+    \put(0.64548369,0.08045559){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}2366K →\end{tabular}}}}}%
+    \put(0.59869152,0.08045559){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}2856K →\end{tabular}}}}}%
+    \put(0.54549704,0.08045559){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}3600K →\end{tabular}}}}}%
+    \put(0.49127144,0.08045559){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}4800K →\end{tabular}}}}}%
+    \put(0.44927015,0.08045559){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}6500K →\end{tabular}}}}}%
+    \put(0.41259706,0.0745466){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}10000K →\end{tabular}}}}}%
+    \put(0.38599982,0.0745466){\color[rgb]{0,0,0}\rotatebox{90}{\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}20000K →\end{tabular}}}}}%
+    \put(0.08843789,0.02685648){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}0\end{tabular}}}}%
+    \put(0.02505683,0.09883154){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}0\end{tabular}}}}%
+    \put(0.02037655,0.19776939){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.1\end{tabular}}}}%
+    \put(0.19478374,0.02685648){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.1\end{tabular}}}}%
+    \put(0.02037655,0.29636713){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.2\end{tabular}}}}%
+    \put(0.30614301,0.02685648){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.2\end{tabular}}}}%
+    \put(0.41750231,0.02685648){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.3\end{tabular}}}}%
+    \put(0.52886162,0.02685648){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.4\end{tabular}}}}%
+    \put(0.64143626,0.02685648){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.5\end{tabular}}}}%
+    \put(0.75279557,0.02685648){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.6\end{tabular}}}}%
+    \put(0.86415487,0.02685648){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.7\end{tabular}}}}%
+    \put(0.97551411,0.02685648){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.8\end{tabular}}}}%
+    \put(0.02037655,0.39420531){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.3\end{tabular}}}}%
+    \put(0.02037655,0.49280305){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.4\end{tabular}}}}%
+    \put(0.02037655,0.59261632){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.5\end{tabular}}}}%
+    \put(0.02037655,0.69121406){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.6\end{tabular}}}}%
+    \put(0.02037655,0.78905224){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.7\end{tabular}}}}%
+    \put(0.02037655,0.88764997){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.8\end{tabular}}}}%
+    \put(0.02037655,0.98624778){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.9\end{tabular}}}}%
+    \put(0.31358722,1.01632845){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}C.I.E. 1931 Chromaticity Diagram\end{tabular}}}}%
+    \put(0.28216547,0.08507668){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.38\end{tabular}}}}%
+    \put(0.26211171,0.0926729){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.43\end{tabular}}}}%
+    \put(0.25254059,0.098305){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.44\end{tabular}}}}%
+    \put(0.24342525,0.10482673){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.45\end{tabular}}}}%
+    \put(0.22671375,0.11849981){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.46\end{tabular}}}}%
+    \put(0.2016465,0.15116312){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.47\end{tabular}}}}%
+    \put(0.16290621,0.22788401){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.48\end{tabular}}}}%
+    \put(0.11134194,0.39106556){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.49\end{tabular}}}}%
+    \put(0.06890885,0.63427911){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.50\end{tabular}}}}%
+    \put(0.07642865,0.85009919){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.51\end{tabular}}}}%
+    \put(0.16022056,0.94989968){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.52\end{tabular}}}}%
+    \put(0.27301736,0.92132663){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.53\end{tabular}}}}%
+    \put(0.3611063,0.86815098){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.54\end{tabular}}}}%
+    \put(0.44274972,0.80573894){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.55\end{tabular}}}}%
+    \put(0.52331883,0.73849272){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.56\end{tabular}}}}%
+    \put(0.6022766,0.66963515){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.57\end{tabular}}}}%
+    \put(0.67908583,0.60238892){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.58\end{tabular}}}}%
+    \put(0.74837531,0.54105111){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.59\end{tabular}}}}%
+    \put(0.80638514,0.48991878){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.60\end{tabular}}}}%
+    \put(0.84935538,0.45221455){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.61\end{tabular}}}}%
+    \put(0.87836032,0.42632716){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.62\end{tabular}}}}%
+    \put(0.89662268,0.41010812){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.63\end{tabular}}}}%
+    \put(0.90897655,0.39979755){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.64\end{tabular}}}}%
+    \put(0.9170335,0.39324674){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.65\end{tabular}}}}%
+    \put(0.92347903,0.38454747){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{0}\smash{\begin{tabular}[t]{l}.77µm\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

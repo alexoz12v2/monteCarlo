@@ -1,5 +1,5 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  21 JUN 2023 20:14
- restricted system commands enabled.
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  22 JUN 2023 23:46
+ system commands enabled.
 **main.tex
 (./main.tex
 LaTeX2e <2022-11-01> patch level 1
@@ -408,17 +408,133 @@ Package graphics Info: Driver file: luatex.def on input line 107.
 \Gin@req@height=\dimen161
 \Gin@req@width=\dimen162
 )
+(/usr/share/texmf-dist/tex/latex/svg/svg.sty
+Package: svg 2020/11/26 v2.02k (include SVG pictures)
+
+(/usr/share/texmf-dist/tex/latex/koma-script/scrbase.sty
+Package: scrbase 2022/10/12 v3.38 KOMA-Script package (KOMA-Script-independent 
+basics and keyval usage)
+
+(/usr/share/texmf-dist/tex/latex/koma-script/scrlfile.sty
+Package: scrlfile 2022/10/12 v3.38 KOMA-Script package (file load hooks)
+
+(/usr/share/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty
+Package: scrlfile-hook 2022/10/12 v3.38 KOMA-Script package (using LaTeX hooks)
+
+
+(/usr/share/texmf-dist/tex/latex/koma-script/scrlogo.sty
+Package: scrlogo 2022/10/12 v3.38 KOMA-Script package (logo)
+)))
+Applying: [2021/05/01] Usage of raw or classic option list on input line 252.
+Already applied: [0000/00/00] Usage of raw or classic option list on input line
+ 368.
+)
+(/usr/share/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+)
+(/usr/share/texmf-dist/tex/latex/tools/shellesc.sty
+Package: shellesc 2019/11/08 v1.0c unified shell escape interface for LaTeX
+Package shellesc Info: Unrestricted shell escape enabled on input line 75.
+)
+(/usr/share/texmf-dist/tex/latex/ifplatform/ifplatform.sty
+Package: ifplatform 2017/10/13 v0.4a Testing for the operating system
+
+(/usr/share/texmf-dist/tex/generic/catchfile/catchfile.sty
+Package: catchfile 2019/12/09 v1.8 Catch the contents of a file (HO)
+)
+(/usr/share/texmf-dist/tex/generic/iftex/ifluatex.sty
+Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
+)
+runsystem(uname -s > "main.w18")...executed
+ (./main.w18)
+runsystem(rm -- "main.w18")...executed
+)
+\c@svg@param@lastpage=\count297
+\svg@box=\box64
+\c@svg@param@currpage=\count298
+)
+(/usr/share/texmf-dist/tex/latex/transparent/transparent.sty
+Package: transparent 2022-10-27 v1.5 Transparency with color stacks
+
+(/usr/share/texmf-dist/tex/latex/transparent/transparent-nometadata.sty
+Package: transparent-nometadata 2022-10-27 v1.5 Transparency via pdfTeX's color
+ stack (HO)
+))
+(/usr/share/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks32
+\pgfutil@tempdima=\dimen163
+\pgfutil@tempdimb=\dimen164
+)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box65
+)
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
+))
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks33
+\pgfkeys@temptoks=\toks34
+
+(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.te
+x
+\pgfkeys@tmptoks=\toks35
+))
+\pgf@x=\dimen165
+\pgf@y=\dimen166
+\pgf@xa=\dimen167
+\pgf@ya=\dimen168
+\pgf@xb=\dimen169
+\pgf@yb=\dimen170
+\pgf@xc=\dimen171
+\pgf@yc=\dimen172
+\pgf@xd=\dimen173
+\pgf@yd=\dimen174
+\w@pgf@writea=\write3
+\r@pgf@reada=\read2
+\c@pgf@counta=\count299
+\c@pgf@countb=\count300
+\c@pgf@countc=\count301
+\c@pgf@countd=\count302
+\t@pgf@toka=\toks36
+\t@pgf@tokb=\toks37
+\t@pgf@tokc=\toks38
+\pgf@sys@id@count=\count303
+ (/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
+)
+Driver file for pgf: pgfsys-luatex.def
+
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-luatex.def
+File: pgfsys-luatex.def 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
+)))
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfsyssoftpath@smallbuffer@items=\count304
+\pgfsyssoftpath@bigbuffer@items=\count305
+)
+(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))
 (/usr/share/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count297
-\calc@Bcount=\count298
-\calc@Adimen=\dimen163
-\calc@Bdimen=\dimen164
+\calc@Acount=\count306
+\calc@Bcount=\count307
+\calc@Adimen=\dimen175
+\calc@Bdimen=\dimen176
 \calc@Askip=\skip69
 \calc@Bskip=\skip70
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count299
+\calc@Ccount=\count308
 \calc@Cskip=\skip71
 )
 (/usr/share/texmf-dist/tex/latex/mdframed/mdframed.sty
@@ -430,8 +546,8 @@ Package: expl3 2023-02-22 L3 programming layer (loader)
 
 (/usr/share/texmf-dist/tex/latex/l3backend/l3backend-luatex.def
 File: l3backend-luatex.def 2023-01-16 L3 backend support: PDF output (LuaTeX)
-\l__color_backend_stack_int=\count300
-\l__pdf_internal_box=\box64
+\l__color_backend_stack_int=\count309
+\l__pdf_internal_box=\box66
 ))
 Package: xparse 2023-02-02 L3 Experimental document command parser
 )
@@ -444,14 +560,14 @@ Package zref Info: New property list: main on input line 767.
 Package zref Info: New property: default on input line 768.
 Package zref Info: New property: page on input line 769.
 )
-\c@abspage=\count301
+\c@abspage=\count310
 Package zref Info: New property: abspage on input line 65.
 )
 (/usr/share/texmf-dist/tex/latex/needspace/needspace.sty
 Package: needspace 2010/09/12 v1.3d reserve vertical space
 )
 \mdf@templength=\skip72
-\c@mdf@globalstyle@cnt=\count302
+\c@mdf@globalstyle@cnt=\count311
 \mdf@skipabove@length=\skip73
 \mdf@skipbelow@length=\skip74
 \mdf@leftmargin@length=\skip75
@@ -495,11 +611,11 @@ Package: needspace 2010/09/12 v1.3d reserve vertical space
 (/usr/share/texmf-dist/tex/latex/mdframed/md-frame-0.mdf
 File: md-frame-0.mdf 2013/07/01\ 1.9b: md-frame-0
 )
-\mdf@frametitlebox=\box65
-\mdf@footnotebox=\box66
-\mdf@splitbox@one=\box67
-\mdf@splitbox@two=\box68
-\mdf@splitbox@save=\box69
+\mdf@frametitlebox=\box67
+\mdf@footnotebox=\box68
+\mdf@splitbox@one=\box69
+\mdf@splitbox@two=\box70
+\mdf@splitbox@save=\box71
 \mdfsplitboxwidth=\skip112
 \mdfsplitboxtotalwidth=\skip113
 \mdfsplitboxheight=\skip114
@@ -527,16 +643,16 @@ File: md-frame-0.mdf 2013/07/01\ 1.9b: md-frame-0
 \mdf@horizontalspaceofbox=\skip136
 \mdfsubtitleheight=\skip137
 \mdfsubsubtitleheight=\skip138
-\c@mdfcountframes=\count303
+\c@mdfcountframes=\count312
 
 ****** mdframed patching \endmdf@trivlist
 
 ****** -- success******
 
-\mdf@envdepth=\count304
-\c@mdf@env@i=\count305
-\c@mdf@env@ii=\count306
-\c@mdf@zref@counter=\count307
+\mdf@envdepth=\count313
+\c@mdf@env@i=\count314
+\c@mdf@env@ii=\count315
+\c@mdf@zref@counter=\count316
 Package zref Info: New property: mdf@pagevalue on input line 895.
 )
 (/usr/share/texmf-dist/tex/latex/unicode-math/unicode-math-luatex.sty
@@ -552,20 +668,20 @@ Lua module: fontspec 2022/01/15 2.8a Font selection for XeLaTeX and LuaLaTeX
 (/usr/share/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty
 Package: fontspec-luatex 2022/01/15 v2.8a Font selection for XeLaTeX and LuaLaT
 eX
-\l__fontspec_script_int=\count308
-\l__fontspec_language_int=\count309
-\l__fontspec_strnum_int=\count310
-\l__fontspec_tmp_int=\count311
-\l__fontspec_tmpa_int=\count312
-\l__fontspec_tmpb_int=\count313
-\l__fontspec_tmpc_int=\count314
-\l__fontspec_em_int=\count315
-\l__fontspec_emdef_int=\count316
-\l__fontspec_strong_int=\count317
-\l__fontspec_strongdef_int=\count318
-\l__fontspec_tmpa_dim=\dimen165
-\l__fontspec_tmpb_dim=\dimen166
-\l__fontspec_tmpc_dim=\dimen167
+\l__fontspec_script_int=\count317
+\l__fontspec_language_int=\count318
+\l__fontspec_strnum_int=\count319
+\l__fontspec_tmp_int=\count320
+\l__fontspec_tmpa_int=\count321
+\l__fontspec_tmpb_int=\count322
+\l__fontspec_tmpc_int=\count323
+\l__fontspec_em_int=\count324
+\l__fontspec_emdef_int=\count325
+\l__fontspec_strong_int=\count326
+\l__fontspec_strongdef_int=\count327
+\l__fontspec_tmpa_dim=\dimen177
+\l__fontspec_tmpb_dim=\dimen178
+\l__fontspec_tmpc_dim=\dimen179
 
 (/usr/share/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
@@ -583,9 +699,9 @@ Package: lualatex-math 2022/01/01 v1.12 Patches for mathematics typesetting wit
 h LuaLaTeX
 Lua module: lualatex-math 2013/08/03 1.3 Patches for mathematics typesetting wit
 h LuaLaTeX)
-\g__um_fam_int=\count319
-\g__um_fonts_used_int=\count320
-\l__um_primecount_int=\count321
+\g__um_fam_int=\count328
+\g__um_fonts_used_int=\count329
+\l__um_primecount_int=\count330
 \g__um_primekern_muskip=\muskip18
 
 (/usr/share/texmf-dist/tex/latex/unicode-math/unicode-math-table.tex))
@@ -652,13 +768,13 @@ Package fontspec Info: Font family 'HelveticaNeue(1)' created for font
 
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
 (Font)                  OT1/cmr/m/n --> TU/HelveticaNeue(1)/m/n on input line 2
-2.
+3.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
 (Font)                  OT1/cmr/m/it --> TU/HelveticaNeue(1)/m/it on input line
- 22.
+ 23.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
 (Font)                  OT1/cmr/bx/n --> TU/HelveticaNeue(1)/b/n on input line 
-22.
+23.
 
 (/usr/share/texmf-dist/tex/latex/lm/lmodern.sty
 Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
@@ -745,15 +861,15 @@ flt;"<7.2-10.2>"LatinModernMath:mode=base;script=math;language=dflt;+ssty=0;"<-
 (fontspec)             \__um_luatex_copy_fontdimens: 
 
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 25.
+(Font)              `operators' in the math version `normal' on input line 26.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/LatinModernMath(1)/m/n on input line
- 25.
+ 26.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 25.
+(Font)              `operators' in the math version `bold' on input line 26.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/LatinModernMath(1)/b/n on input lin
-e 25.
+e 26.
 
 Package fontspec Info: LatinModernMath scale = 1.0001.
 
@@ -814,15 +930,15 @@ ge=dflt;+ssty=1;"
 (fontspec)             21\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 25.
+(Font)              `symbols' in the math version `normal' on input line 26.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/LatinModernMath(2)/m/n on input lin
-e 25.
+e 26.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 25.
+(Font)              `symbols' in the math version `bold' on input line 26.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/LatinModernMath(2)/b/n on input lin
-e 25.
+e 26.
 
 Package fontspec Info: LatinModernMath scale = 0.9999.
 
@@ -872,41 +988,41 @@ ge=dflt;+ssty=1;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 2
-5.
+6.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/LatinModernMath(3)/m/n on input lin
-e 25.
+e 26.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 25.
+(Font)              `largesymbols' in the math version `bold' on input line 26.
 
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/LatinModernMath(3)/b/n on input lin
-e 25.
+e 26.
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
-5.
+6.
 
 (/usr/share/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 12.00128pt on input line 25.
+(Font)              scaled to size 12.00128pt on input line 26.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 8.40088pt on input line 25.
+(Font)              scaled to size 8.40088pt on input line 26.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 6.00064pt on input line 25.
+(Font)              scaled to size 6.00064pt on input line 26.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 25.
+(Font)              scaled to size 11.99872pt on input line 26.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 8.3991pt on input line 25.
+(Font)              scaled to size 8.3991pt on input line 26.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 25.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 25.
+(Font)              scaled to size 5.99936pt on input line 26.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 26.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 25.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 26.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -918,45 +1034,45 @@ Package: geometry 2020/01/02 v5.9 Page Geometry
 (/usr/share/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 )
-\Gm@cnth=\count322
-\Gm@cntv=\count323
-\c@Gm@tempcnt=\count324
-\Gm@bindingoffset=\dimen168
-\Gm@wd@mp=\dimen169
-\Gm@odd@mp=\dimen170
-\Gm@even@mp=\dimen171
-\Gm@layoutwidth=\dimen172
-\Gm@layoutheight=\dimen173
-\Gm@layouthoffset=\dimen174
-\Gm@layoutvoffset=\dimen175
-\Gm@dimlist=\toks32
+\Gm@cnth=\count331
+\Gm@cntv=\count332
+\c@Gm@tempcnt=\count333
+\Gm@bindingoffset=\dimen180
+\Gm@wd@mp=\dimen181
+\Gm@odd@mp=\dimen182
+\Gm@even@mp=\dimen183
+\Gm@layoutwidth=\dimen184
+\Gm@layoutheight=\dimen185
+\Gm@layouthoffset=\dimen186
+\Gm@layoutvoffset=\dimen187
+\Gm@dimlist=\toks39
 )
 (/usr/share/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen176
-\lightrulewidth=\dimen177
-\cmidrulewidth=\dimen178
-\belowrulesep=\dimen179
-\belowbottomsep=\dimen180
-\aboverulesep=\dimen181
-\abovetopsep=\dimen182
-\cmidrulesep=\dimen183
-\cmidrulekern=\dimen184
-\defaultaddspace=\dimen185
-\@cmidla=\count325
-\@cmidlb=\count326
-\@aboverulesep=\dimen186
-\@belowrulesep=\dimen187
-\@thisruleclass=\count327
-\@lastruleclass=\count328
-\@thisrulewidth=\dimen188
+\heavyrulewidth=\dimen188
+\lightrulewidth=\dimen189
+\cmidrulewidth=\dimen190
+\belowrulesep=\dimen191
+\belowbottomsep=\dimen192
+\aboverulesep=\dimen193
+\abovetopsep=\dimen194
+\cmidrulesep=\dimen195
+\cmidrulekern=\dimen196
+\defaultaddspace=\dimen197
+\@cmidla=\count334
+\@cmidlb=\count335
+\@aboverulesep=\dimen198
+\@belowrulesep=\dimen199
+\@thisruleclass=\count336
+\@lastruleclass=\count337
+\@thisrulewidth=\dimen256
 )
 (/usr/share/texmf-dist/tex/latex/biblatex/biblatex.sty
 Package: biblatex 2023/03/05 v3.19 programmable bibliographies (PK/MW)
 
 (/usr/share/texmf-dist/tex/latex/logreq/logreq.sty
 Package: logreq 2010/08/04 v1.0 xml request logger
-\lrq@indent=\count329
+\lrq@indent=\count338
 
 (/usr/share/texmf-dist/tex/latex/logreq/logreq.def
 File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
@@ -964,49 +1080,49 @@ File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
 (/usr/share/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
 )
-\c@tabx@nest=\count330
-\c@listtotal=\count331
-\c@listcount=\count332
-\c@liststart=\count333
-\c@liststop=\count334
-\c@citecount=\count335
-\c@citetotal=\count336
-\c@multicitecount=\count337
-\c@multicitetotal=\count338
-\c@instcount=\count339
-\c@maxnames=\count340
-\c@minnames=\count341
-\c@maxitems=\count342
-\c@minitems=\count343
-\c@citecounter=\count344
-\c@maxcitecounter=\count345
-\c@savedcitecounter=\count346
-\c@uniquelist=\count347
-\c@uniquename=\count348
-\c@refsection=\count349
-\c@refsegment=\count350
-\c@maxextratitle=\count351
-\c@maxextratitleyear=\count352
-\c@maxextraname=\count353
-\c@maxextradate=\count354
-\c@maxextraalpha=\count355
-\c@abbrvpenalty=\count356
-\c@highnamepenalty=\count357
-\c@lownamepenalty=\count358
-\c@maxparens=\count359
-\c@parenlevel=\count360
-\blx@tempcnta=\count361
-\blx@tempcntb=\count362
-\blx@tempcntc=\count363
-\c@blx@maxsection=\count364
-\blx@maxsegment@0=\count365
-\blx@notetype=\count366
-\blx@parenlevel@text=\count367
-\blx@parenlevel@foot=\count368
-\blx@sectionciteorder@0=\count369
-\blx@sectionciteorderinternal@0=\count370
-\blx@entrysetcounter=\count371
-\blx@biblioinstance=\count372
+\c@tabx@nest=\count339
+\c@listtotal=\count340
+\c@listcount=\count341
+\c@liststart=\count342
+\c@liststop=\count343
+\c@citecount=\count344
+\c@citetotal=\count345
+\c@multicitecount=\count346
+\c@multicitetotal=\count347
+\c@instcount=\count348
+\c@maxnames=\count349
+\c@minnames=\count350
+\c@maxitems=\count351
+\c@minitems=\count352
+\c@citecounter=\count353
+\c@maxcitecounter=\count354
+\c@savedcitecounter=\count355
+\c@uniquelist=\count356
+\c@uniquename=\count357
+\c@refsection=\count358
+\c@refsegment=\count359
+\c@maxextratitle=\count360
+\c@maxextratitleyear=\count361
+\c@maxextraname=\count362
+\c@maxextradate=\count363
+\c@maxextraalpha=\count364
+\c@abbrvpenalty=\count365
+\c@highnamepenalty=\count366
+\c@lownamepenalty=\count367
+\c@maxparens=\count368
+\c@parenlevel=\count369
+\blx@tempcnta=\count370
+\blx@tempcntb=\count371
+\blx@tempcntc=\count372
+\c@blx@maxsection=\count373
+\blx@maxsegment@0=\count374
+\blx@notetype=\count375
+\blx@parenlevel@text=\count376
+\blx@parenlevel@foot=\count377
+\blx@sectionciteorder@0=\count378
+\blx@sectionciteorderinternal@0=\count379
+\blx@entrysetcounter=\count380
+\blx@biblioinstance=\count381
 \labelnumberwidth=\skip139
 \labelalphawidth=\skip140
 \biblabelsep=\skip141
@@ -1015,12 +1131,12 @@ Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
 \bibinitsep=\skip144
 \bibparsep=\skip145
 \bibhang=\skip146
-\blx@bcfin=\read2
-\blx@bcfout=\write3
+\blx@bcfin=\read3
+\blx@bcfout=\write4
 \blx@langwohyphens=\language2
-\c@mincomprange=\count373
-\c@maxcomprange=\count374
-\c@mincompwidth=\count375
+\c@mincomprange=\count382
+\c@maxcomprange=\count383
+\c@mincompwidth=\count384
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
 
@@ -1031,74 +1147,74 @@ Package biblatex Info: Trying to load biblatex style data model...
 Package biblatex Info: ... file 'alphabetic.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
-\c@afterword=\count376
-\c@savedafterword=\count377
-\c@annotator=\count378
-\c@savedannotator=\count379
-\c@author=\count380
-\c@savedauthor=\count381
-\c@bookauthor=\count382
-\c@savedbookauthor=\count383
-\c@commentator=\count384
-\c@savedcommentator=\count385
-\c@editor=\count386
-\c@savededitor=\count387
-\c@editora=\count388
-\c@savededitora=\count389
-\c@editorb=\count390
-\c@savededitorb=\count391
-\c@editorc=\count392
-\c@savededitorc=\count393
-\c@foreword=\count394
-\c@savedforeword=\count395
-\c@holder=\count396
-\c@savedholder=\count397
-\c@introduction=\count398
-\c@savedintroduction=\count399
-\c@namea=\count400
-\c@savednamea=\count401
-\c@nameb=\count402
-\c@savednameb=\count403
-\c@namec=\count404
-\c@savednamec=\count405
-\c@translator=\count406
-\c@savedtranslator=\count407
-\c@shortauthor=\count408
-\c@savedshortauthor=\count409
-\c@shorteditor=\count410
-\c@savedshorteditor=\count411
-\c@labelname=\count412
-\c@savedlabelname=\count413
-\c@institution=\count414
-\c@savedinstitution=\count415
-\c@lista=\count416
-\c@savedlista=\count417
-\c@listb=\count418
-\c@savedlistb=\count419
-\c@listc=\count420
-\c@savedlistc=\count421
-\c@listd=\count422
-\c@savedlistd=\count423
-\c@liste=\count424
-\c@savedliste=\count425
-\c@listf=\count426
-\c@savedlistf=\count427
-\c@location=\count428
-\c@savedlocation=\count429
-\c@organization=\count430
-\c@savedorganization=\count431
-\c@origlocation=\count432
-\c@savedoriglocation=\count433
-\c@origpublisher=\count434
-\c@savedorigpublisher=\count435
-\c@publisher=\count436
-\c@savedpublisher=\count437
-\c@language=\count438
-\c@savedlanguage=\count439
-\c@origlanguage=\count440
-\c@savedoriglanguage=\count441
-\c@pageref=\count442
-\c@savedpageref=\count443
+\c@afterword=\count385
+\c@savedafterword=\count386
+\c@annotator=\count387
+\c@savedannotator=\count388
+\c@author=\count389
+\c@savedauthor=\count390
+\c@bookauthor=\count391
+\c@savedbookauthor=\count392
+\c@commentator=\count393
+\c@savedcommentator=\count394
+\c@editor=\count395
+\c@savededitor=\count396
+\c@editora=\count397
+\c@savededitora=\count398
+\c@editorb=\count399
+\c@savededitorb=\count400
+\c@editorc=\count401
+\c@savededitorc=\count402
+\c@foreword=\count403
+\c@savedforeword=\count404
+\c@holder=\count405
+\c@savedholder=\count406
+\c@introduction=\count407
+\c@savedintroduction=\count408
+\c@namea=\count409
+\c@savednamea=\count410
+\c@nameb=\count411
+\c@savednameb=\count412
+\c@namec=\count413
+\c@savednamec=\count414
+\c@translator=\count415
+\c@savedtranslator=\count416
+\c@shortauthor=\count417
+\c@savedshortauthor=\count418
+\c@shorteditor=\count419
+\c@savedshorteditor=\count420
+\c@labelname=\count421
+\c@savedlabelname=\count422
+\c@institution=\count423
+\c@savedinstitution=\count424
+\c@lista=\count425
+\c@savedlista=\count426
+\c@listb=\count427
+\c@savedlistb=\count428
+\c@listc=\count429
+\c@savedlistc=\count430
+\c@listd=\count431
+\c@savedlistd=\count432
+\c@liste=\count433
+\c@savedliste=\count434
+\c@listf=\count435
+\c@savedlistf=\count436
+\c@location=\count437
+\c@savedlocation=\count438
+\c@organization=\count439
+\c@savedorganization=\count440
+\c@origlocation=\count441
+\c@savedoriglocation=\count442
+\c@origpublisher=\count443
+\c@savedorigpublisher=\count444
+\c@publisher=\count445
+\c@savedpublisher=\count446
+\c@language=\count447
+\c@savedlanguage=\count448
+\c@origlanguage=\count449
+\c@savedoriglanguage=\count450
+\c@pageref=\count451
+\c@savedpageref=\count452
 \shorthandwidth=\skip147
 \shortjournalwidth=\skip148
 \shortserieswidth=\skip149
@@ -1128,19 +1244,19 @@ Package biblatex Info: ... file 'biblatex.def' found.
 
 (/usr/share/texmf-dist/tex/latex/biblatex/biblatex.def
 File: biblatex.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
-\c@textcitecount=\count444
-\c@textcitetotal=\count445
-\c@textcitemaxnames=\count446
-\c@biburlbigbreakpenalty=\count447
-\c@biburlbreakpenalty=\count448
-\c@biburlnumpenalty=\count449
-\c@biburlucpenalty=\count450
-\c@biburllcpenalty=\count451
+\c@textcitecount=\count453
+\c@textcitetotal=\count454
+\c@textcitemaxnames=\count455
+\c@biburlbigbreakpenalty=\count456
+\c@biburlbreakpenalty=\count457
+\c@biburlnumpenalty=\count458
+\c@biburlucpenalty=\count459
+\c@biburllcpenalty=\count460
 \biburlbigskip=\muskip19
 \biburlnumskip=\muskip20
 \biburlucskip=\muskip21
 \biburllcskip=\muskip22
-\c@smartand=\count452
+\c@smartand=\count461
 )
 Package biblatex Info: Trying to load bibliography style 'alphabetic'...
 Package biblatex Info: ... file 'alphabetic.bbx' found.
@@ -1152,8 +1268,8 @@ Package biblatex Info: ... file 'standard.bbx' found.
 
 (/usr/share/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
 File: standard.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
-\c@bbx:relatedcount=\count453
-\c@bbx:relatedtotal=\count454
+\c@bbx:relatedcount=\count462
+\c@bbx:relatedtotal=\count463
 ))
 Package biblatex Info: Trying to load citation style 'alphabetic'...
 Package biblatex Info: ... file 'alphabetic.cbx' found.
@@ -1190,73 +1306,9 @@ Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
 ))
 (/usr/share/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
 (/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
-(/usr/share/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
-(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
-\pgfutil@everybye=\toks33
-\pgfutil@tempdima=\dimen189
-\pgfutil@tempdimb=\dimen190
-)
-(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
-\pgfutil@abb=\box70
-)
-(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
-(/usr/share/texmf-dist/tex/generic/pgf/pgf.revision.tex)
-Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
-))
 Package: pgf 2023-01-15 v3.1.10 (3.1.10)
 
 (/usr/share/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
-(/usr/share/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
-(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
-Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
-
-(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
-\pgfkeys@pathtoks=\toks34
-\pgfkeys@temptoks=\toks35
-
-(/usr/share/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.te
-x
-\pgfkeys@tmptoks=\toks36
-))
-\pgf@x=\dimen191
-\pgf@y=\dimen192
-\pgf@xa=\dimen193
-\pgf@ya=\dimen194
-\pgf@xb=\dimen195
-\pgf@yb=\dimen196
-\pgf@xc=\dimen197
-\pgf@yc=\dimen198
-\pgf@xd=\dimen199
-\pgf@yd=\dimen256
-\w@pgf@writea=\write4
-\r@pgf@reada=\read3
-\c@pgf@counta=\count455
-\c@pgf@countb=\count456
-\c@pgf@countc=\count457
-\c@pgf@countd=\count458
-\t@pgf@toka=\toks37
-\t@pgf@tokb=\toks38
-\t@pgf@tokc=\toks39
-\pgf@sys@id@count=\count459
- (/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
-File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
-)
-Driver file for pgf: pgfsys-luatex.def
-
-(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-luatex.def
-File: pgfsys-luatex.def 2023-01-15 v3.1.10 (3.1.10)
-
-(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
-File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
-)))
-(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
-File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfsyssoftpath@smallbuffer@items=\count460
-\pgfsyssoftpath@bigbuffer@items=\count461
-)
-(/usr/share/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
-File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))
 (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
 Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
 
@@ -1264,8 +1316,8 @@ Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
 (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
 \pgfmath@dimen=\dimen257
-\pgfmath@count=\count462
-\pgfmath@box=\box71
+\pgfmath@count=\count464
+\pgfmath@box=\box72
 \pgfmath@toks=\toks40
 \pgfmath@stack@operand=\toks41
 \pgfmath@stack@operation=\toks42
@@ -1282,7 +1334,7 @@ x) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex)
 (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics
 .code.tex) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
 (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count463
+\c@pgfmathroundto@lastzeros=\count465
 ))
 (/usr/share/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
 (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
@@ -1313,10 +1365,10 @@ File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
 )
 (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
 File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfpic=\box72
-\pgf@hbox=\box73
-\pgf@layerbox@main=\box74
-\pgf@picture@serial@count=\count464
+\pgfpic=\box73
+\pgf@hbox=\box74
+\pgf@layerbox@main=\box75
+\pgf@picture@serial@count=\count466
 )
 (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
 File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
@@ -1344,15 +1396,15 @@ File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
 File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@max=\dimen281
-\pgf@sys@shading@range@num=\count465
-\pgf@shadingcount=\count466
+\pgf@sys@shading@range@num=\count467
+\pgf@shadingcount=\count468
 )
 (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
 )
 (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
 File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfexternal@startupbox=\box75
+\pgfexternal@startupbox=\box76
 )
 (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
 File: pgfcorelayers.code.tex 2023-01-15 v3.1.10 (3.1.10)
@@ -1367,7 +1419,7 @@ File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
 )))
 (/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
 File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfnodeparttextbox=\box76
+\pgfnodeparttextbox=\box77
 )
 (/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
 File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
@@ -1398,7 +1450,7 @@ Package: tikz 2023-01-15 v3.1.10 (3.1.10)
 (/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.te
 x
 File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@plot@mark@count=\count467
+\pgf@plot@mark@count=\count469
 \pgfplotmarksize=\dimen286
 )
 \tikz@lastx=\dimen287
@@ -1409,21 +1461,21 @@ File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \tikz@lastmovetoy=\dimen292
 \tikzleveldistance=\dimen293
 \tikzsiblingdistance=\dimen294
-\tikz@figbox=\box77
-\tikz@figbox@bg=\box78
-\tikz@tempbox=\box79
-\tikz@tempbox@bg=\box80
-\tikztreelevel=\count468
-\tikznumberofchildren=\count469
-\tikznumberofcurrentchild=\count470
-\tikz@fig@count=\count471
+\tikz@figbox=\box78
+\tikz@figbox@bg=\box79
+\tikz@tempbox=\box80
+\tikz@tempbox@bg=\box81
+\tikztreelevel=\count470
+\tikznumberofchildren=\count471
+\tikznumberofcurrentchild=\count472
+\tikz@fig@count=\count473
  (/usr/share/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
 File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfmatrixcurrentrow=\count472
-\pgfmatrixcurrentcolumn=\count473
-\pgf@matrix@numberofcolumns=\count474
+\pgfmatrixcurrentrow=\count474
+\pgfmatrixcurrentcolumn=\count475
+\pgf@matrix@numberofcolumns=\count476
 )
-\tikz@expandcount=\count475
+\tikz@expandcount=\count477
 
 (/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
 topaths.code.tex
@@ -1465,7 +1517,7 @@ Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
 \XKV@toks=\toks45
 \XKV@tempa@toks=\toks46
 )
-\XKV@depth=\count476
+\XKV@depth=\count478
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))
 (/usr/share/texmf-dist/tex/latex/mfirstuc/mfirstuc.sty
@@ -1481,7 +1533,7 @@ Package: datatool-base 2019/09/27 v2.32 (NLCT)
 
 (/usr/share/texmf-dist/tex/latex/substr/substr.sty
 Package: substr 2009/10/20 v1.2 Handle substrings
-\c@su@anzahl=\count477
+\c@su@anzahl=\count479
 )
 (/usr/share/texmf-dist/tex/latex/datatool/datatool-fp.sty
 Package: datatool-fp 2019/09/27 v2.32 (NLCT)
@@ -1492,19 +1544,19 @@ Package: fp 1995/04/02
 `Fixed Point Package', Version 0.8, April 2, 1995 (C) Michael Mehlich
 (/usr/share/texmf-dist/tex/latex/fp/defpattern.sty
 Package: defpattern 1994/10/12
-\actioncount=\count478
+\actioncount=\count480
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-basic.sty
 Package: fp-basic 1996/05/13
-\FP@xs=\count479
-\FP@xia=\count480
-\FP@xib=\count481
-\FP@xfa=\count482
-\FP@xfb=\count483
-\FP@rega=\count484
-\FP@regb=\count485
-\FP@regs=\count486
-\FP@times=\count487
+\FP@xs=\count481
+\FP@xia=\count482
+\FP@xib=\count483
+\FP@xfa=\count484
+\FP@xfb=\count485
+\FP@rega=\count486
+\FP@regb=\count487
+\FP@regs=\count488
+\FP@times=\count489
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-addons.sty
 Package: fp-addons 1995/03/15
@@ -1523,7 +1575,7 @@ Package: fp-pas 1994/08/29
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-random.sty
 Package: fp-random 1995/02/23
-\FPseed=\count488
+\FPseed=\count490
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-eqn.sty
 Package: fp-eqn 1995/04/03
@@ -1535,16 +1587,16 @@ Package: fp-upn 1996/10/21
 Package: fp-eval 1995/04/03
 )))
 \@dtl@toks=\toks49
-\@dtl@tmpcount=\count489
+\@dtl@tmpcount=\count491
 \dtl@tmplength=\skip161
-\dtl@sortresult=\count490
-\@dtl@numgrpsepcount=\count491
-\@dtl@datatype=\count492
-\dtl@codeA=\count493
-\dtl@codeB=\count494
-\@dtl@foreach@level=\count495
+\dtl@sortresult=\count492
+\@dtl@numgrpsepcount=\count493
+\@dtl@datatype=\count494
+\dtl@codeA=\count495
+\dtl@codeB=\count496
+\@dtl@foreach@level=\count497
 )
-\gls@level=\count496
+\gls@level=\count498
 \@gls@tmpb=\toks50
 \gls@tmplen=\skip162
 \glskeylisttok=\toks51
@@ -1568,17 +1620,17 @@ Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
 \LTright=\skip165
 \LTpre=\skip166
 \LTpost=\skip167
-\LTchunksize=\count497
+\LTchunksize=\count499
 \LTcapwidth=\dimen295
-\LT@head=\box81
-\LT@firsthead=\box82
-\LT@foot=\box83
-\LT@lastfoot=\box84
-\LT@gbox=\box85
-\LT@cols=\count498
-\LT@rows=\count499
-\c@LT@tables=\count500
-\c@LT@chunks=\count501
+\LT@head=\box82
+\LT@firsthead=\box83
+\LT@foot=\box84
+\LT@lastfoot=\box85
+\LT@gbox=\box86
+\LT@cols=\count500
+\LT@rows=\count501
+\c@LT@tables=\count502
+\c@LT@chunks=\count503
 \LT@p@ftn=\toks55
 )
 \glsdescwidth=\skip168
@@ -1589,7 +1641,7 @@ Package: glossary-super 2022/11/03 v4.52 (NLCT)
 
 (/usr/share/texmf-dist/tex/latex/supertabular/supertabular.sty
 Package: supertabular 2020/02/02 v4.1g the supertabular environment
-\c@tracingst=\count502
+\c@tracingst=\count504
 \ST@wd=\dimen296
 \ST@rightskip=\skip170
 \ST@leftskip=\skip171
@@ -1603,7 +1655,7 @@ Package: supertabular 2020/02/02 v4.1g the supertabular environment
 \ST@prevht=\dimen303
 \ST@toadd=\dimen304
 \ST@dimen=\dimen305
-\ST@pbox=\box86
+\ST@pbox=\box87
 ))
 (/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-tree.sty
 Package: glossary-tree 2022/11/03 v4.52 (NLCT)
@@ -1616,7 +1668,7 @@ Package: monte-carlo-glossary
 \glo@main@file=\write6
 
 \openout6 = main.glo
-Package glossaries Info: Writing glossary file main.glo on input line 94.
+Package glossaries Info: Writing glossary file main.glo on input line 95.
  (/usr/share/texmf-dist/tex/latex/import/import.sty
 Package: import 2020/04/01  v 6.2
 ) (/usr/share/texmf-dist/tex/latex/titling/titling.sty
@@ -1627,7 +1679,7 @@ Package: titling 2009/09/04 v2.1d maketitle typesetting
 )
 (/usr/share/texmf-dist/tex/latex/titlesec/titlesec.sty
 Package: titlesec 2021/07/05 v2.14 Sectioning titles
-\ttl@box=\box87
+\ttl@box=\box88
 \beforetitleunit=\skip177
 \aftertitleunit=\skip178
 \ttl@plus=\dimen306
@@ -1644,19 +1696,19 @@ Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
 \TX@old@col=\dimen313
 \TX@target=\dimen314
 \TX@delta=\dimen315
-\TX@cols=\count503
+\TX@cols=\count505
 \TX@ftn=\toks57
 )
 (/usr/share/texmf-dist/tex/latex/tabulary/tabulary.sty
 Package: tabulary 2014/06/11 v0.10 tabulary package (DPC)
-\TY@count=\count504
+\TY@count=\count506
 \TY@linewidth=\dimen316
 \tymin=\dimen317
 \tymax=\dimen318
 \TY@tablewidth=\dimen319
 )
-\c@definitionS=\count505
-\c@definitionC=\count506
+\c@definitionS=\count507
+\c@definitionC=\count508
 luaotfload | aux : font no 62 (nil) does not define feature smcp for script latn
  with language dflt
 luaotfload | aux : font no 63 (nil) does not define feature smcp for script latn
@@ -1686,33 +1738,33 @@ Package fontspec Info: Font family 'DejaVuSans(0)' created for font 'DejaVu
 (fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
 
 Package translations Info: No language package found. I am going to use `englis
-h' as default language. on input line 158.
-\@quotelevel=\count507
-\@quotereset=\count508
+h' as default language. on input line 159.
+\@quotelevel=\count509
+\@quotereset=\count510
 
 (./intermediate/main.aux)
 \openout1 = main.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 158.
-LaTeX Font Info:    ... okay on input line 158.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 158.
-LaTeX Font Info:    ... okay on input line 158.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 158.
-LaTeX Font Info:    ... okay on input line 158.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 158.
-LaTeX Font Info:    ... okay on input line 158.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 158.
-LaTeX Font Info:    ... okay on input line 158.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 158.
-LaTeX Font Info:    ... okay on input line 158.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 158.
-LaTeX Font Info:    ... okay on input line 158.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 158.
-LaTeX Font Info:    ... okay on input line 158.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 158.
-LaTeX Font Info:    ... okay on input line 158.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 158.
-LaTeX Font Info:    ... okay on input line 158.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 159.
+LaTeX Font Info:    ... okay on input line 159.
 
 
 Package siunitx Warning: Detected the "physics" package:
@@ -1732,19 +1784,19 @@ File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `english'. on input line 158.
+or `english'. on input line 159.
  (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count509
+\scratchcounter=\count511
 \scratchdimen=\dimen320
-\scratchbox=\box88
-\nofMPsegments=\count510
-\nofMParguments=\count511
+\scratchbox=\box89
+\nofMPsegments=\count512
+\nofMParguments=\count513
 \everyMPshowfont=\toks58
-\MPscratchCnt=\count512
+\MPscratchCnt=\count514
 \MPscratchDim=\dimen321
-\MPnumerator=\count513
-\makeMPintoPDFobject=\count514
+\MPnumerator=\count515
+\makeMPintoPDFobject=\count516
 \everyMPtoPDFconversion=\toks59
 ) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -1755,20 +1807,20 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 158.
+Package hyperref Info: Link coloring OFF on input line 159.
 
 (./intermediate/main.out) (./intermediate/main.out)
 \@outlinefile=\write7
 
 \openout7 = main.out
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 158.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 159.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 158.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 159.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 158.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 159.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 158.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 159.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: luatex
@@ -1814,13 +1866,13 @@ Package biblatex Info: LuaTeX detected.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
 
-\openout3 = main.bcf
+\openout4 = main.bcf
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
 
 (./intermediate/main.bbl)
-Package biblatex Info: Reference section=0 on input line 158.
-Package biblatex Info: Reference segment=0 on input line 158.
+Package biblatex Info: Reference section=0 on input line 159.
+Package biblatex Info: Reference segment=0 on input line 159.
  [1
 
 
@@ -1843,12 +1895,12 @@ warning  (pdf backend): ignoring duplicate destination with the name 'page.1'
 ] (./chapters/chapter-part1-1-electromagnetic-radiometry.tex
 Chapter 1.
 
-Overfull \hbox (69.57605pt too wide) in paragraph at lines 96--98
+Overfull \hbox (69.57605pt too wide) in paragraph at lines 97--99
 [][]
  []
 
 
-Overfull \hbox (32.57967pt too wide) in paragraph at lines 106--107
+Overfull \hbox (32.57967pt too wide) in paragraph at lines 107--108
 \TU/lmr/m/n/12 La luce vis-i-bile all’\TU/lmr/m/it/12 oc-chio umano \TU/lmr/m
 /n/12 cor-risponde al sot-toin-sieme dello spet-tro $\TU/LatinModernMath(1)/m/n
 /12 [383, 783] THz$\TU/lmr/m/n/12 ,
@@ -1859,19 +1911,19 @@ warning  (pdf backend): ignoring duplicate destination with the name 'page.2'
 [2
 
 ]
-Overfull \hbox (5.85182pt too wide) in paragraph at lines 115--117
+Overfull \hbox (5.85182pt too wide) in paragraph at lines 116--118
 \TU/lmr/m/n/12 sono de-ter-mi-nate dall’\TU/lmr/m/it/12 in-dice di rifrazione \TU/lmr/m/n/12 (IOR), dipen-dente dalla lunghezza d
 ’onda 
  []
 
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 10.00107pt on input line 121.
+(Font)              scaled to size 10.00107pt on input line 122.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 7.00075pt on input line 121.
+(Font)              scaled to size 7.00075pt on input line 122.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 121.
+(Font)              scaled to size 9.99893pt on input line 122.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 121.
+(Font)              scaled to size 6.99925pt on input line 122.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1900,11 +1952,11 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 
 [4]
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 14.40152pt on input line 193.
+(Font)              scaled to size 14.40152pt on input line 194.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 14.39845pt on input line 193.
+(Font)              scaled to size 14.39845pt on input line 194.
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 2
-01.
+02.
  (/usr/share/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1923,17 +1975,17 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
 
 [5]
-Underfull \hbox (badness 1490) in paragraph at lines 246--247
+Underfull \hbox (badness 1490) in paragraph at lines 247--248
 []|\TU/lmr/m/n/12 As-sorbe forte-mente luce rossa,
  []
 
 
-Underfull \hbox (badness 2310) in paragraph at lines 247--248
+Underfull \hbox (badness 2310) in paragraph at lines 248--249
 \TU/lmr/m/n/12 frarossa, mo-tivo per cui con-
  []
 
 
-Overfull \hbox (70.77127pt too wide) in paragraph at lines 239--251
+Overfull \hbox (70.77127pt too wide) in paragraph at lines 240--252
 [][]
  []
 
@@ -1946,7 +1998,7 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
 
 [6]
-Overfull \hbox (6.62463pt too wide) in paragraph at lines 261--263
+Overfull \hbox (6.62463pt too wide) in paragraph at lines 262--264
 \TU/lmr/m/n/12 In-tro-ducendo un co-ef-fi-ciente di as-sor-bi-mento non-nullo, 
 e sup-po-nendo propagazione
  []
@@ -1960,33 +2012,33 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
 
 [7]
-Overfull \hbox (4.58858pt too wide) in paragraph at lines 292--294
+Overfull \hbox (4.58858pt too wide) in paragraph at lines 293--295
 \TU/lmr/m/n/12 su-per-fi-cie o mezzo trasmis-sivo, gli \TU/lmr/m/it/12 scat-ter-
 ing events
  []
 
 
-Overfull \hbox (3.92865pt too wide) in paragraph at lines 294--296
+Overfull \hbox (3.92865pt too wide) in paragraph at lines 295--297
 \TU/lmr/m/n/12 mag-netico di una ra-di-azione, ren-dendo l’unica pro-
  []
 
 
-Overfull \hbox (16.71584pt too wide) in paragraph at lines 294--296
+Overfull \hbox (16.71584pt too wide) in paragraph at lines 295--297
 \TU/lmr/m/n/12 pri-età ril-e-vante di una ra-di-azione la sua \TU/lmr/m/it/12 
 Dis-tribuzione
  []
 
 
-Overfull \hbox (11.64784pt too wide) in paragraph at lines 296--298
+Overfull \hbox (11.64784pt too wide) in paragraph at lines 297--299
 []\TU/lmr/m/n/12 Il com-por-ta-mento della ra-di-azione ad una lunghezza
  []
 
 
 LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 3
-18.
+19.
 
 
-Overfull \hbox (0.93188pt too wide) in paragraph at lines 325--326
+Overfull \hbox (0.93188pt too wide) in paragraph at lines 326--327
 []\TU/lmr/m/n/12 Cias-cuno di questi fo-toni trasporta en-er-gia pari all’Equa
 zione di plank-Einstein
  []
@@ -2048,7 +2100,7 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.41803pt}.
 
 [13]
-Overfull \hbox (60.49684pt too wide) detected at line 490
+Overfull \hbox (60.49684pt too wide) detected at line 491
 []
  []
 
@@ -2063,93 +2115,143 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 
 [14]
 Chapter 2.
-) (./chapters/chapter-part1-3-light-surface.tex [15
+
+Underfull \vbox (badness 3386) has occurred while \output is active []
+
+ [15
 
 ]
+[16]
+<chapters/../assets/chapter2_colorimetry_cones.png, id=478, 1204.5pt x 910.4012
+5pt>
+File: chapters/../assets/chapter2_colorimetry_cones.png Graphic file (type png)
+
+<use chapters/../assets/chapter2_colorimetry_cones.png>
+Package luatex.def Info: chapters/../assets/chapter2_colorimetry_cones.png  use
+d on input line 62.
+(luatex.def)             Requested size: 165.43602pt x 125.03816pt.
+<./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.pdf, 
+id=479, 975.4568pt x 611.9914pt>
+File: ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.
+pdf Graphic file (type pdf)
+<use ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.p
+df>
+Package luatex.def Info: ./svg-inkscape/chapter2_colorimetry_RGB_color_matching
+_functions_svg-raw.pdf  used on input line 63.
+(luatex.def)             Requested size: 975.45444pt x 611.9899pt.
+ [17<./chapters/../assets/chapter2_colorimetry_cones.png><./svg-inkscape/chapter
+2_colorimetry_RGB_color_matching_functions_svg-raw.pdf>] [18]
+<./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf, id=
+520, 353.94542pt x 366.81622pt>
+File: ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf
+ Graphic file (type pdf)
+<use ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf>
+
+Package luatex.def Info: ./svg-inkscape/chapter2_colorimetry_chromaticity_diagr
+am_1931_svg-raw.pdf  used on input line 144.
+(luatex.def)             Requested size: 353.94455pt x 366.81532pt.
+ [19]
+[20<./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf>]
+
+Underfull \hbox (badness 10000) in alignment at lines 196--196
+[][][][][]
+ []
+
+[21]
+Overfull \hbox (9.79149pt too wide) detected at line 230
+[][][][] [] \TU/LatinModernMath(1)/m/n/12 = [] []
+ []
+
+) (./chapters/chapter-part1-3-light-surface.tex [22]
 Chapter 3.
-) (./chapters/chapter-part1-4-volume-transport-no-alg.tex [16
+) (./chapters/chapter-part1-4-volume-transport-no-alg.tex [23
 
 ]
 Chapter 4.
-) [17
-
-] [18
-
-] (./chapters/chapter-part2-1-quasirandom-gen.tex
-Chapter 5.
-) (./chapters/chapter-part2-2-sampling-montecarlo.tex [19
-
-]
-Chapter 6.
-) (./chapters/chapter-part2-3-variance-reduction.tex [20
-
-]
-Chapter 7.
-) [21
-
-] [22
-
-] (./chapters/chapter-part3-1-light-transportintro.tex
-Chapter 8.
-) (./chapters/chapter-part3-2-light-transport-impl.tex [23
-
-]
-Chapter 9.
 ) [24
 
 ] [25
 
+] (./chapters/chapter-part2-1-quasirandom-gen.tex
+Chapter 5.
+) (./chapters/chapter-part2-2-sampling-montecarlo.tex [26
+
+]
+Chapter 6.
+) (./chapters/chapter-part2-3-variance-reduction.tex [27
+
+]
+Chapter 7.
+) [28
+
+] [29
+
+] (./chapters/chapter-part3-1-light-transportintro.tex
+Chapter 8.
+) (./chapters/chapter-part3-2-light-transport-impl.tex [30
+
+]
+Chapter 9.
+) [31
+
+] [32
+
 ] (./chapters/chapter-Appendix-A-prob-stat.tex
 Appendix A.
-) (./chapters/chapter-Appendix-B-geo-alg.tex [26
+) (./chapters/chapter-Appendix-B-geo-alg.tex [33
 
 ]
 Appendix B.
-) (./chapters/chapter-Appendix-C-random-num.tex [27
+) (./chapters/chapter-Appendix-C-random-num.tex [34
 
 ]
 Appendix C.
-) (./chapters/chapter-Appendix-D-vulkan-code.tex [28
+) (./chapters/chapter-Appendix-D-vulkan-code.tex [35
 
 ]
 Appendix D.
-) (./chapters/chapter-Appendix-E-materials-impldetails.tex [29
+) (./chapters/chapter-Appendix-E-materials-impldetails.tex [36
 
 ]
 Appendix E.
-) [30
+) [37
 
 ]
-Overfull \hbox (3.5825pt too wide) in paragraph at lines 214--214
+Overfull \hbox (3.5825pt too wide) in paragraph at lines 215--215
 []\TU/lmr/m/n/12 Vin-cent Pe-go-raro. \TU/lmr/m/it/12 Hand-book of Dig-i-tal Im-
 age Syn-the-sis: Sci-en-tific Foun-
  []
 
-(./intermediate/main.gls [31
+(./intermediate/main.gls [38
 
 
-]) [32
+]
+Overfull \hbox (12.35985pt too wide) in paragraph at lines 21--23
+[]\TU/lmr/m/n/12 Misura della in-ten-sità ra-di-ante spet-trale pe-sata sulla 
+percezione
+ []
+
+[39
 
 
-] (./intermediate/main.aux)
+]) [40] (./intermediate/main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 9A119C76E9A330C9A621DD5AC570FD9C;5774.
+(rerunfilecheck)             Checksum: 3ADCBA86DC6D020AFCC0931C22B2BEBC;6758.
 Package logreq Info: Writing requests to 'main.run.xml'.
 
 \openout1 = main.run.xml
 )
 
 Here is how much of LuaTeX's memory you used:
- 47258 strings out of 478285
- 125163,1977958 words of node,token memory allocated
- 3025 words of node memory still in use:
-   76 hlist, 18 vlist, 5 rule, 6 math, 56 glue, 21 kern, 7 sub_mlist, 78 glyph, 
-84 attribute, 124 glue_spec, 84 attribute_list, 2 write nodes
-   avail lists: 1:2,2:5434,3:2703,4:680,5:432,6:66,7:6092,8:48,9:2127,10:23,11:4
-77
- 65661 multiletter control sequences out of 65536+600000
- 123 fonts using 44190007 bytes
- 91i,17n,114p,2265b,1237s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48694 strings out of 478285
+ 125163,2373549 words of node,token memory allocated
+ 3109 words of node memory still in use:
+   76 hlist, 18 vlist, 5 rule, 6 math, 60 glue, 21 kern, 7 sub_mlist, 78 glyph, 
+98 attribute, 124 glue_spec, 98 attribute_list, 2 write nodes
+   avail lists: 2:5408,3:2705,4:680,5:436,6:76,7:6088,8:51,9:2127,10:23,11:477
+ 66882 multiletter control sequences out of 65536+600000
+ 127 fonts using 44618975 bytes
+ 95i,17n,114p,2265b,1237s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/opentype/public/lm/lmsans12-regular.otf></usr/share
 /texmf-dist/fonts/opentype/public/lm/lmroman10-italic.otf></usr/share/texmf-dist
 /fonts/opentype/public/lm-math/latinmodern-math.otf>{/usr/share/texmf-dist/fonts
@@ -2164,10 +2266,10 @@ e/public/lm/lmroman12-regular.otf></usr/share/texmf-dist/fonts/opentype/public/l
 m/lmroman17-regular.otf></usr/share/texmf-dist/fonts/opentype/public/lm/lmromand
 emi10-regular.otf></usr/share/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/
 share/texmf-dist/fonts/type1/public/lm/lmbx12.pfb>
-Output written on main.pdf (38 pages, 177624 bytes).
+Output written on main.pdf (46 pages, 488113 bytes).
 
-PDF statistics: 545 PDF objects out of 1000 (max. 8388607)
- 442 compressed objects within 5 object streams
- 123 named destinations out of 1000 (max. 131072)
- 242 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 776 PDF objects out of 1000 (max. 8388607)
+ 598 compressed objects within 6 object streams
+ 181 named destinations out of 1000 (max. 131072)
+ 290 words of extra memory for PDF output out of 10000 (max. 100000000)
 

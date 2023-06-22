@@ -44,6 +44,31 @@
       \field{title}{Optics}
       \field{year}{2002}
     \endentry
+    \entry{color}{book}{}
+      \name{author}{1}{}{%
+        {{hash=f0721385944412f3760e531abc827ee5}{%
+           family={Schanda},
+           familyi={S\bibinitperiod},
+           given={Janos},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Interscience}%
+      }
+      \strng{namehash}{f0721385944412f3760e531abc827ee5}
+      \strng{fullhash}{f0721385944412f3760e531abc827ee5}
+      \strng{bibnamehash}{f0721385944412f3760e531abc827ee5}
+      \strng{authorbibnamehash}{f0721385944412f3760e531abc827ee5}
+      \strng{authornamehash}{f0721385944412f3760e531abc827ee5}
+      \strng{authorfullhash}{f0721385944412f3760e531abc827ee5}
+      \field{labelalpha}{Sch07}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Colorimetry. Understanding The CIE System}
+      \field{year}{2007}
+    \endentry
     \entry{rad-phot}{book}{}
       \name{author}{1}{}{%
         {{hash=605c8f9d9753f2875a450070f1d94f6e}{%
@@ -95,6 +120,33 @@
       \field{edition}{1}
       \field{title}{Handbook of Digital Image Synthesis: Scientific Foundations of Rendering}
       \field{year}{2016}
+    \endentry
+    \entry{fichet}{article}{}
+      \name{author}{1}{}{%
+        {{hash=8df8d51e5c1b062900ec68e0869c7c08}{%
+           family={al.},
+           familyi={a\bibinitperiod},
+           given={Alban\bibnamedelima Fichet},
+           giveni={A\bibinitperiod\bibinitdelim F\bibinitperiod},
+           prefix={et},
+           prefixi={e\bibinitperiod}}}%
+      }
+      \strng{namehash}{8df8d51e5c1b062900ec68e0869c7c08}
+      \strng{fullhash}{8df8d51e5c1b062900ec68e0869c7c08}
+      \strng{bibnamehash}{8df8d51e5c1b062900ec68e0869c7c08}
+      \strng{authorbibnamehash}{8df8d51e5c1b062900ec68e0869c7c08}
+      \strng{authornamehash}{8df8d51e5c1b062900ec68e0869c7c08}
+      \strng{authorfullhash}{8df8d51e5c1b062900ec68e0869c7c08}
+      \field{labelalpha}{al21}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Computer Graphics Techniques}
+      \field{number}{3}
+      \field{title}{An OpenEXR Layout for Spectral Images}
+      \field{volume}{10}
+      \field{year}{2021}
     \endentry
     \entry{pharr}{book}{}
       \name{author}{3}{}{%
