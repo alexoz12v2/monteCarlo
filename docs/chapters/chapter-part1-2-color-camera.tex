@@ -118,7 +118,7 @@ Dai requisiti la seguente trasformazione lineare \mbox{CIE RGB 1931 $\rightarrow
 \end{equation}
 La quale \`e anche valida per trasformare una CMF del sistema CIE RGB in una CMF del sistema CIE XYZ 1931.\par
 Per passare da radianza spettrale ai tristimulus values, distinguiamo il caso in cui si sta analizzando una radiazione/superficie emissiva
-\begin{align}
+\begin{align}\label{chapter2:colorimetry:spectrum2XYZ4Source}
 	X &= K\int_\Lambda L_{e,\Omega,\lambda}(\lambda)\bar{x}(\lambda)\mathrm{d}\lambda\\
 	Y &= K\int_\Lambda L_{e,\Omega,\lambda}(\lambda)\bar{y}(\lambda)\mathrm{d}\lambda\\
 	Z &= K\int_\Lambda L_{e,\Omega,\lambda}(\lambda)\bar{z}(\lambda)\mathrm{d}\lambda
@@ -133,7 +133,7 @@ Ed il caso in cui si sta analizzando un colore di una radiazione riflessa o tras
 		\int_\Lambda S(\lambda)L_{e,\Omega,\lambda}(\lambda)\bar{z}(\lambda)\mathrm{d}\lambda\\
 \end{align}
 dove
-\begin{equation}
+\begin{equation}\label{chapter2:colorimetry:spectrum2XYZ4Rad}
 	S(\lambda) = \left\{ \begin{aligned}
 		R(\lambda)\;&\text{se riflessione}\\
 		T(\lambda)\;&\text{se trasmissione}
@@ -210,11 +210,14 @@ Dunque se l'output finale del sistema di rendering \`e un colore sRGB, dobbiamo 
 colore in XYZ color space. Sia $C_{srgb} = R_{srgb}|G_{srgb}|B_{srgb} \in [0,1]$ componenti del colore nello spazio sRGB gamma encoded. Simile
 definizione per il colore nello spazio sRGB gamma corrected $C_{linear}$ ed il colore $[X, Y, Z]^T$ nello spazio XYZ.
 \begin{equation}\label{chapter2:colorimetry:sRGB2XYZ}
-	\text{Applica gamma correction: }C_{linear} = \left\{\begin{alignedat}{2}
+	\text{Applica gamma expansion\footnotemark{}: }C_{linear} = \left\{\begin{alignedat}{2}
 		&\frac{C_{srgb}}{12.92}, &C_{srgb}\leq 0.04045\\
 		&\left(\frac{C_{srgb}+0.055}{1.055}\right)^{2.4},\;&C_{srgb}> 0.04045
 	\end{alignedat}\right.
 \end{equation}
+\footnotetext{la semplice funzione potenza viene modificata secondo standards, come ITU-R per poter evitare problematiche. Per esempio, per evitare 
+di avere derivata infinita nello zero, si definisce la funzione di gamma expansion per valori piccoli come divisione per una costante definita dallo 
+standard}
 \begin{equation}
 	\text{Applica trasformazione lineare\footnotemark{}: }\begin{bmatrix}
 		X_{D65}\\ Y_{D65}\\ Z_{D65}
@@ -230,4 +233,233 @@ definizione per il colore nello spazio sRGB gamma corrected $C_{linear}$ ed il c
 \end{equation}
 \footnotetext{i valori tristimolo X,Y,Z qui utilizzati/ottenuti sono scalati in modo tale che l'illuminante standard D65 abbia luminanza unitaria, 
 cio\`e moltiplicate per $\approx 3.039513678$}
-\subsection{Conversione da XYZ a SPD}
+\begin{figure}[tb]
+	\label{chapter2:colorimetry:gamut}
+	\includesvg[width=0.6\textwidth, inkscapelatex=false]{../assets/chapter2_colorimetry_CIE1931xy_gamut_comparison.svg}
+	\caption{comparazione tra i diversi colorspaces, ed i colori percepibili che riescono a rappresentare. Notiamo che sRGB copre all'incirca $35\%$
+	del color gamut}
+\end{figure}
+\subsection{Conversione da XYZ o RGB a SPD}
+I color spaces sono spazi vettoriali, per i quali sono definite le operazioni di addizione tra colori (vettori) e moltiplicazione scalare colore.
+\textit{La moltiplicazione tra pi\`u colori non \`e un operazione ben definita}. Nel trasporto della luce, la moltiplicazione tra due SPD \`e una 
+operazione fondamentale. Si potrebbe pensare di definire arbitrariamente una operazione analoga in uno spazio RGB qualsiasi e definire la 
+moltiplicazione tra due colori come \textit{prodotto di Hadamard} $\odot$.\par
+Tale operazione risulta problematica perch\`e essa non \`e consistente tra color spaces, producendo risultati differenti (a volte al di fuori del 
+color gamut, producendo un colore impossibile, si veda in figura \ref{chapter2:colorimetry:gamut} ProPhoto RGB), ma pi\`u importante, produce colori
+eccessivamente pi\`u scuri e saturati.\par
+Si giustifica dunque l'affermazione precedente di dover interpretare i colori in input negli arbitrari formati/color spaces supportati in uno spettro,
+eseguire la computazione, ed infine convertire il risultato per ogni pixel in sRGB per display. Mentre la conversione 
+\mbox{color space $\rightarrow$ SPD} \`e ben definita (vedi \ref{chapter2:colorimetry:spectrum2XYZ4Rad} e 
+\ref{chapter2:colorimetry:spectrum2XYZ4Source}), non vale lo stesso per l'operazione inversa ed \`e ad oggi oggetto di ricerca [\cite{spectrum}].
+Ci\`o che complica tale compito sono i requisiti di 
+\begin{itemize}[topsep=0pt, noitemsep]
+	\item[] \textit{Identit\`a} La conversione da RGB a spettro, seguita dalla ben definita operazione inversa, deve restituire lo stesso risultato
+	\item[] \textit{Smoothness} Lo spettro ottenuto deve essere derivabile con continuit\`a affinch\`e, sotto nessune condizioni di luce, uno spettro
+		di riflessione presenti seams visibili
+	\item[] \textit{Conservazione dell'energia} Lo spettro ottenuto deve avere integrale $\in [0,1]$ se $[R, G, B]^T \in [0,1]^3$
+\end{itemize}
+L'approccio qui seguito \`e quello proposto da [\cite{pharr}] e [\cite{rgb2spec}], il quale consiste nel ricostruire un valore RGB utilizzando una
+parabola parametrizzata da tre coefficienti $c_0,c_1,c_2$, la quale \`e prima resa limitata da una funzione sigmoide per poter ottenere un risultato
+limitato in $[0,1]$. Vedi figura \ref{chapter2:colorimetry:Slambda}.
+\begin{align}\label{chapter2:colorimetry:rgb2spec}
+	S(\lambda) &= s(c_0\lambda^2 + c_1\lambda + c_2)\\
+	s(x) &= \frac{1}{2} + \frac{x}{2\sqrt{1+x^2}}
+\end{align}
+\begin{figure}[tb]
+	\begin{tikzpicture}
+		\pgfmathdeclarefunction{sigmoid}{1}{\pgfmathparse{1/2+#1/(2*sqrt(1+#1^2))}}
+		\begin{axis} [
+			axis lines = left,
+			domain=0:830,
+			samples=100,
+			xlabel = {$x$ [\si{nm}]},
+			ylabel = $S(\lambda)$,
+		]
+			\addplot[draw=black]{sigmoid(-0.000073447*x^2+0.035354*x-2.607)};
+		\end{axis}
+	\end{tikzpicture}
+	\caption{esempio di $S(\lambda)$ con $c_0 = -0.000073447,\;c_1 = 0.035354,\;c_2 = -2.607$}
+	\label{chapter2:colorimetry:Slambda}
+\end{figure}
+Tali coefficienti sono calcolati a partire da un colore nell'sRGB color space, il quale \`e formulato come problema di ottimizzazione con scopo la
+minimzzazione della metrica di residuo seguente
+\begin{equation}\label{chapter2:colorimetry:rgb2specResidual}
+	\begin{bmatrix}
+		c_0^* \\ c_1^* \\ c_2^*
+	\end{bmatrix}
+	= \;\stackrel[c_0,c_1,c_2]{}{\mathrm{arg}\,\mathrm{min}}\norm{
+		\begin{bmatrix}
+			r \\ g \\ b
+		\end{bmatrix}
+		- \int_\Lambda 
+		\begin{bmatrix}
+			R(\lambda) \\ G(\lambda) \\ B(\lambda)
+		\end{bmatrix}
+		S(\lambda, c_0, c_1, c_2) W_{D_{65}}(\lambda)\mathrm{d}\lambda
+	}
+\end{equation}
+dove $\norm{\cdot}$ \`e la CIE76 $\Delta E$ color distance\footnotemark{}
+\begin{align*}
+	\Delta E &= \sqrt{(L^*_2 - L^*_1)^2+(a^*_2 - a^*_1)^2+(b^*_2 - b^*_1)^2}\\
+	\text{dove}\\
+	f(x)  &= \left\{\begin{alignedat}{3}
+			&\sqrt[3]{t} &\,&\text{se }\frac{Y}{Y_n}>\left(\frac{6}{29}\right)^3 \\
+			&\frac{1}{3}\left(\frac{29}{6}\right)^2t+\frac{4}{29} \;\;&\,&\text{altrimenti}
+		\end{alignedat}\right.\\
+	L^* &= 16f\left(\frac{Y}{Y_n}\right)\\
+	a^* &= 500\left(f\left(\frac{X}{X_n}\right)-f\left(\frac{Y}{Y_n}\right)\right)\\
+	b^* &= 200\left(f\left(\frac{Y}{Y_n}\right)-f\left(\frac{Z}{Z_n}\right)\right)\\
+\end{align*}
+\footnotetext{Tale metrica richiede la conversione ad un color space uniforme, cio\`e dove la distanza fra colori \`e proporzionale alla differenza 
+percepita dall'occhio umano. Il color space utilizzato nella metrica sopracitata \`e il CIE 1976 L*a*b*}
+\begin{center}
+con $X_n = 0.950489\;Y_n = 1\; Z_n = 1.08884$\\
+se il bianco di riferimento \`e assunto come $Y_{white} = 1$\par
+\end{center}
+Tale problema di ottimizzazione \`e risolto con il metodo di Gauss-Newton (vedi \ref{appendixC:gaussNewton}).\par
+Se questa operazione fosse eseguita per ogni colore sRGB nel processo di rendering, le performance ne risentirebbero. Dunque una lookup table 5D viene
+precomputata. La struttura di tale tabella \`e dovuta al fatto che il gamut del sRGB color space \`e suddiviso in tre quadrilateri, tali che 
+ciascuno di essi contenga rispettivamente 
+\begin{itemize}[topsep=0pt, noitemsep]
+	\item punti in cui $R = \max\{R, G, B\}$, corrispondente a indice 0 nella prima dimensione della LUT
+	\item punti in cui $G = \max\{R, G, B\}$, corrispondente a indice 1 nella prima dimensione della LUT
+	\item punti in cui $B = \max\{R, G, B\}$, corrispondente a indice 2 nella prima dimensione della LUT
+\end{itemize}
+Ciascuno di questi quadrilateri mappa a 4 cubi nello spazio RGB. Tali sottospazi sono campionati con una griglia uniforme 
+$64\times 64\times64$ (le tre dimensioni 
+delle 3 griglie costituiscono $2^a, 3^a, 4^a$ dimensioni della LUT). Per ciascuno di questi vengono calcolati i coefficienti del polinomio 
+desiderati (i quali costituiscono l'ultima dimensione della LUT).\par
+Nota aggiuntiva: spettri di illuminanti o di coefficienti che descrivono il mezzo trasmissivo tendono ad avere valori spettrali $>1$, il che significa
+che bisogna gestire anche la conversione per coordinate RGB $>1$. Tali coordinate vengono normalizzate a $1$ o $0.5$ (a seconda della saturazione), 
+affinch\`e si possa ottenere una migliore curva spettrale, e si memorizza un coefficiente di scala da utilizzare in seguito.
+\section{camera}
+Affinch\`e si possa associare ad ogni punto 2D nell'\textit{color buffer} che conterr\`a eventualmente l'immagine output uno o pi\`u coppie 
+$(\vec{p_0}, \hat{\omega_0})$ punto e direzione di partenza, necessitiamo di un \textit{camera model}
+\begin{definitionS}
+	Un \textit{camera model} descrive la relazione matematica tra le coordinate 3D di un punto nella scena dal quale la luce proviene e le coordinate 
+	2D della sua proiezione nel \textit{film plane}\footnotemark{} [\cite{vision}]
+\end{definitionS}
+\footnotetext{\textit{film} \`e il termine che utilizziamo per il piano dell'immagine finale [\cite{pharr}]}
+\subsection{pinhole camera model}
+\begin{figure}[tb]
+	\includesvg[width=0.35\textwidth, inkscapelatex=false]{../assets/chapter2_camera_pinhole_diagram.svg}
+	\includesvg[width=0.6\textwidth, inkscapelatex=false]{../assets/chapter2_camera_pinhole_plot.svg}
+	\caption{A sinistra, diagramma del pinhole camera model. A destra, geometria del pinhole camera model con un sistema di riferimento left-handed.
+	Di solito l'asse z punta verso la camera, risiedente in z=0}
+\end{figure}
+Modello di camera ideale secondo la quale la scena \`e osservata attraverso una apertura infinitesima. Tale modello genera immagini con messa a fuoco
+nitida ovunque, trascurando tutte le distorsioni geometriche e effetti di aberrazione tipici delle lenti finite.\footnotemark{}\par
+\footnotetext{descrivere ed implementare modelli di camera realistici \`e fuori dallo scope}
+Considerazioni Geometriche:
+% RIFAI
+\begin{altDescription}{chapter2:camera:pinholeGeometry}
+	\item[Origine] punto $\vec{o}$, nel quale \`e posizionata l'apertura della camera
+	\item[Film plane] posizionato a distanza $n$ (f in figura), \textit{distanza focale} della camera, dall'origine $\vec{o}$. 
+		Definisce il \textit{field of view}. Anche chiamato image plane o near plane
+	\item[Punti] $\vec{p}$ e $\vec{q}$, rispettivamente punto da proiettare, "trasportante radianza", e punto $\vec{q}$, proiezione del punto $\vec{p}$
+		sul film plane
+\end{altDescription}
+Definiamo inoltre dei Coordinate Spaces:
+\begin{altDescription}{chapter2:camera:spaces}
+	\item[Object Space] spazio tridimensionale in cui \`e definito ciascun oggetto
+	\item[World Space] spazio tridimensionale utilizzato dalla scena
+	\item[Camera Space] spazio tridimensionale avente come origine il punto di apertura della camera, asse x e y direzioni parallele al film plane,
+		e z direzione perpendicolare al film plane
+	\item[Rendering Space] spazio tridimensionale avente come origine il punto di apertura della camera, ma preservante le direzioni del world space.
+		Lo utilizziamo negli algoritmi basati su ray tracing in quanto, fa in modo che gli oggetti vicini alla camera abbiano posizioni rappresentati
+		da numeri piccoli, dunque sfruttanti precisione floating point maggiore, mentre le direzioni preservate permettono un migliore test di 
+		intersezione mediante \textit{Axis Aligned Bounding Box}es
+	\item[Image Space] spazio bidimensionale corrispondente a coordinate in $[-1,1]$ nel film plane, con origine il centro, e assi x, y paralleli alle 
+		direzioni x,y del Camera Space
+\end{altDescription}
+Le formule che seguono utilizzano, per comodit\`a, il Camera Space.\par
+\begin{figure}[tb]
+	\begin{subfigure}{0.5\linewidth}
+		\includesvg[width=\linewidth, inkscapelatex=false]{../assets/chapter2_camera_pinhole_projected.svg}
+		\label{chapter2:camera:pinhole:pinhole_projected}
+		\caption{Geometria del pinhole camera model visto dall'asse x}
+	\end{subfigure}
+	\begin{subfigure}{0.5\linewidth}
+		\includegraphics[width=\linewidth, trim=4px 4px 100px 40px, clip]{../assets/chapter2_camera_non_linear_mapping_learnwebgl.png}
+		\label{chapter2:camera:pinhole:learnWebGLzremap}
+		\caption{Mostra la mappa nonlineare della depth\footnotemark{}}
+	\end{subfigure}
+	\caption{proiezione prospettica su pinhole camera model}
+	\label{chapter2:camera:pinhole}
+\end{figure}
+\footnotetext{Immagine da \href{http://learnwebgl.brown37.net/08\_projections/projections\_perspective.html}
+		{\mbox{http://learnwebgl.brown37.net/08\_projections/projections\_perspective.html}}}
+La mappa $\vec{q}=[y_1,y_2]^T$ da $\vec{p}=[x_1,x_2,x_3]^T$. Siano $l,r,b,t,n,f$ rispettivamente left, right, bottom, top, near, far.\par
+Possiamo ricavare una \textit{proiezione prospettica}\footnotemark{} esprimendo il punto $\vec{p}$ in coordinate omogenee 
+e concatenando una trasformazione di 
+\footnotetext{Weak perspective projection}
+\textit{shearing}\footnotemark{} per sovrapporre far plane $[l,r]\times [b,t]$ con il near plane, seguito da una scala affinch\`e i due piani 
+sovrapposti abbiano dimensione tale da ottenere un angolo di visione $90^o$.
+\footnotetext{\href{https://en.wikipedia.org/wiki/Shear\_mapping}{https://en.wikipedia.org/wiki/Shear\_mapping}}
+\begin{equation}\label{chapter2:camera:fromFrustum2nbynquad}
+	\begin{bmatrix}
+		\frac{2n}{r-l} & 0 & 0 & 0 \\ 0 & \frac{2n}{t-b} & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		1 & 0 & -\frac{r+l}{2n} & 0 \\ 0 & 1 & -\frac{t+b}{2n} & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\frac{2n}{r-l} & 0 & -\frac{r+l}{r-l} & 0 \\ 0 & \frac{2n}{t-b} & -\frac{t+b}{t-b} & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1
+	\end{bmatrix}
+\end{equation}
+che mappa 
+\begin{align*}
+	[l, b, n, 1]^T &\mapsto [-n,-n, n, 1]^T \\
+	[r, f, n, 1]^T &\mapsto [n, n, n, 1]^T
+\end{align*}
+Dunque il prossimo step \`e la normalizzazione delle tre coordinate spaziali, cio\`e la divisione di tutte le tre coordinate per la coordinata $z$,
+affinch\`e pi\`u lontano sia un oggetto e pi\`u piccolo esso appare (step detto \textit{perspective divide}) il che \`e ottenuto ponendo un 
+coefficiente non nullo nell'elemento di indice $(4,3)$ nella matrice di trasformazione. A seguire, centriamo la media armonica $\frac{2fn}{f+n}$
+nell'origine e normalizziamo l'intervallo delle distanze, in modo tale che la mappa $[-n,f] \mapsto [-1,1]$ sia nonlineare, 
+dando pi\`u importanza ai valori vicini alla camera. Vedi figura \ref{chapter2:camera:pinhole} \subref{chapter2:camera:pinhole:learnWebGLzremap}
+\begin{equation}\label{chapter2:camera:remapDepthNonlinear}
+	\begin{bmatrix}
+		1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & \frac{2}{f-n} & 0 \\ 0 & 0 & 0 & 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & \frac{f+n}{2} & -fn \\ 0 & 0 & 1 & 0
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & \frac{f+n}{f-n} & -\frac{2fn}{f-n} \\ 0 & 0 & 1 & 0
+	\end{bmatrix}
+\end{equation}
+Combinando \ref{chapter2:camera:remapDepthNonlinear} e \ref{chapter2:camera:fromFrustum2nbynquad} si ottiene una trasformazione che mappa il view
+frustum, piramide retta a base piramidale con dimensioni arbitrarie, ad un cubo $[-1,1]^3$
+\begin{equation}\label{chapter2:camera:perspectiveMatrix}
+	\begin{bmatrix}
+		1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & \frac{f+n}{f-n} & -\frac{2fn}{f-n} \\ 0 & 0 & 1 & 0
+	\end{bmatrix}
+	\begin{bmatrix}
+		\frac{2n}{r-l} & 0 & -\frac{r+l}{r-l} & 0 \\ 0 & \frac{2n}{t-b} & -\frac{t+b}{t-b} & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\frac{2n}{r-l} & 0 & -\frac{r+l}{r-l} & 0 \\ 0 & \frac{2n}{t-b} & -\frac{t+b}{t-b} & 0 \\ 0 & 0 & \frac{f+n}{f-n} & -\frac{2fn}{f-n} 
+		\\ 0 & 0 & 1 & 0
+	\end{bmatrix}
+\end{equation}
+\subsection{filtrare image samples}
+Dopo il campionamento di un pixel, e il calcolo della radianza spettrale in ogni pixel sample, bisogna aggregare tutti i contributi di ogni campione.
+Tutti i contributi dovrebbero avere un peso inversamente proporzionale alla distanza dal centro. Ci\`o suggerisce l'uso di un 
+\textit{filtro passa basso} $f(x-x',y-y')$, dove $(x,y)$ coordinate in cui si calcola la \textit{filtered image function} 
+$r_f(x,y)$ e $(x',y')$ displacement.\par
+Idealmente, per ottenere la migliore stima possibile, si dovrebbero estrarre $\infty$ samples ed integrarli nella pixel cell area $A_{px}$
+\begin{equation}
+	r_f(x,y) = \int_{A_{px}} f(x-x', y-y')r(x',y') \mathrm{d}A
+\end{equation}
+Come meglio trattato in capitolo \ref{chapter6}, lo \textit{stimatore} di monte carlo ci permette di stimare tale integrale come
+\begin{equation}
+	r_f(x,y) \approx \frac{1}{n}\sum_{i=1}^n \frac{f(x-x_i, y-y_i)r(x_i, y_i)}{p(x_i, y_i)}
+\end{equation}
+se consideriamo il sample point come vettore aleatorio con distribuzione uniforme, allora l'equazione diventa
+\begin{equation}\label{chapter2:camera:unbiasedEstimator}
+	r_f(x,y) \approx \frac{\norm{A_{px}}}{n}\sum_{i=1}^n f(x-x_i, y-y_i)r(x_i, y_i)
+\end{equation}
+Equazione \ref{chapter2:camera:unbiasedEstimator} pu\`o essere migliorata in termini di varianza

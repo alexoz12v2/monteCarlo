@@ -69,6 +69,32 @@
       \field{title}{Colorimetry. Understanding The CIE System}
       \field{year}{2007}
     \endentry
+    \entry{vision}{book}{}
+      \name{author}{1}{}{%
+        {{hash=1ea6ab8f6fb9d08d0efbe1b01b16cbfa}{%
+           family={Ikeuchi},
+           familyi={I\bibinitperiod},
+           given={Katsushi},
+           giveni={K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer New York, NY}%
+      }
+      \strng{namehash}{1ea6ab8f6fb9d08d0efbe1b01b16cbfa}
+      \strng{fullhash}{1ea6ab8f6fb9d08d0efbe1b01b16cbfa}
+      \strng{bibnamehash}{1ea6ab8f6fb9d08d0efbe1b01b16cbfa}
+      \strng{authorbibnamehash}{1ea6ab8f6fb9d08d0efbe1b01b16cbfa}
+      \strng{authornamehash}{1ea6ab8f6fb9d08d0efbe1b01b16cbfa}
+      \strng{authorfullhash}{1ea6ab8f6fb9d08d0efbe1b01b16cbfa}
+      \field{labelalpha}{Ike14}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{1}
+      \field{title}{Computer Vision}
+      \field{year}{2014}
+    \endentry
     \entry{rad-phot}{book}{}
       \name{author}{1}{}{%
         {{hash=605c8f9d9753f2875a450070f1d94f6e}{%
@@ -121,6 +147,29 @@
       \field{title}{Handbook of Digital Image Synthesis: Scientific Foundations of Rendering}
       \field{year}{2016}
     \endentry
+    \entry{rgb2spec}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{hash=2d2d4387b4961fa1a873ae86d02f3e29}{%
+           family={Wenzel\bibnamedelima Jakob},
+           familyi={W\bibinitperiod\bibinitdelim J\bibinitperiod},
+           given={Johannes\bibnamedelimb Hanika\bibnamedelimb et\bibnamedelima al.},
+           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod}}}%
+      }
+      \strng{namehash}{2d2d4387b4961fa1a873ae86d02f3e29}
+      \strng{fullhash}{2d2d4387b4961fa1a873ae86d02f3e29}
+      \strng{bibnamehash}{2d2d4387b4961fa1a873ae86d02f3e29}
+      \strng{authorbibnamehash}{2d2d4387b4961fa1a873ae86d02f3e29}
+      \strng{authornamehash}{2d2d4387b4961fa1a873ae86d02f3e29}
+      \strng{authorfullhash}{2d2d4387b4961fa1a873ae86d02f3e29}
+      \field{labelalpha}{Wen19}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Eurographics Symposium on Rendering 2019}
+      \field{title}{A Low-Dimensional Function Space for Efficient Spectral Upsampling}
+      \field{year}{2019}
+    \endentry
     \entry{fichet}{article}{}
       \name{author}{1}{}{%
         {{hash=8df8d51e5c1b062900ec68e0869c7c08}{%
@@ -137,6 +186,7 @@
       \strng{authorbibnamehash}{8df8d51e5c1b062900ec68e0869c7c08}
       \strng{authornamehash}{8df8d51e5c1b062900ec68e0869c7c08}
       \strng{authorfullhash}{8df8d51e5c1b062900ec68e0869c7c08}
+      \field{extraname}{1}
       \field{labelalpha}{al21}
       \field{sortinit}{2}
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
@@ -147,6 +197,33 @@
       \field{title}{An OpenEXR Layout for Spectral Images}
       \field{volume}{10}
       \field{year}{2021}
+    \endentry
+    \entry{spectrum}{article}{}
+      \name{author}{1}{}{%
+        {{hash=00366626fd84415d2fa47cc274f82a4a}{%
+           family={al.},
+           familyi={a\bibinitperiod},
+           given={Jingang\bibnamedelima Zhang},
+           giveni={J\bibinitperiod\bibinitdelim Z\bibinitperiod},
+           prefix={et},
+           prefixi={e\bibinitperiod}}}%
+      }
+      \strng{namehash}{00366626fd84415d2fa47cc274f82a4a}
+      \strng{fullhash}{00366626fd84415d2fa47cc274f82a4a}
+      \strng{bibnamehash}{00366626fd84415d2fa47cc274f82a4a}
+      \strng{authorbibnamehash}{00366626fd84415d2fa47cc274f82a4a}
+      \strng{authornamehash}{00366626fd84415d2fa47cc274f82a4a}
+      \strng{authorfullhash}{00366626fd84415d2fa47cc274f82a4a}
+      \field{extraname}{2}
+      \field{labelalpha}{al22}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Science Reports}
+      \field{number}{12}
+      \field{title}{A survey on computational spectral reconstruction methods from RGB to hyperspectral imaging}
+      \field{year}{2022}
     \endentry
     \entry{pharr}{book}{}
       \name{author}{3}{}{%

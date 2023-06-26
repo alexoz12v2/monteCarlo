@@ -2369,6 +2369,11 @@
     <bcf:citekey order="6" intorder="1">pegoraro</bcf:citekey>
     <bcf:citekey order="7" intorder="1">color</bcf:citekey>
     <bcf:citekey order="8" intorder="1">fichet</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">spectrum</bcf:citekey>
+    <bcf:citekey order="10" intorder="1">pharr</bcf:citekey>
+    <bcf:citekey order="11" intorder="1">rgb2spec</bcf:citekey>
+    <bcf:citekey order="12" intorder="1">vision</bcf:citekey>
+    <bcf:citekey order="13" intorder="1">pharr</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="ynt">
