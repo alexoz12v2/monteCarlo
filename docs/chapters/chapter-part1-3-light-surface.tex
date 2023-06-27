@@ -1,1 +1,175 @@
 \chapter{Modelli di Fonti Luminose e Superfici}
+\section{Modellazione di Superfici}
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=0.4\linewidth]{../assets/chapter3_surfaces_interaction_types.png}
+	\includegraphics[width=0.4\linewidth]{../assets/chapter3_surfaces_specular_interaction.png}
+	\label{chapter3:surface:interactionTypes}
+	\caption{tipi di riflessione e trasmissione. Immagine da \cite{art-rad}}
+\end{figure}
+Quando un flusso radiante incide su una superficie, i tre processi che avvengono sono \textit{riflessione}, \textit{trasmissione}, 
+\textit{assorbimento}, oltre all'emissione per tutti i materiali al di sopra dello zero assoluto. 
+In particolare, durante la propagazione di un flusso radiante in un mezzo, parte della sua energia viene assorbita o 
+deviata dal mezzo\footnote{d'ora in poi in questo capitolo si trascura la propagazione nel mezzo e si considera propagazione nel vuoto}.
+Quando la luce incontra un oggetto, in particolare la sua superficie esterna, detta \textit{interfaccia}, tale flusso radiante pu\`o essere 
+trasmesso e/o riflesso in diverse direzioni e con diversa intensit\`a.\par
+Per il principio di conservazione dell'energia, all'interfaccia deve valere la propriet\`a\footnote{notazione introdotta in seguito}
+\begin{equation}\label{chapter3:surface:interfaceEnergyConservation}
+	\bar{\rho} + \bar{\uptau} = 1
+\end{equation}
+Si noti l'assenza del coefficiente di assorbimento, in quanto esso non \`e rilevante nell'interazione luce-interfaccia, ma partecipa in processi che 
+coinvolgono la propagazione all'interno del volume del materiale, nel quale vale, per ogni lunghezza d'onda, in ogni istante, in ogni punto dello 
+spazio, ancora la conservazione dell'energia
+\begin{equation}\label{chapter3:surface:bulkEnergyConservation}
+	\alpha + \rho + \uptau = 1
+\end{equation}
+Le propriet\`a ottiche che coinvolgono tali processi sono suddivise in spettrali e non, ed in estrinseche (suffisso "-ance") ed intrinseche 
+(suffisso "-ivity"), queste ultime caratterizzanti il materiale ed utilizzate esclusivamente per materiali puri. In particolare seguono le definizioni
+del CIE Lighting Vocabulary
+\begin{altDescription}{chapter3:surface:coefficients}\label{chapter3:surface:coefficients}
+	\item[\Gls{Reflectance}] \Glsdesc{Reflectance}. \mbox{Simbolo $\si{\rho}$}
+	\item[\Gls{Transmittance}] \Glsdesc{Transmittance}. \mbox{Simbolo $\si{\uptau}$}
+	\item[\Gls{Absorptance}] \Glsdesc{Absorptance}. \mbox{Simbolo $\si{\alpha}$}
+	\item[\Gls{Reflectivity}] \Glsdesc{Reflectivity}. \mbox{Simbolo $\si{\rho_\infty}$}
+	\item[\Gls{Transmissivity}] \Glsdesc{Transmissivity}. \mbox{Simbolo $\si{\uptau_u}$}
+	\item[\Gls{Absorptivity}] \Glsdesc{Absorptivity}. \mbox{Simbolo $\si{\alpha_u}$}
+\end{altDescription}
+Si noti che nelle definizioni di Reflectivity e Transmissivity si contano anche i contributi aggiunti (nel primo caso) / tolti (nel secondo caso) per 
+via del fenomeno di subsurface scattering\footnote{fuori scope}, dunque talvolta si considerano soltanto gli effetti di riflessione e trasmissione 
+all'interfaccia, simboli $\bar{\rho}, \bar{\uptau}$, il cui valore per i vari materiali \`e governato dalle \textit{Equazioni di Fresnel} 
+(vedi \ref{chapter3:surface:fresnel})
+\begin{table}[tb!]
+	\newcommand{\infint}[1]{\ensuremath{\int_0^\infty #1 \mathrm{d}\lambda}}
+	\renewcommand\tabularxcolumn[1]{m{#1}}% for vertical centering text in X column
+	\label{chapter3:surface:coefficientsFormulas}
+	\begin{tabularx}{\linewidth}{cY}
+		\toprule
+		Coefficiente & Formula \\
+		\midrule
+		Spectral Reflectance & \[\rho_\lambda(\lambda)=\frac{\Phi_{e,\lambda}^r(\lambda)}{\Phi_{e,\lambda}^i(\lambda)}\] \\
+		Reflectance & \[\rho = \frac{\Phi_e^r}{\Phi_e^i} = \frac{\infint{\rho_\lambda(\lambda)\Phi_{e,\lambda}^i}}{\infint{\Phi_{e,\lambda}^i}} %
+							\neq \infint{\rho_\lambda(\lambda)}\]\\
+		Spectral Transmittance & \[\rho_\lambda(\lambda)=\frac{\Phi_{e,\lambda}^r(\lambda)}{\Phi_{e,\lambda}^i(\lambda)}\] \\
+		Trasmittance & \[\uptau = \frac{\Phi_e^t}{\Phi_e^i} = \frac{\infint{\uptau_\lambda(\lambda)\Phi_{e,\lambda}^i}}{\infint{\Phi_{e,\lambda}^i}} %
+							\neq \infint{\uptau_\lambda(\lambda)}\]\\
+		Spectral Absorptance & \[\alpha_\lambda(\lambda)=\frac{\Phi_{e,\lambda}^a(\lambda)}{\Phi_{e,\lambda}^i(\lambda)}\] \\
+		Absorptance & \[\alpha = \frac{\Phi_e^a}{\Phi_e^i} = \frac{\infint{\rho_\lambda(\lambda)\Phi_{e,\lambda}^i}}{\infint{\Phi_{e,\lambda}^i}} %
+							\neq \infint{\alpha_\lambda(\lambda)}\]\\
+		\bottomrule
+	\end{tabularx}
+	\caption{formule per le definizioni \ref{chapter3:surface:coefficients}}
+\end{table}
+Nota dalla tabella \ref{chapter3:surface:coefficientsFormulas} come tali coefficienti dipendano dagli angoli solidi considerati per il calcolo del 
+flusso incidente e riflesso/trasmesso. Distinguere tale computazione in categorie \`e pi\`u significativo per la reflectance 
+(vedi \ref{chapter3:surface:nicodemusReflectances}).\par
+Per caratterizzare macroscopicamente le propriet\`a di riflessione e trasmissione del materiale utilizziamo un approccio probabilistico, utilizzando 
+una distribuzione\footnotemark{} che trasforma Irradianza incidente in Radianza riflessa o trasmessa. Nel caso della riflessione, non tutta la luce 
+riflessa proviene dalla riflessione della luce incidente, ma pu\`o essere l'aggregato di contributi di riflessioni multiple in un materiale di spessore
+finito, oppure radianza "riemersa" durante la propagazione all'interno del materiale per via di scattering multiplo. Nel caso di un materiale 
+generico tale sarebbe eccessivamente dispendiosa. Nell'ipotesi che il materiale sia a regime, senza effetti di fosforescenza e 
+fluorescenza (restringendoci all'ottica geometrica\footnotemark{}), possiamo modellare il materiale con una densit\`a di distribuzione che tiene conto 
+della possibilit\`a di subsurface scattering nella superficie, approssimando il problema assumendo che la luce fuoriesca dal materiale soltanto in un 
+punto, in un unica direzione. Tale densit\`a di distribuzione \`e detta \Gls{BSSRDF}(BSSRDF)
+\begin{definitionS}
+	La \Gls{BSSRDF}(BSSRDF) $S(\vec{p_o}, \hat{\omega_o}, \vec{p_i}, \hat{\omega_i})$ \Glsdesc{BSSRDF}
+\end{definitionS}
+\begin{equation}\label{chapter3:surface:bssrdf}
+	S(\vec{p_o}, \hat{\omega_o}, \vec{p_i}, \hat{\omega_i}) = \frac{\mathrm{d}L_o(\vec{p_o},\hat{\omega_o})}{\mathrm{d}\Phi_i(\vec{p_i},\hat{\omega_i})}
+\end{equation}
+Approssimando ulteriormente il comportamento della luce, trascurando il fenomeno di subsurface scattering e supponendo che essa fuoriesca esclusiamente 
+dal punto di incidenza (dunque soffermandoci soltanto sui fenomeni a livello dell'interfaccia), possiamo semplificare nella \Gls{BRDF}(BRDF)
+\begin{definitionS}
+	La \Gls{BRDF}(BRDF) $f_r(\vec{p},\hat{\omega_o},\hat{\omega_i})$ \Glsdesc{BRDF}
+\end{definitionS}
+\begin{equation}
+	f_r(\vec{p},\hat{\omega_o},\hat{\omega_i}) = \frac{\mathrm{d}L_r(\vec{p}, \hat{\omega}_o)}{\mathrm{d}E_i(\vec{p}, \hat{\omega}_i)}
+		= \frac{\mathrm{d}L_r(\vec{p}, \hat{\omega}_o)}{L_i(\vec{p}, \hat{\omega}_i)\langle\hat{n},\hat{\omega}_i\rangle\mathrm{d}\hat{\omega}_i}
+\end{equation}
+Le propriet\`a e casi d'uso di entrambe queste due distribuzioni saranno definite in seguito.\par
+\footnotetext{Non propriamente una PDF, perch\`e non ha integrale unitario}
+\footnotetext{In quanto le distribuzioni qui definite, nell'ipotesi di ottica geometrica, non cambiano la lunghezza d'onda della radiazione incidente, 
+	la dipendenza di radianza, irradianza, flusso, con la lunghezza d'onda \`e omessa per comodit\`a}
+Riconosciamo, a seconda della distribuzione spaziale della BRDF/BSSRDF, quattro tipologie di riflessione fondamentali, in particolare 
+\begin{itemize}[topsep=0pt, noitemsep]
+	\item[] \textit{Diffuse Reflection} la superficie si comporta come lambertiana rispetto alla riflessione, cio\`e distribuisce equamente 
+		tutta\footnotemark{} il flusso incidente
+	\item[] \textit{Glossy Specular Reflection} la superficie predilige un sottoinsieme di direzioni per la riflessione
+	\item[] \textit{Perfectly Specular Reflection} la superficie riflette secondo la legge della riflessione per le superfici otticamente lisce
+	\item[] \textit{Retroreflective Material} la superficie riflette gran parte del flusso nelle direzioni vicine a quella di incidenza
+\end{itemize}
+\footnotetext{Senza contare assorbimento}
+Si noti che la trasmissione, modellata con una funzione analoga alla BRDF, la BTDF, \`e categorizzata in tre tipologie analoghe alle prime 
+tre sopraindicate per la riflessione. Vedi figura \ref{chapter3:surface:interactionTypes}.\par
+Come precedentemente accennato, per il calcolo della reflectance, vengono presi diversi angoli solidi come riferimento, vedi Tabella 
+\ref{chapter3:surface:nicodemusReflectances}.
+{
+	\newcommand{\dotpr}[1]{\langle\hat{n},\hat{\omega}_{#1}\rangle}
+	\newcommand{\iang}[2]{\int_{#1}f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\vert\dotpr{#2}\vert\mathrm{d}\hat{\omega}_{#2}}
+	\renewcommand\tabularxcolumn[1]{m{#1}}% for vertical centering text in X column
+	\begin{xltabular}{\linewidth}{YY}
+		\caption{Tipi di reflectance proposti da \cite{nicodemus}. Nota che di solito il coseno dell'angolo rispetto allo zenith della direzione 
+			incidente non \`e preso con valore assoluto, in quanto si assume $n$ come la normale che forma un angolo acuto con $\hat{\omega}_i$. 
+			Seguendo la convenzione di \cite{pharr}, qui invece la normale \`e assunta sempre uscente dalla superficie.}
+		\label{chapter3:surface:nicodemusReflectances}\\
+
+		\toprule
+		Coefficiente & Formula \\
+		\midrule
+		\endfirsthead
+
+		\toprule
+		\endhead
+
+		\bottomrule
+		\endfoot
+
+		\bottomrule
+		\endlastfoot
+
+		Bidirectional Reflectance & \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+			{\[\mathrm{d}\rho(\vec{p},\hat{\omega}_o, \hat{\omega}_i) = %
+			f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\langle\hat{n},\hat{\omega}_o\rangle\mathrm{d}\hat{\omega}_o\]} \\
+		Directional-Conical Reflectance &\\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+			{\[\rho(\vec{p},\hat{\omega}_o,\hat{\omega}_i;\Omega) = \iang{\Omega}{o}\]}\\
+		Directional-Hemispherical Reflectance &  \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+			{\[\rho(\vec{p},\hat{\omega}_i) = \iang{\mathcal{H}^2(\hat{n})}{o}\]}\\
+		Conical-Directional Reflectance &  \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+			{\[\mathrm{d}\rho(\vec{p},\hat{\omega}_o,\hat{\omega}_i;\Omega) = %
+			\frac{\dotpr{o}\mathrm{d}\hat{\omega}_o}{\int_{\mathcal{H}^2}(\hat{n})\dotpr{i}\mathrm{d}\hat{\omega}_i}\iang{\Omega}{i}\]}\\
+		Biconical Reflectance &  \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+			{\[\rho(\vec{p},\hat{\omega}_o,\hat{\omega}_i;\Omega_i,\Omega_o) =%
+			\frac{1}{\int_{\mathcal{H}^2(\hat{n})}\dotpr{i}\mathrm{d}\hat{\omega}_i}%
+			\int_{\Omega_i}\iang{\Omega_r}{r}\dotpr{i}\mathrm{d}\hat{\omega}_i\]}\\
+		Conical-Hemispherical Reflectance &  \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+			{\[\rho(\vec{p},\hat{\omega}_i;\Omega) =%
+			\frac{1}{\int_{\mathcal{H}^2(\hat{n})}\dotpr{i}\mathrm{d}\hat{\omega}_i}%
+			\int_\Omega\iang{\mathcal{H}^2(\hat{n})}{o}\dotpr{i}\mathrm{d}\hat{\omega}_i\]}\\
+		Hemispherical-Directional Reflectance &  \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+			{\[\mathrm{d}\rho(\vec{p},\hat{\omega}_o) =%
+			\frac{\dotpr{o}\mathrm{d}\hat{\omega}_o}{\pi}\iang{\mathcal{H}^2(\hat{n})}{i}\]}\\
+		Hemispherical-Directional Reflectance (alt)\footnotemark{} &  \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+			{\[\rho(\vec{p},\hat{\omega}_o) = \iang{\mathcal{H}^2(\hat{n})}{i}\]}\\
+		Hemispherical-Conical Reflectance &  \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+			{\[\rho(\vec{p}, \hat{\omega}_o;\Omega) = %
+			\frac{1}{\pi}\int_{\mathcal{H}^2(\hat{n})}\iang{\Omega}{o}\mathrm{d}\hat{\omega}_i\]}\\
+		Bidirectional Reflectance &  \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+			{\[\rho(\vec{p}) = \frac{1}{\pi}%
+			\int_{\mathcal{H}^2(\hat{n}_i)}\iang{\mathcal{H}^2(\hat{n}_o)}{o}\dotpr{i}\mathrm{d}\hat{\omega}_i\]}\\
+	\end{xltabular}
+}
+\footnotetext{La utilizziamo in seguito, per convenzione, senza normalizzazione e notazione differenziale. In tale contesto essa la chiamiamo "albedo"}
+\subsection{Propriet\`a ottiche delle interfacce}
+Trascurando i fenomeni di scattering e assorbimento che avvengono all'interno del materiale, e concentrandoci solo sulle interazioni a livello di
+interfaccia
+\label{chapter3:surface:fresnel}
+% inserisci quando approfondisci BRDF e BSSRDF immagini illustrative

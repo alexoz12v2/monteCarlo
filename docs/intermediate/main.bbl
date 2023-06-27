@@ -19,6 +19,35 @@
 
 \refsection{0}
   \datalist[entry]{ynt/global//global/global}
+    \entry{nicodemus}{report}{}
+      \name{author}{1}{}{%
+        {{hash=82d63036ad1376df308cf977e7f44cdf}{%
+           family={al.},
+           familyi={a\bibinitperiod},
+           given={Nicodemus\bibnamedelimb F.\bibnamedelimi E.},
+           giveni={N\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim E\bibinitperiod},
+           prefix={et},
+           prefixi={e\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Final Report National Bureau of Standards, Washington, DC. Inst. for Basic Standards}%
+      }
+      \strng{namehash}{82d63036ad1376df308cf977e7f44cdf}
+      \strng{fullhash}{82d63036ad1376df308cf977e7f44cdf}
+      \strng{bibnamehash}{82d63036ad1376df308cf977e7f44cdf}
+      \strng{authorbibnamehash}{82d63036ad1376df308cf977e7f44cdf}
+      \strng{authornamehash}{82d63036ad1376df308cf977e7f44cdf}
+      \strng{authorfullhash}{82d63036ad1376df308cf977e7f44cdf}
+      \field{extraname}{1}
+      \field{labelalpha}{al77}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Geometrical considerations and nomenclature for reflectance}
+      \field{type}{techreport}
+      \field{year}{1977}
+    \endentry
     \entry{hecht}{book}{}
       \name{author}{1}{}{%
         {{hash=9a6efa2d012e3aaa08e4b6a8cf6a8b4c}{%
@@ -68,6 +97,31 @@
       \field{labeltitlesource}{title}
       \field{title}{Colorimetry. Understanding The CIE System}
       \field{year}{2007}
+    \endentry
+    \entry{art-rad}{book}{}
+      \name{author}{1}{}{%
+        {{hash=eb270c97528d29efb1f767a3246c5cdb}{%
+           family={James\bibnamedelimb M.\bibnamedelimi Palmer},
+           familyi={J\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim P\bibinitperiod},
+           given={Barbara\bibnamedelimb G.\bibnamedelimi Grant},
+           giveni={B\bibinitperiod\bibinitdelim G\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {SPIE Press}%
+      }
+      \strng{namehash}{eb270c97528d29efb1f767a3246c5cdb}
+      \strng{fullhash}{eb270c97528d29efb1f767a3246c5cdb}
+      \strng{bibnamehash}{eb270c97528d29efb1f767a3246c5cdb}
+      \strng{authorbibnamehash}{eb270c97528d29efb1f767a3246c5cdb}
+      \strng{authornamehash}{eb270c97528d29efb1f767a3246c5cdb}
+      \strng{authorfullhash}{eb270c97528d29efb1f767a3246c5cdb}
+      \field{labelalpha}{Jam09}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{The Art of Radiometry}
+      \field{year}{2009}
     \endentry
     \entry{vision}{book}{}
       \name{author}{1}{}{%
@@ -186,7 +240,7 @@
       \strng{authorbibnamehash}{8df8d51e5c1b062900ec68e0869c7c08}
       \strng{authornamehash}{8df8d51e5c1b062900ec68e0869c7c08}
       \strng{authorfullhash}{8df8d51e5c1b062900ec68e0869c7c08}
-      \field{extraname}{1}
+      \field{extraname}{2}
       \field{labelalpha}{al21}
       \field{sortinit}{2}
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
@@ -214,7 +268,7 @@
       \strng{authorbibnamehash}{00366626fd84415d2fa47cc274f82a4a}
       \strng{authornamehash}{00366626fd84415d2fa47cc274f82a4a}
       \strng{authorfullhash}{00366626fd84415d2fa47cc274f82a4a}
-      \field{extraname}{2}
+      \field{extraname}{3}
       \field{labelalpha}{al22}
       \field{sortinit}{2}
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}

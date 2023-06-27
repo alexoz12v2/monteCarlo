@@ -58,25 +58,82 @@
 	name={Luminanza},
 	description={misura dell'intensit\`a luminosa per unita di area di luce che \`e emessa, incidente, trasmessa, riflessa, passa attraverso 
 				una particolare direzione. Misurata in \si{cd/m^2}},
-	symbol={Y}
+	symbol={\ensuremath{Y}}
 }
 
 \newglossaryentry{Illuminanza}{
 	name={Illuminanza},
 	description={Flusso luminoso incidente una superficie per unit\`a di area, irradianza spettrale pesata sulla percezione umana. 
 				Si misura in $\si{lx}$},
-	symbol={E_v}
+	symbol={\ensuremath{E_v}}
 }
 
 \newglossaryentry{Emittanza Luminosa}{
 	name={Emittanza Luminosa},
 	description={Flusso luminoso emesso da una superficie per unit\`a di area, emittanza radiante spettrale pesata sulla percezione umana. 
 				Si misura in $\si{lx}$},
-	symbol={M_v}
+	symbol={\ensuremath{M_v}}
 }
 
 \newglossaryentry{Intensita Luminosa}{
 	name={Intensit\`a Luminosa},
 	description={Misura della intensit\`a radiante spettrale pesata sulla percezione umana. Misurata in $\si{cd}$},
-	symbol={I_v}
+	symbol={\ensuremath{I_v}}
+}
+
+\newglossaryentry{Reflectance}{
+	name={Reflectance},
+	description={Per una data radiazione con data SPD, polarizzazione, geometria: Rapporto tra flusso radiante o luminoso riflesso e 
+		flusso radiante o riflesso incidente. Nel primo caso, le grandezze possono essere spettrali o cumulative. Misura adimensionale},
+	symbol={\ensuremath{\rho}}
+}
+
+\newglossaryentry{Transmittance}{
+	name={Trasmittance},
+	description={Per una data radiazione con data SPD, polarizzazione, geometria: Rapporto tra flusso radiante o luminoso trasmesso e 
+		flusso radiante o riflesso incidente, nelle date condizioni (come la lunghezza del percorso della radiazione nell mezzo che si considera).
+		Nel primo caso, le grandezze possono essere spettrali o cumulative. Misura adimensionale},
+	symbol={\ensuremath{\uptau}}
+}
+
+\newglossaryentry{Absorptance}{
+	name={Absorptance},
+	description={Rapporto tra flusso radiante o luminoso assorbito e flusso radiante o luminoso incidente in date condizioni (come la lunghezza 
+		del percorso nel mezzo considerato)},
+	symbol={\ensuremath{\alpha}}
+}
+
+\newglossaryentry{Reflectivity}{
+	name={Reflectivity},
+	description={(spectral) Reflectance di uno strato del materiale con spessore tale che non c'\`e cambiamento in Reflectance. 
+		Cio\`e spessore tendente all'infinito (halfspace bulk material, materiale semi-infinito)},
+	symbol={\ensuremath{\rho_\infty}}
+}
+
+\newglossaryentry{Transmissivity}{
+	name={Trasmissivity},
+	description={Per un materiale assorbente: (spectral) Transmittance interna di uno strato di materiale tale che il percorso della radiazione 
+		all'interno del mezzo sia di lunghezza unitaria, senza incontrare ostacoli. Per "interna" si intende non riferita alla sola interfaccia},
+	symbol={\ensuremath{\uptau_u}}
+}
+
+\newglossaryentry{Absorptivity}{
+	name={Absorptivity},
+	description={Per un materiale assorbente: (spectral) Absorptance di uno strato di materiale tale che il percorso della radiazione 
+		all'interno del mezzo sia di lunghezza unitaria, senza incontrare ostacoli.},
+	symbol={\ensuremath{\alpha_u}}
+}
+
+\newglossaryentry{BSSRDF}{
+	name={Bidirectional Scattering-Surface Reflectance Distribution Function},
+	description={Esprime la proporzione tra flusso radiante (spettrale) riflesso da $\vec{p_o}$ in direzione $\hat{\omega_o}$ e 
+		il flusso radiante (spettrale) incidente in $\vec{p_i}$ dalla direzione $\hat{\omega_i}$. Misurata in $\si{Wm^{-2}sr^{-1}}$},
+	symbol={\ensuremath{S}}
+}
+
+\newglossaryentry{BRDF}{
+	name={Bidirectional Reflectance Distribution Function},
+	description={Esprime la proporzione tra irradianza (spettrale) incidente nel punto $\vec{p}$ da un angolo solido centrato 
+		in $\hat{\omega_i}$ e radianza (spettrale) riflessa in direzione $\hat{\omega_o}$. Misurata in $\si{sr^{-1}}$},
+	symbol={\ensuremath{f_r}}
 }

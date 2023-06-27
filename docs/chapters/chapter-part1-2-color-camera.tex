@@ -462,4 +462,24 @@ se consideriamo il sample point come vettore aleatorio con distribuzione uniform
 \begin{equation}\label{chapter2:camera:unbiasedEstimator}
 	r_f(x,y) \approx \frac{\norm{A_{px}}}{n}\sum_{i=1}^n f(x-x_i, y-y_i)r(x_i, y_i)
 \end{equation}
-Equazione \ref{chapter2:camera:unbiasedEstimator} pu\`o essere migliorata in termini di varianza
+Equazione \ref{chapter2:camera:unbiasedEstimator} pu\`o essere migliorata in termini di varianza pesando ciascun campione affinch\`e la somma dei 
+valori filtrati sia pari a $1$ anche con campioni finiti (la sua aspettazione \`e 1). Tale stimatore \`e detto \textit{weighted importance sampling
+Monte Carlo estimator}
+\begin{equation}\label{chapter2:camera:weightEstimatorAll}
+	r_f(x,y) \approx \frac{\sum_{i=1}^n f(x-x_i,y-y_i)r(x_i,y_i)}{\sum_{i=1}^n f(x-x_i,y-y_i)}
+\end{equation}
+Tali formule hanno il difetto di richiedere tutti i campioni nel film plane per stimare la radianza spettrale in un singolo pixel. La soluzione consiste
+nel scegliere opportunamente un filtro che lascia passare solo i campioni all'interno del pixel stesso, e campionare la distribuzione di samples con
+una distribuzione simile alla filter function. Tale approccio \`e nominato \textit{filter importance sampling} (vedi \ref{chapter6}).
+\begin{align*}
+	r_f(x,y) &\approx \frac{1}{n}\sum_{i=1}^n \left(\frac{f(x-x_i, y-y_i)}{p(x_i, y_i)} r(x_i, y_i)\right)\\
+			&= \frac{\left(\displaystyle{\int_{\mathbb{R}^2}} \vert f(x',y')\vert \mathrm{d}A\right)}{n}\sum_{i=1}^n \mathrm{sgn}(f(x-x_i,y-y_i))r(x_i,y_i)
+\end{align*}
+Combinando tale approccio con \textit{weighted importance sampling}
+\begin{equation}\label{chapter2:camera:weightEstimatorOne}
+	r_f(x,y) \approx \frac{\sum_{i=1}^n w(x-x_i, y-y_i)r(x_i,y_i)}{\sum_{i=1}^n w(x-x_i, y-y_i)}
+\end{equation}
+con \[w=\frac{f(x,y)}{p(x,y)}\].\par
+Con il primo approccio, \ref{chapter2:camera:weightEstimatorAll}, il vantaggio \`e quello di calcolare una stima per ogni pixel basata su un numero 
+maggiore di campioni distribuiti su tutto il film plane. Tale approccio ha i suoi svantaggi nella performance, e nel fatto che se i campioni sono 
+ben distribuiti una tale ricostruzione non \`e necessaria, rendendo \ref{chapter2:camera:weightEstimatorOne} un buon approccio in questo caso.
