@@ -20,20 +20,20 @@
 \contentsline {chapter}{\numberline {3}Modelli di Fonti Luminose e Superfici}{31}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Modellazione di Superfici}{31}{section.3.1}%
 \contentsline {subsection}{\numberline {3.1.1}Propriet\`a ottiche delle interfacce}{37}{subsection.3.1.1}%
-\contentsline {chapter}{\numberline {4}Trasporto di Energia Elettromagnetica nel Mezzo}{38}{chapter.4}%
-\contentsline {part}{II\hspace {1em}Metodi di Monte Carlo}{39}{part.2}%
-\contentsline {chapter}{\numberline {5}Campionamento e Ricostruzione con Quasirandom Number Generation}{40}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Integrazione di Monte Carlo}{41}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Metodi di Riduzione della Varianza}{42}{chapter.7}%
-\contentsline {part}{III\hspace {1em}Applicazione}{43}{part.3}%
-\contentsline {chapter}{\numberline {8}Light Transport Modello e Surface Reflection}{44}{chapter.8}%
-\contentsline {chapter}{\numberline {9}Light Transport: Volume Rendering e Bidirectional Methods}{45}{chapter.9}%
-\contentsline {part}{IV\hspace {1em}Appendici}{46}{part.4}%
-\contentsline {chapter}{\numberline {A}Fondamenti di Probabilit\`a e Statistica}{47}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Algebra Lineare applicata}{48}{appendix.B}%
-\contentsline {chapter}{\numberline {C}Numeri Pseudocasuali e Algoritmi Vari}{49}{appendix.C}%
-\contentsline {section}{\numberline {C.1}Metodo di Gauss-Newton}{49}{section.C.1}%
-\contentsline {chapter}{\numberline {D}Codice Vulkan \& HLSL}{50}{appendix.D}%
-\contentsline {chapter}{\numberline {E}Implementazione dei Concetti Fisici}{51}{appendix.E}%
-\contentsline {chapter}{Bibliography}{52}{appendix.E}%
-\contentsline {chapter}{Glossary}{53}{section*.17}%
+\contentsline {chapter}{\numberline {4}Trasporto di Energia Elettromagnetica nel Mezzo}{40}{chapter.4}%
+\contentsline {part}{II\hspace {1em}Metodi di Monte Carlo}{41}{part.2}%
+\contentsline {chapter}{\numberline {5}Campionamento e Ricostruzione con Quasirandom Number Generation}{42}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Integrazione di Monte Carlo}{43}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Metodi di Riduzione della Varianza}{44}{chapter.7}%
+\contentsline {part}{III\hspace {1em}Applicazione}{45}{part.3}%
+\contentsline {chapter}{\numberline {8}Light Transport Modello e Surface Reflection}{46}{chapter.8}%
+\contentsline {chapter}{\numberline {9}Light Transport: Volume Rendering e Bidirectional Methods}{47}{chapter.9}%
+\contentsline {part}{IV\hspace {1em}Appendici}{48}{part.4}%
+\contentsline {chapter}{\numberline {A}Fondamenti di Probabilit\`a e Statistica}{49}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Algebra Lineare applicata}{50}{appendix.B}%
+\contentsline {chapter}{\numberline {C}Numeri Pseudocasuali e Algoritmi Vari}{51}{appendix.C}%
+\contentsline {section}{\numberline {C.1}Metodo di Gauss-Newton}{51}{section.C.1}%
+\contentsline {chapter}{\numberline {D}Codice Vulkan \& HLSL}{52}{appendix.D}%
+\contentsline {chapter}{\numberline {E}Implementazione dei Concetti Fisici}{53}{appendix.E}%
+\contentsline {chapter}{Bibliography}{54}{appendix.E}%
+\contentsline {chapter}{Glossary}{55}{section*.18}%

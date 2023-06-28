@@ -20,6 +20,7 @@
 \usepackage{svg}
 \usepackage{calc}
 \usepackage{mdframed}
+\usepackage{environ} % to declare scaletikzpicturetowidth with NewEnviron
 
 % ------------ font related packages
 % stuff for utf16
@@ -60,7 +61,22 @@
 \usepackage{ifthen}
 \usetikzlibrary{shadings}
 \usetikzlibrary{calc}
+\usetikzlibrary{arrows,arrows.meta} % Stealth arrows
+\usetikzlibrary{angles,quotes} % for \draw pic (angle labels)
 \tikzset{>=latex} % for LaTex arrow head
+
+\makeatletter
+\newsavebox{\measure@tikzpicture}
+\NewEnviron{scaletikzpicturetowidth}[1]{%
+    \def\tikz@width{#1}%
+    \def\tikzscale{1}\begin{lrbox}{\measure@tikzpicture}%
+    \BODY
+    \end{lrbox}%
+    \pgfmathparse{#1/\wd\measure@tikzpicture}%
+    \edef\tikzscale{\pgfmathresult}%
+    \BODY
+}
+\makeatother
 
 % -------------------------- code highlighting 
 \usepackage{minted}
@@ -116,6 +132,7 @@
 \usepackage{tabularx} % equal spacing
 \usepackage{tabulary} % spacing proportional to content
 \usepackage{xltabular} % multipage tabularx
+\usepackage{multirow}
 
 % left-justified text in tables, and allow newlines
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
@@ -154,6 +171,10 @@
 \pagestyle{fancy}
 \fancyfoot{} % to clear previous definitions of footer format
 \fancyfoot[LE,RO]{\thepage}
+
+\fancyhead{}
+\fancyhead[LO]{\leftmark}
+\fancyhead[RE]{\rightmark}
 
 \newenvironment{altDescription}[1]
 	{\begin{list}{}%
