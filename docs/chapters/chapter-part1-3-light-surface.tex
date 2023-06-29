@@ -4,8 +4,8 @@
 	\centering
 	\includegraphics[width=0.4\linewidth]{../assets/chapter3_surfaces_interaction_types.png}
 	\includegraphics[width=0.4\linewidth]{../assets/chapter3_surfaces_specular_interaction.png}
-	\label{chapter3:surface:interactionTypes}
 	\caption{tipi di riflessione e trasmissione. Immagine da \cite{art-rad}}
+	\label{chapter3:surface:interactionTypes}
 \end{figure}
 Quando un flusso radiante incide su una superficie, i tre processi che avvengono sono \textit{riflessione}, \textit{trasmissione}, 
 \textit{assorbimento}, oltre all'emissione per tutti i materiali al di sopra dello zero assoluto. 
@@ -81,7 +81,7 @@ dal punto di incidenza (dunque soffermandoci soltanto sui fenomeni a livello del
 \begin{definitionS}
 	La \Gls{BRDF}(BRDF) $f_r(\vec{p},\hat{\omega_o},\hat{\omega_i})$ \Glsdesc{BRDF}
 \end{definitionS}
-\begin{equation}
+\begin{equation}\label{chapter3:surface:brdf}
 	f_r(\vec{p},\hat{\omega_o},\hat{\omega_i}) = \frac{\mathrm{d}L_r(\vec{p}, \hat{\omega}_o)}{\mathrm{d}E_i(\vec{p}, \hat{\omega}_i)}
 		= \frac{\mathrm{d}L_r(\vec{p}, \hat{\omega}_o)}{L_i(\vec{p}, \hat{\omega}_i)\langle\hat{n},\hat{\omega}_i\rangle\mathrm{d}\hat{\omega}_i}
 \end{equation}
@@ -108,7 +108,7 @@ Come precedentemente accennato, per il calcolo della reflectance, vengono presi 
 	\renewcommand\tabularxcolumn[1]{m{#1}}% for vertical centering text in X column
 	\begin{xltabular}{\linewidth}{YY}
 		\caption{Tipi di reflectance proposti da \cite{nicodemus}. Nota che di solito il coseno dell'angolo rispetto allo zenith della direzione 
-			incidente non \`e preso con valore assoluto, in quanto si assume $n$ come la normale che forma un angolo acuto con $\hat{\omega}_i$. 
+			incidente non \`e preso con valore assoluto, in quanto si assume $\hat{n}$ come la normale che forma un angolo acuto con $\hat{\omega}_i$. 
 			Seguendo la convenzione di \cite{pharr}, qui invece la normale \`e assunta sempre uscente dalla superficie.}
 		\label{chapter3:surface:nicodemusReflectances}\\
 
@@ -296,24 +296,199 @@ espresse per relazionare i rapporti tra potenza riflessa e incidente, e potenza 
 \begin{align}
 	\bar{\rho}_\perp(\mu) &= \frac{(a-\mu)^2+b^2}{(a+\mu)^2+b^2} \in [0,1] \\
 	\bar{\rho}_\parallel(\mu) &= \frac{(a-\mu)^2+b^2}{(a+\mu)^2+b^2}\frac{(a-\frac{1-\mu^2}{\mu})^2+b^2}{(a-\frac{1+\mu^2}{\mu})^2+b^2} \in [0,1]\\
-	\bar{\uptau}_\perp(\mu) &= \left(\frac{\eta_t}{\eta_i}\right)^2(1-\bar{\rho}_\perp) \\
-	\bar{\uptau}_\parallel(\mu) &= \left(\frac{\eta_t}{\eta_i}\right)^2(1-\bar{\rho}_\parallel) \\
+	\bar{\uptau}_\perp(\mu) &= 1-\bar{\rho}_\perp \\
+	\bar{\uptau}_\parallel(\mu) &= 1-\bar{\rho}_\parallel
 \end{align}
-\footnotetext{Come prima detto, per la conservazione dell'energia, tali coefficienti devono sommarsi a 1, il che sembra essere in disaccordo con le 
-	formule di trasmissione proposte. La motivazione risiede nel fatto che ci si sta riferendo a transmittance per radianze spettrali, per le quali 
-	abbiamo citato si conserva la \textit{Radianza di base} (vedi \ref{chapter1:basicRadiance})}
-dove
+\footnotetext{Come prima detto, per la conservazione dell'energia, tali coefficienti devono sommarsi a 1, il che accade solo se si trascura 
+	il coefficiente di assorbimento $\alpha$, il che \`e un ipotesi per l'analisi della sola interfaccia. }
+dove\footnotemark{}
 \begin{align*}
-	\arraycolsep=1.4pt\def\arraystretch{2.2}
+	\arraycolsep=4pt\def\arraystretch{2.2}
 	\begin{array}{rlrl}
 		a &= \sqrt{\displaystyle\frac{\sqrt{c^2+4\eta\kappa}+c}{2}} & \mu &= \cos\theta_i = \langle \hat{n},\hat{\omega}_i\rangle \\
-		b &= \sqrt{\displaystyle\frac{\sqrt{c^2+4\eta\kappa}-c}{2}} & \mathclap{\eta\footnotemark{}} &= {\displaystyle\frac{\eta_i\eta_t+\kappa_t\kappa_i}{\eta_i^2+\kappa_i^2}} \\
-		c &= \eta^2-\kappa^2-\left( 1-\mu^2\right) & \mathclap{\kappa\footnotemark{}} &= {\displaystyle\frac{\kappa_t\eta_i-\eta_t\kappa_i}{\eta_i^2+\kappa_i^2}}
+		b &= \sqrt{\displaystyle\frac{\sqrt{c^2+4\eta\kappa}-c}{2}} & \eta &={\displaystyle\frac{\eta_i\eta_t+\kappa_t\kappa_i}{\eta_i^2+\kappa_i^2}} \\
+		c &= \eta^2-\kappa^2-\left( 1-\mu^2\right) & \kappa &= {\displaystyle\frac{\kappa_t\eta_i-\eta_t\kappa_i}{\eta_i^2+\kappa_i^2}}
 	\end{array}
 \end{align*}
-\footnotetext{Indice relativo di rifrazione $\eta$ e indice relativo di asborption $\kappa$}
-Per luce non polarizzata tali coefficienti sono pari alla media tra i coefficienti per polarizzazione-s e polarizzazione-p. Si mostra solo la formula 
-per la riflessione.
+\footnotetext{$\eta$ e $\kappa$ si dicono rispettivamente \textit{Indice relativo di rifrazione} e \textit{Indice relativo di absorption}}
+Per luce non polarizzata tali coefficienti sono pari alla media tra i coefficienti per polarizzazione-s e polarizzazione-p. Di seguito la formula 
+per la riflessione.\footnotemark{}\par
 \begin{equation}
 	F_r(\mu) = \frac{\bar{\rho}_\perp(\mu)+\bar{\rho}_\parallel(\mu)}{2}
 \end{equation}
+\footnotetext{Si precisa nuovamente che tale formula \`e accurata soltanto per interfacce e half space materials (vedi 
+	\ref{chapter3:surface:coefficients}, reflectivity), ci\`o che attuiamo \`e una approssimazione. Inoltre si trascura la polarizzazione-s della 
+	luce riflessa che si verifica per angolo di incidenza pari all'Angolo di Brewster}
+\begin{figure}
+	\centering
+	\includesvg[width=0.8\linewidth, inkscapelatex=false]{../assets/chapter3_surface_fresnel_factor.svg}
+	\caption{Coefficiente di Riflessione di Fresnel per una interfaccia al variare dell'indice di rifrazione complesso.}
+	\label{chapter3:surface:fresnelMaterials}
+\end{figure}
+Si noti che la reazione di una interfaccia ad una radiazione incidente varia considerevolmente con il variare dell'indice di rifrazione complesso,
+il quale ricordiamo varia con la lunghezza d'onda considerata, a tal punto che si distinguono due classi di materiali
+\begin{altDescription}{chapter3:surface:materialClasses}\label{chapter3:surface:materialClasses}
+	\item[Conduttori] Caratterizzati da alto indice di assorbimento $\kappa_a$ e basso indice di rifrazione reale $\eta$, 
+		il che determina una reflectance considerevole, ma al contempo altamente variabile con la lunghezza d'onda (vedi 
+		Figura \ref{chapter3:surface:fresnelMaterials}, in basso a sinistra). Si spiega la tinta tipica di molti metalli. La restante parte che 
+		viene trasmessa viene rapidamente assorbita, rendendola trascurabile
+	\item[Semiconduttori] Li trascuriamo
+	\item[Dielettrici] Essi non conducono elettricit\`a, hanno indice di rifrazione reale, con $\kappa_a$ trascurabile, il che significa che, durante
+		la trasmissione al loro interno, la radianza \`e in quota parte assorbita, ma non del tutto. A livello dell'interfaccia, le caratteristiche
+		sopracitate determinano una reflectance considerabile pressoch\`e costante con l'angolo di incidenza $\theta_i$ (vedi Figura 
+		\ref{chapter3:surface:fresnelMaterials}, prima riga)
+\end{altDescription}
+Approssimazioni delle equazioni di Fresnel, per abbattere il costo computazionale, includono l'approssimazione di Laz\'anyi \cite{laza-fresnel}
+\begin{equation}\label{chapter3:surface:lazaFresnel}
+	F_r \approx \frac{(\eta-1)^2+\kappa^2+4\eta(1-\mu)^5}{(\eta+1)^2+\kappa^2}
+\end{equation}
+e, per i dielettrici, l'approssimazione di Schlick \cite{sch-fresnel}, che richiede la conoscenza della reflectance per incidenza normale $F_0$
+\begin{align}\label{chapter3:surface:schFresnel}
+	F_r &\approx F_0+(1-F_0)(1-\mu)^5 \\
+	\text{con} \nonumber \\
+	F_0 &= \frac{(\eta-1)^2+\kappa^2}{(\eta+1)^2+\kappa^2} \stackrel{\kappa\approx0}{=} \left(\frac{\eta-1}{\eta+1}\right)^2 \nonumber
+\end{align}
+Inoltre, per la categoria dei dielettrici, si possono utilizzare delle formule semplificate
+\begin{align}\label{chapter3:surface:fresnelDielectric}
+	\bar{\rho}_\perp &= \left(\frac{\eta\cos\theta_t-\cos\theta_i}{\eta\cos\theta_t+\cos\theta_i}\right)^2 \\
+	\bar{\rho}_\parallel &= \left(\frac{\cos\theta_t-\eta\cos\theta_i}{\cos\theta_t+\eta\cos\theta_i}\right)^2
+\end{align}
+\subsection{BRDF e BSSRDF}
+Come gi\`a definito prima, la \Gls{BRDF}\footnotemark{} esprime la densita di distribuzione emisferica di radianza incidente all'occorenza di un 
+evento di scattering dalla superficie
+\footnotetext{implementare una BSSRDF \`e fuori scope}
+\begin{equation*}
+	f_r(\vec{p},\hat{\omega_o},\hat{\omega_i}) = \frac{\mathrm{d}L_r(\vec{p}, \hat{\omega}_o)}{\mathrm{d}E_i(\vec{p}, \hat{\omega}_i)}
+		= \frac{\mathrm{d}L_r(\vec{p}, \hat{\omega}_o)}{L_i(\vec{p}, \hat{\omega}_i)\langle\hat{n},\hat{\omega}_i\rangle\mathrm{d}\hat{\omega}_i}
+\end{equation*}
+Tale che l'integrale nel suo dominio sia pari all'\textit{albedo} della superficie
+\begin{equation*}
+	\frac{1}{\bar{\rho}(\vec{p},\hat{\omega}_o)}%
+		\int_{\mathcal{H}^2(\hat{n})}f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\langle\hat{n},\hat{\omega}_i\rangle\mathrm{d}\hat{\omega}_i = 1
+\end{equation*}
+Affinch\`e sia fisicamente plausibile, inoltre, deve obbedire alle tre propriet\`a di
+{
+	\newcommand{\brdf}{f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)}
+	\begin{align}
+		\begin{array}{lrl}
+			\text{Non Negativit\`a} & \brdf & \geq 0 \\
+			\text{Conservazione Energia} & {\displaystyle\frac
+				{\int_{\mathcal{H}^2(\hat{n})}L_i(\vec{p},\hat{\omega}_i)\bar{\rho}(\vec{p},\hat{\omega}_i)\langle\hat{n},\hat{\omega}_i\rangle%
+					\mathrm{d}\hat{\omega}_i}%
+				{\int_{\mathcal{H}^2(\hat{n})}L_i(\vec{p},\hat{\omega}_i)\langle\hat{n},\hat{\omega}_i\rangle\mathrm{d}\hat{\omega}_i}} & \leq 1 \\
+			\text{Helmontz Reciprocity} & \brdf & = f_r(\vec{p},\hat{\omega}_i,\hat{\omega}_o)
+		\end{array}
+	\end{align}
+}
+Densit\`a di Distribuzione analoga \`e la BTDF $f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i)$, la quale \`e non nulla per superfici non opache, e gode
+di tutte le propriet\`a sopracitate, ma la reversibilit\`a del cammino ottico viene generalizzata come\footnotemark{}
+\begin{equation}
+	\frac{f_s(\vec{p},\hat{\omega}_o,\hat{\omega}_i)}{\eta_o^2} = \frac{f_s(\vec{p},\hat{\omega}_i,\hat{\omega}_o)}{\eta_i^2}
+\end{equation}
+\footnotetext{quando usiamo $f_s$, ci riferiamo a entrambe BRDF e BTDF, \cite{pegoraro}}
+Dalle definizioni di BRDF e BTDF (\ref{chapter3:surface:brdf}), possiamo ricavare una equazione integrale che esprime 
+la radianza riflessa e trasmessa al punto $\vec{p}$, la cui valenza \`e ristretta nell'assunzione di trascurare i processi di assorbimento 
+e scattering che avvengono all'interno del materiale, dette \textit{reflectance equation} e \textit{transmittance equation}
+\begin{align}
+	L_r(\vec{p},\hat{\omega}_o) &= \int_{\mathcal{H}^2(\hat{n})}L_i(\vec{p},\hat{\omega}_i)f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)%
+		\vert\langle\hat{n},\hat{\omega}_i\rangle\vert\mathrm{d}\hat{\omega}_i \\
+	L_t(\vec{p},\hat{\omega}_o) &= \int_{\mathcal{H}^2(-\hat{n})}L_i(\vec{p},\hat{\omega}_i)f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i)%
+		\vert\langle\hat{n},-\hat{\omega}_i\rangle\vert\mathrm{d}\hat{\omega}_i
+\end{align}
+Le quali, definendo la distribuzione \textit{Bidirectional Scattering Distribution Function} (BSDF), possiamo riunire le due densit\`a di distribuzione
+\\\mbox{$f_s(\vec{p},\hat{\omega}_o,\hat{\omega}_i) = f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i) + f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i)$}, dove
+\begin{align}
+	f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i) &= 0,\;\;\mathrm{se}\,\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle\leq0\\
+	f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i) &= 0,\;\;\mathrm{se}\,\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle\geq0
+\end{align}
+per la quale possiamo aggregare i due integrali nella \textit{Scattered Radiance}\footnotemark{}
+\begin{equation}\label{chapter3:surface:reflectanceEq}
+	L_s(\vec{p},\hat{\omega}_o) = \int_{\mathcal{S}^2}L_i(\vec{p},\hat{\omega}_i)f_s(\vec{p},\hat{\omega}_o,\hat{\omega}_i)%
+		\vert\langle\hat{n},\hat{\omega}_i\rangle\vert\mathrm{d}\hat{\omega}_i
+\end{equation}
+\footnotetext{considerazioni sul campionamento della funzione integranda saranno fatte in seguito}
+Dove, aggiungendo l'eventuale radianza emessa dalla superficie, otteniamo un'equazione nota come \textit{Rendering Equation}, la quale ci proponiamo
+di risolvere numericamente
+\begin{equation}
+	L_o(\vec{p},\hat{\omega}_o) %
+		= L_e(\vec{p},\hat{\omega}_o) + \int_{\mathcal{S}^2}L_i(\vec{p},\hat{\omega}_i)f_s(\vec{p},\hat{\omega}_o,\hat{\omega}_i)
+		\vert\langle\hat{n},\hat{\omega}_i\rangle\vert\mathrm{d}\hat{\omega}_i
+\end{equation}
+\textit{Assumiamo propagazione nel vuoto}, affinch\`e la radianza si conservi nel suo percorso. Si noti la natura ricorsiva della equazione 
+soprascritta. La radianza incidente su una superficie $L_i$ risulta essere a sua volta radianza osservata uscente da un'altra superficie o fonte 
+luminosa della scena, tale che, se definiamo la $t(\vec{p},\hat{\omega})$ \textit{ray casting function}, la quale, dato un punto $\vec{p}$ e 
+una direzione $\hat{\omega}$, restituisce il primo punto di intersezione che una semiretta definita da tale punto e direzione incontra.\footnotemark{}
+\footnotetext{tale semiretta \`e definita come "raggio", per come essa \`e implementata in codice: si fa avanzare un punto lungo tale retta a piccoli
+	incrementi, e ad ogni step si controlla per intersezione con un oggetto della scena}
+\begin{equation}
+	L_i(\vec{p},\hat{\omega}) = L_o(t(\vec{p},-\hat{\omega}))
+\end{equation}
+Da cui riscriviamo la Rendering Equation
+\begin{equation}\label{chapter3:surface:renderingEq}
+	L_o(\vec{p},\hat{\omega}_o) = L_e(\vec{p},\hat{\omega}_o) + \int_{\mathcal{S}^2}%
+		L_o(t(\vec{p}, \hat{\omega}_i),-\hat{\omega}_i)f_s(\vec{p},\hat{\omega}_o,\hat{\omega}_i)%
+		\vert\langle\hat{n},\hat{\omega}_i\rangle\vert\mathrm{d}\hat{\omega}_i
+\end{equation}
+\begin{figure}[tb]
+	\includegraphics[width=\linewidth]{../assets/chapter3_surface_angle2area.png}
+	\caption{Illustrazione dell'angolo (a sinistra) e angolo solido (a destra) sottesi da un punto dalla superficie visibile di un oggetto arbitrario.
+		Immagine da \cite{pegoraro}}
+	\label{chapter3:surface:angle2area}
+\end{figure}
+Come meglio spiegato in seguito (Capitolo \ref{chapter8}), Equazione \ref{chapter3:surface:renderingEq} \`e complessa anche perch\`e la relazione tra 
+gli oggetti nella scena \`e implicita, incapsulata nella ray tracing function $t(\vec{p}, \hat{\omega})$. Una forma pi\`u trattabile di tale equazione
+integrale la si pu\`o trovare trasformando l'integrale su un angolo solido in un integrale su un \textit{area} (vedi Figura 
+\ref{chapter3:surface:angle2area}). L'angolo solido sotteso da un oggetto ad un punto $\vec{p}$ \`e una misura di \textit{area proiettata}, di una 
+superficie parte di un oggetto visibile da $\vec{p}$, sulla sfera unitaria centrata in $\vec{p}$, ed \`e funzione sia dell'orientamento della normale 
+della superficie osservata $\hat{n}_q$ ad ogni punto $\vec{q}=\vec{p}+\norm{\vec{q}-\vec{p}}\hat{\omega}=t((\vec{p}, \hat{\omega}_i),-\hat{\omega}_i)$, 
+tale che $\hat{pq}=\hat{\omega}$, e sia della sua distanza da $\vec{p}$. Per esprimere tale relazione per ogni direzione dello spazio, definiamo 
+$V(\vec{p},\vec{q})$ funzione di visibilit\`a binaria tra $\vec{p}$ e $\vec{q}$, tale che $V(\vec{p},\vec{q})=1$ se $\vec{q}$ appartiene all'insieme 
+di superfici visibili da $\vec{p}$, e $V(\vec{p},\vec{q})=0$ se $\vec{p}$ e $\vec{q}$ sono mutualmente occlusi. Calcolare tale area proiettata consiste
+nel proiettare ciascun elemento di superficie su una sfera di raggio $\norm{\vec{q}-\vec{p}}$ moltiplicando per il coseno dell'angolo formato tra la 
+congiungente $\vec{p}$ a $\vec{q}$, e la normale $\hat{n}_q$, e dividere per il quadrato dell'area della sfera, in accordo con la definizione di 
+angolo solido
+\begin{equation}
+	\mathrm{d}\hat{\omega}=\frac{V(\vec{p},\vec{q})}{\norm{\vec{p}-\vec{q}}^2}\langle\hat{n}_q,-\hat{pq}\rangle\mathrm{d}A(\vec{q})
+\end{equation}
+Tale relazione ricavata consiste nel jacobiano da utilizzare nell'integrale \ref{chapter3:surface:renderingEq} per la sostituzione delle variabili.
+Inoltre, definiamo il Termine Geometrico $G(\vec{p},\vec{q})$, aggiungendo ai fattori della precedente formula il coseno dell'angolo tra direzione 
+congiungente e $\hat{n}_p$, effettivamente proiettando angolo solido $\mathrm{d}\hat{\omega}$ sul piano equatoriale della sfera unitaria
+centrata in $\vec{p}$
+\begin{equation}\label{chapter3:surface:geometricTerm}
+	G(\vec{p},\vec{q}) = \langle\hat{n}_p,\hat{pq}\rangle\frac{V(\vec{p},\vec{q})}{\norm{\vec{p}-\vec{q}}^2}\langle\hat{n}_q,-\hat{pq}\rangle
+\end{equation}
+tale che
+\begin{equation}
+	\langle\hat{n}_p,\hat{\omega}\rangle\mathrm{d}\hat{\omega} = %
+		\langle\hat{n}_p,\hat{pq}\rangle\frac{V(\vec{p},\vec{q})}{\norm{\vec{p}-\vec{q}}^2}\langle\hat{n}_q,-\hat{pq}\rangle = %
+		G(\vec{p},\vec{q})\mathrm{d}A(\vec{q})
+\end{equation}
+Possiamo dunque riformulare la Rendering Equation per essere un integrale nell'area dell'unione di tutte le superfici visibili dal punto $\vec{p}$
+\begin{equation}
+	L_o(\vec{p},\hat{pq}) %
+		= L_e(\vec{p},\hat{pq}) + \int_{A}f_s(\vec{p},\hat{\omega}_o,\hat{pq})G(\vec{p},\vec{q})L_o(\vec{q},-\hat{pq})\mathrm{d}A(\vec{q})
+\end{equation}
+Torneremo in seguito su tale argomento.
+\subsection{Modelli di BRDF}
+Modelli di BRDFs derivano da diverse fonti, in particolare possono essere da dati misurati in laboratorio, da una simulazione di particelle, o da 
+modelli analitici. Concentrandoci su questi ultimi, riusciamo ad individuare ulteriori suddivisioni basate sui fondamenti fisici di tali modelli
+\begin{itemize}[topsep=0pt, noitemsep]
+	\item \textit{Modelli Fenomenologici}: Equazioni che cercano di mimare determinati effetti osservabili senza alcun fondamento fisico preciso
+	\item \textit{Turbid Models}: Equazioni che partono dal presupposto che tutti i fenomeni di subsurface light transport avvengano in scala
+		microscopica, e applicano le equaizoni di Radiative Transfer Theory per derivare BRDF
+	\item \textit{Modelli a Microcilindri}: Equazioni che modellano una superficie come composta da una collezione di cavit\`a cilindriche
+	\item \textit{Modelli a Microgeometry}: Equazioni che modellano una superficie come composta da una collezione di facce planari microscopiche.
+		Ci concentriamo su quest'ultima categoria
+\end{itemize}
+Come si osserva dall'Equazione \ref{chapter3:surface:reflectanceEq}, necessitiamo di strategie per campionare punti della funzione integranda per 
+date direzioni $\hat{\omega}_i$, affinch\`e si assicuri una buona convergenza allo Stimatore di Monte Carlo per integrale. Una delle strategie proposte
+ed approfondite in seguito, \`e quella di campionare la funzione integranda con densit\`a di probabilit\`a $p$ proporzionale alla BRDF
+\begin{equation}
+	p(\vec{p},\hat{\omega}_o,\hat{\omega}_i) = \frac{f_s(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\vert\langle\hat{n},\hat{\omega}_i\rangle\vert}%
+		{\bar{\rho}(\vec{p},\hat{\omega}_o)}
+\end{equation}
+Dunque, assumendo di poter campionare da una distribuzione uniforme una osservazione della variabile aleatoria $\xi\sim\mathcal{U}(0,1)$, la cui 
+implementazione si rimanda a Appendice \ref{appendixC}, analizziamo come poter trasformare tale variabile aleatoria per poter campionare con PDF 
+proporzionale alla BRDF.\par
+Analizziamo dunque due modelli fenomenologici, per poi passare a quelli basati su microgeometry
+\subsubsection{Lambertian BRDF}

@@ -48,6 +48,29 @@
       \field{type}{techreport}
       \field{year}{1977}
     \endentry
+    \entry{sch-fresnel}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{hash=27b7ac8ef63c002a84435f03ea7b9c33}{%
+           family={Schlick},
+           familyi={S\bibinitperiod},
+           given={Christophe},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{27b7ac8ef63c002a84435f03ea7b9c33}
+      \strng{fullhash}{27b7ac8ef63c002a84435f03ea7b9c33}
+      \strng{bibnamehash}{27b7ac8ef63c002a84435f03ea7b9c33}
+      \strng{authorbibnamehash}{27b7ac8ef63c002a84435f03ea7b9c33}
+      \strng{authornamehash}{27b7ac8ef63c002a84435f03ea7b9c33}
+      \strng{authorfullhash}{27b7ac8ef63c002a84435f03ea7b9c33}
+      \field{labelalpha}{Sch94}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of Eurographics}
+      \field{title}{An Inexpensive BRDF Model for Physically-Based Rendering}
+      \field{year}{1994}
+    \endentry
     \entry{hecht}{book}{}
       \name{author}{1}{}{%
         {{hash=9a6efa2d012e3aaa08e4b6a8cf6a8b4c}{%
@@ -72,6 +95,34 @@
       \field{labeltitlesource}{title}
       \field{title}{Optics}
       \field{year}{2002}
+    \endentry
+    \entry{laza-fresnel}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=959c6ac88714357f25551cce2a6248e4}{%
+           family={Lazányi},
+           familyi={L\bibinitperiod},
+           given={István},
+           giveni={I\bibinitperiod}}}%
+        {{hash=87f9d1355c82ceec5c5b297af568c1fd}{%
+           family={Szirmay-Kalos},
+           familyi={S\bibinithyphendelim K\bibinitperiod},
+           given={László},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{a997af567f60e9e6716f63064367247d}
+      \strng{fullhash}{a997af567f60e9e6716f63064367247d}
+      \strng{bibnamehash}{a997af567f60e9e6716f63064367247d}
+      \strng{authorbibnamehash}{a997af567f60e9e6716f63064367247d}
+      \strng{authornamehash}{a997af567f60e9e6716f63064367247d}
+      \strng{authorfullhash}{a997af567f60e9e6716f63064367247d}
+      \field{labelalpha}{LS05}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of WSCG}
+      \field{title}{Fresnel Term Approximation for Metals}
+      \field{year}{2005}
     \endentry
     \entry{color}{book}{}
       \name{author}{1}{}{%
