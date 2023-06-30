@@ -252,6 +252,42 @@
       \field{title}{Handbook of Digital Image Synthesis: Scientific Foundations of Rendering}
       \field{year}{2016}
     \endentry
+    \entry{akenine-moller}{book}{}
+      \name{author}{3}{}{%
+        {{hash=f6061b73d9bdb8fceb556ed41cd144a6}{%
+           family={Akenine-Möller},
+           familyi={A\bibinithyphendelim M\bibinitperiod},
+           given={Tomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=f2cd5883c9757f88d9a81f92ee663907}{%
+           family={Haines},
+           familyi={H\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod}}}%
+        {{hash=eed616961e0274036a96489be8cd147e}{%
+           family={Hoffman},
+           familyi={H\bibinitperiod},
+           given={Naty},
+           giveni={N\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {A K Peters/CRC Press}%
+      }
+      \strng{namehash}{dbfd5d60176b95f4ab27b0c00a1ff6fd}
+      \strng{fullhash}{dbfd5d60176b95f4ab27b0c00a1ff6fd}
+      \strng{bibnamehash}{dbfd5d60176b95f4ab27b0c00a1ff6fd}
+      \strng{authorbibnamehash}{dbfd5d60176b95f4ab27b0c00a1ff6fd}
+      \strng{authornamehash}{dbfd5d60176b95f4ab27b0c00a1ff6fd}
+      \strng{authorfullhash}{dbfd5d60176b95f4ab27b0c00a1ff6fd}
+      \field{labelalpha}{AHH18}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{4}
+      \field{title}{Real-Time Rendering, Fourth Edition}
+      \field{year}{2018}
+    \endentry
     \entry{rgb2spec}{inproceedings}{}
       \name{author}{1}{}{%
         {{hash=2d2d4387b4961fa1a873ae86d02f3e29}{%

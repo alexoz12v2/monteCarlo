@@ -196,6 +196,8 @@
 \@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Tipi di reflectance proposti da \blx@tocontentsinit {0}\cite {nicodemus}. Nota che di solito il coseno dell'angolo rispetto allo zenith della direzione incidente non \`e preso con valore assoluto, in quanto si assume $\hat {n}$ come la normale che forma un angolo acuto con $\hat {\mitomega }_i$. Seguendo la convenzione di \blx@tocontentsinit {0}\cite {pharr}, qui invece la normale \`e assunta sempre uscente dalla superficie.\relax }}{35}{table.3.2}\protected@file@percent }
 \newlabel{chapter3:surface:nicodemusReflectances}{{3.2}{35}{Tipi di reflectance proposti da \cite {nicodemus}. Nota che di solito il coseno dell'angolo rispetto allo zenith della direzione incidente non \`e preso con valore assoluto, in quanto si assume $\hat {n}$ come la normale che forma un angolo acuto con $\hat {\omega }_i$. Seguendo la convenzione di \cite {pharr}, qui invece la normale \`e assunta sempre uscente dalla superficie.\relax }{table.3.2}{}}
 \newlabel{chapter3:surface:nicodemusReflectances@cref}{{[table][2][3]3.2}{[1][35][]35}}
+\newlabel{chapter3:surface:DHR}{{3.5}{36}{Modellazione di Superfici}{equation.3.1.5}{}}
+\newlabel{chapter3:surface:DHR@cref}{{[equation][5][3]3.5}{[1][35][]36}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Illustrazione geometrica riflessione e rifrazione speculare\relax }}{37}{figure.caption.16}\protected@file@percent }
 \newlabel{chapter3:surface:specular}{{3.2}{37}{Illustrazione geometrica riflessione e rifrazione speculare\relax }{figure.caption.16}{}}
 \newlabel{chapter3:surface:specular@cref}{{[figure][2][3]3.2}{[1][37][]37}}
@@ -240,56 +242,83 @@
 \newlabel{chapter3:surface:geometricTerm}{{3.33}{44}{BRDF e BSSRDF}{equation.3.1.33}{}}
 \newlabel{chapter3:surface:geometricTerm@cref}{{[equation][33][3]3.33}{[1][44][]44}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.3}Modelli di BRDF}{44}{subsection.3.1.3}\protected@file@percent }
+\abx@aux@cite{0}{pegoraro}
+\abx@aux@segm{0}{0}{pegoraro}
+\abx@aux@cite{0}{pegoraro}
+\abx@aux@segm{0}{0}{pegoraro}
 \@writefile{toc}{\contentsline {subsubsection}{Lambertian BRDF}{45}{equation.3.1.36}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Trasporto di Energia Elettromagnetica nel Mezzo}{46}{chapter.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Illustrazione dell'area proiettata dell'emisfera secondo l'equazione \mbox  {$\mathrm {d}\hat {\mitomega }_\perp =\langle \hat {n},\hat {\mitomega }\rangle \mathrm {d}\hat {\mitomega }$}. Figura da \blx@tocontentsinit {0}\cite {pegoraro}\relax }}{46}{figure.caption.19}\protected@file@percent }
+\newlabel{chapter3:surface:projectedArea}{{3.5}{46}{Illustrazione dell'area proiettata dell'emisfera secondo l'equazione \mbox {$\mathrm {d}\hat {\omega }_\perp =\langle \hat {n},\hat {\omega }\rangle \mathrm {d}\hat {\omega }$}. Figura da \cite {pegoraro}\relax }{figure.caption.19}{}}
+\newlabel{chapter3:surface:projectedArea@cref}{{[figure][5][3]3.5}{[1][45][]46}}
+\@writefile{toc}{\contentsline {subsubsection}{Specular BDRF}{47}{equation.3.1.43}\protected@file@percent }
+\abx@aux@cite{0}{akenine-moller}
+\abx@aux@segm{0}{0}{akenine-moller}
+\abx@aux@cite{0}{akenine-moller}
+\abx@aux@segm{0}{0}{akenine-moller}
+\abx@aux@cite{0}{akenine-moller}
+\abx@aux@segm{0}{0}{akenine-moller}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces Illustrazione dei tre effetti di interazione tra microfacets e radiazione incidente. A sinistra, \textit  {Shadowing}, per il quale alcuni microfacets sono occlusi rispetto alla luce incidente da altri microfacets. Al centro, l'effetto complementare, \textit  {Masking}, per il quale alcuni microfacets sono occlusi rispetto all'osservatore da un altri microfacets. A destra, \textit  {Interreflection}, per il quale luce incidente pu\`o "rimbalzare" su diversi microfacets prima di raggiungere l'osservatore. Questi tre effetti complicano la definizione di una BRDF. Immagine da \blx@tocontentsinit {0}\cite {akenine-moller}\relax }}{49}{figure.caption.20}\protected@file@percent }
+\newlabel{chapter3:surface:microgeometryEffects}{{3.6}{49}{Illustrazione dei tre effetti di interazione tra microfacets e radiazione incidente. A sinistra, \textit {Shadowing}, per il quale alcuni microfacets sono occlusi rispetto alla luce incidente da altri microfacets. Al centro, l'effetto complementare, \textit {Masking}, per il quale alcuni microfacets sono occlusi rispetto all'osservatore da un altri microfacets. A destra, \textit {Interreflection}, per il quale luce incidente pu\`o "rimbalzare" su diversi microfacets prima di raggiungere l'osservatore. Questi tre effetti complicano la definizione di una BRDF. Immagine da \cite {akenine-moller}\relax }{figure.caption.20}{}}
+\newlabel{chapter3:surface:microgeometryEffects@cref}{{[figure][6][3]3.6}{[1][49][]49}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.4}Modelli di superficie secondo Microfacet Theory}{49}{subsection.3.1.4}\protected@file@percent }
+\abx@aux@cite{0}{akenine-moller}
+\abx@aux@segm{0}{0}{akenine-moller}
+\abx@aux@cite{0}{akenine-moller}
+\abx@aux@segm{0}{0}{akenine-moller}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.7}{\ignorespaces Illustrazione del significato della Normal Distribution Function. Nota a destra, che nell'integrale della NDF proiettato, i contributi occlusi si presentano sempre in coppia, uguali e con segno opposto, dunque non contribuiscono all'integrale. Immagine da \blx@tocontentsinit {0}\cite {akenine-moller}\relax }}{50}{figure.caption.21}\protected@file@percent }
+\newlabel{chapter3:surface:microgeometryArea}{{3.7}{50}{Illustrazione del significato della Normal Distribution Function. Nota a destra, che nell'integrale della NDF proiettato, i contributi occlusi si presentano sempre in coppia, uguali e con segno opposto, dunque non contribuiscono all'integrale. Immagine da \cite {akenine-moller}\relax }{figure.caption.21}{}}
+\newlabel{chapter3:surface:microgeometryArea@cref}{{[figure][7][3]3.7}{[1][50][]50}}
+\abx@aux@cite{0}{pegoraro}
+\abx@aux@segm{0}{0}{pegoraro}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Trasporto di Energia Elettromagnetica nel Mezzo}{53}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {part}{II\hspace  {1em}Metodi di Monte Carlo}{47}{part.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Campionamento e Ricostruzione con Quasirandom Number Generation}{48}{chapter.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {part}{II\hspace  {1em}Metodi di Monte Carlo}{54}{part.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Campionamento e Ricostruzione con Quasirandom Number Generation}{55}{chapter.5}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Integrazione di Monte Carlo}{49}{chapter.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Integrazione di Monte Carlo}{56}{chapter.6}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chapter6}{{6}{49}{Integrazione di Monte Carlo}{chapter.6}{}}
-\newlabel{chapter6@cref}{{[chapter][6][]6}{[1][49][]49}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Metodi di Riduzione della Varianza}{50}{chapter.7}\protected@file@percent }
+\newlabel{chapter6}{{6}{56}{Integrazione di Monte Carlo}{chapter.6}{}}
+\newlabel{chapter6@cref}{{[chapter][6][]6}{[1][56][]56}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Metodi di Riduzione della Varianza}{57}{chapter.7}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {part}{III\hspace  {1em}Applicazione}{51}{part.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {8}Light Transport Modello e Surface Reflection}{52}{chapter.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {part}{III\hspace  {1em}Applicazione}{58}{part.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {8}Light Transport Modello e Surface Reflection}{59}{chapter.8}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chapter8}{{8}{52}{Light Transport Modello e Surface Reflection}{chapter.8}{}}
-\newlabel{chapter8@cref}{{[chapter][8][]8}{[1][52][]52}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {9}Light Transport: Volume Rendering e Bidirectional Methods}{53}{chapter.9}\protected@file@percent }
+\newlabel{chapter8}{{8}{59}{Light Transport Modello e Surface Reflection}{chapter.8}{}}
+\newlabel{chapter8@cref}{{[chapter][8][]8}{[1][59][]59}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {9}Light Transport: Volume Rendering e Bidirectional Methods}{60}{chapter.9}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {part}{IV\hspace  {1em}Appendici}{54}{part.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}Fondamenti di Probabilit\`a e Statistica}{55}{appendix.A}\protected@file@percent }
+\@writefile{toc}{\contentsline {part}{IV\hspace  {1em}Appendici}{61}{part.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Fondamenti di Probabilit\`a e Statistica}{62}{appendix.A}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {B}Algebra Lineare applicata}{56}{appendix.B}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {B}Algebra Lineare applicata}{63}{appendix.B}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {C}Numeri Pseudocasuali e Algoritmi Vari}{57}{appendix.C}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {C}Numeri Pseudocasuali e Algoritmi Vari}{64}{appendix.C}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{appendixC}{{C}{57}{Numeri Pseudocasuali e Algoritmi Vari}{appendix.C}{}}
-\newlabel{appendixC@cref}{{[appendix][3][2147483647]C}{[1][57][]57}}
-\@writefile{toc}{\contentsline {section}{\numberline {C.1}Metodo di Gauss-Newton}{57}{section.C.1}\protected@file@percent }
-\newlabel{appendixC:gaussNewton}{{C.1}{57}{Metodo di Gauss-Newton}{section.C.1}{}}
-\newlabel{appendixC:gaussNewton@cref}{{[subappendix][1][2147483647,3]C.1}{[1][57][]57}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {D}Codice Vulkan \& HLSL}{58}{appendix.D}\protected@file@percent }
+\newlabel{appendixC}{{C}{64}{Numeri Pseudocasuali e Algoritmi Vari}{appendix.C}{}}
+\newlabel{appendixC@cref}{{[appendix][3][2147483647]C}{[1][64][]64}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.1}Metodo di Gauss-Newton}{64}{section.C.1}\protected@file@percent }
+\newlabel{appendixC:gaussNewton}{{C.1}{64}{Metodo di Gauss-Newton}{section.C.1}{}}
+\newlabel{appendixC:gaussNewton@cref}{{[subappendix][1][2147483647,3]C.1}{[1][64][]64}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {D}Codice Vulkan \& HLSL}{65}{appendix.D}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {E}Implementazione dei Concetti Fisici}{59}{appendix.E}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {E}Implementazione dei Concetti Fisici}{66}{appendix.E}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{60}{appendix.E}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{Glossary}{62}{section*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{67}{appendix.E}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{Glossary}{69}{section*.23}\protected@file@percent }
 \gdef\svg@ink@ver@settings{{\m@ne }{inkscape}{1}}
-\abx@aux@read@bbl@mdfivesum{349C7D4359F46378940E5AE70699F082}
+\abx@aux@read@bbl@mdfivesum{B2C107B06F2FE502D6BA8D4D244E383A}
 \abx@aux@defaultrefcontext{0}{nicodemus}{ynt/global//global/global}
 \abx@aux@defaultrefcontext{0}{sch-fresnel}{ynt/global//global/global}
 \abx@aux@defaultrefcontext{0}{hecht}{ynt/global//global/global}
@@ -299,8 +328,9 @@
 \abx@aux@defaultrefcontext{0}{vision}{ynt/global//global/global}
 \abx@aux@defaultrefcontext{0}{rad-phot}{ynt/global//global/global}
 \abx@aux@defaultrefcontext{0}{pegoraro}{ynt/global//global/global}
+\abx@aux@defaultrefcontext{0}{akenine-moller}{ynt/global//global/global}
 \abx@aux@defaultrefcontext{0}{rgb2spec}{ynt/global//global/global}
 \abx@aux@defaultrefcontext{0}{fichet}{ynt/global//global/global}
 \abx@aux@defaultrefcontext{0}{spectrum}{ynt/global//global/global}
 \abx@aux@defaultrefcontext{0}{pharr}{ynt/global//global/global}
-\gdef \@abspage@last{70}
+\gdef \@abspage@last{77}

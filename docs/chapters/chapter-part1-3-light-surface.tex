@@ -159,7 +159,7 @@ Come precedentemente accennato, per il calcolo della reflectance, vengono presi 
 			\frac{\vert\dotpr{o}\vert\mathrm{d}\hat{\omega}_o}{\pi}\iang{\mathcal{H}^2(\hat{n})}{i}\]}\\
 		Hemispherical-Directional Reflectance (alt)\footnotemark{} &  \\
 		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
-			{\begin{equation}\rho(\vec{p},\hat{\omega}_o) = \iang{\mathcal{H}^2(\hat{n})}{i}\end{equation}}\\
+			{\begin{equation}\label{chapter3:surface:DHR}\rho(\vec{p},\hat{\omega}_o) = \iang{\mathcal{H}^2(\hat{n})}{i}\end{equation}}\\
 		Hemispherical-Conical Reflectance &  \\
 		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
 			{\[\rho(\vec{p}, \hat{\omega}_o;\Omega) = %
@@ -259,7 +259,8 @@ Ricordiamo che le implementazioni per la Legge di Snell devono tener conto della
 cui $\eta_t < \eta_i$ e \mbox{$\theta_i \geq \theta_c = \arcsin(\eta_i/\eta_t)$}.\par
 Le direzioni di riflessione e rifrazione sono computate mediante osservazioni geometriche (Figura \ref{chapter3:surface:specular})
 \begin{equation}
-	\hat{\omega}_r = -(\hat{\omega}_i - 2\langle\hat{n},\hat{\omega}_i\rangle) = 2\langle\hat{n},\hat{\omega}_i\rangle - \hat{\omega}_i
+	\hat{\omega}_r =\uptau_r(\hat{n},\hat{\omega}_i)= %
+		-(\hat{\omega}_i - 2\langle\hat{n},\hat{\omega}_i\rangle) = 2\langle\hat{n},\hat{\omega}_i\rangle - \hat{\omega}_i
 \end{equation}
 Mentre, per la trasmissione, sapendo che geometricamente 
 \begin{equation}\label{chapter3:surface:directionComponents}
@@ -274,7 +275,7 @@ allora la direzione di trasmissione
 	\newcommand{\dotprr}{\langle\hat{n},\hat{\omega}_i\rangle}
 	\newcommand{\eq}{\mathmakebox[\widthof{(\ref{chapter3:surface:snellCosine})}]{=}}
 	\begin{align}
-		\hat{\omega}_t \eq& \sin\theta_t\hat{x} - \cos\theta_t\hat{n} \\ 
+		\hat{\omega}_t \eq& \uptau_t(\hat{n},\hat{\omega}_i) = \sin\theta_t\hat{x} - \cos\theta_t\hat{n} \\ 
 			\stackrel{(\ref{chapter3:surface:directionComponents})}{\eq}&%
 				\frac{\sin\theta_t}{\sin\theta_i}(\cos\theta_i\hat{n}-\hat{\omega}_i)-\cos\theta_t\hat{n} \nonumber \\
 			\stackrel{(\ref{chapter3:surface:snell})}{\eq}&% 
@@ -330,21 +331,21 @@ il quale ricordiamo varia con la lunghezza d'onda considerata, a tal punto che s
 \begin{altDescription}{chapter3:surface:materialClasses}\label{chapter3:surface:materialClasses}
 	\item[Conduttori] Caratterizzati da alto indice di assorbimento $\kappa_a$ e basso indice di rifrazione reale $\eta$, 
 		il che determina una reflectance considerevole, ma al contempo altamente variabile con la lunghezza d'onda (vedi 
-		Figura \ref{chapter3:surface:fresnelMaterials}, in basso a sinistra). Si spiega la tinta tipica di molti metalli. La restante parte che 
+		Figura \ref{chapter3:surface:fresnelMaterials}). Si spiega la tinta tipica di molti metalli. La restante parte che 
 		viene trasmessa viene rapidamente assorbita, rendendola trascurabile
 	\item[Semiconduttori] Li trascuriamo
 	\item[Dielettrici] Essi non conducono elettricit\`a, hanno indice di rifrazione reale, con $\kappa_a$ trascurabile, il che significa che, durante
 		la trasmissione al loro interno, la radianza \`e in quota parte assorbita, ma non del tutto. A livello dell'interfaccia, le caratteristiche
 		sopracitate determinano una reflectance considerabile pressoch\`e costante con l'angolo di incidenza $\theta_i$ (vedi Figura 
-		\ref{chapter3:surface:fresnelMaterials}, prima riga)
+		\ref{chapter3:surface:fresnelMaterials})
 \end{altDescription}
 Approssimazioni delle equazioni di Fresnel, per abbattere il costo computazionale, includono l'approssimazione di Laz\'anyi \cite{laza-fresnel}
 \begin{equation}\label{chapter3:surface:lazaFresnel}
-	F_r \approx \frac{(\eta-1)^2+\kappa^2+4\eta(1-\mu)^5}{(\eta+1)^2+\kappa^2}
+	F_r(\mu) \approx \frac{(\eta-1)^2+\kappa^2+4\eta(1-\mu)^5}{(\eta+1)^2+\kappa^2}
 \end{equation}
 e, per i dielettrici, l'approssimazione di Schlick \cite{sch-fresnel}, che richiede la conoscenza della reflectance per incidenza normale $F_0$
 \begin{align}\label{chapter3:surface:schFresnel}
-	F_r &\approx F_0+(1-F_0)(1-\mu)^5 \\
+	F_r(\mu) &\approx F_0+(1-F_0)(1-\mu)^5 \\
 	\text{con} \nonumber \\
 	F_0 &= \frac{(\eta-1)^2+\kappa^2}{(\eta+1)^2+\kappa^2} \stackrel{\kappa\approx0}{=} \left(\frac{\eta-1}{\eta+1}\right)^2 \nonumber
 \end{align}
@@ -481,8 +482,10 @@ modelli analitici. Concentrandoci su questi ultimi, riusciamo ad individuare ult
 		Ci concentriamo su quest'ultima categoria
 \end{itemize}
 Come si osserva dall'Equazione \ref{chapter3:surface:reflectanceEq}, necessitiamo di strategie per campionare punti della funzione integranda per 
-date direzioni $\hat{\omega}_i$, affinch\`e si assicuri una buona convergenza allo Stimatore di Monte Carlo per integrale. Una delle strategie proposte
-ed approfondite in seguito, \`e quella di campionare la funzione integranda con densit\`a di probabilit\`a $p$ proporzionale alla BRDF
+date direzioni $\hat{\omega}_i$, affinch\`e si assicuri una buona convergenza allo Stimatore di Monte Carlo per integrale\footnotemark{}. 
+Una delle strategie proposte ed approfondite in seguito, \`e quella di campionare la funzione integranda con densit\`a di probabilit\`a $p$ 
+proporzionale alla BRDF
+\footnotetext{Tecnica nota come \textit{Importance Sampling}, approfondita in seguito}
 \begin{equation}
 	p(\vec{p},\hat{\omega}_o,\hat{\omega}_i) = \frac{f_s(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\vert\langle\hat{n},\hat{\omega}_i\rangle\vert}%
 		{\bar{\rho}(\vec{p},\hat{\omega}_o)}
@@ -492,3 +495,217 @@ implementazione si rimanda a Appendice \ref{appendixC}, analizziamo come poter t
 proporzionale alla BRDF.\par
 Analizziamo dunque due modelli fenomenologici, per poi passare a quelli basati su microgeometry
 \subsubsection{Lambertian BRDF}
+Ricordando l'equazione per \textit{Hemispherical-Directional Reflectance} (Equazione \ref{chapter3:surface:DHR}), supponiamo che la BRDF sia costante
+nel dominio di integrazione, ovvero che la superficie sia lambertiana rispetto alla riflessione e opaca\footnotemark{}, producendo riflessione diffusa
+perfetta.
+\footnotetext{Inoltre, come sempre, ci limitiamo a considerare, con l'ottica geometrica, superfici solamente a livello dell'interfaccia}
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../assets/chapter3_surface_projected_area.png}
+	\caption{Illustrazione dell'area proiettata dell'emisfera secondo l'equazione 
+		\mbox{$\mathrm{d}\hat{\omega}_\perp=\langle\hat{n},\hat{\omega}\rangle\mathrm{d}\hat{\omega}$}. Figura da \cite{pegoraro}}
+	\label{chapter3:surface:projectedArea}
+\end{figure}
+\begin{equation}
+	\rho(\vec{p},\hat{\omega}_o) = f_r(\vec{p})\int_{\mathcal{H}^2(\hat{n})}\vert\langle\hat{n},\hat{\omega}_i\rangle\vert\mathrm{d}\hat{\omega}_i%
+		= f_r(\vec{p})\pi = \rho(\vec{p})
+\end{equation}
+da cui
+\begin{equation}
+	f_r(\vec{p}) = \frac{\rho(\vec{p})}{\pi}
+\end{equation}
+Il campionamento di tale BRDF pu\`o essere compiuto estraendo una direzione casuale nell'emisfera proiettata (vedi Figura 
+\ref{chapter3:surface:projectedArea}). Tale proiezione \`e compiuta in quanto la BRDF \`e semplice, ed \`e moltiplicata per tale coseno. La PDF in
+questione \`e la seguente: Siano $\hat{\omega}_z$ direzione dello zenith, $\hat{\omega}_i$ direzione incidente, la \textit{Cosine-lobe distribution} 
+centrata attorno alla direzione dello zenith, con ripidit\`a $n$, \`e
+\begin{equation}
+	c_n(\omega_z) = \frac{n+1}{2\pi}\langle\hat{\omega}_z,\hat{\omega}_i\rangle^n
+\end{equation}
+Applichiamo la tecnica di \textit{Inverse Transform Sampling}, che, come approfondito in seguito (Capitolo \ref{chapter6}), permette di trasformare
+una realizzazione campionata con una data PDF (nel nostro caso, $\mathcal{U}(0,1)$) ad una arbitraria, per la quale bisogna per\`o essere in grado di 
+calcolare analiticamente la CDF ed invertirla. Per distribuzioni multivariate, tale tecnica \`e applicabile esclusivamente se la CDF \`e 
+\textit{separabile}.\par
+L'integrale in un angolo solido $\Omega_i$ per la \textit{Cosine-Lobe Distribution} risulta essere separabile nella forma
+\begin{align}
+	\int_{\Omega_i}c_n(\hat{\omega}_z,\hat{\omega}_i)\mathrm{d}\hat{\omega}_i &= \int_0^{\varphi_i}\frac{1}{2\pi}\mathrm{d}\varphi%
+		\int_{\cos\theta_i}^1(n+1)\mu^n\mathrm{d}\mu \nonumber \\ 
+	&= \left[\frac{\varphi_i}{2\pi}\right]_{\varphi=0}^{\varphi_i}\left[\mu^{n+1}\right]_{\mu=\cos\theta_i}^1 \nonumber \\
+	&= \frac{\varphi_i}{2\pi}\left(1-\cos^{n+1}\theta_i\right)
+\end{align}
+Applicando \textit{Inverse Transform Sampling} permette di compiere \textit{Importance Sampling} come
+\begin{align}
+	\xi_\varphi = \frac{\varphi_i}{2\pi} &\longrightarrow\varphi_i = 2\pi\xi_\varphi \\
+	\xi_\theta = 1-\cos^{n+1}\theta_i &\longrightarrow\theta_i = \arccos\left(\sqrt[n+1]{1-\xi_\theta}\right)
+\end{align}
+Il che permette di ottenere le coordinate sferiche della direzione campionata. Dunque, nel caso della Lambertian BRDF, campioniamo secondo la PDF
+\begin{equation}
+	p(\vec{p},\hat{\omega}_o,\hat{\omega}_i) = c_1(\hat{n},\hat{\omega}_i)
+\end{equation}
+\subsubsection{Specular BDRF}
+Possiamo derivare una BRDF per una superficie che mostra riflessione speculare imponendo la condizione\footnotemark{}
+\footnotetext{Si noti che $F_r(\langle\hat{n},\hat{\omega}_i\rangle)=F_r(\langle\hat{n},\hat{\omega}_o\rangle)=$}
+\begin{align}
+	L_o(\vec{p},\hat{\omega}_o)&=\int_{\mathcal{H}^2(\hat{n})}f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)%
+		L_i(\vec{p},\hat{\omega}_i)\vert\langle\hat{n},\hat{\omega}_i\rangle\vert\mathrm{d}\hat{\omega}_i%
+		\\&=\left\{\begin{aligned}
+			&F_r(\cos\theta_r)L_i(\vec{p},\hat{\omega}_r)\;\;&\mathrm{se}\;\hat{\omega}_o=\uptau_r(\hat{n},\hat{\omega}_r)\\
+			&0 &\mathrm{altrimenti}
+		\end{aligned}\right.
+\end{align}
+La quale risulta essere evidente come una Distribuzione di dirac moltiplicata per un opportuno fattore\footnotemark{}
+\footnotetext{Le distribuzioni di Dirac, sia per le superfici che per le sorgenti luminose, devono essere riconosciute e trattate in maniera differente
+	nelle routines di sampling}
+\begin{equation}
+	f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)=F_r(\langle\hat{n},\hat{\omega}_o\rangle)%
+		\frac{\delta(\hat{\omega}_i-\hat{\omega}_r)}{\vert\langle\hat{n},\hat{\omega}_i\rangle\vert}
+\end{equation}
+dove $\hat{\omega}_r=\uptau_r(\hat{\hat{n},\omega}_o)$\par
+Similmente, usando la legge di Snell, possiamo ricavare una specular BTDF, ricordando che per la conservazione dell'energia
+\begin{equation}
+	\frac{\mathrm{d}^2\Phi_t(\vec{p},\hat{\omega}_t)}{\mathrm{d}^2\Phi_i(\vec{p},\hat{\omega}_i} = %
+		\frac{L_t(\vec{p},\hat{\omega}_t)\mathrm{d}A(\vec{p})\langle\hat{n},\hat{\omega}_t\rangle\mathrm{d}\hat{\omega}_t}%
+		{L_i(\vec{p},\hat{\omega}_i)\mathrm{d}A(\vec{p})\langle\hat{n},\hat{\omega}_i\rangle\mathrm{d}\hat{\omega}_i}
+\end{equation}
+Possiamo calcolare il jacobiano $\mathrm{d}\hat{\omega}_t/\mathrm{d}\hat{\omega}_i$ mediante osservazioni geometriche e la legge di Snell
+\begin{align}
+	\frac{\mathrm{d}\hat{\omega}_t}{\mathrm{d}\hat{\omega}_i} &= %
+		\frac{\sin\theta_t\mathrm{d}\theta_t\mathrm{d}\varphi_t}{\sin\theta_t\mathrm{d}\theta_i\mathrm{d}\varphi_i} \nonumber \\
+	&= \frac{\sin\theta_t}{\sin\theta_i}\frac{\mathrm{d}\arcsin\left(\frac{\eta_i}{\eta_t}\sin\theta_i\right)}{\mathrm{d}\theta_t} \nonumber \\
+	&= \frac{\eta_i}{\eta_t}\frac{\frac{\eta_i}{\eta_t}\cos\theta_i}{\sqrt{1-\frac{\eta_i^2}{\eta_t^2}\sin^2\theta_t}} \nonumber \\
+	&= \frac{\eta_i^2}{\eta_t^2}\frac{\cos\theta_i}{\sqrt{1-\sin^2\theta_t}} \nonumber \\
+	&= \frac{\eta_i^2}{\eta_t^2}\frac{\cos\theta_i}{\cos\theta_t}
+\end{align}
+da cui
+\begin{equation}
+	\frac{L_t(\vec{p},\hat{\omega}_t)\mathrm{d}A(\vec{p})\langle\hat{n},\hat{\omega}_t\rangle\mathrm{d}\hat{\omega}_t}%
+	{L_i(\vec{p},\hat{\omega}_i)\mathrm{d}A(\vec{p})\langle\hat{n},\hat{\omega}_i\rangle\mathrm{d}\hat{\omega}_i} = %
+	\frac{L_t(\vec{p},\hat{\omega}_t)\eta^2_i}{L_i(\vec{p},\hat{\omega}_i)\eta^2_t} = T_{\frac{\eta_t}{\eta_i}}(\cos\theta_i)
+\end{equation}
+Da quest'ultima relazione si pu\`o ricavare che la transmittance $\eta_i\rightarrow\eta_t$, notazione $T_{\frac{\eta_t}{\eta_i}}$, calcolata in 
+$\cos\theta_i$\footnotemark{}, \`e uguale alla transmittance $T_{\frac{\eta_i}{\eta_t}}$ calcolata in $\cos\theta_o$
+\footnotetext{$\cos\theta_i=\cos\theta_t$ se la condizione del delta di Dirac \`e soddisfatta}
+Dunque la condizione
+\begin{align}
+	L_o(\vec{p},\hat{\omega}_o)&=\int_{\mathcal{H}^2(-\hat{n})}f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i)%
+		L_i(\vec{p},\hat{\omega}_i)\vert\langle\hat{n},-\hat{\omega}_i\rangle\vert\mathrm{d}\hat{\omega}_i%
+		\\&=\left\{\begin{aligned}
+			&\frac{\eta^2_t}{\eta_i^2}T_{\frac{\eta_i}{\eta_t}}(\langle\hat{n},\hat{\omega}_o\rangle)L_i(\vec{p},\hat{\omega}_t)%
+				\;\;&\mathrm{se}\;\hat{\omega}_o=\uptau_t(\hat{n},\hat{\omega}_t)\\
+			&0 &\mathrm{altrimenti}
+		\end{aligned}\right.
+\end{align}
+dove $T_{\frac{\eta_i}{\eta_t}}(\langle\hat{n},\hat{\omega}_o\rangle)=T_{\frac{\eta_t}{\eta_i}}(\langle\hat{n},\hat{\omega}_i\rangle)%
+	= 1 - F_r(\langle\hat{n},\hat{\omega}_i\rangle) = 1 - F_r(\langle\hat{n},\hat{\omega}_o\rangle)$
+Da cui, con ragionamento analogo al precedente, si pu\`o ricavare la BTDF come delta di Dirac
+\begin{equation}
+	f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i)=T_{\frac{\eta_i}{\eta_t}}\frac{\eta_t^2}{\eta_i^2}(\vert\langle\hat{n},\hat{\omega}_o\rangle\vert)%
+		\frac{\delta(\hat{\omega}_i-\hat{\omega}_t)}{-\vert\langle\hat{n},\hat{\omega}_i\rangle\vert}
+\end{equation}
+dove $\hat{\omega}_t=\uptau(\hat{n},\hat{\omega}_o)$\par
+Il campionamento di tali BSDFs \`e gestito in modo speciale, in quanto solo se la PDF di campionamento \`e anch'essa una distribuzione di Dirac, 
+con picco nella stessa posizione, allora la sampling routine ritorna un valore non nullo.
+\subsection{Modelli di superficie secondo Microfacet Theory}
+La \textit{Microfacet Theory} \`e un approccio basato sull'ottica geometrica che modella una superficie, come una collezione di facce planari
+microscopiche, tipicamente con riflessione/trasmissione speculare (eccetto per il modello di Oren-Nayar, come si vedr\`a tra poco).\par
+Affinch\`e l'assunzione di ottica geometrica sia valida, queste micro asperit\`a sono assunte molto pi\`u piccole (o molto pi\`u grandi) di una 
+lunghezza d'onda. Una BRDF ricavata con tale teoria \`e un modello modellante lo scattering della luce in una grande collezione di microfacets con 
+un \textit{approccio probabilistico}. Tale caratterizzazione \`e compicata dalle interazioni tra i microfacets illustrate in Figura 
+\ref{chapter3:surface:microgeometryEffects}\par
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=\linewidth]{../assets/chapter3_surface_microgeometry_effectsAM.png}
+	\caption{Illustrazione dei tre effetti di interazione tra microfacets e radiazione incidente. A sinistra, \textit{Shadowing}, per il quale 
+		alcuni microfacets sono occlusi rispetto alla luce incidente da altri microfacets. Al centro, l'effetto complementare, \textit{Masking},
+		per il quale alcuni microfacets sono occlusi rispetto all'osservatore da un altri microfacets. A destra, \textit{Interreflection}, per il
+		quale luce incidente pu\`o "rimbalzare" su diversi microfacets prima di raggiungere l'osservatore. Questi tre effetti complicano la 
+		definizione di una BRDF. Immagine da \cite{akenine-moller}}
+	\label{chapter3:surface:microgeometryEffects}
+\end{figure}
+Un elemento di area della superficie $\mathrm{d}A$ \`e composto da un gran numero di microfacets, ciascuno di essi con la propria normale $\hat{m}$.
+Possiamo caratterizzare tali normali come distribuite secondo una PDF proporzionale alla cosiddetta \textit{Normal Distribution Function} (NDF) 
+$D(\vec{p},\hat{m})\geq0$. Maggiore \`e la varianza di tale distribuzione pi\`u la superficie \`e "rough". Per l'interazione dell'
+\textit{Interreflection}, la luce pu\`o rimbalzare diverse volte prima di giungere all'osservatore, e tale contributo assume significativit\`a 
+diversa a seconda della categoria del materiale \cite{akenine-moller}
+\begin{itemize}[topsep=0pt,noitemsep]
+	\item \textit{Dielettrici}: Contributi da riflessioni multiple sono man mano meno significativi per via del loro medio/basso Fresnel factor 
+		(reflectance)
+	\item \textit{Conduttori}: Il colore mostra i suoi maggior contributi nei rimbalzi successivi, in quanto alta reflectance e alto coefficiente di 
+		assorbimento wavelength-selective fa si che nei rimbalzi multipli la luce assume una polarizzazione e shift del colore pi\`u significativi
+\end{itemize}
+Inoltre, ciascun materiale reagisce differentemente alla penetrazione da parte della luce nella superficie dando luogo a \textit{subsurface scattering}
+di diversa intensit\`a. Nel caso in cui i microfacets sono molto pi\`u piccoli della lunghezza d'onda, possiamo approssimare affermando che la 
+luce \`e uscita tutta nello stesso punto da cui \`e entrata, assunzione non precisa ma necessaria per usufruire del nostro modello di BRDF.\par
+Ogni microfacet di normale $\hat{m}$, possiede anche una sua \textit{Micro BRDF} $f_\mu(\hat{m},\hat{\omega}_o,\hat{\omega}_i)$, i cui contributi sono
+cumulati per ottenere la BRDF.\par
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{../assets/chapter3_surface_microgeometry_areaAM.png}
+	\caption{Illustrazione del significato della Normal Distribution Function. Nota a destra, che nell'integrale della NDF proiettato, i contributi 
+	occlusi si presentano sempre in coppia, uguali e con segno opposto, dunque non contribuiscono all'integrale. Immagine da \cite{akenine-moller}}
+	\label{chapter3:surface:microgeometryArea}
+\end{figure}
+La \textit{Normal Distribution Function}, per convenzione, ha integrale pari al rapporto tra area della microsuperficie e macrosuperficie
+\begin{equation}
+	\int_{\mathcal{S}^2}D(\vec{p},\hat{m})\mathrm{d}\hat{m} = \frac{A_m}{A_n}\geq1
+\end{equation}
+Inoltre, nel caso tipico in cui la NDF sia un \textit{Height Field}, cio\`e 
+\begin{equation}
+	D(\vec{p},\hat{m})=0,\;\;\forall\hat{m}\,\vert\,\langle\hat{n},\hat{m}\rangle\leq0
+\end{equation}
+Allora l'area proiettata sulla macrosuperficie \`e unitaria
+\begin{equation}
+	\int_{\mathcal{H}^2(\hat{n})}D(\vec{p},\hat{m})\langle\hat{n},\hat{m}\rangle\mathrm{d}\hat{m}=1
+\end{equation}
+Pi\`u in generale, l'area della microsuperficie proiettata su un piano perpendicolare ad una direzione $\hat{\omega}$ 
+(tipicamente quella dell'osservatore), pari all'\textit{area con segno} della microsuperficie (Figura \ref{chapter3:surface:microgeometryArea}) 
+diviso l'area della macrosuperficie, \`e pari al coseno dell'angolo tra direzione e normale della macrosuperficie
+\begin{equation}
+	\int_{\mathcal{H}^2(\hat{n}}D(\vec{p},\hat{m})\langle\hat{\omega},\hat{m}\rangle\mathrm{d}\hat{m}=\langle\hat{n},\hat{\omega}\rangle
+\end{equation}
+I \textit{Masked} microfacets sono contributi che si semplificano nell'integrale, dunque esso \`e pari all'integrale dei \textit{microfacets visibili}.
+Possiamo modellare ci\`o matematicamente definendo una \textit{Masking Function} o \textit{Mono-Static Visibility Function} (MVF), la quale, data 
+normale microscopica $\hat{m}$ e direzione $\hat{\omega}$, definisce la percentuale aggregata di area di tutti i microfacets con normale $\hat{m}$,
+visibile da $\hat{\omega}$, fratto l'area aggregata totale di tutti i microfacets con normale $\hat{m}$. Essa rappresenta dunque la 
+\textit{probabilit\`a} di un microfacet con normale $\hat{m}$ di essere visibile da $\hat{\omega}$, 
+\begin{equation}
+	G_1(\vec{p},\hat{m},\hat{\omega}) = \Pr(\hat{\omega})
+\end{equation}
+Tale funzione $\in[0,1]$ e $G_1(\vec{p},\hat{m},\hat{\omega})=0,\,\mathrm{se}\,%
+	\langle\hat{n},\hat{\omega}\rangle\langle\hat{m},\hat{\omega}\rangle\leq0$\par
+Dunque, per definizione, $G_1(\vec{p},\hat{m},\hat{\omega}_o)D(\vec{p},\hat{\omega}_o)$ \`e la distribuzione dei microfacets visibili, tale che
+\begin{equation}
+	\int_{\mathcal{H}^2(\hat{n})}G_1(\vec{p},\hat{m},\hat{\omega}_o)D(\vec{p},\hat{m})\langle\hat{m},\hat{\omega}_o\rangle^+\mathrm{d}\hat{m}%
+		=\langle\hat{n},\hat{\omega}_o\rangle
+\end{equation}
+dove $x^+=\max(0,x)$\par
+Anche la funzione per modellare lo \textit{shadowing} \`e una \textit{Mono-Static Visibility Function}, infatti gode delle stesse propriet\`a della 
+Masking Function, sostituendo $\hat{\omega}_i$ ad $\hat{\omega}_o$. Queste due funzioni sono combinate in qualche modo per ottenere la cosiddetta
+\textit{Joint Shadowing-Masking Function} o \textit{Bi-Static Visibility Function} (BVF) $G_2$, definita come percentuale di area aggregata di 
+microfacets con normale $\hat{m}$ simultaneamente visibile dalle due direzioni $\hat{\omega}_o$ e $\hat{\omega}_i$, fratto l'area totale di tutti i 
+microfacets con normale $\hat{m}$. In termini di probabilit\`a,
+\begin{equation}
+	G_2(\vec{p},\hat{m},\hat{\omega}_o,\hat{\omega}_i) = \Pr(\hat{\omega}_o\cap\hat{\omega}_i)
+\end{equation}
+Se si assume che shadowing e masking sono incorrelati, il che pu\`o essere buona approssimazione solo per direzioni con differenza di angolo azimuthale
+considerevole, allora
+\begin{equation}
+	G_2(\vec{p},\hat{m},\hat{\omega}_o,\hat{\omega}_i)=\Pr(\hat{\omega}_o)\Pr(\hat{\omega}_i)=%
+		G_1(\vec{p},\hat{m},\hat{\omega}_o)G_1(\vec{p},\hat{m},\hat{\omega}_i)
+\end{equation}
+il che tende a provocare over darkening della superficie\footnote{infatti se $\hat{\omega}_o=\hat{\omega}_i$, allora dovremmo ottenere $G_1$. Invece,
+con tale metodo, otteniamo $G_1^2$}
+Per essere fisicamente plausibile, la probabilit\`a per un microfacet di essere visibile da due direzioni \`e minore, al pi\`u uguale se l'angolo 
+azimuthale tra $\hat{\omega}_i$ e $\hat{\omega}_o$ \`e zero, a quella di essere visibile da una singola direzione
+\begin{equation}
+	G_2(\vec{p},\hat{m},\hat{\omega}_o,\hat{\omega}_i)\in[0, \min(G_1(\vec{p},\hat{m},\hat{\omega}_o),G_1(\vec{p},\hat{m},\hat{\omega}_i))]
+\end{equation}
+Inoltre la microstruttura \`e visibile solo dalla emisfera la cui normale macroscopica forma un angolo acuto, da entrambe le direzioni
+\begin{equation}
+	G_2(\vec{p},\hat{m},\hat{\omega}_o,\hat{\omega}_i) = 0,\;\;\mathrm{se}\,%
+		\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{m},\hat{\omega}_o\rangle\leq0%
+		\langle\hat{n},\hat{\omega}_i\rangle\langle\hat{m},\hat{\omega}_i\rangle\leq0
+\end{equation}
+Infine soddisfa la propriet\`a di reciprocit\`a $G_2(\vec{p},\hat{m},\hat{\omega}_o,\hat{\omega}_i)=G_2(\vec{p},\hat{m},\hat{\omega}_i,\hat{\omega}_o)$.
+\par
+Analizziamo brevemente due modelli di visibilit\`a, la cui dimostrazione completa si rimanda a \cite{pegoraro}: \textit{V-Cavity Function} e
+\textit{Smith's Visibility Function}.
