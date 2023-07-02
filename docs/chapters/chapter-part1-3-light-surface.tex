@@ -1081,14 +1081,156 @@ Il modello \`e infine definito come combinazione lineare delle distribuzioni di 
 Il suo campionamento pu\`o far uso della stessa metodologia utilizzata per la Lambertian BRDF
 \section{Sorgenti Luminose}
 Gli oggetti presenti della scena sono illuminati da sorgenti luminose, che le rende visibili. In quanto ci si \`e prefissati come obiettivo 
-Physically Based Rendering, i modelli che analizziamo sono specificati attraverso la radiometria (o fotometria), ad esempio, una sorgente potrebbe 
-emettere radiazioni di corpo nero, specificate dalla legge di Planck (Equazione \ref{chapter1:planckLaw}). Si noti che tali modelli non permettono il
-pieno controllo artistico della scena come modificare il falloff rate, oppure posizionare una sorgente che non proietti ombre, per il principio di 
-conservazione dell'energia.\par
+Physically Based Rendering, i modelli che analizziamo sono specificati attraverso la radiometria (o fotometria). Ad esempio, una sorgente potrebbe 
+essere specificata attraverso uno spettro di emissione, oppure da una temperatura, se si assume che tale sorgente sia un corpo nero, (Equazione 
+\ref{chapter1:planckLaw}). Si noti che tali modelli non permettono il pieno controllo artistico della scena come modificare il falloff rate, oppure 
+posizionare una sorgente che non proietti ombre, per il principio di conservazione dell'energia.\par
 In scene con molte sorgenti luminose, non possiamo tener conto di tutti i loro contributi, e utilizziamo un approccio stocastico, secondo il quale
 dati opportuni pesi, possiamo considerarne soltanto un piccolo sottoinsieme, rappresentante le sorgenti pi\`u significative, campionate con una 
 PMF uniforme, oppure proporzionale al flusso radiante emesso dalla sorgente\footnotemark{}.\par
 Tipi differenti di sorgenti luminose devono essere gestite in modo differente, in modo tale che il campionamento di una direzione per la 
-Rendering Equation (Equazione \ref{chapter3:surface:renderingEq}) in modo 
+Rendering Equation (Equazione \ref{chapter3:surface:renderingEq}) sia gestito in modo appropriato. \cite{pharr} riconosce quattro tipi principali 
+di sorgenti luminose
 \footnotetext{altri metodi non citati includono il campionamento delle sorgenti luminose secondo la loro visibilit\`a tramite strutture dati spaziali
 come una BVH (Bounding Volume Hierarchy) \cite{pharr}, oppure tramite la tecnica di Portal Culling \cite{akenine-moller}}
+\begin{itemize}[topsep=0pt,noitemsep]
+	\item \textit{DeltaPosition}: Sorgenti luminose occupanti un solo punto nello spazio. Ci\`o significa che ogni altro punto dello spazio \`e 
+		illuminato da una sola direzione da tali sorgenti, e dunque sono descrivibili da una Distribuzione di Dirac
+	\item \textit{DeltaDirection}: Sorgenti luminose che emettono radianza lungo un unica direzione\footnotemark{}.
+	\item \textit{Area}: Sorgenti luminose che emettono radianza da una superficie geometrica
+	\item \textit{Infinite}: Sorgenti luminose all'infinito, che non possiedono geometria ad esse associata e forniscono radianza ai raggi che 
+		fuggono dalla scena
+\end{itemize}
+\footnotemark{Nota che una sorgente luminosa del tipo DeltaDirection pu\`o anche essere contemporaneamente del tipo DeltaPosition. Si pensi ad un
+raggio collimato}
+Talvolta, campionare una direzione secondo la distribuzione della sorgente luminosa considerata pu\`o essere pi\`u efficace per ottenere un tasso di  
+convergenza pi\`u rapido, in quanto, data una BSDF, eg. Lambertiana, soltanto un piccolo cono di essa potrebbe essere illuminato da sorgenti 
+luminose e dunque contribuire in modo significativo alla radianza computata. Vedi Capitolo \ref{chapter6} per Multiple Importance Sampling 
+(Importance Sampling in cui i pesi sono spatially varying).\par
+Dunque, per ciascuna sorgente luminosa, specifichiamo anche la PDF proporzionale al suo spettro di emissione.\par
+Infine, ci sono casi particolari da gestire che dipendono dal tipo di luce, ad esempio
+\begin{itemize}[topsep=0pt,noitemsep]
+	\item Se un raggio interseca una sorgente luminosa del tipo Area, la radianza uscente deve essere calcolata esclusivamente in base ai parametri
+		della sorgente
+	\item Per i raggi che fuggono dalla scena, tutte\footnotemark{} le sorgenti del tipo Infinite devono essere considerate per potervi calcolare 
+		la radianza totale emessa data la direzione di provenienza del raggio
+\end{itemize}
+\footnotetext{o le pi\`u significative, come detto prima}
+Si noti infine, che le luci di seguito specificate sono analizzate in un sistema di cordinate il quale posiziona la sorgente luminosa nell'origine
+con un orientamento particolare. Tale sistema di coordinate \`e ricavato dalla matrice di trasformazione fornita come parametro nella 
+specifica della sorgente, in seguito tipicamente invertita per poter applicare i calcoli eseguiti nel Render Space.\par
+\subsection{Modelli di sorgenti luminose}
+Le sorgenti luminose analizzate sono: 
+\begin{itemize}[topsep=0pt,noitemsep]
+	\item DeltaPosition: \textit{Point Omni Lights}, \textit{Spotlights}
+	\item DeltaDirection: \textit{Directional Lights}
+	\item Area: \textit{Diffuse Area Lights}
+	\item Infinite: \textit{Infinite Uniform Lights}
+\end{itemize}
+\subsubsection{Point Omni Lights}
+\begin{figure}[tb]
+	\centering
+	\begin{scaletikzpicturetowidth}{0.6\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+		\begin{axis} [
+			axis lines = left,
+			xmin=0,xmax=5,ymin=0,ymax=1,
+			restrict y to domain=-0.5:1.5,
+			samples=100,
+			xlabel = {$r$},
+			ylabel = {$L_e$},
+		]
+			\addplot[draw=black]{1/(x^2+1)*(max(0, 1-(x/3)^4))^2};
+			\addplot[draw=blue]{0.5/(x^2)};
+		\end{axis}
+	\end{tikzpicture}\end{scaletikzpicturetowidth}
+	\caption{Confronto tra Normale Inverse Square Law e Formula con $\epsilon$ aggiunto e moltiplicazione per windowing function}
+	\label{chapter3:light:point}
+\end{figure}
+Una Point Omni Light, o Isotropic Point Light, \`e una sorgente luminosa puntuale che emette radiazioni con intensit\`a radiante $I_e$
+costante in tutte le direzioni. La radianza in questo caso non \`e appropriata per descrivere la sorgente luminosa, in quanto essa descrive flusso
+radiante per unit\`a di angolo solido per unit\`a di area. Ma tale luce puntuale non possiede area. Trascuriamo, per agio di implementazione, 
+tale dettaglio fisico e lavoriamo con la radianza, la quale, data una isotropic point light in posizione $\vec{p}$, pu\`o essere calcolata come
+\begin{equation}
+	L_e = \frac{I_e}{\norm{\vec{q}-\vec{p}}^2} = \frac{I_e}{r^2}
+\end{equation}
+Tale formula possiede due problemi, oltre all'inaccuratezza fisica citata prima: ha una singolarit\`a in zero, e tende a zero per $r\to\infty$ 
+\cite{akenine-moller}. Il primo problema pu\`o essere risolto aggiungendo un $\epsilon$ piccolo, arbitrario, a denominatore, mentre il secondo 
+pu\`o essere risolto moltiplicando l'equazione risultante per una \textit{windowing function}. Vedi Figura \ref{chapter3:light:point}
+\begin{equation}
+	f_{win}(r)=\left(1-\left(\frac{r}{r_{max}}\right)^4\right)^{+2}
+\end{equation}
+dove $+2$ significa $(\max(0,x))^2$\par
+Se tale sorgente luminosa \`e campionata tramite PMF, la direzione che essa restituisce, in modo deterministico, in campionamento per la Rendering 
+Equation \`e la direzione che punta verso la sua posizione, in quanto essa \`e di tipo DeltaPosition. Campionamento di direzione in ogni altro modo 
+ritorna zero per via della distribuzione di Dirac \cite{pharr}.\par
+Al fine del campionamento delle sorgenti proporzionale alla potenza emessa, il flusso radiante emesso \`e pari a 
+\begin{equation}
+	\Phi_e = \int_{\mathcal{S}^2}I_e\mathrm{d}\hat{\omega}=4\pi I_e
+\end{equation}
+\subsubsection{Spotlight}
+Variazione di Point Lights (tipo DeltaPosition) le quali emettono radiazione in un cono di direzioni. Il loro Light Space possiede come origine il
+vertice del cono, e l'asse $+z$ come direzione dell'asse. In particolare, una Spotlight \`e specificata geometricamente da due coni. Oggetti
+dentro il cono interno ricevono illuminazione massima, proporzionale al quadrato della distanza con stessi accorgimenti specificati per la Isotropic
+Point Light, oggetti al di fuori del cono pi\`u ampio non ricevono alcuna illuminazione, e oggetti nel volume tra i due coni ricevono illuminazione 
+progressivamente minore man mano che ci si avvicina all'esterno del cono maggiore.\par
+Tale coppia di coni \`e definita dagli angoli $\theta_p$ (detto penumbra angle o falloff start) e $\theta_u$ (detto umbra angle o falloff end).\par
+In quanto della stessa categoria delle Isotropic Point Light, la loro densit\`a di distribuzione di direzioni \`e una distribuzione di Dirac, dunque
+segue la stessa logica citata in precedenza.\par
+Al fine di calcolare la radianza per la spotlight, si segue lo stesso procedimento precedente, con la differenza che l'intensit\`a radiante non \`e 
+pi\`u costante, in particolare
+\begin{align}
+	I_e(\hat{\omega}) = \left\{\begin{aligned}
+		&I_{e0} &\text{ se }\langle\hat{\omega},\hat{z}\rangle&\geq\cos\theta_p\\
+		&\mathrm{smoothstep}(\langle\hat{\omega},\hat{z}\rangle,\cos\theta_u,\cos\theta_p)%
+			&\text{ se }\langle\hat{\omega},\hat{z}\rangle&\in(\cos\theta_u,\cos\theta_p)\\
+		&0 &\text{ se }\langle\hat{\omega},\hat{z}\rangle&\leq\cos\theta_u
+	\end{aligned}\right.
+\end{align}
+Dove una funzione \textrm{smoothstep} \`e una famiglia di funzioni atta a compiere interpolazione sigmoid-like tra $0$ e $1$, dipendente dai 
+parametri input $x$, left edge $a$, right edge $b$. Di seguito \`e mostrata una funzione \textrm{smoothstep} implementata con interpolazione di 
+Hermite cubica (vedi \ref{appendixC:hermiteInterp})
+\begin{align}
+	\mathrm{smoothstep}(x,a,b)=\left\{\begin{aligned}
+		&0 &\text{ se }x&\leq a\\
+		&y^2(3-2y) &\text{ se }x&\in(a,b),\text{ con }y=\frac{x-a}{b-a}\\
+		&1 &\text{ se }x&\geq b
+	\end{aligned}\right.
+\end{align}
+Il calcolo della potenza emessa dalla sorgente, integriamo l'intensit\`a radiante nel dominio con contributi non nulli. Si supponga 
+\mbox{$I_{e0}=1 \si{W/sr}$}
+\begin{align}
+	\Phi_e&=\int_{\Omega}I_e(\hat{\omega})\mathrm{d}\hat{\omega} \nonumber\\
+		&=\int_0^{2\pi}\mathrm{d}\varphi\left(\int_0^{\theta_p}\sin\theta\mathrm{d}\theta-\int_{\theta_p}^{\theta_u}
+			\mathrm{smoothstep}(\cos\theta,\cos\theta_u,\cos\theta_p)\sin\theta\mathrm{d}\theta\right) \nonumber \\
+	&=2\pi\left(1-\cos\theta_p+\frac{\cos\theta_p-\cos\theta_u}{2}\right)
+\end{align}
+\subsubsection{Directional Light}
+Modella una point light posizionata all'infinito, dunque illuminante ogni punto della scena da una direzione prefissata. La radianza incidente in un 
+punto $\vec{p}$ per via di una directional light pu\`o essere descritta dalla distribuzione di Dirac
+\begin{equation}
+	L_i(\vec{p},\hat{\omega})=L_e\delta(\hat{\omega}-\hat{\omega}_l)
+\end{equation}
+dove $\hat{\omega}_l$ direzione della luce.\par
+Tale sorgente luminosa emette flusso radiante proporzionale alle dimensioni della scena. Dunque, sia la scena racchiusa da una sfera di raggio $R$,
+e sia la radianza emessa dalla sorgente luminosa $L_e$, la potenza emessa $\Phi_e$ \`e pari a alla potenza irradiata nel disco di raggo $R$, superficie
+perpendicolare irradiata dalla luce emessa
+\begin{equation}
+	\Phi_e=\int_A\int_{\Omega}L_e\delta(\hat{\omega}-\hat{\omega}_l)\mathrm{d}\hat{omega}\mathrm{d}A=\pi R^2L_e
+\end{equation}
+\subsubsection{Diffuse Area Light}
+Sorgente Luminosa definita da una superficie ed una distribuzione di direzioni in cui essa emette radianza. Il calcolo della radianza emessa 
+generalmente il calcolo di un integrale su un angolo solido di direzioni rispetto al punto di osservazione, il quale spesso non pu\`o essere 
+risolto in modo analitico, dovendo dunque ricorre al Metodo di Monte Carlo.\par
+Assumo che la distribuzione di direzioni in cui la sorgente luminosa emette sia uniforme nella emisfera, per ogni punto della superficie.\par
+Ci\`o vuol dire che, dato un punto di riferimento da cui la sorgente luminosa \`e osservata, la superficie luminosa sar\`a visibile solo da un
+cono di direzioni. Una direzione \`e campionata con distribuzione uniforme da tale cono, e la radianza emessa \`e stimata come essere pari alla 
+radianza definita per il punto di intersezione tra direzione campionata e superficie, lungo la direzione campionata.\par
+La PDF per ogni data direzione in cui la luce \`e incontrata \`e pari, supponendo sorgente luminosa circolare, all'inverso dell'area del disco\par
+Supponendo radianza costante in ogni punto della superficie per ogni direzione dell'emisfera, la potenza emessa dalla sorgente luminosa pu\`o essere 
+computata come 
+\begin{equation}
+	\Phi_e = \pi AL_e
+\end{equation}
+\subsubsection{Infinite Area Light}
+
+\subsection{Light Sampling}

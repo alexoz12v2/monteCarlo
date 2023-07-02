@@ -32,20 +32,28 @@
 \contentsline {subsubsection}{Trowbridge-Reitz NDF}{60}{equation.3.1.97}%
 \contentsline {subsubsection}{Oren-Nayar BRDF}{63}{equation.3.1.109}%
 \contentsline {section}{\numberline {3.2}Sorgenti Luminose}{64}{section.3.2}%
-\contentsline {chapter}{\numberline {4}Trasporto di Energia Elettromagnetica nel Mezzo}{65}{chapter.4}%
-\contentsline {part}{II\hspace {1em}Metodi di Monte Carlo}{66}{part.2}%
-\contentsline {chapter}{\numberline {5}Campionamento e Ricostruzione con Quasirandom Number Generation}{67}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Integrazione di Monte Carlo}{68}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Metodi di Riduzione della Varianza}{69}{chapter.7}%
-\contentsline {part}{III\hspace {1em}Applicazione}{70}{part.3}%
-\contentsline {chapter}{\numberline {8}Light Transport Modello e Surface Reflection}{71}{chapter.8}%
-\contentsline {chapter}{\numberline {9}Light Transport: Volume Rendering e Bidirectional Methods}{72}{chapter.9}%
-\contentsline {part}{IV\hspace {1em}Appendici}{73}{part.4}%
-\contentsline {chapter}{\numberline {A}Fondamenti di Probabilit\`a e Statistica}{74}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Algebra Lineare applicata}{75}{appendix.B}%
-\contentsline {chapter}{\numberline {C}Numeri Pseudocasuali e Algoritmi Vari}{76}{appendix.C}%
-\contentsline {section}{\numberline {C.1}Metodo di Gauss-Newton}{76}{section.C.1}%
-\contentsline {chapter}{\numberline {D}Codice Vulkan \& HLSL}{77}{appendix.D}%
-\contentsline {chapter}{\numberline {E}Implementazione dei Concetti Fisici}{78}{appendix.E}%
-\contentsline {chapter}{Bibliography}{79}{appendix.E}%
-\contentsline {chapter}{Glossary}{81}{section*.27}%
+\contentsline {subsection}{\numberline {3.2.1}Modelli di sorgenti luminose}{65}{subsection.3.2.1}%
+\contentsline {subsubsection}{Point Omni Lights}{66}{subsection.3.2.1}%
+\contentsline {subsubsection}{Spotlight}{67}{equation.3.2.116}%
+\contentsline {subsubsection}{Directional Light}{68}{equation.3.2.119}%
+\contentsline {subsubsection}{Diffuse Area Light}{68}{equation.3.2.121}%
+\contentsline {subsubsection}{Infinite Area Light}{69}{equation.3.2.122}%
+\contentsline {subsection}{\numberline {3.2.2}Light Sampling}{69}{subsection.3.2.2}%
+\contentsline {chapter}{\numberline {4}Trasporto di Energia Elettromagnetica nel Mezzo}{70}{chapter.4}%
+\contentsline {part}{II\hspace {1em}Metodi di Monte Carlo}{71}{part.2}%
+\contentsline {chapter}{\numberline {5}Campionamento e Ricostruzione con Quasirandom Number Generation}{72}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Integrazione di Monte Carlo}{73}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Metodi di Riduzione della Varianza}{74}{chapter.7}%
+\contentsline {part}{III\hspace {1em}Applicazione}{75}{part.3}%
+\contentsline {chapter}{\numberline {8}Light Transport Modello e Surface Reflection}{76}{chapter.8}%
+\contentsline {chapter}{\numberline {9}Light Transport: Volume Rendering e Bidirectional Methods}{77}{chapter.9}%
+\contentsline {part}{IV\hspace {1em}Appendici}{78}{part.4}%
+\contentsline {chapter}{\numberline {A}Fondamenti di Probabilit\`a e Statistica}{79}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Algebra Lineare applicata}{80}{appendix.B}%
+\contentsline {chapter}{\numberline {C}Numeri Pseudocasuali e Algoritmi Vari}{81}{appendix.C}%
+\contentsline {section}{\numberline {C.1}Metodo di Gauss-Newton}{81}{section.C.1}%
+\contentsline {section}{\numberline {C.2}Interpolazione di Hermite}{81}{section.C.2}%
+\contentsline {chapter}{\numberline {D}Codice Vulkan \& HLSL}{82}{appendix.D}%
+\contentsline {chapter}{\numberline {E}Implementazione dei Concetti Fisici}{83}{appendix.E}%
+\contentsline {chapter}{Bibliography}{84}{appendix.E}%
+\contentsline {chapter}{Glossary}{86}{section*.28}%
