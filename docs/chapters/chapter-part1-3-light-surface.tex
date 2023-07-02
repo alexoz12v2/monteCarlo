@@ -598,8 +598,10 @@ dove $T_{\frac{\eta_i}{\eta_t}}(\langle\hat{n},\hat{\omega}_o\rangle)=T_{\frac{\
 	= 1 - F_r(\langle\hat{n},\hat{\omega}_i\rangle) = 1 - F_r(\langle\hat{n},\hat{\omega}_o\rangle)$
 Da cui, con ragionamento analogo al precedente, si pu\`o ricavare la BTDF come delta di Dirac
 \begin{equation}
-	f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i)=T_{\frac{\eta_i}{\eta_t}}\frac{\eta_t^2}{\eta_i^2}(\vert\langle\hat{n},\hat{\omega}_o\rangle\vert)%
+	f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i)=%
 		\frac{\delta(\hat{\omega}_i-\hat{\omega}_t)}{-\vert\langle\hat{n},\hat{\omega}_i\rangle\vert}
+		T_{\frac{\eta_i}{\eta_t}}(\vert\langle\hat{n},\hat{\omega}_o\rangle\vert)
+		\frac{\eta_t^2}{\eta_i^2}
 \end{equation}
 dove $\hat{\omega}_t=\uptau(\hat{n},\hat{\omega}_o)$\par
 Il campionamento di tali BSDFs \`e gestito in modo speciale, in quanto solo se la PDF di campionamento \`e anch'essa una distribuzione di Dirac, 
@@ -653,7 +655,7 @@ Inoltre, nel caso tipico in cui la NDF sia un \textit{Height Field}, cio\`e
 	D(\vec{p},\hat{m})=0,\;\;\forall\hat{m}\,\vert\,\langle\hat{n},\hat{m}\rangle\leq0
 \end{equation}
 Allora l'area proiettata sulla macrosuperficie \`e unitaria
-\begin{equation}
+\begin{equation}\label{chapter3:surface:NDFNormalization}
 	\int_{\mathcal{H}^2(\hat{n})}D(\vec{p},\hat{m})\langle\hat{n},\hat{m}\rangle\mathrm{d}\hat{m}=1
 \end{equation}
 Pi\`u in generale, l'area della microsuperficie proiettata su un piano perpendicolare ad una direzione $\hat{\omega}$ 
@@ -709,3 +711,384 @@ Infine soddisfa la propriet\`a di reciprocit\`a $G_2(\vec{p},\hat{m},\hat{\omega
 \par
 Analizziamo brevemente due modelli di visibilit\`a, la cui dimostrazione completa si rimanda a \cite{pegoraro}: \textit{V-Cavity Function} e
 \textit{Smith's Visibility Function}.
+\subsubsection{V-Cavity Function}
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=0.9\linewidth]{../assets/chapter3_surface_vcavityPG.png}
+	\caption{Illustrazione della geometria delle V-Cavities. Immagine da \cite{pegoraro}}
+	\label{chapter3:surface:vcavity}
+\end{figure}
+Assumiamo che le micro strutture si arrangino parallele le une alle altre in due direzioni $\hat{m_\backslash}$ e $\hat{m_/}$. La Mono-Static Visibility
+$v$ \`e espressa in termini di rapporto tra lunghezza visibile e lunghezza totale dei lati della cavit\`a
+\begin{align}
+	v(\vec{p},\hat{m},\hat{\omega})&=\frac{v}{l}\stackrel{\footnotemark{}}{=}\frac{d}{l}\frac{\sin\theta^\prime}{\sin(\pi-\theta_m-\theta^\prime)} 
+		\nonumber\\
+		&= \frac{2\langle\hat{n},\hat{m}\rangle\langle\hat{n},\hat{\omega}\rangle}{\langle\hat{m},\hat{\omega}\rangle}
+\end{align}
+\footnotetext{Legge dei seni}
+La quale, per soddisfare tutte le propriet\`a di una MVF, si definisce 
+\begin{equation}
+	V(\vec{p},\hat{m},\hat{\omega})=\min\{1,H(\langle\hat{n},\hat{\omega}\rangle\langle\hat{m},\hat{\omega}\rangle)v(\vec{p},\hat{m},\hat{\omega})\}
+\end{equation}
+E si definisce un metodo per combinare shadowing e masking supponendo masking e shadowing perfettamente correlati, il che \`e buona 
+approssimazione per differenza tra angoli azimuthali di direzione entrante e uscente piccola, nella Bi-Static Visibility\footnotemark{}
+\begin{align}
+	&\frac{G(\vec{p},\hat{m},\hat{\omega}_o,\hat{\omega}_i)}{4\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle}=\\
+		&\min\left\{\frac{1}{4\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle},%
+		\frac{H(\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{m},\hat{\omega}_o\rangle)2\langle\hat{n},\hat{m}\rangle}%
+			{4\langle\hat{m},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle},%
+		\frac{H(\langle\hat{n},\hat{\omega}_i\rangle\langle\hat{m},\hat{\omega}_i\rangle)2\langle\hat{n},\hat{m}\rangle}%
+			{4\langle\hat{m},\hat{\omega}_i\rangle\langle\hat{n},\hat{\omega}_o\rangle}\right\}
+\end{align}
+\footnotetext{Si veda il modello di Cook-Torrance per capire il perch\`e \`e stata espressa cos\`i}
+Dove, se $\hat{m} = \hat{h}_r$ (vedi in seguito Jacobiano riflessione speculare)
+\begin{equation}
+	\frac{G(\vec{p},\hat{h}_r,\hat{\omega}_o,\hat{\omega}_i)}{4\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle}=%
+		\min\left\{\frac{1}{4\cos\theta_o\cos\theta_i},
+		\frac{2\cos\theta_h}{4\cos\theta_d\cos\theta_i}, \frac{2\cos\theta_h}{4\cos\theta_d\cos\theta_o}\right\}
+\end{equation}
+dove $\cos\theta_d$ coseno dell'angolo formato tra $\hat{\omega}_{o/i}$ e $\hat{h}_r$, vedi Figura \ref{chapter3:surface:brdfParams}.
+\subsubsection{Smith's Visibility Function}
+Si lascia la sua analisi in \cite{pegoraro}, utilizziamo i risultati: Tale modello definisce un Mono-Static Visibility
+\begin{equation}
+	G_1(\vec{p},\hat{\omega})=\frac{1}{\Lambda(s(\hat{\omega}))+1}
+\end{equation}
+Dove 
+\begin{equation*}
+	s(\hat{\omega}) = \left\vert\frac{1}{\alpha\tan\theta}\right\vert = \left\vert\frac{\cos\theta}{\alpha\sin\theta}\right\vert = %
+		\frac{\vert\langle\hat{n},\hat{\omega}\rangle\vert}{\alpha\sqrt{1-\langle\hat{n},\hat{\omega}\rangle^2}}
+\end{equation*}
+Dove $\alpha$ roughness della NDF scelta.\par
+Indica il coefficiente angolare della direzione $\hat{\omega}$, e $\Lambda$, detta \textit{Funzione Ausiliaria}, rappresenta la probabilit\`a 
+che un punto della superficie, ad una data altezza rispetto all'origine del raggio con direzione $\hat{\omega}$, sia occluso, ed \`e definita come 
+funzione integrale dipendente dalla NDF scelta per modellare la superficie. Citeremo le funzioni $\Lambda$ per le distribuzioni in seguito definite.\par
+Infine, per combinare Masking e Shadowing nella Bi-Static Visibility function, si pu\`o optare per assumere shadowing e masking sempre incorrelate,
+e porla pari al prodotto di Masking e Shadowing function, come citato prima, oppure supporre, come gi\`a fatto con la V-Cavity, supporre sempre 
+correlazione totale (il che sovrastima effetti di occlusione)
+\begin{align}
+	G_2(\vec{p},\hat{m},\hat{\omega}_o,\hat{\omega}_i)&=\min\{G_1(\vec{p},\hat{m},\hat{\omega}_o),G_1(\vec{p},\hat{m},\hat{\omega}_i)\} \nonumber \\
+	&=\frac{H(\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{m},\hat{\omega}_o\rangle)%
+			H(\langle\hat{n},\hat{\omega}_i\rangle\langle\hat{m},\hat{\omega}_i\rangle)}%
+		{\max\{\Lambda(s(\hat{\omega}_o)),\Lambda(s(\hat{\omega}_i))\}+1}
+\end{align}
+Ci sono altre formule alternative per combinare le due Mono-Static Visibilities, come considerare correlazione parziale con l'altezza del microfacet,
+in quanto pi\`u elevato pi\`u probabile di essere visibile. Per considerare entrambe height correlation e shadowing-masking correlation si ricorre 
+ad una formula pi\`u complessa, qui non citata. Oppure, si pu\`o optare, arbitrariamente, di effettuare una interpolazione lineare tra la soluzione
+incorrelata e con correlazione massima tra shadowing e masking, pesata su un coefficiente calcolato in base alla differenza tra gli angoli azimuthali
+tra direzione incidente e uscente \cite{akenine-moller}
+\begin{align}
+	G_2&(\vec{p},\hat{m},\hat{\omega}_o,\hat{\omega}_i) \nonumber \\ 
+		&=\lambda(\varphi)G_1(\vec{p},\hat{m},\hat{\omega}_i)G_1(\vec{p},\hat{m},\hat{\omega}_o)+%
+		(1-\lambda(\varphi))\min\{G_1(\vec{p},\hat{m},\hat{\omega}_o),G_1(\vec{p},\hat{m},\hat{\omega}_i)\}
+\end{align}
+Dove $\lambda(\varphi)\in[0,1]$, e aumenta all'aumentare di $\varphi$. Esempi:
+\begin{align}
+	&\text{Lambda Function di Ashikhmin }&\lambda(\varphi)&=1-e^{-7.3\varphi^2} \\
+	&\text{Lambda Function di Van Ginneken }&\lambda(\varphi)&=\frac{4.41\varphi}{4.41\varphi+1}
+\end{align}
+\subsubsection{BRDF: Modello di Cook-Torrance}
+\begin{figure}[t!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../assets/chapter3_surface_refl_jacobianPG.png}
+	\caption{Illustrazione della costruzione dei Jacobiani per trasformazioni in seguito a riflessione e trasmissione. Immagine da \cite{pegoraro}}
+	\label{chapter3:surface:reflJacobian}
+\end{figure}
+\begin{figure}[b!]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../assets/chapter3_surface_BRDF_paramsPG.png}
+	\caption{Illustrazione della parametrizzazione della BRDF in termini di angoli. Immagine da \cite{pegoraro}}
+	\label{chapter3:surface:brdfParams}
+\end{figure}
+\textit{Riflessione}: Assumendo che i microfacets siano superfici perfettamente speculari, i contributi che arrivano all'osservatore sono quelli dei
+microfacets che hanno come normale $\hat{m}$ il versore "a met\`a strada" tra $\hat{\omega}_o$ e $\hat{\omega}_i$ 
+\begin{equation}
+	\hat{h}_r = \frac{\hat{\omega}_o + \hat{\omega}_i}{\norm{\hat{\omega}_o + \hat{\omega}_i}}
+\end{equation}
+affinch\`e \mbox{$\hat{\omega}_o = \uptau_r(\hat{h}_r,\hat{\omega}_i)$}, \mbox{$\hat{\omega}_i = \uptau_r(\hat{h}_r,\hat{\omega}_o)$}\par
+Inoltre, supponendo che tutti i punti di tutte le microsuperfici abbiano identica micro-BRDF/BTDF, si pu\`o dimostrare che la BRDF/BTDF macroscopica
+\`e pari a \cite{pegoraro}
+\begin{align}\label{chapter3:surface:brdfIntegral}
+	f_{r|t}&(\vec{p},\hat{\omega}_o,\hat{\omega}_i)=\\
+		&\frac{1}{\vert\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle\vert}%
+		\int_{\mathcal{H}^2(\hat{n})}D(\vec{p},\hat{m})G(\vec{p},\hat{m},\hat{\omega}_o,\hat{\omega}_i)f_\mu(\hat{m},\hat{\omega}_o,\hat{\omega}_i)%
+		\vert\langle\hat{m},\hat{\omega}_o\rangle\langle\hat{m},\hat{\omega}_i\rangle\vert\mathrm{d}\hat{m}
+\end{align}
+Dove, per le nostre assunzioni, la micro-BRDF \`e quella delle superfici speculari
+\begin{equation}
+	f_\mu(\hat{m},\hat{\omega}_o,\hat{\omega}_i)=\frac{\delta(\hat{\omega}_i-\uptau_r(\hat{m},\hat{\omega}_o))}{\langle\hat{m},\hat{\omega}_i\rangle}%
+		F_r(\langle\hat{m},\hat{\omega_o}\rangle)
+\end{equation}
+In tale densit\`a di probabilit\`a vogliamo esplicitare il legame tra l'half vector $\hat{h}_r$ e $\hat{m}$. Lo possiamo fare considerando una 
+propriet\`a delle PDFs, ovvero che la probabilit\`a contenuta in un'area differenziale di due PDFs $f_y(y)$ e $f_x(x)$ deve essere uguale
+\begin{equation*}
+	\vert f_Y(y)\mathrm{d}y\vert=\vert f_X(x)\mathrm{d}x\vert\longrightarrow f_Y(y)=\left\vert\frac{\mathrm{d}x}{\mathrm{d}y}\right\vert f_X(x)
+\end{equation*}
+dove $y=g(x),\;g:\mathbb{R}\rightarrow\mathbb{R}$ monotonica e invertibile. Tale relazione vale anche per campi vettoriali, con la sostituzione della
+derivata con il jacobiano, dunque\footnotemark{},
+\footnotetext{Tale propriet\`a vale anche per il delta di Dirac, distribuzione}
+\begin{align}\label{chapter3:surface:deltaJacobian}
+	\delta(\hat{\omega}_i-\uptau_r(\hat{m},\hat{\omega}_o))%
+		&\mathmakebox[\widthof{xx}]{=}\delta(\uptau_r(\hat{h}_r,\hat{\omega}_o)-\uptau_r(\hat{m},\hat{\omega}_o)) \nonumber \\
+		&\stackrel{\footnotemark{}}{=}\delta(\uptau_r((\hat{h}_r-\hat{m}),\hat{\omega}_o)) \nonumber \\
+		&\mathmakebox[\widthof{xx}]{=}\delta(\hat{h}_r-\hat{m})\left\vert\frac{\mathrm{d}\hat{h}_r}{\hat{\mathrm{d}\omega}_i}\right\vert
+\end{align}
+\footnotetext{propriet\`a prodotto scalare}
+Si pu\`o dimostrare (vedi \cite{pegoraro} e Figura \ref{chapter3:surface:reflJacobian}) che tale jacobiano \`e pari a
+\begin{equation}
+	\frac{\mathrm{d}\hat{h}_r}{\mathrm{d}\hat{\omega}_i} = \frac{1}{4\cos\theta_h}%
+		= \frac{1}{4\langle\hat{h}_r,\hat{\omega}_i\rangle} %
+		= \frac{1}{4\vert\langle\hat{h}_r,\hat{\omega}_o\rangle\vert}
+\end{equation}
+La micro-BRDF diventa dunque 
+\begin{equation}
+	f_\mu=\frac{\delta(\hat{h}_r-\hat{m})}{\langle\hat{m},\hat{\omega}_i\rangle}%
+		\frac{F_r(\langle\hat{m},\hat{\omega}_o\rangle)}{4\langle\hat{h}_r,\hat{\omega}_o\rangle}
+\end{equation}
+Da cui possiamo risolvere l'integrale in Equazione \ref{chapter3:surface:brdfIntegral} con la sampling property del delta di Dirac
+\begin{align}\label{chapter3:surface:cookTorrance}
+	f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)&=\frac{1}{\vert\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle\vert}%
+		\int_{\mathcal{H}^2(\hat{n})}D(\vec{p},\hat{m})G(\vec{p},\hat{m},\hat{\omega}_o,\hat{\omega}_i) \nonumber \\
+		&\;\;\;\;\;\;\times\frac{\delta(\hat{h}_r-\hat{m})}{\langle\hat{m},\hat{\omega}_i\rangle}%
+		\frac{F_r(\langle\hat{m},\hat{\omega}_o\rangle)}{4\vert\langle\hat{h}_r,\hat{\omega}_o\rangle\vert}%
+		\vert\langle\hat{m},\hat{\omega}_o\rangle\langle\hat{m},\hat{\omega}_i\rangle\vert\mathrm{d}\hat{m} \nonumber \\
+		&= \frac{D(\vec{p},\hat{h}_r)G(\vec{p},\hat{h}_r,\hat{\omega}_o,\hat{\omega}_i)}%
+			{\vert\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle\vert}\frac{F_r(\langle\hat{h}_r,\hat{\omega}_o\rangle)}{4}
+\end{align}
+Tale risultato fondamentale ottenuto, diffuso nelle implementazioni, \`e la \textit{Cook-Torrance BRDF}\par
+\textit{Trasmissione}: applicando lo stesso procedimento per ricavare la BTDF, la micro-BTDF
+\begin{align}
+	f_\mu(\hat{m},\hat{\omega}_o,\hat{\omega}_i)&=%
+		\frac{\delta(\uptau_t(\hat{h}_t-\hat{m},\hat{\omega}_o))}{-\vert\langle\hat{m},\hat{\omega}_i\rangle\vert}%
+		T_{\frac{\eta_i}{\eta_t}}(\langle\hat{m},\hat{\omega}_o\rangle)%
+		\frac{\eta_t^2}{\eta_i^2}
+		\nonumber \\
+		&= \frac{\delta(\hat{h}_t-\hat{m})}{-\langle\hat{m},\hat{\omega}_i\rangle}\left|\frac{\mathrm{d}\hat{h}_t}{\mathrm{d}\hat{\omega}_i}\right|%
+		T_{\frac{\eta_i}{\eta_t}}(\langle\hat{m},\hat{\omega}_o\rangle)\frac{\eta_t^2}{\eta_i^2}
+\end{align}
+Inoltre si pu\`o dimostrare che il jacobiano \`e
+{
+	\newcommand{\htoi}{\langle\hat{h}_t,\hat{\omega}_i\rangle}
+	\newcommand{\htoo}{\langle\hat{h}_t,\hat{\omega}_o\rangle}
+	\begin{equation}
+		\frac{\mathrm{d}\hat{h}_t}{\mathrm{d}\hat{\omega}_i}=\frac{\eta_i^2\htoi^2}%
+			{(\eta_t\htoo+\eta_i\htoi)^2\htoi}
+	\end{equation}
+	Da cui la micro-BTDF diventa
+	\begin{equation}
+		f_\mu=\frac{\delta(\hat{h}_t-\hat{m})}{-\langle\hat{m},\hat{\omega}_i\rangle}
+		\frac{-\eta_t^2\htoi T_{\frac{\eta_i}{\eta_t}}(\langle\hat{m},\hat{\omega}_o\rangle)}%
+			{(\eta_t\htoo+\eta_i\htoi)^2}
+	\end{equation}
+	E la BTDF microscopica risulta
+	\begin{align}
+		f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i)&=\frac{1}{|\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle|}%
+			\int_{\mathcal{H}^2(\hat{n})}D(\vec{p},\hat{m})G(\vec{p},\hat{m},\hat{\omega}_o,\hat{\omega}_i) \nonumber \\
+			&\;\;\;\;\;\;\times\frac{\delta(\hat{h}_t-\hat{m})}{-\langle\hat{m},\hat{\omega}_i\rangle}
+			\frac{-\eta_t^2\htoi T_{\frac{\eta_i}{\eta_t}}(\langle\hat{m},\hat{\omega}_o\rangle)}%
+			{(\eta_t\htoo+\eta_i\htoi)^2}
+			|\langle\hat{m},\hat{\omega}_o\rangle\langle\hat{m},\hat{\omega}_i\rangle|\mathrm{d}\hat{m} \nonumber \\
+			&=\frac{D(\vec{p},\hat{h}_t)G(\vec{p},\hat{h}_t,\hat{\omega}_o,\hat{\omega}_i)}
+				{|\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle|}
+			\frac{-\eta_t^2\htoi T_{\frac{\eta_i}{\eta_t}}(\langle\hat{h}_t,\hat{\omega}_o\rangle)}%
+			{(\eta_t\htoo+\eta_i\htoi)^2}
+	\end{align}
+}
+Analizziamo due alternative di NDF, anello mancante del modello presentato, assieme alle loro Auxiliary Functions per la Smith's Visibility Function:
+\textit{Beckmann NDF} e \textit{Trowbridge-Reitz NDF}.
+\subsubsection{Beckmann NDF}
+Una densit\`a di distribuzione di normali utilizzata \`e una guassiana bidimensionale \textit{isotropica} modificata, chiamata 
+\textit{Beckmann-Spizzichino NDF} ed \`e definita come
+\begin{equation}\label{chapter3:surface:beckmannNDF}
+	D(\vec{p},\hat{m})=\frac{e^{-\frac{\tan^2\theta_m}{\alpha_b^2}}}{\pi\alpha_b^2\cos^4\theta_m}%
+		=\frac{e^{-\frac{1-\langle\hat{n},\hat{m}\rangle^2}{\alpha_b^2\langle\hat{n},\hat{m}\rangle}}}{\pi\alpha_b^2\langle\hat{n},\hat{m}\rangle^4}
+\end{equation}
+dove $\alpha_b$ parametro che controlla la roughness della superficie. Tale NDF \`e isotropica, cio\`e non dipendente dall'angolo azimuthale di 
+$\hat{m}$, e dunque rotazionalmente simmetrica (vedi Figura \ref{chapter3:surface:anisotropicBRDF}).\par
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../assets/chapter3_surface_anisotropic_BRDF.png}
+	\caption{Confronto tra NDFs anisotropiche (progressivamente verso destra) e isotropiche, dove riga in alto usa la Beckmann NDF e riga in basso
+		la Trowbridge-Reitz NDF. Immagine da \cite{akenine-moller}.}
+	\label{chapter3:surface:anisotropicBRDF}
+\end{figure}
+Per campionare secondo la densit\`a di distribuzione, ottenuta dalla NDF \textit{cosine weighted}\footnotemark{}, tramite Inverse Transform Sampling,
+\footnotetext{Come detto prima, la NDF, pesata per il coseno tra normale microscopica e normale macroscopica, ha massa unitaria. Equazione 
+	\ref{chapter3:surface:NDFNormalization}} sia $\mu=\langle\hat{n},\hat{m}\rangle$
+\begin{align}
+	\int_{\Omega_m}D(\vec{p},\hat{m})\langle\hat{n},\hat{m}\rangle\mathrm{d}\hat{m}&=%
+		\int_0^{\varphi_m}\frac{1}{2\pi}\mathrm{d}\varphi\int_{\cos\theta_m}^12\frac{e^{\frac{1-\mu^2}{\alpha_b^2\mu^2}}}{\alpha_b^2\mu^3}\mathrm{d}\mu
+			\nonumber \\
+		&=\left[\frac{\varphi}{2\pi}\right]_{\varphi=0}^{\varphi_m}\left[e^{-\frac{1-\mu^2}{\alpha_b^2\mu^2}}\right]_{\cos\theta_m}^1 \nonumber \\
+		&=\frac{\varphi_m}{2\pi}\left(1-e^{-\frac{1-\cos^2\theta_m}{\alpha_b^2\cos^2\theta_m}}\right)
+\end{align}
+siano $\xi_\varphi,\xi_\theta\sim\mathcal{U}(0,1)$, allora Inverse Transform Sampling che permette Importance Sampling rispetto alla NDF \`e 
+\begin{align}
+	\xi_\varphi=\frac{\varphi_m}{2\pi}&\longrightarrow\varphi_m=2\pi\xi_\varphi \\
+	\xi_\theta=1-e^{-\frac{1-\cos^2\theta_m}{\alpha_b^2\cos^2\theta_m}}&\longrightarrow\theta_m=%
+		\arccos\left(\frac{1}{\sqrt{1-\alpha_b^2\ln(1-\xi_\theta)}}\right)
+\end{align}
+Si pu\`o dimostrare che la Lambda $\Lambda(s(\omega))$, per la Isotropic Beckmann NDF \`e pari a 
+\begin{equation}
+	\Lambda(s)=\frac{\mathrm{erf}(s-1)}{2}+\frac{1}{2s\sqrt{\pi}}e^{-\frac{s^2}{\alpha_b^2}}
+\end{equation}
+La generalizzazione anisotropica della Beckmann NDF, anche chiamata Ward NDF,
+\begin{equation}
+	D(\vec{p},\hat{m})=\frac{e^{-\tan^2\theta_m\left(\frac{\cos^2\theta_m}{\alpha_u^2}+\frac{\sin^2\theta_m}{\alpha_v^2}\right)}}
+		{\pi\alpha_u\alpha_v\cos^4\theta_m}
+\end{equation}
+dove $\alpha_u$ roughness nella direzione tangente, $\alpha_v$ roughness nella direzione bitangente. Definendo PDF da cui campionare per applicare
+Importance Sampling usando la NDF, $p_m(\vec{p},\hat{m})=D(\vec{p},\hat{m})\langle\hat{n},\hat{m}\rangle$, che questa volta non \`e separabile, 
+dunque campioniamo la coordinata sferica $\varphi_m$ secondo la sua CDF marginale, per poi campionare $\theta_m$ con la CDF condizionale dato il
+valore $\varphi_m$ estratto. Sia \mbox{$a=\frac{\cos^2\varphi}{\alpha_u^2}+\frac{\sin^2\varphi}{\alpha_v^2}$}
+\begin{align}
+	\int_{\Omega_m}D(\vec{p},\hat{m})\mathrm{d}\hat{m}&=\int_0^{\varphi_m}\int_{\cos\theta_m}^1%
+		\frac{e^{-\frac{1-\mu^2}{\mu}a}}{\pi\alpha_u\alpha_v\mu^3}\mathrm{d}\mu\mathrm{d}\varphi \nonumber \\
+	&=\int_0^{\varphi_m}\frac{1}{\pi\alpha_u\alpha_v}\left[\frac{e^{-\frac{1-\mu^2}{\mu^2}a}}{2a}\right]_{\mu=\cos\theta_m}^1\mathrm{d}\varphi 
+		\nonumber \\
+	&\vcentcolon=\int_0^{\varphi_m}p(\varphi,\theta_m)\mathrm{d}\varphi
+\end{align}
+La PDF marginale di $\varphi_m$
+\begin{equation}
+	p(\varphi,\pi/2)=\frac{1}{2\pi\alpha_u\alpha_va}
+\end{equation}
+Dunque la CDF marginale di $\varphi_m$
+\begin{align}
+	\int_0^{\varphi_m}p(\varphi,\pi/2)\mathrm{d}\varphi&=\int_0^{\varphi_m}\frac{1}{2\pi\alpha_u\alpha_v}%
+		\frac{1}{\frac{\cos^2\varphi}{\alpha_u^2}+\frac{\sin^2\varphi}{\alpha_v^2}}\mathrm{d}\varphi \nonumber \\
+	&=\frac{1}{2\pi\alpha_u\alpha_v}\left[\alpha_u\alpha_v\arctan\left(\frac{\alpha_u}{\alpha_v}
+		\tan\varphi\right)\right]_{\varphi=0}^{\varphi_m}\nonumber\\
+	&=\frac{1}{2\pi}\arctan\left(\frac{\alpha_u}{\alpha_v}\tan\varphi_m\right)
+\end{align}
+Mentre la CDF condizionale di $\varphi_m$ dato $\theta_m$
+\begin{align}
+	\frac{p(\varphi,\theta_m)}{p(\varphi,\pi/2)}=1-e^{-\frac{1-\cos^2\theta_m}{\cos^2\theta_m}\left(\frac{\cos^2\varphi}{\alpha_u^2}%
+		+\frac{\sin^2\varphi}{\alpha_v^2}\right)}
+\end{align}
+Dunque Importance Sampling mediante Inverse Transform Sampling della NDF normalizzata, dati $\xi_\theta,\xi_\varphi\sim\mathcal{U}(0,1)$
+\begin{align}
+	\xi_\varphi=\frac{1}{2\pi}\arctan(\frac{\alpha_u}{\alpha_v}\tan\varphi_m)&\longrightarrow%
+		\varphi_m=\mathrm{arctan2}(\alpha_v\sin(2\pi\xi_\varphi),\alpha_u\cos(2\pi\xi_\varphi)) \\
+	\xi_\theta=1-e^{-\frac{1-\cos^2\theta_m}{\cos^2\theta_m}\left(\frac{\cos^2\varphi}{\alpha_u^2}%
+		+\frac{\sin^2\varphi}{\alpha_v^2}\right)}&\longrightarrow\theta_m=\arctan\left(\sqrt{\frac{-\ln(1-\xi_\theta)}%
+			{\frac{\cos^2\varphi_m}{\alpha_u^2}+\frac{\sin^2\varphi_m}{\alpha_v^2}}}\right)
+\end{align}
+La Auxiliary $\Lambda$ Function per Smith's $G_2$ \`e la stessa della la isotropic Beckmann NDF, con la differenza che la pendenza, passata 
+come argomento a tale funzione, \`e calcolata in modo differente. (Ci\`o vale anche per le altre generalizzazioni a anisotropic NDF, come 
+Trowbridge-Reitz)
+\begin{equation}
+	s=\frac{|\langle\hat{n},\hat{\omega}\rangle|}{\sqrt{\alpha_u^2\langle\hat{u},\hat{\omega}\rangle^2+\alpha_v^2\langle\hat{v},\hat{\omega}\rangle^2}}
+\end{equation}
+\subsubsection{Trowbridge-Reitz NDF}
+La Trowbridge-Reitz NDF, anche detta GGX NDF, \`e una NDF isotropica che modella la superficie microscopica come composta da un gran numero di 
+dossi elissoidali, con espressione
+\begin{equation}
+	D(\vec{p},\hat{m})=\frac{\alpha_g^2}{\pi(\alpha_g^2+\tan^2\theta_m)^2\cos^4\theta_m}=%
+		\frac{\alpha_g}{\pi(1+(\alpha_g^2-1)\langle\hat{n},\hat{m}\rangle^2)^2}
+\end{equation}
+Per la quale la sua PDF normalizzata pu\`o essere integrata ed espressa in forma separabile. (sia $\mu=\cos\theta_m=\langle\hat{n},\hat{m}\rangle$)
+\begin{align}
+	\int_{\Omega_m}D(\vec{p},\hat{m})&=\int_0^{\varphi_m}\frac{1}{2\pi}\mathrm{d}\varphi\int_{\cos\theta_m}^1\frac{2\alpha_g^2}%
+		{(1+(\alpha_g^2-1)\mu)^2}\mu\mathrm{d}\mu \nonumber \\
+		&=\left[\frac{\varphi}{2\pi}\right]_0^{\varphi_m}\left[\frac{\alpha_g^2}{\alpha_g^2-1}\frac{-1}{1+(\alpha_g^2-1)\mu^2}\right]_{\cos\theta_m}^1%
+			\nonumber \\
+		&=\frac{\varphi_m}{2\pi}\frac{1}{\alpha_g^2-1}\left(\frac{\alpha_g^2}{1+(\alpha_g^2-1)\mu^2}-1\right) \nonumber \\
+		&=\frac{\varphi_m}{2\pi}\frac{1}{\alpha_g^2-1}\frac{\alpha_g^2-1-(\alpha_g^2-1)\cos^2\theta_m}{1+(\alpha_g^2-1)\cos^2\theta_m} \nonumber\\
+		&=\frac{\varphi_m}{2\pi}\frac{1-\cos^2\theta_m}{1+(\alpha_g^2-1)\cos^2\theta_m}
+\end{align}
+Dunque applicando Inverse Transform Sampling per poter campionare la BRDF secondo direzioni con probabilit\`a proporzionali alla NDF (Importance 
+Sampling)
+\begin{align}
+	\xi_\varphi=\frac{\varphi_m}{2\pi}&\longrightarrow\varphi_m=2\pi\xi_\varphi \\
+	\xi_\theta=\frac{1-\cos^2\theta_m}{1+(\alpha_g^2-1)\cos^2\theta_m}&\longrightarrow\theta_m=%
+		\arccos\left(\sqrt{\frac{1-\xi_\theta}{1-\xi_\theta+\xi_\theta\alpha_g^2}}\right)
+\end{align}
+La Auxiliary $\Lambda$ Fuction per calcolare la Smith's Visibility Function risulta essere pari a 
+\begin{equation}
+	\Lambda(s)=\frac{-1+\sqrt{1+\frac{1}{\alpha_g^2}}}{2}
+\end{equation}
+La generalizzazione anisotropica della Trowbridge-Reitz NDF, anche chiamata \textit{ATR NDF}, ha espressione
+\begin{equation}
+	D(\vec{p},\hat{m})=\frac{1}%
+	{\pi\alpha_u\alpha_v\left(\cos^2\theta_m+\frac{\sin^2\theta_m\cos^2\varphi_m}{\alpha_u^2}\frac{\sin^2\theta_m\sin^2\varphi_m}{\alpha_v^2}\right)^2}
+\end{equation}
+Il campionamento secondo la PDF $D(\vec{p},\hat{m})\langle\hat{n},\hat{m}\rangle$ procede in modo analogo a Ward NDF. Sia 
+\mbox{$a=\frac{\cos^2\varphi}{\alpha_u^2}+\frac{\sin^2\varphi}{\alpha_v^2}$}
+\begin{align}
+	\int_{\Omega_m}D(\vec{p},\hat{m})\langle\hat{n},\hat{m}\rangle\mathrm{d}\hat{m}&=%
+	\int_0^{\varphi_m}\int_{\cos\theta_m}^1\frac{\mu}{\pi\alpha_u\alpha_v(\mu^2+(1-\mu^2)a)^2}\mathrm{d}\mu\mathrm{d}\varphi \nonumber \\
+	&=\int_0^{\varphi_m}\frac{1}{\pi\alpha_u\alpha_v}\left[\frac{1}{2(a-1)(a-\mu^2a+\mu^2)}\right]_{\cos\theta_m}^1\mathrm{d}\varphi \nonumber \\
+	&=\int_0^{\varphi_m}\frac{1}{2\pi\alpha_u\alpha_v}\left(\frac{1-\cos^2\theta_m}{a-\cos^2\theta_ma+\cos^2\theta_m}\right)\mathrm{d}\varphi%
+		\nonumber\\
+	&\vcentcolon=p(\varphi,\theta_m)
+\end{align}
+Da cui la PDF marginale di $\varphi_m$ \`e
+\begin{equation}
+	p(\varphi,\pi/2)=\frac{1}{2\pi\alpha_u\alpha_va}
+\end{equation}
+Da cui segue la sua CDF marginale
+\begin{align}
+	\int_o^{\varphi_m}p(\varphi,\pi/2)\mathrm{d}\varphi&=\int_0^{\varphi_m}% 
+		\frac{1}{2\pi\alpha_u\alpha_v}\frac{1}{\frac{\cos^2\varphi}{\alpha_u^2}+\frac{\sin^2\varphi}{\alpha_v^2}}\mathrm{d}\varphi\nonumber\\
+		&=\frac{1}{2\pi\alpha_u\alpha_v}\left[\alpha_u\alpha_v\arctan\left(\frac{\alpha_u}{\alpha_v}\tan\varphi\right)\right]_{\varphi=0}^{\varphi_m}%
+			\nonumber\\
+		&=\frac{1}{2\pi}\arctan\left(\frac{\alpha_u}{\alpha_v}\tan\varphi_m\right)
+\end{align}
+Da cui la CDF condizionale di $\theta_m$ dato $\varphi_m$ \`e pari a 
+\begin{align}
+	\frac{p(\varphi,\theta_m)}{p(\varphi,\pi/2)}=\frac{1}{1+\frac{\cos^2\theta_m}%
+		{(1-\cos^2\theta_m)\left(\frac{\cos^2\varphi}{\alpha_u^2}+\frac{\sin^2\varphi}{\alpha_v^2}\right)}}
+\end{align}
+Da cui Inverse Transform Sampling pu\`o essere effettuato per eseguire Importance Sampling della BRDF secondo la NDF tramite
+\begin{align}
+	\xi_\varphi&=\frac{1}{2\pi}\arctan\left(\frac{\alpha_u}{\alpha_v}\tan\varphi_m\right)\nonumber\\
+		&\longrightarrow\varphi_m=\mathrm{arctan2}(\alpha_v\sin(2\pi\xi_\varphi),\alpha_u\cos(2\pi\xi_\varphi))\\
+	\xi_\theta&=\frac{p(\varphi,\theta_m)}{p(\varphi,\pi/2)}=\frac{1}{1+\frac{\cos^2\theta_m}%
+		{(1-\cos^2\theta_m)\left(\frac{\cos^2\varphi}{\alpha_u^2}+\frac{\sin^2\varphi}{\alpha_v^2}\right)}} \nonumber\\
+		&\longrightarrow\theta_m=%
+		\arctan\left(\sqrt{\frac{\xi_\theta}{(1-\xi_\theta)\left(\frac{\cos^2\varphi}{\alpha_u^2}+\frac{\sin^2\varphi}{\alpha_v^2}\right)}}\right)
+\end{align}
+Come nota Finale per i modelli basati su microfacet theory seguenti il Cook-Torrance BRDF model, l'importance sampling guidato dalla NDF normalizzata
+\`e sicuramente meno efficace del campionamento della distribuzione di normali visibili \cite{pharr}. Qui ci limitiamo a campionare in modo 
+proporzionale alla NDF per semplicit\`a.
+\subsubsection{Oren-Nayar BRDF}
+Piuttosto che considerare la microgeometry come composta da facce perfettamente speculari, la \textit{Oren-Nayar BRDF} assume microstrutture 
+\textit{Lambertiane} affinch\`e possa modellare materiali che presentano riflessione diffusa con back-scattering (sabbia, carta, plastica, ...).
+Dunque \mbox{$f_\mu(\hat{m},\hat{\omega}_o,\hat{\omega}_i)=1/\pi$}
+Modellando la distribuzione di microstrutture come una Gaussiana, ed utilizzando la V-Cavity Function, si ottiene un integrale che, approssimato
+per tener conto solo degli scattering events di primo e secondo ordine, si pu\`o dimostrare che si ottengono le seguenti BRDF, che descrivono 
+rispettivamente scattering events di primo e secondo ordine
+\begin{align}
+	f_r^1&=\frac{1}{\pi}\left(1-c_1+c_2c_2^\prime\tan\beta+c_3c_3^\prime\tan\left(\frac{\alpha+\beta}{2}\right)\right) \\
+	f_r^2&=\frac{1}{\pi}c_4\left(1-\gamma\left(\frac{2\beta}{\pi}\right)^2\right)
+\end{align}
+dove, sia $\sigma$ parametro di roughness della superficie, \cite{pegoraro}
+\begin{align}
+	\begin{array}{rlrl}
+		\alpha&=\max\{\theta_o,\theta_i\} & c_2^\prime&=\gamma\times\left\{\begin{aligned}
+			&\sin\alpha	&\text{ se }\gamma\geq0 \\
+			&c_2^{\prime\prime}&\text{ altrimenti}
+		\end{aligned}\right. \\
+		\beta&=\min\{\theta_o,\theta_i\} & c_3^\prime&=(1-|\gamma|)\left(\frac{4\alpha\beta}{\pi^2}\right)^2 \\
+		\gamma&=\cos(\varphi_o-\varphi_i) & c_2^{\prime\prime}=\sin\alpha-\left(\frac{2\beta}{\pi}\right)^3 \\
+		c_1&=\frac{0.5\sigma^2}{\sigma^2+0.33} & c_2&=\frac{0.45\sigma^2}{\sigma^2+0.09} \\
+		c_3&=\frac{0.125\sigma^2}{\sigma^2+0.09} & c_4&=\frac{0.17\sigma^2}{\sigma^2+0.13}
+	\end{array}
+\end{align}
+Il modello \`e infine definito come combinazione lineare delle distribuzioni di primo e secondo ordine pesate sul parametro albedo $\rho$
+\begin{equation}
+	f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)=\rho f_r^1(\vec{p},\hat{\omega}_o,\hat{\omega}_i)+\rho^2f_r^2(\vec{p},\hat{\omega}_o,\hat{\omega}_i)
+\end{equation}
+Il suo campionamento pu\`o far uso della stessa metodologia utilizzata per la Lambertian BRDF
+\section{Sorgenti Luminose}
+Gli oggetti presenti della scena sono illuminati da sorgenti luminose, che le rende visibili. In quanto ci si \`e prefissati come obiettivo 
+Physically Based Rendering, i modelli che analizziamo sono specificati attraverso la radiometria (o fotometria), ad esempio, una sorgente potrebbe 
+emettere radiazioni di corpo nero, specificate dalla legge di Planck (Equazione \ref{chapter1:planckLaw}). Si noti che tali modelli non permettono il
+pieno controllo artistico della scena come modificare il falloff rate, oppure posizionare una sorgente che non proietti ombre, per il principio di 
+conservazione dell'energia.\par
+In scene con molte sorgenti luminose, non possiamo tener conto di tutti i loro contributi, e utilizziamo un approccio stocastico, secondo il quale
+dati opportuni pesi, possiamo considerarne soltanto un piccolo sottoinsieme, rappresentante le sorgenti pi\`u significative, campionate con una 
+PMF uniforme, oppure proporzionale al flusso radiante emesso dalla sorgente\footnotemark{}.\par
+Tipi differenti di sorgenti luminose devono essere gestite in modo differente, in modo tale che il campionamento di una direzione per la 
+Rendering Equation (Equazione \ref{chapter3:surface:renderingEq}) in modo 
+\footnotetext{altri metodi non citati includono il campionamento delle sorgenti luminose secondo la loro visibilit\`a tramite strutture dati spaziali
+come una BVH (Bounding Volume Hierarchy) \cite{pharr}, oppure tramite la tecnica di Portal Culling \cite{akenine-moller}}

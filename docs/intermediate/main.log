@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  30 JUN 2023 22:45
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  2 JUL 2023 09:28
  system commands enabled.
 **main.tex
 (./main.tex
@@ -2442,7 +2442,7 @@ Underfull \vbox (badness 3386) has occurred while \output is active []
 
 ]
 [16]
-<chapters/../assets/chapter2_colorimetry_cones.png, id=525, 1204.5pt x 910.4012
+<chapters/../assets/chapter2_colorimetry_cones.png, id=530, 1204.5pt x 910.4012
 5pt>
 File: chapters/../assets/chapter2_colorimetry_cones.png Graphic file (type png)
 
@@ -2451,7 +2451,7 @@ Package luatex.def Info: chapters/../assets/chapter2_colorimetry_cones.png  use
 d on input line 62.
 (luatex.def)             Requested size: 165.43602pt x 125.03816pt.
 <./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.pdf, 
-id=526, 975.4568pt x 611.9914pt>
+id=531, 975.4568pt x 611.9914pt>
 File: ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.
 pdf Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.p
@@ -2488,7 +2488,7 @@ LaTeX Warning: Reference `chapter2:figure:RGBColorMatchingFunctions' on page 18
 
 [18]
 <./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf, id=
-566, 353.94542pt x 366.81622pt>
+571, 353.94542pt x 366.81622pt>
 File: ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf
  Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf>
@@ -2526,7 +2526,7 @@ Overfull \hbox (9.79149pt too wide) detected at line 233
  []
 
 <./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf, id
-=627, 353.31148pt x 382.31808pt>
+=633, 353.31148pt x 382.31808pt>
 File: ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pd
 f Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf
@@ -2553,7 +2553,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [24]
 [25]
-<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf, id=703, 283.59102p
+<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf, id=708, 283.59102p
 t x 186.48965pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf Graphic file (
 type pdf)
@@ -2561,7 +2561,7 @@ type pdf)
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw
 .pdf  used on input line 345.
 (luatex.def)             Requested size: 283.59032pt x 186.4892pt.
-<./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf, id=704, 406.26328pt x
+<./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf, id=709, 406.26328pt x
  272.47215pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf Graphic file (typ
 e pdf)
@@ -2587,7 +2587,7 @@ Overfull \hbox (11.37965pt too wide) in paragraph at lines 372--374
 \TU/LatinModernMath(1)/m/n/12 [−1, 1]$
  []
 
-<./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf, id=715, 318.2288
+<./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf, id=720, 318.2288
 4pt x 143.87604pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf Graphic file
  (type pdf)
@@ -2595,7 +2595,7 @@ File: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf Graphic file
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-r
 aw.pdf  used on input line 378.
 (luatex.def)             Requested size: 318.22804pt x 143.87567pt.
-<chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png, id=716, 
+<chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png, id=721, 
 362.7954pt x 218.7372pt>
 File: chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png Grap
 hic file (type png)
@@ -2627,7 +2627,7 @@ ra_non_linear_mapping_learnwebgl.png><./svg-inkscape/chapter2_camera_pinhole_pro
 jected_svg-raw.pdf>] [29]) (./chapters/chapter-part1-3-light-surface.tex
 [30]
 Chapter 3.
-<chapters/../assets/chapter3_surfaces_interaction_types.png, id=785, 387.4475pt
+<chapters/../assets/chapter3_surfaces_interaction_types.png, id=790, 387.4475pt
  x 270.00874pt>
 File: chapters/../assets/chapter3_surfaces_interaction_types.png Graphic file (
 type png)
@@ -2635,7 +2635,7 @@ type png)
 Package luatex.def Info: chapters/../assets/chapter3_surfaces_interaction_types
 .png  used on input line 5.
 (luatex.def)             Requested size: 165.43602pt x 115.28984pt.
-<chapters/../assets/chapter3_surfaces_specular_interaction.png, id=786, 471.762
+<chapters/../assets/chapter3_surfaces_specular_interaction.png, id=791, 471.762
 5pt x 234.8775pt>
 File: chapters/../assets/chapter3_surfaces_specular_interaction.png Graphic fil
 e (type png)
@@ -2712,7 +2712,7 @@ e\TU/lmr/m/n/12 , nel caso in cui $\TU/LatinModernMath(1)/m/n/12 𝜂[] < 𝜂[
  []
 
 [37] [38]
-<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf, id=1017, 811.75798
+<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf, id=1022, 811.75798
 pt x 574.46132pt>
 File: ./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf Graphic file (
 type pdf)
@@ -2727,7 +2727,7 @@ r-fi-cie, ot-te-ni-amo un’equazione
  []
 
 [42]
-<chapters/../assets/chapter3_surface_angle2area.png, id=1093, 1358.07375pt x 65
+<chapters/../assets/chapter3_surface_angle2area.png, id=1098, 1358.07375pt x 65
 5.44875pt>
 File: chapters/../assets/chapter3_surface_angle2area.png Graphic file (type png
 )
@@ -2742,7 +2742,7 @@ sere un in-te-grale nell’area
  []
 
 [44]
-<chapters/../assets/chapter3_surface_projected_area.png, id=1124, 910.40125pt x
+<chapters/../assets/chapter3_surface_projected_area.png, id=1129, 910.40125pt x
  633.36626pt>
 File: chapters/../assets/chapter3_surface_projected_area.png Graphic file (type
  png)
@@ -2758,85 +2758,150 @@ ctional Re-flectance \TU/lmr/m/n/12 (Equazione []3.5[]),
 
 [45] [46<./chapters/../assets/chapter3_surface_projected_area.png>] [47]
 [48]
-<chapters/../assets/chapter3_surface_microgeometry_effectsAM.png, id=1178, 1425
+<chapters/../assets/chapter3_surface_microgeometry_effectsAM.png, id=1184, 1425
 .325pt x 311.1625pt>
 File: chapters/../assets/chapter3_surface_microgeometry_effectsAM.png Graphic f
 ile (type png)
 <use chapters/../assets/chapter3_surface_microgeometry_effectsAM.png>
 Package luatex.def Info: chapters/../assets/chapter3_surface_microgeometry_effe
-ctsAM.png  used on input line 616.
+ctsAM.png  used on input line 618.
 (luatex.def)             Requested size: 413.59637pt x 90.29178pt.
 
-Overfull \hbox (0.72864pt too wide) in paragraph at lines 632--634
+Overfull \hbox (0.72864pt too wide) in paragraph at lines 634--636
 \TU/lmr/m/n/12 sivi, in quanto alta re-flectance e alto co-ef-fi-ciente di as-so
 r-bi-mento wavelength-
  []
 
 [49<./chapters/../assets/chapter3_surface_microgeometry_effectsAM.png>]
-Overfull \hbox (18.55582pt too wide) in paragraph at lines 638--639
+Overfull \hbox (18.55582pt too wide) in paragraph at lines 640--641
 []\TU/lmr/m/n/12 Ogni mi-cro-facet di nor-male $[]$, possiede an-che una sua \T
 U/lmr/m/it/12 Mi-cro BRDF $\TU/LatinModernMath(1)/m/n/12 𝑓[]([], [], [])$\TU
 /lmr/m/n/12 ,
  []
 
-<chapters/../assets/chapter3_surface_microgeometry_areaAM.png, id=1191, 1405.25
+<chapters/../assets/chapter3_surface_microgeometry_areaAM.png, id=1196, 1405.25
 pt x 460.72125pt>
 File: chapters/../assets/chapter3_surface_microgeometry_areaAM.png Graphic file
  (type png)
 <use chapters/../assets/chapter3_surface_microgeometry_areaAM.png>
 Package luatex.def Info: chapters/../assets/chapter3_surface_microgeometry_area
-AM.png  used on input line 642.
+AM.png  used on input line 644.
 (luatex.def)             Requested size: 413.59637pt x 135.60226pt.
-[50<./chapters/../assets/chapter3_surface_microgeometry_areaAM.png>] [51])
-(./chapters/chapter-part1-4-volume-transport-no-alg.tex [52]
-Chapter 4.
-) [53
+[50<./chapters/../assets/chapter3_surface_microgeometry_areaAM.png>] [51]
+<chapters/../assets/chapter3_surface_vcavityPG.png, id=1223, 1353.055pt x 592.2
+125pt>
+File: chapters/../assets/chapter3_surface_vcavityPG.png Graphic file (type png)
 
-] [54
+<use chapters/../assets/chapter3_surface_vcavityPG.png>
+Package luatex.def Info: chapters/../assets/chapter3_surface_vcavityPG.png  use
+d on input line 717.
+(luatex.def)             Requested size: 372.2342pt x 162.91766pt.
+
+[52<./chapters/../assets/chapter3_surface_vcavityPG.png>] [53]
+Overfull \hbox (5.13663pt too wide) detected at line 783
+[]
+ []
+
+<chapters/../assets/chapter3_surface_refl_jacobianPG.png, id=1255, 1560.83125pt
+ x 805.0075pt>
+File: chapters/../assets/chapter3_surface_refl_jacobianPG.png Graphic file (typ
+e png)
+<use chapters/../assets/chapter3_surface_refl_jacobianPG.png>
+Package luatex.def Info: chapters/../assets/chapter3_surface_refl_jacobianPG.pn
+g  used on input line 792.
+(luatex.def)             Requested size: 330.87836pt x 170.65341pt.
+<chapters/../assets/chapter3_surface_BRDF_paramsPG.png, id=1258, 1028.84375pt x
+ 696.6025pt>
+File: chapters/../assets/chapter3_surface_BRDF_paramsPG.png Graphic file (type 
+png)
+<use chapters/../assets/chapter3_surface_BRDF_paramsPG.png>
+Package luatex.def Info: chapters/../assets/chapter3_surface_BRDF_paramsPG.png 
+ used on input line 798.
+(luatex.def)             Requested size: 206.79819pt x 140.00893pt.
+
+Overfull \hbox (0.49846pt too wide) detected at line 815
+[]
+ []
+
+[54] [55<./chapters/../assets/chapter3_surface_refl_jacobianPG.png><./chapters/.
+./assets/chapter3_surface_BRDF_paramsPG.png>] [56]
+<chapters/../assets/chapter3_surface_anisotropic_BRDF.png, id=1302, 1648.1575pt
+ x 662.475pt>
+File: chapters/../assets/chapter3_surface_anisotropic_BRDF.png Graphic file (ty
+pe png)
+<use chapters/../assets/chapter3_surface_anisotropic_BRDF.png>
+Package luatex.def Info: chapters/../assets/chapter3_surface_anisotropic_BRDF.p
+ng  used on input line 909.
+(luatex.def)             Requested size: 330.87836pt x 132.99808pt.
+ [57] [58<./chapters/../assets/chapter3_surface_anisotropic_BRDF.png>] [59]
+Underfull \vbox (badness 7907) has occurred while \output is active []
+
+ [60]
+Underfull \vbox (badness 4316) has occurred while \output is active []
+
+ [61]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [62]
+Overfull \hbox (5.38727pt too wide) in paragraph at lines 1054--1060
+\TU/lmr/m/n/12 mente spec-u-lari, la \TU/lmr/m/it/12 Oren-Nayar BRDF \TU/lmr/m/
+n/12 as-sume mi-crostrut-ture \TU/lmr/m/it/12 Lam-ber-tiane \TU/lmr/m/n/12 affin
+chè
+ []
+
+
+Underfull \vbox (badness 3525) has occurred while \output is active []
+
+ [63])
+(./chapters/chapter-part1-4-volume-transport-no-alg.tex [64]
+Chapter 4.
+) [65
+
+] [66
 
 ] (./chapters/chapter-part2-1-quasirandom-gen.tex
 Chapter 5.
-) (./chapters/chapter-part2-2-sampling-montecarlo.tex [55
+) (./chapters/chapter-part2-2-sampling-montecarlo.tex [67
 
 ]
 Chapter 6.
-) (./chapters/chapter-part2-3-variance-reduction.tex [56
+) (./chapters/chapter-part2-3-variance-reduction.tex [68
 
 ]
 Chapter 7.
-) [57
+) [69
 
-] [58
+] [70
 
 ] (./chapters/chapter-part3-1-light-transportintro.tex
 Chapter 8.
-) (./chapters/chapter-part3-2-light-transport-impl.tex [59
+) (./chapters/chapter-part3-2-light-transport-impl.tex [71
 
 ]
 Chapter 9.
-) [60
+) [72
 
-] [61
+] [73
 
 ] (./chapters/chapter-Appendix-A-prob-stat.tex
 Appendix A.
-) (./chapters/chapter-Appendix-B-geo-alg.tex [62
+) (./chapters/chapter-Appendix-B-geo-alg.tex [74
 
 ]
 Appendix B.
-) (./chapters/chapter-Appendix-C-random-num.tex [63
+) (./chapters/chapter-Appendix-C-random-num.tex [75
 
 ]
 Appendix C.
-) (./chapters/chapter-Appendix-D-vulkan-code.tex [64
+) (./chapters/chapter-Appendix-D-vulkan-code.tex [76
 
 ]
 Appendix D.
-) (./chapters/chapter-Appendix-E-materials-impldetails.tex [65
+) (./chapters/chapter-Appendix-E-materials-impldetails.tex [77
 
 ]
 Appendix E.
-) [66
+) [78
 
 ]
 Overfull \hbox (3.34352pt too wide) in paragraph at lines 248--248
@@ -2844,10 +2909,10 @@ Overfull \hbox (3.34352pt too wide) in paragraph at lines 248--248
 ly-Based
  []
 
-[67
+[79
 
 
-] (./intermediate/main.gls [68] [69
+] (./intermediate/main.gls [80] [81
 
 
 ]
@@ -2856,27 +2921,28 @@ Overfull \hbox (12.35985pt too wide) in paragraph at lines 32--34
 percezione
  []
 
-) [70] [71] (./intermediate/main.aux)
+) [82] [83] (./intermediate/main.aux)
 
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: D1D605A6F6BBE49E523F8CE537E63D64;8429.
+(rerunfilecheck)             Checksum: FAD3DF0CB7387E361FDA822FC788752C;8572.
 Package logreq Info: Writing requests to 'main.run.xml'.
 
 \openout1 = main.run.xml
 )
 
 Here is how much of LuaTeX's memory you used:
- 68116 strings out of 478285
+ 68258 strings out of 478285
  125163,2848258 words of node,token memory allocated
- 4782 words of node memory still in use:
-   76 hlist, 18 vlist, 5 rule, 6 math, 96 glue, 21 kern, 14 sub_mlist, 78 glyph,
- 429 attribute, 126 glue_spec, 429 attribute_list, 2 write, 11 pdf_action nodes
-   avail lists: 2:4774,3:2723,4:684,5:625,6:159,7:7670,8:77,9:2751,10:23,11:572
- 85478 multiletter control sequences out of 65536+600000
- 153 fonts using 50556763 bytes
- 95i,21n,114p,2265b,2336s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 5005 words of node memory still in use:
+   76 hlist, 18 vlist, 5 rule, 6 math, 101 glue, 21 kern, 14 sub_mlist, 78 glyph
+, 476 attribute, 126 glue_spec, 476 attribute_list, 2 write, 11 pdf_action nodes
+
+   avail lists: 2:4680,3:2734,4:684,5:628,6:159,7:7665,8:95,9:2751,10:23,11:572
+ 85523 multiletter control sequences out of 65536+600000
+ 153 fonts using 50556483 bytes
+ 95i,22n,114p,2265b,2336s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.26'
 </usr/share/texmf-dist/fonts/opentype/public/lm/lmsans12-regular.otf></usr/share
@@ -2892,10 +2958,10 @@ entype/public/lm/lmroman12-regular.otf></usr/share/texmf-dist/fonts/opentype/pub
 lic/lm/lmroman17-regular.otf></usr/share/texmf-dist/fonts/opentype/public/lm/lmr
 omandemi10-regular.otf></usr/share/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><
 /usr/share/texmf-dist/fonts/type1/public/lm/lmbx12.pfb>
-Output written on main.pdf (77 pages, 1179105 bytes).
+Output written on main.pdf (89 pages, 2017028 bytes).
 
-PDF statistics: 1430 PDF objects out of 1440 (max. 8388607)
- 1098 compressed objects within 11 object streams
- 357 named destinations out of 1000 (max. 131072)
- 382 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 1590 PDF objects out of 1728 (max. 8388607)
+ 1230 compressed objects within 13 object streams
+ 430 named destinations out of 1000 (max. 131072)
+ 390 words of extra memory for PDF output out of 10000 (max. 100000000)
 
