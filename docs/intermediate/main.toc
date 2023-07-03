@@ -38,22 +38,20 @@
 \contentsline {subsubsection}{Directional Light}{68}{equation.3.2.119}%
 \contentsline {subsubsection}{Diffuse Area Light}{68}{equation.3.2.121}%
 \contentsline {subsubsection}{Infinite Area Light}{69}{equation.3.2.122}%
-\contentsline {subsection}{\numberline {3.2.2}Light Sampling}{69}{subsection.3.2.2}%
-\contentsline {chapter}{\numberline {4}Trasporto di Energia Elettromagnetica nel Mezzo}{70}{chapter.4}%
-\contentsline {part}{II\hspace {1em}Metodi di Monte Carlo}{71}{part.2}%
-\contentsline {chapter}{\numberline {5}Campionamento e Ricostruzione con Quasirandom Number Generation}{72}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Integrazione di Monte Carlo}{73}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Metodi di Riduzione della Varianza}{74}{chapter.7}%
-\contentsline {part}{III\hspace {1em}Applicazione}{75}{part.3}%
-\contentsline {chapter}{\numberline {8}Light Transport Modello e Surface Reflection}{76}{chapter.8}%
-\contentsline {chapter}{\numberline {9}Light Transport: Volume Rendering e Bidirectional Methods}{77}{chapter.9}%
-\contentsline {part}{IV\hspace {1em}Appendici}{78}{part.4}%
-\contentsline {chapter}{\numberline {A}Fondamenti di Probabilit\`a e Statistica}{79}{appendix.A}%
-\contentsline {chapter}{\numberline {B}Algebra Lineare applicata}{80}{appendix.B}%
-\contentsline {chapter}{\numberline {C}Numeri Pseudocasuali e Algoritmi Vari}{81}{appendix.C}%
-\contentsline {section}{\numberline {C.1}Metodo di Gauss-Newton}{81}{section.C.1}%
-\contentsline {section}{\numberline {C.2}Interpolazione di Hermite}{81}{section.C.2}%
-\contentsline {chapter}{\numberline {D}Codice Vulkan \& HLSL}{82}{appendix.D}%
-\contentsline {chapter}{\numberline {E}Implementazione dei Concetti Fisici}{83}{appendix.E}%
-\contentsline {chapter}{Bibliography}{84}{appendix.E}%
-\contentsline {chapter}{Glossary}{86}{section*.28}%
+\contentsline {subsection}{\numberline {3.2.2}Light Sampling}{71}{subsection.3.2.2}%
+\contentsline {subsubsection}{Campionamento Uniforme di Sorgenti Luminose}{71}{equation.3.2.127}%
+\contentsline {subsubsection}{Campionamento proporzionale alla Potenza di Sorgenti Luminose}{72}{equation.3.2.128}%
+\contentsline {part}{II\hspace {1em}Metodi di Monte Carlo}{73}{part.2}%
+\contentsline {chapter}{\numberline {4}Integrazione di Monte Carlo}{74}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Preliminari}{74}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Monte Carlo Integration}{76}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Campionamento e Ricostruzione con Quasirandom Number Generation}{79}{chapter.5}%
+\contentsline {part}{III\hspace {1em}Applicazione}{80}{part.3}%
+\contentsline {chapter}{\numberline {6}Light Transport Modello e Surface Reflection}{81}{chapter.6}%
+\contentsline {part}{IV\hspace {1em}Appendici}{82}{part.4}%
+\contentsline {chapter}{\numberline {A}Numeri Pseudocasuali e Algoritmi Vari}{83}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Metodo di Gauss-Newton}{83}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Interpolazione di Hermite}{83}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Convergenza di Sequenza di Funzioni}{83}{section.A.3}%
+\contentsline {chapter}{Bibliography}{84}{section.A.3}%
+\contentsline {chapter}{Glossary}{86}{section*.30}%
