@@ -965,7 +965,7 @@ Mentre la CDF condizionale di $\varphi_m$ dato $\theta_m$
 		+\frac{\sin^2\varphi}{\alpha_v^2}\right)}
 \end{align}
 Dunque Importance Sampling mediante Inverse Transform Sampling della NDF normalizzata, dati $\xi_\theta,\xi_\varphi\sim\mathcal{U}(0,1)$
-\begin{align}
+\begin{align}\label{chapter3:surface:wardInverseTransformSampling}
 	\xi_\varphi=\frac{1}{2\pi}\arctan(\frac{\alpha_u}{\alpha_v}\tan\varphi_m)&\longrightarrow%
 		\varphi_m=\mathrm{arctan2}(\alpha_v\sin(2\pi\xi_\varphi),\alpha_u\cos(2\pi\xi_\varphi)) \\
 	\xi_\theta=1-e^{-\frac{1-\cos^2\theta_m}{\cos^2\theta_m}\left(\frac{\cos^2\varphi}{\alpha_u^2}%
