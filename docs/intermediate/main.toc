@@ -47,17 +47,23 @@
 \contentsline {section}{\numberline {4.2}Monte Carlo Integration}{76}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Schemi di Campionamento}{79}{section.4.3}%
 \contentsline {subsection}{\numberline {4.3.1}Inverse Transform Sampling}{79}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Acceptance-Rejection Method}{80}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.2}Acceptance-Rejection Method}{81}{subsection.4.3.2}%
 \contentsline {subsection}{\numberline {4.3.3}Metriopolis-Hastings Sampling}{84}{subsection.4.3.3}%
 \contentsline {section}{\numberline {4.4}Metodi di Riduzione della Varianza}{87}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Campionamento e Ricostruzione con Quasirandom Number Generation}{88}{chapter.5}%
-\contentsline {part}{III\hspace {1em}Applicazione}{89}{part.3}%
-\contentsline {chapter}{\numberline {6}Light Transport Modello e Surface Reflection}{90}{chapter.6}%
-\contentsline {part}{IV\hspace {1em}Appendici}{91}{part.4}%
-\contentsline {chapter}{\numberline {A}Numeri Pseudocasuali e Algoritmi Vari}{92}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Generazione di numeri Pseudorandom}{92}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Metodo di Gauss-Newton}{92}{section.A.2}%
-\contentsline {section}{\numberline {A.3}Interpolazione di Hermite}{92}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Convergenza di Sequenza di Funzioni}{92}{section.A.4}%
-\contentsline {chapter}{Bibliography}{93}{section.A.4}%
-\contentsline {chapter}{Glossary}{95}{section*.33}%
+\contentsline {subsection}{\numberline {4.4.1}Stratified Sampling}{88}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Importance Sampling}{90}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Russian Roulette}{90}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}Splitting}{90}{subsection.4.4.4}%
+\contentsline {chapter}{\numberline {5}Campionamento e Ricostruzione con Quasirandom Number Generation}{91}{chapter.5}%
+\contentsline {part}{III\hspace {1em}Applicazione}{92}{part.3}%
+\contentsline {chapter}{\numberline {6}Light Transport Modello e Surface Reflection}{93}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Path Integral della Rendering Equation}{94}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Path Tracing}{96}{section.6.2}%
+\contentsline {part}{IV\hspace {1em}Appendici}{97}{part.4}%
+\contentsline {chapter}{\numberline {A}Numeri Pseudocasuali e Algoritmi Vari}{98}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Generazione di numeri Pseudorandom}{98}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Metodo di Gauss-Newton}{98}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Interpolazione di Hermite}{98}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Convergenza di Sequenza di Funzioni}{98}{section.A.4}%
+\contentsline {chapter}{Bibliography}{99}{section.A.4}%
+\contentsline {chapter}{Glossary}{101}{section*.34}%

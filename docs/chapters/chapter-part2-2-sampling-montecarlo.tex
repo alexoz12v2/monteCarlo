@@ -82,6 +82,10 @@ per l'integrale
 	\caption{Illustrazione della varianza in una immagine renderizzata. Immagine da \cite{pharr}}
 	\label{chapter6:MC:variance}
 \end{figure}
+Rilasseremo in seguito, all'introduzione di Importance Sampling, l'assunzione di campionamento con PDF uniforme, giungendo a
+\begin{equation}\label{chapter6:MC:importanceEstimator}
+	\tilde{F}_n=\norm{\mathcal{D}}\tilde{E}_n[f(X)]=\frac{1}{n}\sum_{i=1}^n\frac{f(X_i)}{p(X_i)}
+\end{equation}
 Una misura di accuratezza di tale stimatore \`e la sua varianza, la quale si traduce, nell'immagine renderizzata, in variazioni brusche tra pixel 
 adiacenti, come mostrato in Figura \ref{chapter6:MC:variance}. Tale varianza\footnotemark{}, per lo stimatore in 
 Equazione \ref{chapter6:MC:crudeEstimator}
@@ -116,7 +120,7 @@ Altre caratteristiche dello stimatore sono \textit{efficienza}, \textit{bias}, \
 		ha deviazione standard che segue \mbox{$\mathcal{O}\left(n^{-1}\right)$}
 	\item[Efficienza] Parametro che permette di stimare la bont\`a di uno stimatore in relazione alla varianza ottenuta $V[X]$ e al suo running time
 		$T[X]$, pari a 
-		\begin{equation}
+		\begin{equation}\label{chapter6:MC:efficiency}
 			\epsilon[\tilde{F}_n]=\frac{1}{V[\tilde{F}_n]T[\tilde{F}_n]}
 		\end{equation}
 	\item[MSE] Errore quadratico medio, strettamente collegato alla varianza, in quanto \`e definito come l'aspettezione del quadrato della 
@@ -151,12 +155,12 @@ osservazioni $x$, possiamo trasformare tali campioni in campioni $y$ secondo la 
 	\item Calcolare la \textit{funzione quantile} della variabile aleatoria $Y$, $P_y^{-1}$
 	\item La variabile aleatoria $Y$ \`e dunque posta a $P_y^{-1}(P_x(X))$
 \end{itemize}
-\ref{chapter6:sampling:inverseTransform}
 Dove la funzione quantile altro non \`e che una funzione di distribuzione inversa generalizzata, la quale rende possibile invertire CDFs con intervalli
 costanti
 \begin{equation}
 	P_y^{-1}(p)=\inf\left\{y\in\mathbb{R}^d\,:\,P_y(y)\geq p\right\},\;p\in[0,1]
 \end{equation}
+Il procedimento \`e illustrato in Figura \ref{chapter6:sampling:inverseTransform}.\par
 Nel caso di una distribuzione multivariata, l'inverse transform sampling \`e un processo iterativo nel quale, scelta una prima dimensione in cui
 campionare, si calcola la sua CDF marginale per poi invertirla e trasformare la prima dimensione del campione iniziale. In seguito, tutte le 
 altre dimensioni sono calcolate mantenendo fisse le dimensioni gi\`a campionate mediante il calcolo di CDFs condizionali della dimensione corrente, 
@@ -308,7 +312,7 @@ vantaggi rispetto agli altri metodi qui presentati sono
 Il suo difetto \`e quello di generare campioni correlati tra loro, e ci\`o rende inefficaci tecnice di riduzione della varianza come Stratibied 
 Sampling.\par
 In quanto formanti una catena di markov, la probabilit\`a condizionale di ottenere un dato campione $x_i$ dipende solamente dal campione precedente
-(\textit{Markov Propreti})
+(\textit{Markov Property})
 \begin{equation}
 	p(x_i | x_0,\ldots,x_{i-1})=p(x_i|x_{i-1})
 \end{equation}
@@ -368,7 +372,7 @@ Si pu\`o delineare dunque la procedura di Metropolis-Hastings Sampling
 	\end{itemize}
 \end{itemize}
 Esempio: Applico l'algoritmo per campionare una distribuzione gaussiana standard. Scelgo come $p_p$ una gaussiana centrata in $x_i$ con 
-deviazione standard $0.05$. In quanto tale PDF simmetrica, \mbox{$p_p(x_i|x*)=p_p(x*|x_i)$}, tale PDF si semplifica nel calcolo della probabilit\`a 
+deviazione standard $0.05$. In quanto tale PDF simmetrica, \mbox{$p_p(x_i|x^*)=p_p(x^*|x_i)$}, tale PDF si semplifica nel calcolo della probabilit\`a 
 di accettazione.
 \begin{minted}{python}
 import math
@@ -389,7 +393,7 @@ def metropolisHastings(samples, N):
         proposedSample = _rng.normal(samples[i], 0.05)
 
         acceptance = np.clip(min(1, normPdf(proposedSample) 
-									/ normPdf(samples[i])), 0., 1.)
+		/ normPdf(samples[i])), 0., 1.)
         if u < acceptance:
             samples[i+1] = proposedSample
         else:
@@ -399,6 +403,105 @@ def metropolisHastings(samples, N):
 \end{minted}
 Dato che la PDF di ogni campione $x_i$ approccia la densit\`a di distribuzione stazionaria solamente al limite per $x\to\infty$, i primi campioni
 generati non sono sufficientemente accurati. L'algoritmo soffre del cosiddetto \textit{Startup Bias}, il quale pu\`o essere mitigato scartando 
-dei campioni iniziali, pur non sapendo a priori quanti scartare. Tale strategia \`e nominata \textit{Burn-In Phase}.
+dei campioni iniziali, pur non sapendo a priori quanti scartare. Tale strategia \`e nominata \textit{Burn-In Phase}.\par
+Per assicurare una buona copertura dello spazio campionario, la Proposal Distribution Density
+\begin{itemize}[topsep=0pt,noitemsep]
+	\item Deve frequentemente restituire piccole mutazioni, ma
+	\item Deve avere probabilit\`a non nulla di produrre grosse mutazioni\footnotemark{}
+\end{itemize}
+\footnotetext{Tale propriet\`a \`e chiamata \textit{Ergodicit\`a}, 
+	\mbox{$\forall x_{i-1},x_i\backepsilon^\prime f(x_{i-1})>0\wedge f(x_i)>0,\;p_p(x_i,x_{i-1})$}}
+Un approccio simmetrico che ci permette di eseguire tale Random Walk nel dominio \`e una proposal distribution density uniforme attorno al punto 
+$x_{i-1}$, la quale ci fornisce la seguente regola di mutazione
+\begin{equation}
+	x_i^{*^(k)}=\left(x_{i-1}^{(k)}\pm s\xi\right)\mathrm{mod}1\in[0,1]
+\end{equation}
+dove $\cdot^{(k)}$ indica la coordinata $k$-esima del punto, $s$ seed definito a priori.\par
+Si noti che tale approccio non \`e universale, perch\`e per assicurare una copertura ottimale la Proposal Distribution Density deve approssimare 
+la Target Distribution Density, magari utilizzando una PDF opportunamente scelta e campionata mediante Inverse Transform Sampling.
 \section{Metodi di Riduzione della Varianza}
-
+Dato uno stimatore di Monte Carlo Unbiased, abbiamo a disposizione diverse tecniche per ridurne la varianza o running time, in modo tale da aumentarne 
+l'efficienza (Equazione \ref{chapter6:MC:efficiency}). Le tecniche di seguito illustrate sono
+\begin{altDescription}{chapter6:variance:methods}
+	\item[Stratified Sampling] Suddivisione del dominio di integrazione in $n$ regioni chiamate \textit{strata}
+	\item[Importance Sampling] Concentra i punti campionati per la stima dell'integrale utilizzando una densit\`a di distribuzione proporzionale alla 
+		funzione integranda, per catturarne pi\`u rapidamente i contributi pi\`u significativi
+	\item[Russian Roulette] salta la valutazione di campioni che contribuiscono poco
+	\item[Splitting] Al contrario di Russian Roulette, aumenta il numero di campioni in alcune dimensioni di un integrale multidimensionale
+\end{altDescription}
+Ulteriori tecniche di campionamento sono esplorate in Capitolo \ref{chapter5}
+\subsection{Stratified Sampling}
+Una funzione generalmente varia meno in un dominio ridotto. \textit{Stratified Sampling} consiste nella suddivisione del dominio di integrazione 
+$\mathcal{D}$ in un insieme esaustivo e mutialmente esclusivo di $n$ \textit{Strata} $\mathcal{D}_i$, dunque tali che
+\begin{align*}
+	\bigcup_{i=1}^n\mathcal{D}_i &= \mathcal{D} \\
+	\mathcal{D}_i\cap\mathcal{D}_j &= \O,\,\forall i,j\in\{1,\ldots,n\}\backepsilon^\prime i\neq j
+\end{align*}
+Tale che per campionare $\mathcal{D}$, campioniamo $n_i$ punti da ciascun stratum con densit\`a di probabilit\`a $p_i$. Ideale applicazione di tale 
+tecnica \`e il campionamento di punti all'interno di ciascun pixel del film plane (vedi \ref{chapter2:camera}). Tale approccio permette di evitare 
+il rischio di accumulare campioni in una singola zona del dominio. L'integrale originario pu\`o dunque essere riscritto come
+\begin{equation}
+	\int_{\mathcal{D}}f(x)\mathrm{d}x=\sum_{i=1}^n\int_{\mathcal{D}_i}f(x)\mathrm{d}x
+\end{equation}
+Per cui, riprendendo Equazione \ref{chapter6:MC:importanceEstimator}, lo stimatore diventa
+\begin{equation}
+	\tilde{F}=\sum_{j=1}^n\frac{v_j}{n_j}\sum_{i=1}^{n_j}\frac{f(X_{ij})}{p_j(X_{ij})}=\sum_{j=1}^nv_j\tilde{F}_j
+\end{equation}
+dove $v_j\in[0,1]$ rappresenta la frazione di volume contenuta nello stratum $\mathcal{D}_i$. Ciascuna variabile aleatoria $X_{ij}$ \`e campionata 
+secondo la sua PDF $p_j$. Un esempio di tali variabili \`e $X_{ij}=c_j+\norm{\mathcal{D}_j}\xi_{ij}$.\par
+L'aspettazione di ciascun stratum $j$ \`e pari a
+\begin{align}
+	E\left[\tilde{F}_j\right]&=E\left[\frac{1}{n_j}\sum_{i=1}^{n_j}\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
+		&=\frac{1}{n_j}\sum_{i=1}^{n_j}E\left[\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
+		&=\frac{1}{n_j}\sum_{i=1}^{n_j}\int_{\mathcal{D}_j}f(x_j)\mathrm{d}x_j \nonumber \\
+		&=\int_{\mathcal{D}_j}f(x_j)\mathrm{d}x_j
+\end{align}
+da cui segue che lo stimatore complessivo ha aspettazione pari al valore vero dell'integrale. La varianza di uno stratum j, assumendo che ciascun 
+stratum sia campionato indipendentemente rispetto all'altro\footnote{In tal caso, $V[aX+bY]=a^2V[X]+b^2V[X]$}
+\begin{align}
+	V\left[\tilde{F}_j\right]&=V\left[\frac{1}{n_j}\sum_{i=1}^{n_j}\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
+		&=\frac{1}{n_j^2}\sum_{i=1}^{n_j}V\left[\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
+		&=\frac{1}{n_j^2}\sum_{i=1}^{n_j}\int_{\mathcal{D}_j}p_j(x_j)\left(\frac{f(x_j)}{p_j(x_j)}-E\left[\frac{f(x_j)}{p_j(x_j)}\right]\right)^2
+			\mathrm{d}x_j \nonumber \\
+		&=\frac{1}{n_j^2}\sum_{i=1}^{n_j}\int_{\mathcal{D}_j}\left(f(x_j)-\mu_j\right)^2\mathrm{d}x_j
+\end{align}
+Da cui la varianza totale risulta essere, assumendo che il numero di campioni per stratum sia proporzionale al loro volume \mbox{$n_j=v_jn$}
+\begin{equation}
+	V\left[\tilde{F}\right]=V\left[\sum_{j=1}^nv_j\tilde{F}_j\right]=\sum_{j=1}^nv_j^2V\left[\tilde{F}_j\right]
+		=\sum_{j=1}^n\frac{v_j^2\sigma_j^2}{n_j}=\frac{1}{n}\sum_{j=1}^nv_j\sigma_j^2
+\end{equation}
+dove $\sigma_j^2 = n_j^2V\left[\tilde{F}_j\right]$. Si pu\`o dimostrare, considerando il campionamento non stratificato come campionamento prima 
+scegliendo stratum casuale $I$ secondo una PMF definita dai $v_j$, seguita dal sampling di un numero casuale $X$ in $\mathcal{D}_I$, con PDF 
+condizionale da $I$, che la varianza dello stratified sampling \`e inferiore della varianza del monte carlo estimator di base \cite{pharr}, la 
+quale si pu\`o esprimere come
+\begin{equation}
+	V\left[{\tilde{F}}\right]=\frac{1}{n}\left(\sum_{i=1}^nv_i\sigma_i^2+\sum_{i=1}^nv_i(\mu_i-Q)^2\right)
+\end{equation}
+dove $Q$ media di $f$ nel dominio $\mathcal{D}$.\par
+Dunque stratified sampling non pu\`o mai aumentare la varianza; nel caso peggiore, che accade quando
+gli strata hanno stessa media, lascia la varianza originale invariata.\par
+Il grosso svantaggio dello stratified sampling \`e che \`e afflitto dalla curse of dimensionality, in quanto, in $D$ dimensioni, bisognerebbe 
+campionare ogni stratum con $S^D$ campioni, dunque l'approccio spesso seguito \`e quello di stratificare solo alcune dimensioni del dominio, contenenti
+la maggior variazione della funzione integranda.
+\subsection{Importance Sampling}
+L'obiettivo dell'Importance sampling \`e concentrare i samples nelle regioni del dominio di integrazione in cui $|f(x)|$ sia relativamente elevato, 
+dunque campionando con PDF proporzionale alla funzione integranda $f(x)$. Per dimostrare la sua efficacia, consideriamo lo stimatore in 
+Equazione \ref{chapter6:MC:importanceEstimator}. Assumendo variabili incorrelate, la sua varianza \`e pari a
+\begin{equation}
+	V[\tilde{F}]=V\left[\frac{1}{n}\sum_{i=1}^n\frac{f(X_i)}{p(X_i)}\right]=\frac{1}{n^2}\sum_{i=1}^nV\left[\frac{f(X_i)}{p(X_i)}\right]
+\end{equation}
+Ci\`o vuol dire che, se il rapporto $f(X)/p(X)$ \`e approssimativamente costante, la varianza diminuisce. Nel caso ideale, in cui il rapporto \`e 
+costante, si ottiene uno stimatore perfetto. Al contrario, se la varianza di tale rapporto \`e alta, il che consegue dalla scelta di una PDF che 
+non segue l'andamento della funzione integranda, la varianza aumenta.\par
+Molto spesso ci troviamo di fronte ad integrali la cui funzione integranda \`e prodotto di pi\`u funzioni, $\int f_a(x)f_b(x)\mathrm{d}x$. Spesso
+\`e possibile individuare strategie di campionamento per ciascuna presa singolarmente, ma non insieme. \`E questo il caso dell'integrale della 
+Rendering Equation (Equazione \ref{chapter3:surface:renderingEq}), nella quale un singolo contributo \`e rappresentato come prodotto tra BSDF, 
+radianza incidente, fattore coseno. Trovati metodi di campionamento per ciascuno di essi singolarmente $p_a$ e $p_b$, introduciamo la strategia
+\textit{Multiple Importance Sampling}. Essa consiste nel combinare due strategie di campionamento utilizzanti Importance Sampling e sommarne i 
+contributi mediante una combinazione convessa con pesi opportunamente scelti. Siano $n_j$ numero di campioni scelti con PDF $p_j$, tali che la loro
+somma sia pari a $n$. Allora, il MIS Monte Carlo Estimator
+\begin{equation}
+	\tilde{F}=\sum_{j=1}^n\frac{1}{n_j}\sum_{i=1}^{n_j}w_j(X_{ij})\frac{f(X_{ij})}{p_j(X_{ij})}
+\end{equation}
+\subsection{Russian Roulette}
+\subsection{Splitting}
