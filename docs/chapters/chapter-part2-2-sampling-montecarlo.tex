@@ -483,7 +483,7 @@ gli strata hanno stessa media, lascia la varianza originale invariata.\par
 Il grosso svantaggio dello stratified sampling \`e che \`e afflitto dalla curse of dimensionality, in quanto, in $D$ dimensioni, bisognerebbe 
 campionare ogni stratum con $S^D$ campioni, dunque l'approccio spesso seguito \`e quello di stratificare solo alcune dimensioni del dominio, contenenti
 la maggior variazione della funzione integranda.
-\subsection{Importance Sampling}
+\subsection{Importance Sampling}\label{chapter6:variance:importanceSampling}
 L'obiettivo dell'Importance sampling \`e concentrare i samples nelle regioni del dominio di integrazione in cui $|f(x)|$ sia relativamente elevato, 
 dunque campionando con PDF proporzionale alla funzione integranda $f(x)$. Per dimostrare la sua efficacia, consideriamo lo stimatore in 
 Equazione \ref{chapter6:MC:importanceEstimator}. Assumendo variabili incorrelate, la sua varianza \`e pari a
@@ -500,8 +500,43 @@ radianza incidente, fattore coseno. Trovati metodi di campionamento per ciascuno
 \textit{Multiple Importance Sampling}. Essa consiste nel combinare due strategie di campionamento utilizzanti Importance Sampling e sommarne i 
 contributi mediante una combinazione convessa con pesi opportunamente scelti. Siano $n_j$ numero di campioni scelti con PDF $p_j$, tali che la loro
 somma sia pari a $n$. Allora, il MIS Monte Carlo Estimator
-\begin{equation}
+\begin{equation}\label{chapter6:variance:MISMC}
 	\tilde{F}=\sum_{j=1}^n\frac{1}{n_j}\sum_{i=1}^{n_j}w_j(X_{ij})\frac{f(X_{ij})}{p_j(X_{ij})}
 \end{equation}
-\subsection{Russian Roulette}
+\subsection{Russian Roulette}\label{chapter6:variance:russianRoulette}
+Tecnica che mira a migliorare la efficienza dello stimatore di Monte Carlo saltando la valutazione di campioni che avrebbero piccolo contributo 
+sul valore finale della stima dell'integrale. Tale tecnica \`e particolarmente conveniente per via del costo della valutazione della funzione 
+integranda, un esempio \`e la necessit\`a, nell'integrale di rendering, di computare la ray tracing function per calcolare il punto di intersezione 
+della prossima superficie, e se la funzione integranda assume piccolo valore, saltarne la valutazione risulta particolarmente conveniente. La semplice 
+terminazione del processo di stima porterebbe a sottostimare sistematicamente l'integrale generando un bias.\par
+Per ovviare a ci\`o, la stima \`e pesata con un fattore correttivo che mantiene lo stimatore unbiased. In particolare, scelta una \textit{probabilit\`a
+di terminazione} $q$, lo stimatore \`e valutato con probabilit\`a $1-q$ e pesato con fattore $1/(1-q)$, ottenendo
+\begin{equation}\label{chapter6:variance:russianEstimator}
+	\tilde{F}^\prime=\left\{\begin{aligned}
+		&\frac{\tilde{F}-qc}{1-q}\;\;&\xi>q\\
+		&c &\text{altrimenti}
+	\end{aligned}\right.
+\end{equation}
+la cui derivazione \cite{pegoraro}, e dove $c$ costante arbitraria, tipicamente nulla.\par
+Applicando la definizione di aspettazione, si ottiene la conferma di unbiasedness e correttezza
+\begin{equation}
+	E[\tilde{F}^\prime]=(1-q)\left(\frac{E[\tilde{F}]-qc}{1-q}\right)+qc=E[\tilde{F}]
+\end{equation}
+Inoltre, \textit{Russian Roulette non riduce mai la varianza}, a meno che $c=F=\int f(x)\mathrm{d}x$, in quanto si pu\`o dimostrare che 
+(\cite{pegoraro})
+\begin{equation}
+	V[\tilde{F}^\prime]=\frac{\norm{\mathcal{F}}^2V[f(X)]+(1-q)(F-c)^2}{q}\geq\frac{\norm{\mathcal{D}}^2V[f(X)]}{q}=V[\tilde{F}]
+\end{equation}
 \subsection{Splitting}
+Tecnica duale a Russian Roulette, Splitting offre una tecnica unbiased di prelevare un numero maggiore di campioni in alcune dimensioni di un 
+integrale multidimensionale per migliorare l'efficienza dello stimatore. Ad esempio, l'integrale 
+\begin{equation*}
+	\int_A\int_Bf(x,y)\mathrm{d}x\mathrm{d}y\approx\frac{1}{n}\sum_{i=1}^n\frac{f(X_i,Y_i)}{p_x(X_i)p_y(Y_i)}
+\end{equation*}
+assumendo campioni nelle due dimensioni sono prelevati indipendentemente.\par
+Potremmo, ad esempio, voler campionare $m$ volte la seconda dimensione per ogni campione della prima, portando alla formulazione del seguente stimatore
+\begin{equation*}
+	\frac{1}{n}\sum_{i=1}^n\frac{1}{m}\sum_{j=1}^m\frac{f(X_i,Y_{ij})}{p_x(X_i)p_y(Y_{ij})}
+\end{equation*}
+Inoltre (\cite{pharr}), se \`e possibile valutare parzialmente $f(X_i,\dot)$, il campionamento degli $mn$ samples di $Y_{ij}$ possono essere presi 
+in maniera pi\`u efficiente.

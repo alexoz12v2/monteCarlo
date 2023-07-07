@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  7 JUL 2023 01:17
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  8 JUL 2023 00:16
  system commands enabled.
 **main.tex
 (./main.tex
@@ -2971,11 +2971,11 @@ LaTeX Warning: Command \O invalid in math mode on input line 439.
 Missing character: There is no Ø (U+00D8) in font lmmi12!
 Missing character: There is no ϶ (U+03F6) in font LatinModernMath:mode=base;scr
 ipt=math;language=dflt;!
-[88] [89]) (./chapters/chapter-part2-1-quasirandom-gen.tex [90]
+[88] [89] [90]) (./chapters/chapter-part2-1-quasirandom-gen.tex [91]
 Chapter 5.
-) [91
+) [92
 
-] [92
+] [93
 
 ] (./chapters/chapter-part3-1-light-transportintro.tex
 Chapter 6.
@@ -2985,10 +2985,10 @@ Overfull \hbox (2.51486pt too wide) in paragraph at lines 12--16
 [],
  []
 
-[93
+[94
 
 ]
-<chapters/../assets/chapter8_light_transport_equation.png, id=1727, 1223.57124p
+<chapters/../assets/chapter8_light_transport_equation.png, id=1738, 1223.57124p
 t x 961.5925pt>
 File: chapters/../assets/chapter8_light_transport_equation.png Graphic file (ty
 pe png)
@@ -3007,7 +3007,7 @@ Overfull \hbox (2.35823pt too wide) in paragraph at lines 39--44
 []\TU/lmr/m/n/12 , posso riscri-vere tale equazione nella
  []
 
-[94<./chapters/../assets/chapter8_light_transport_equation.png>]
+[95<./chapters/../assets/chapter8_light_transport_equation.png>]
 Overfull \hbox (7.87189pt too wide) in paragraph at lines 47--52
 \TU/lmr/m/n/12 Dove ri-cor-diamo il ter-mine ge-o-met-rico che lega le varie su-
 per-fici è dato da Equazione
@@ -3018,11 +3018,11 @@ Overfull \hbox (42.22029pt too wide) detected at line 72
 []
  []
 
-[95]) [96] [97
+[96] [97] [98]) [99] [100
 
 ] (./chapters/chapter-Appendix-C-random-num.tex
 Appendix A.
-) [98
+) [101
 
 ]
 Overfull \hbox (3.34352pt too wide) in paragraph at lines 248--248
@@ -3030,10 +3030,10 @@ Overfull \hbox (3.34352pt too wide) in paragraph at lines 248--248
 ly-Based
  []
 
-[99
+[102
 
 
-] (./intermediate/main.gls [100] [101
+] (./intermediate/main.gls [103] [104
 
 
 ]
@@ -3042,7 +3042,7 @@ Overfull \hbox (12.35985pt too wide) in paragraph at lines 32--34
 percezione
  []
 
-) [102] [103] (./intermediate/main.aux)
+) [105] [106] (./intermediate/main.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -3055,16 +3055,16 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 68765 strings out of 478285
+ 68787 strings out of 478285
  195572,2848258 words of node,token memory allocated
- 5631 words of node memory still in use:
-   76 hlist, 18 vlist, 5 rule, 6 math, 118 glue, 21 kern, 15 sub_mlist, 78 glyph
-, 602 attribute, 126 glue_spec, 602 attribute_list, 2 write, 11 pdf_action nodes
+ 5694 words of node memory still in use:
+   76 hlist, 18 vlist, 5 rule, 6 math, 119 glue, 21 kern, 15 sub_mlist, 78 glyph
+, 616 attribute, 126 glue_spec, 616 attribute_list, 2 write, 11 pdf_action nodes
 
-   avail lists: 1:6,2:21095,3:13098,4:684,5:643,6:159,7:7648,8:101,9:2751,10:23,
+   avail lists: 1:6,2:21067,3:13103,4:684,5:643,6:159,7:7647,8:103,9:2751,10:23,
 11:572
- 85894 multiletter control sequences out of 65536+600000
- 155 fonts using 50808839 bytes
+ 85904 multiletter control sequences out of 65536+600000
+ 155 fonts using 50808979 bytes
  95i,22n,114p,2265b,2881s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.52'
@@ -3087,10 +3087,10 @@ n12-regular.otf></usr/share/texmf-dist/fonts/opentype/public/lm/lmroman17-regula
 r.otf></usr/share/texmf-dist/fonts/opentype/public/lm/lmromandemi10-regular.otf>
 </usr/share/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf-dist/f
 onts/type1/public/lm/lmbx12.pfb>
-Output written on main.pdf (109 pages, 4385913 bytes).
+Output written on main.pdf (112 pages, 4398795 bytes).
 
-PDF statistics: 1936 PDF objects out of 2073 (max. 8388607)
- 1532 compressed objects within 16 object streams
- 548 named destinations out of 1000 (max. 131072)
+PDF statistics: 1971 PDF objects out of 2073 (max. 8388607)
+ 1564 compressed objects within 16 object streams
+ 560 named destinations out of 1000 (max. 131072)
  478 words of extra memory for PDF output out of 10000 (max. 100000000)
 

@@ -92,4 +92,62 @@ con accuratezza elevata e i restanti termini della somma sono stimati con un'app
 gli integrali a seconda della categoria di sorgenti luminose e BSDF, ad esempio per distinguere sorgenti grandi da sorgenti piccole, e BSDF contenenti
 $\delta(x)$ dal resto.
 \section{Path Tracing}
-Avendo ricavato una espressione facilmente manovrabile, siamo pronti a formulare un'algoritmo per la risoluzione dell'equazione di Rendering.
+Avendo ricavato una espressione facilmente manovrabile, siamo pronti a formulare un'algoritmo per la risoluzione dell'equazione di Rendering.\par
+Chiaramente nella nostra computazione non abbiamo la possibilit\`a di valutare una serie, per cui applichiamo \textit{Russian Roulette} 
+(\ref{chapter6:variance:russianRoulette}), valutando la terminazione della valutazione della serie ad ogni termine com probabilit\`a $q_i$, definite 
+a priori. Un approccio per la scelta di tali probabilit\`a \`e la seguente (giustificata in \cite{pharr})
+\begin{align}
+	q_j&\sim\mathcal{U}\left(0,1-\max_{\lambda\in\Lambda}\left\{
+		\eta\prod_{i=1}^{j-2}\frac{f_s(\vec{p}_{j-1},\vec{p}_j,\vec{p}_{j+1})}{p_\omega(\hat{\omega}_j)}\right\}\right)
+\end{align}
+dove $\hat{\omega}_j=(\vec{p}_{j+1}-\vec{p}_j)/\norm{\vec{p}_{j+1}-\vec{p}_j}$ e $p_\omega(\hat{\omega}_j)$ PDF della BSDF 
+(\ref{chapter3:surface:brdf})\par
+Applicando la compensazione per tale tecnica, lo stimatore unbiased diventa
+\begin{equation}
+	\frac{1}{1-q_1}\left(P(\bar{p}_1)+\frac{1}{1-q_2}\left(P(\bar{p}_2)+\frac{1}{1-q_3}\left(P(\bar{p}_3)+\ldots\right)\right)\right)
+\end{equation}
+In quanto il throughput totale della path
+\begin{equation*}
+	\beta=\prod_{i=1}^{j-2}\frac{f_s(\vec{p}_{j-1},\vec{p}_j,\vec{p}_{j+1})}{p_\omega(\hat{\omega}_j)}
+\end{equation*}
+decresce man mano che il tracing continua, \`e garantito che la valutazione della path termini in un tempo limitato. Si noti che nonostante Russian
+Roulette aumenta l'MSE, in quanto si accumulano meno contributi, l'efficienza aumenta comunque per la notevole diminuzione del Running Time.\par
+Per stimare ciascun path integral $P(\bar{p}_n)$, necessitiamo di $n+1$ vertici dei quali $\vec{p}_0$ sia sul film plane e $\vec{p}_n$ sia su una 
+sorgente luminosa. Un approccio potrebbe essere campionare, dopo aver scelto il vertice sul film plane da cui partire, $n-2$ punti da tutte le 
+superfici della scena con densit\`a di distribuzione uniforme, e l'ultimo campione su una delle superfici luminose presenti nella scena con equa
+probabilit\`a. Tale approccio per\`o non conta la mutua visibilit\`a tra le superfici e pu\`o condurre a risultati con alta varianza, per via della 
+presenza di paths con contributo nullo, e risultati incorretti, senza contare il fatto che tale metodo non supporta una gestione per le distribuzioni
+contenenti il delta di Dirac. Una strategia valida \`e rappresentata invece dalla \textit{Costruzione Incrementale del percorso} \cite{pharr}:\par
+partendo da un punto del film plane $\vec{p}_0$ (per il quale la direzione del raggio visivo \`e determinata geometricamente dal camera model),
+si traccia un raggio per intersecare una superficie in $\vec{p}_1$. Da qui si ripete il procedimento descritto a seguire.\par
+da $\vec{p}_i$ campiona una direzione dalla BSDF per ottenere una direzione $\hat{\omega}_i$ la quale, tracciato un raggio lungo essa, che conduce ad 
+una nuova intersezione $\vec{p}_{i+1}$.\par
+L'ultimo punto del path $\vec{p}_n$ deve terminare su una sorgente luminosa. L'approccio utilizzato per la determinazione della sorgente da utilizzare
+\`e il Multiple Importance Sampling, utilizzando come densit\`a di distribuzione la PDF della BSDF dell'ultima superficie, $p_\omega$, e la PDF 
+della sorgente luminosa selezionata per il calcolo della radianza uscente dall'ultima superficie, $p_l$. Si ricordi che tali PDF hanno come dominio
+la sfera unitaria di possibili direzioni, ed 
+in quanto il path integral \`e un integrale su un area, bisogna applicare la correzione (vedi Equazione \ref{chapter3:surface:areaRenderingEq})
+\begin{equation}
+	p_A(\vec{p}_i)=p_\omega(\hat{\omega}_{j-1})\frac{|\langle\hat{n},\hat{p}_i\rangle|}{\norm{\vec{p}_{i-1}-\vec{p}_i}^2}
+\end{equation}
+andandosi a semplificare con il termine geometrico\footnote{omesso l'Importance Sampling per semplicit\`a e per evidenziare i passaggi seguiti}
+\begin{align}
+	P(\bar{p}_n)&\approx L_e(\vec{p}_n\to\vec{p}_{n-1})\prod_{i=1}^{n-1}\frac{f_s(\vec{p}_{i-1},\vec{p}_i,\vec{p}_{i+1})G(\vec{p_{i+1},p_{i}})}
+		{p_A(\vec{p}_{i+1})} \nonumber \\
+	&=L_e(\vec{p}_n\to\vec{p}_{n-1})\prod_{i=1}^{n-1}\frac{f_s(\vec{p}_{i-1},\vec{p}_i,\vec{p}_{i+1})V(\vec{p}_{i+1},\vec{p}_i)
+		\frac{|\cos\theta_{i+1}||\cos\theta_i|}{\norm{\vec{p}_{i+1}-\vec{p}_i}^2}}{p_A(\vec{p}_{i+1})} \nonumber \\
+	&=L_e(\vec{p}_n\to\vec{p}_{n-1})\prod_{i=1}^{n-1}\frac{f_s(\vec{p}_{i-1},\vec{p}_i,\vec{p}_{i+1})V(\vec{p}_{i+1},\vec{p}_i)
+		\frac{|\cos\theta_{i+1}||\cos\theta_i|}{\norm{\vec{p}_i-\vec{p}_{i+1}}^2}}
+		{p_\omega(\omega_i)\frac{|\cos\theta_{i+1}|}{\norm{\vec{p}_i-\vec{p}_{i+1}}^2}} \nonumber \\
+	&=L_e(\vec{p}_n\to\vec{p}_{n-1})\prod_{i=1}^{n-1}\frac{f_s(\vec{p}_{i-1},\vec{p}_i,\vec{p}_{i+1})V(\vec{p}_{i+1},\vec{p}_i)
+		|\cos\theta_i|}{p_\omega(\omega_i)}
+\end{align}
+Dopodich\`e suddividiamo il termine di Direct Lighting applicando MIS
+\begin{align}
+	P(\bar{p}_i)&\approx w_l(\hat{\omega}_l)\frac{L_e(\vec{p}_l\to\vec{p}_{i-1})f_s(\vec{p}_{i-2},\vec{p}_{i-1},\vec{p}_l)
+		|\cos\theta_l|V(\vec{p}_{i-1},\vec{p}_l)}{p_l(\hat{\omega}_l)}\beta \nonumber \\
+	&+w_b(\hat{\omega}_e)\frac{L_e(\vec{p}_b\to\vec{p}_{i-1})f_s(\vec{p}_{i-2},\vec{p}_{i-1},\vec{p}_b)
+		|\cos\theta_b|V(\vec{p}_{i-1},\vec{p}_b)}{p_b(\hat{\omega}_b)}\beta
+\end{align}
+dove i pesi sono calcolati con la \textit{balance heuristic} o la \textit{power heuristic} (Sezione \ref{chapter6:variance:importanceSampling}).\par
+
