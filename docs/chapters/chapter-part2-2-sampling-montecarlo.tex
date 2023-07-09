@@ -414,7 +414,7 @@ Per assicurare una buona copertura dello spazio campionario, la Proposal Distrib
 Un approccio simmetrico che ci permette di eseguire tale Random Walk nel dominio \`e una proposal distribution density uniforme attorno al punto 
 $x_{i-1}$, la quale ci fornisce la seguente regola di mutazione
 \begin{equation}
-	x_i^{*^(k)}=\left(x_{i-1}^{(k)}\pm s\xi\right)\mathrm{mod}1\in[0,1]
+	x_i^{*(k)}=\left(x_{i-1}^{(k)}\pm s\xi\right)\operatorname{mod}1\in[0,1]
 \end{equation}
 dove $\cdot^{(k)}$ indica la coordinata $k$-esima del punto, $s$ seed definito a priori.\par
 Si noti che tale approccio non \`e universale, perch\`e per assicurare una copertura ottimale la Proposal Distribution Density deve approssimare 
@@ -435,7 +435,7 @@ Una funzione generalmente varia meno in un dominio ridotto. \textit{Stratified S
 $\mathcal{D}$ in un insieme esaustivo e mutialmente esclusivo di $n$ \textit{Strata} $\mathcal{D}_i$, dunque tali che
 \begin{align*}
 	\bigcup_{i=1}^n\mathcal{D}_i &= \mathcal{D} \\
-	\mathcal{D}_i\cap\mathcal{D}_j &= \O,\,\forall i,j\in\{1,\ldots,n\}\backepsilon^\prime i\neq j
+	\mathcal{D}_i\cap\mathcal{D}_j &= \text{\O},\,\forall i,j\in\{1,\ldots,n\}\backepsilon^\prime i\neq j
 \end{align*}
 Tale che per campionare $\mathcal{D}$, campioniamo $n_i$ punti da ciascun stratum con densit\`a di probabilit\`a $p_i$. Ideale applicazione di tale 
 tecnica \`e il campionamento di punti all'interno di ciascun pixel del film plane (vedi \ref{chapter2:camera}). Tale approccio permette di evitare 
@@ -503,6 +503,16 @@ somma sia pari a $n$. Allora, il MIS Monte Carlo Estimator
 \begin{equation}\label{chapter6:variance:MISMC}
 	\tilde{F}=\sum_{j=1}^n\frac{1}{n_j}\sum_{i=1}^{n_j}w_j(X_{ij})\frac{f(X_{ij})}{p_j(X_{ij})}
 \end{equation}
+Dove i pesi sono ricavati applicando minimizzazione utilizzando moltiplicatori di Lagrange \cite{pegoraro} per ottenere una formula nota come 
+\textit{balance heuristic}
+\begin{equation}
+	W_j(x)=\frac{n_jp_j(x)}{\sum_{k=1}^{n_j}n_kp_k(x)}
+\end{equation}
+Da quest'ultima formula si pu\`o anche ricavare una controparte manovrabile, che permette di dare pi\`u rilevanza a dei campioni piuttosto che altri 
+tramite esponenziazione, detta \textit{power heuristic}
+\begin{equation}
+	w_j(x)=\frac{\left(n_jp_j(x)\right)^\beta}{\sum_{k=1}^{n_j}\left(n_kp_k(x)\right)^\beta}
+\end{equation}
 \subsection{Russian Roulette}\label{chapter6:variance:russianRoulette}
 Tecnica che mira a migliorare la efficienza dello stimatore di Monte Carlo saltando la valutazione di campioni che avrebbero piccolo contributo 
 sul valore finale della stima dell'integrale. Tale tecnica \`e particolarmente conveniente per via del costo della valutazione della funzione 
@@ -522,10 +532,10 @@ Applicando la definizione di aspettazione, si ottiene la conferma di unbiasednes
 \begin{equation}
 	E[\tilde{F}^\prime]=(1-q)\left(\frac{E[\tilde{F}]-qc}{1-q}\right)+qc=E[\tilde{F}]
 \end{equation}
-Inoltre, \textit{Russian Roulette non riduce mai la varianza}, a meno che $c=F=\int f(x)\mathrm{d}x$, in quanto si pu\`o dimostrare che 
+Inoltre, \textit{Russian Roulette non riduce mai la varianza}, a meno che \\ $c=F=\int f(x)\mathrm{d}x$, in quanto si pu\`o dimostrare che 
 (\cite{pegoraro})
 \begin{equation}
-	V[\tilde{F}^\prime]=\frac{\norm{\mathcal{F}}^2V[f(X)]+(1-q)(F-c)^2}{q}\geq\frac{\norm{\mathcal{D}}^2V[f(X)]}{q}=V[\tilde{F}]
+	V[\tilde{F}^\prime]=\frac{\norm{\mathcal{D}}^2V[f(X)]+(1-q)(F-c)^2}{q}\geq\frac{\norm{\mathcal{D}}^2V[f(X)]}{q}=V[\tilde{F}]
 \end{equation}
 \subsection{Splitting}
 Tecnica duale a Russian Roulette, Splitting offre una tecnica unbiased di prelevare un numero maggiore di campioni in alcune dimensioni di un 
@@ -538,5 +548,5 @@ Potremmo, ad esempio, voler campionare $m$ volte la seconda dimensione per ogni 
 \begin{equation*}
 	\frac{1}{n}\sum_{i=1}^n\frac{1}{m}\sum_{j=1}^m\frac{f(X_i,Y_{ij})}{p_x(X_i)p_y(Y_{ij})}
 \end{equation*}
-Inoltre (\cite{pharr}), se \`e possibile valutare parzialmente $f(X_i,\dot)$, il campionamento degli $mn$ samples di $Y_{ij}$ possono essere presi 
+Inoltre (\cite{pharr}), se \`e possibile valutare parzialmente $f(X_i,\cdot)$, il campionamento degli $mn$ samples di $Y_{ij}$ possono essere presi 
 in maniera pi\`u efficiente.

@@ -1,1 +1,154 @@
+\newcommand{\fourier}[1]{\ensuremath{\mathcal{F}\left\{#1\right\}}}
+\newcommand{\ifourier}[1]{\ensuremath{\mathcal{F}^{-1}\left\{#1\right\}}}
+\newcommand{\intwhole}{\ensuremath{\int_{-\infty}^{+\infty}}}
+\newcommand{\sumwhole}[1]{\ensuremath{\sum_{#1=-\infty}^{+\infty}}}
 \chapter{Campionamento e Ricostruzione con Quasirandom Number Generation}\label{chapter5}
+La funzione immagine definita sul film plane \`e una funzione continua, che per il pinhole camera model dipende soltanto da coordinate normalizzate 
+\mbox{$(x,y)\in[-1,1]^2$}, ma l'output del sistema di rendering \`e una griglia 2D di punti colorati. Scegliere accuratamente la strategia di 
+campionamento dal film plane \`e fondamentale per migliorare la qualit\`a del risultato finale.\par
+Al fine di poter formalizzare il processo di scelta di campioni dal film plane e valutazione della funzione continua dai campioni (Ricostruzione),
+si richiamao di seguito due distinte teorie: Analisi di Fourier del Segnale e Quasirandom Number Generation.\par
+Inoltre, si cita infine il legame tra il campionamento della funzione immagine e il sistema di percezione umano, il quale \`e pi\`u sensibile a 
+cambiamenti di segnale nelle basse frequenze, dunque campionando in modo tale da shiftare l'aliasing e bias nelle alte frequenze migliora la 
+qualit\`a percepita del segnale. Infine, immagini ricostruite con rumore blu\footnote{rumore il cui PSD aumenta $10\log_{10}2\;\si{dB}$ per ottava} 
+sono percepite migliori nonostante abbiano stesso errore numerico di altri metodi di campionamento.\par
+Si precisa infine che la parola "pixel" \`e usata in due contesti differenti
+\begin{itemize}[topsep=0pt,noitemsep]
+	\item[] Un \textit{Display Pixel} \`e un elemento fisico di un display che emette luce di un determinato colore
+	\item[] Un \textit{Image Pixel} \`e un \textit{campione puntiforme privo di area} della funzione immagine filtrata $r_f(x,y)$, i quali 
+		definiscono il valore del display pixel integrando una cella definita da quest'ultimo
+\end{itemize}
+Possiamo convertire infine le coordinate continue dei pixel in indici discreti di una griglia, mappandoli prima da coordinate normalizzate a 
+screen coordinates
+\begin{equation*}
+	\vec{p}_{px}^{\mathrm{screen}}=\frac{\vec{p}_{px}^{\mathrm{NDC}}+1}{2}\odot
+	\begin{bmatrix}
+		\mathrm{width}-1 \\ \mathrm{height}-1
+	\end{bmatrix}
+\end{equation*}
+per poi troncare le coordinate ottenute $\vec{p}_{px}^*=\lfloor\vec{p}_{px}^{\mathrm{screen}}\rfloor$.
+\section{Campionamento}
+\subsection{Richiami Fourier Analysis}
+L'analisi di Fourier \`e usata per valutare la qualit\`a del segnale ricostruito rispetto all'uriginale. La \textit{Trasformazione di Fourier} 
+consiste nella scomposizione di una funzione continua in un integrale di sinusoidi pesate, le cui ampiezze e fasi costituiscono una funzione complessa 
+a valori reali (frequenza), la trasformata secondo Fourier. Possiamo trasformare tale trasformata dal dominio delle frequenze al dominio di partenza 
+applicando la \textit{Trasformazione inversa di Fourier}. Tale coppia di trasformazioni \`e definita come 
+\begin{align}
+	F(\nu)&=\fourier{f(x)}=\int_{-\infty}^{+\infty}f(x)e^{-\iota 2\pi \nu x}\mathrm{d}x \\
+	f(x)&=\ifourier{F(\nu)}=\int_{-\infty}^{+\infty}F(\nu)e^{\iota 2\pi \nu x}\mathrm{d}\nu
+\end{align}
+Le quali possono essere estese a domini multidimensionali applicando la trasformazione a ciascuna coordinata singolarmente
+\begin{align}
+	F(\nu_1,\ldots,\nu_d)&=\fourier{f(x_1,\ldots,x_d)}\nonumber\\ 
+		&=\int_{-\infty}^{+\infty}\cdots\left(
+		\int_{-\infty}^{+\infty}f(x_1,\ldots,x_d)e^{-\iota 2\pi \nu_1 x_d}\mathrm{d}x_1\right)\ldots e^{-\iota 2\pi \nu_d x_d}\mathrm{d}x_d \\
+	f(x_1,\ldots,x_d)&=\ifourier{F(\nu_1,\ldots,\nu_d)} \nonumber\\
+		&=\int_{-\infty}^{+\infty}\cdots\left(\int_{-\infty}^{+\infty}
+		F(\nu_1,\ldots,\nu_d)e^{\iota 2\pi \nu_1 x_1}\mathrm{d}\nu_1\right)\ldots e^{\iota 2\pi \nu_dx_d}\mathrm{d}\nu_d
+\end{align}
+Le seguenti generalizzazioni dunque valgono anche per segnali multidimensionali.
+La formalizzazione del processo di campionamento (ideale) con periodo $T$ \`e data dalla moltiplicazione di una funzione continua per un 
+treno di impulsi $\sha_T(x)=T\sum_{i=-\infty}^{\infty}\delta(x-iT)$,
+\begin{equation}
+	f(x)\sha_T(x)=Tf(x)\sum_{i=-\infty}^{\infty}\delta(x-iT)=\sum_{i=-\infty}^{\infty}f[i]\delta(x-iT)
+\end{equation}
+dove $f[i]=Tf(iT)$ segnale tempo discreto campionato con periodo $T$\par
+Tale espressione nel dominio della frequenza consiste in una somma di repliche del segnale originale
+\begin{align}
+	\fourier{f(x)\sha_T(x)}&=F(\nu)*T\sha_{1/T}(\nu) \nonumber\\
+		&=\intwhole F(u)T\sha_{1/T}(\nu-u)\mathrm{d}u \nonumber\\
+		&=\intwhole F(u)\sumwhole{k}\delta\left(\nu-u+\frac{k}{T}\right)\mathrm{d}u \nonumber\\
+		&=\sumwhole{k}\intwhole F(u)\delta\left(\nu-u+\frac{k}{T}\right)\mathrm{d}u \nonumber\\
+		&=\sumwhole{k}F\left(\nu-u+\frac{k}{T}\right)
+\end{align}
+Da cui si enuncia il fondamentale \textit{Teorema di Shannon} del campionamento \cite{pegoraro}
+\begin{theoremS}
+	Sia $F(\nu)$ segnale a banda limitata, \mbox{$\exists \nu_b\in\mathbb{R}^+\backepsilon^\prime\;F(\nu)=0\;\forall |\nu|>\nu_b$}, il 
+	\textit{Teorema del campionamento di Nyquist-Shannon} afferma che tale segnale \`e perfettamente costruibile dai suoi samples, quando \`e 
+	soddisfatto il \textit{Nyquist Criterion} $\tfrac{\nu_s}{\nu_b}>2$, cio\`e se la frequenza di campionamento $\nu_s$ \`e pi\`u grande del 
+	\textit{Nyquist Rate} $2\nu_b$, o equivalentemente quando la frequenza limite di banda $\nu_b$ \`e inferiore della \textit{Nyquist Frequency} 
+	$\tfrac{\nu_s}{2}$
+\end{theoremS}
+La distanza tra bande successive \`e incrementata aumentando la frequenza di campionamento $\nu_s$, processo detto \textit{oversampling} di un fattore 
+$N>1$ se $\tfrac{\nu_s}{\nu_b}>2N$, il che permette ai filtri (dopo) di avere una banda di transizione pi\`u variabile. Al contrario, 
+\textit{undersampling} consiste nel campionare con frequenza $\nu_s$ tale che $N\leq0$, il che significa che il teorema del campionamento non \`e 
+soddisfatto, generando la sovrapposizione delle repliche scalate degli spettri del segnale originale in frequenza, non permettendo la ricostruzione 
+(dopo), il che provoca il fenomeno noto come \textit{Aliasing}, il che si pu\`o manifestare in immagini statiche come \textit{pattern di Moir\'{e}}
+ed in animazioni come \textit{wagon-wheel effect}. Con pi\`u precisione, ci si riferisce con \textit{Pre-Aliasing} agli artefatti di aliasing 
+introdotti dal campionamento e con \textit{Post-Aliasing} agli artefatti di aliasing introdotti dalla ricostruzione. Non sempre si pu\`o aumentare 
+la frequenza di campionamento per migliorare la qualit\`a dell'immagine, in quanto si rischia di incorrere in costi elevati di computazione.\par
+Si noti che segnali reali mai sono banda limitata, per la presenza di discontinuit\`a.\par
+Data una sequenza di campioni, campionata con frequenza di campionamento $\nu_s=T^{-1}$, che soddisfa il teorema di Shannon $f[i]$, essa pu\`o 
+essere utilizzata per ricostruire la funzione originare con l'\textit{interpolazione ideale di Shannon-Whittaker}
+\begin{equation}
+	f(x)=\sumwhole{j}\operatorname{sinc}(x-kT)f[k]
+\end{equation}
+Il che \`e equivalente ad applicare un filtro passa basso di estensione pari alla banda limite del segnale $\nu_b$. Tale funzione non \`e utilizzata 
+nella pratica per lo svantaggio di dover valutare tutti i campioni per la ricostruzione in ogni singolo punto della funzione. Preferiamo metodi che 
+permettono di ricostruire la funzione originale valutandola in un intorno del punto di valutazione, ed \`e per questo che applichiamo un filtro di 
+ricostruzione.\par
+Ricordiamo la definizione di \textit{Power Spectral Density}, per un segnale con energia 
+\begin{align}
+	S_f(\nu)&=\lim_{T\to\infty}\frac{1}{T}|\fourier{f_T(x)}|^2\mathrm{d}\nu\\
+	f_T(x)&=\left\{\begin{aligned}
+		&f(x)\;\text{se }x\in[-T,T]\nonumber\\
+		&0&\text{altrimenti}\nonumber
+	\end{aligned}\right.\nonumber
+\end{align}
+Tipicamente, per segnali che sono campionati e processati nel dominio tempo-discreto, utilizziamo una seconda definizione, che pu\`o essere ottenuta 
+da questa campionando il segnale e prendendo il limite $T_s\to0$
+\begin{equation}
+	S_f(\nu)=F(\nu)\bar{F(\nu)}
+\end{equation}
+Tale concetto \`e utile per analizzare statisticamente un Sampling pattern. Talvolta un PSD per un sampling pattern pu\`o essere derivata 
+analiticamente, come per il campionamento uniforme \cite{pharr}, altre va calcolato numericamente, come per sampling stocastico.\par
+In generale, L'\textit{aliasing \`e ridotto se la PSD di una strategia di campionamento \`e minima alle basse frequenze}
+\subsection{Quasirandom Number Generation}
+Un altro concetto al di fuori della Fourier Analysis per valutare la qualit\`a di samples \`e il concetto di \textit{Discrepancy}. La generazione di 
+sequenze di numeri a bassa discrepanza ha lo scopo di costruire delle formule matematiche (deterministiche) per campionare punti all'apparenza 
+casuali con migliore uniformit\`a e copertura del dominio che si ottiene con un campionatore uniforme. La Discrepanza infatti \`e una metrica che 
+misura quanto uniformemente una data successione copre un dato spazio campionario.\par
+(\cite{pharr}) L'idea \`e quella di suddividere\footnotemark{} un dominio d-dimensionale $[0,1)^d$ in tante regioni, contare il numero di punti in 
+ciascuna regione, e comparare tale numero $\norm{\{x_i\in b\}}$ alla frazione di volume della regione $V(b)$. La frazione di punti rispetto al numero 
+di campioni totali di una data regione dovrebbe essere proporzionale alla percentuale di volume totale della regione.\par
+\footnotetext{Per suddivisione non si intende una partizione del volume totale, ma sottoinsiemi arbitrari di esso la cui unione \`e il volume totale}
+Scegliamo come suddivisione di $[0,1)^d$ una famiglia di parallelepipedi con un vertice sull'origine
+\begin{equation}
+	B=\{[0,v_1]\times [0,v_2]\times\cdots\times [0,v_d]\}
+\end{equation}
+Da cui, dati $n$ samples $P=\{x_1,\ldots,x_n\}$, la \textit{discrepancy} di $P$ rispetto a $B$ \`e definita come
+\begin{equation}
+	D_n(B,P)=\stackrel[{b\in B}]{}{\operatorname{sup}}\left\vert\frac{\norm{\{x_i\in b\}}}{n}-V(b)\right\vert
+\end{equation}
+In particolare, quando la famiglia di volumi scelta per calcolare la \textit{discrepancy} \`e l'insieme di parallelepipedi con centro l'origine, 
+il valore che \`e calcolato \`e anche chiamato \textit{Star Discrepancy}.\par
+Tale valore pu\`o essere calcolato in modo analitico per alcuni particolari insiemi di punti. Consideriamo infatti $n$ punti equispaziati, 
+$x_i=\frac{i}{n}$. Scegliendo come famiglia di volumi 
+\begin{equation*}
+	B_u=\left\{\left[0,\frac{1}{n}\right),\left[0,\frac{2}{n}\right),\ldots,\left[0,1\right)\right\}
+\end{equation*}
+Si ottiene star discrepancy
+\begin{equation}
+	D_n^*(\{x_i\}_{i=1}^n,B_u)=\frac{1}{n}
+\end{equation}
+Una sequenza di punti d-dimensionale \`e a bassa discrepanza se la sua \textit{star discrepancy} \`e dell'ordine 
+\mbox{$\mathcal{O}\left(\frac{(\log n)^d}{n}\right)$}
+\subsection{Halton Sampler}
+Tra i vari campionatori esistenti (\cite{pharr}, \cite{pegoraro}, \cite{akenine-moller}), analizziamo con i due framework brevemente spiegati in 
+precedenza, il campionatore basato sulla quasirandom \textit{Sequenza di Halton}. Tale sequenza \`e costruita utilizzando 
+l'\textit{Inverso Radicale}:\\
+Un numero positivo \`e esprimibile in base $b$ come somma di cifre $a=\sum_{i=1}^{m}d_i(a)b^{i-1},\;d_i(a)\in[0,1)$. La Funzione Inverso Radicale 
+$\Phi_b$ in base $b$ converte un intero nonnegativo in una frazione $\in[0,1)$ riflettendo le cifre del numero di partenza rispetto al punto
+\begin{equation}
+	\Phi_b(a)=0.d_1(a)d_2(a)\ldots d_m(a)=\sum_{i=1}^md_i(a)b^{-i}
+\end{equation}
+Un campionatore d-dimensionale pu\`o essere costruito scegliendo per ogni dimensione una funzione inverso radicale con base pari ad un numero primo. 
+La generazione di $n$ campioni consiste nel valutare tali funzioni per $0,1,\ldots,n-1$
+\begin{equation}
+	x_a=(\Phi_2(a),\Phi_(3),\ldots,\Phi_{p_d}(a))
+\end{equation}
+La star discrepancy della sequenza ottenuta \`e pari a \mbox{$D_n^*(x_a,B_u)=\mathcal{O}\left(\frac{(\log n)^d}{n}\right)$}, cio\`e il valore ottimale.
+Si noti che l'implementazione del calcolo di tali radicali \`e mantenuto con aritmetica intera per evitare di accumulare errore di round-off.\par
+Uno svantaggio di tale sequenza (\cite{pharr}) \`e che \`e deterministica, dunque non ne possiamo valutare la varianza di un integrale stimato con 
+essa. Inoltre, man mano che la base cresce, la sequenza diventa sempre pi\`u regolare, rendendo basi alte inutilizzabili. Per risolvere tali problemi
+si pu\`o attuare una permutazione casuale, diversa per ogni 
