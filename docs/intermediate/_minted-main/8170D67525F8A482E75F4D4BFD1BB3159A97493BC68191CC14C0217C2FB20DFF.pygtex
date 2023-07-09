@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{+w}{	}\PYG{n}{Float}\PYG{+w}{ }\PYG{n+nf}{OvenScrambledRadicalInverse}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{baseIndex}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{uint64\PYGZus{}t}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{unit32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{hash}\PYG{p}{)}
+\PYG{+w}{	}\PYG{p}{\PYGZob{}}
+
+\PYG{+w}{	}\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

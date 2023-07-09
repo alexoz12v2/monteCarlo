@@ -174,6 +174,42 @@
       \field{title}{The Art of Radiometry}
       \field{year}{2009}
     \endentry
+    \entry{dirk}{book}{}
+      \name{author}{3}{}{%
+        {{hash=bdeae732a8a2bf629098c06d021dceb5}{%
+           family={Kroese},
+           familyi={K\bibinitperiod},
+           given={Dirk\bibnamedelima P.},
+           giveni={D\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=e663c95b6be6738300dec8cc170dc450}{%
+           family={Talmre},
+           familyi={T\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=fb86f6c50dd80dc9e65a02cf893d286d}{%
+           family={Botev},
+           familyi={B\bibinitperiod},
+           given={Zdravko\bibnamedelima I.},
+           giveni={Z\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{d43ea99896f816acc99c676b0d3731b2}
+      \strng{fullhash}{d43ea99896f816acc99c676b0d3731b2}
+      \strng{bibnamehash}{d43ea99896f816acc99c676b0d3731b2}
+      \strng{authorbibnamehash}{d43ea99896f816acc99c676b0d3731b2}
+      \strng{authornamehash}{d43ea99896f816acc99c676b0d3731b2}
+      \strng{authorfullhash}{d43ea99896f816acc99c676b0d3731b2}
+      \field{labelalpha}{KTB11}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{1}
+      \field{title}{Handbook of Monte Carlo Methods}
+      \field{year}{2011}
+    \endentry
     \entry{vision}{book}{}
       \name{author}{1}{}{%
         {{hash=1ea6ab8f6fb9d08d0efbe1b01b16cbfa}{%

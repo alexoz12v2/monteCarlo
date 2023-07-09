@@ -1,15 +1,15 @@
 [0] Config.pm:307> INFO - This is Biber 2.19
 [0] Config.pm:310> INFO - Logfile is './intermediate/main.blg'
-[48] biber:340> INFO - === Sun Jul  9, 2023, 02:55:15
-[57] Biber.pm:419> INFO - Reading './intermediate/main.bcf'
-[108] Biber.pm:979> INFO - Found 14 citekeys in bib section 0
-[118] Biber.pm:4419> INFO - Processing section 0
-[124] Biber.pm:4610> INFO - Looking for bibtex file 'references.bib' for section 0
-[125] bibtex.pm:1713> INFO - LaTeX decoding ...
-[135] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
-[199] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[199] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[199] Biber.pm:4239> INFO - Sorting list 'ynt/global//global/global' of type 'entry' with template 'ynt' and locale 'en-US'
-[200] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
-[208] bbl.pm:660> INFO - Writing './intermediate/main.bbl' with encoding 'UTF-8'
-[211] bbl.pm:763> INFO - Output to ./intermediate/main.bbl
+[48] biber:340> INFO - === Sun Jul  9, 2023, 23:36:02
+[59] Biber.pm:419> INFO - Reading './intermediate/main.bcf'
+[113] Biber.pm:979> INFO - Found 15 citekeys in bib section 0
+[122] Biber.pm:4419> INFO - Processing section 0
+[129] Biber.pm:4610> INFO - Looking for bibtex file 'references.bib' for section 0
+[130] bibtex.pm:1713> INFO - LaTeX decoding ...
+[140] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
+[212] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[212] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[212] Biber.pm:4239> INFO - Sorting list 'ynt/global//global/global' of type 'entry' with template 'ynt' and locale 'en-US'
+[212] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[221] bbl.pm:660> INFO - Writing './intermediate/main.bbl' with encoding 'UTF-8'
+[225] bbl.pm:763> INFO - Output to ./intermediate/main.bbl

@@ -1,5 +1,46 @@
 \chapter{Numeri Pseudocasuali e Algoritmi Vari}\label{appendixC}
 \section{Generazione di numeri Pseudorandom}\label{appendixC:RNG}
-\section{Metodo di Gauss-Newton}\label{appendixC:gaussNewton}
-\section{Interpolazione di Hermite}\label{appendixC:hermiteInterp}
-\section{Convergenza di Sequenza di Funzioni}\label{appendixC:functionSeqConvergence}
+Nell'intero testo pi\`u volte si \`e fatta allusione a variabili aleatorie uniformi standard, senza effettivamente poi specificare come nella 
+pratica esse vengono implementate. Generare numeri realmente casuali \`e ovviamente impossibile, dunque lo scopo di questa categoria di algoritmi 
+\`e generare una sequenza parametrizzata da un seed, tipicamente settato ad un valore univoco (come un valore di hash, o una data), la quale,
+nonostante sia perfettamente deterministica, appaia casuale. Tale sequenza \`e purtroppo periodica, dunque bisogna cercare di parametrizzare e 
+tale RNG in modo tale da rendere il periodo sufficientemente grande da non renderlo evidente, e ovviamente, tale generatore deve rispettare 
+il prerequisito di dover approssimare il pi\`u accuratamente possibile la densit\`a di distribuzione $\mathcal{U}(0,1)$.\par
+Il metodo pi\`u semplice per generare una tale sequenza \`e il \textit{Generatore Lineare Congruenziale} (LCG): 
+Sia $\mathmakebox{x_t}\in\{0,\ldots,m-1\}$
+stato del generatore e $m>0$ modulo, $a$, $c$ parametri del generatore, allora
+\begin{align}
+	x_t&=(ax_{t-1}+c)\operatorname{mod}m,\;t=1,2,\ldots\\
+	\xi_t&=\frac{x_t}{m}\nonumber
+\end{align}
+Una scelta standard per questi parametri \cite{dirk} \`e $a=7^5$, $c=0$, $m=2^{31}-1$\par
+Un altra categoria di RNG \`e il $\textit{Generatore Ricorsivo-Multiplo}$ di ordine\footnotemark{} $k$, con stato 
+$\mathmakebox{\vec{x}_t=[x_{t-k+1},\ldots,x_t]^T\in\{0,\ldots,m-1\}^k}$, le cui transizioni di stato sono definite dalla generazione di un nuovo 
+componente. Lo spazio output dell'algoritmo \`e un vettore distribuito con PDF $\mathcal{U}(0,1)^k$.
+\begin{align}
+	x_t&=(a_1x_{t-1}+\cdots+a_kx_{t-k})\operatorname{mod}m,\;t=k,k+1,\ldots
+\end{align}
+\footnotetext{mantiene in "memoria" gli ultimi $k$ stati, da cui il nome}
+Di solito, \cite{dirk}, $m$ \`e scelto come numero primo maggiore di $2^{18}-2$. L'operazione sopracitata pu\`o essere interpretata come 
+moltiplicazione matrice vettore, giungendo ad una forma detta \textit{Generatore Matriciale Congruenziale} (MRG)
+\begin{align}
+	\vec{x}_t=(A\vec{x}_{t-1})\operatorname{mod}m,\;t=1,2,\ldots
+\end{align}
+dove 
+\begin{equation}
+	A =
+	\begin{bmatrix}
+		0 & 1 & \cdots & 0 \\
+		\vdots & \vdots & \ddots & \vdots \\
+		0 & 0 & \cdots & 1 \\
+		a_k & a_{k-1} & \cdots & a_1
+	\end{bmatrix}
+	\;\mathrm{e}\;
+	\vec{x_t} = 
+	\begin{bmatrix}
+		x_t \\ x_{t+1} \\ \vdots \\ x_{t+k-1}
+	\end{bmatrix}
+\end{equation}
+%\section{Metodo di Gauss-Newton}\label{appendixC:gaussNewton}
+%\section{Interpolazione di Hermite}\label{appendixC:hermiteInterp}
+%\section{Convergenza di Sequenza di Funzioni}\label{appendixC:functionSeqConvergence}

@@ -89,16 +89,16 @@ permettono di ricostruire la funzione originale valutandola in un intorno del pu
 ricostruzione.\par
 Ricordiamo la definizione di \textit{Power Spectral Density}, per un segnale con energia 
 \begin{align}
-	S_f(\nu)&=\lim_{T\to\infty}\frac{1}{T}|\fourier{f_T(x)}|^2\mathrm{d}\nu\\
+	S_f(\nu)&=\lim_{T\to\infty}\frac{1}{T}|\fourier{f_T(x)}|^2\\
 	f_T(x)&=\left\{\begin{aligned}
 		&f(x)\;\text{se }x\in[-T,T]\nonumber\\
-		&0&\text{altrimenti}\nonumber
+		&0&\mathrm{altrimenti}\nonumber
 	\end{aligned}\right.\nonumber
 \end{align}
 Tipicamente, per segnali che sono campionati e processati nel dominio tempo-discreto, utilizziamo una seconda definizione, che pu\`o essere ottenuta 
 da questa campionando il segnale e prendendo il limite $T_s\to0$
 \begin{equation}
-	S_f(\nu)=F(\nu)\bar{F(\nu)}
+	S_f(\nu)=F(\nu)\xoverline{F(\nu)}
 \end{equation}
 Tale concetto \`e utile per analizzare statisticamente un Sampling pattern. Talvolta un PSD per un sampling pattern pu\`o essere derivata 
 analiticamente, come per il campionamento uniforme \cite{pharr}, altre va calcolato numericamente, come per sampling stocastico.\par
@@ -137,8 +137,12 @@ Una sequenza di punti d-dimensionale \`e a bassa discrepanza se la sua \textit{s
 Tra i vari campionatori esistenti (\cite{pharr}, \cite{pegoraro}, \cite{akenine-moller}), analizziamo con i due framework brevemente spiegati in 
 precedenza, il campionatore basato sulla quasirandom \textit{Sequenza di Halton}. Tale sequenza \`e costruita utilizzando 
 l'\textit{Inverso Radicale}:\\
-Un numero positivo \`e esprimibile in base $b$ come somma di cifre $a=\sum_{i=1}^{m}d_i(a)b^{i-1},\;d_i(a)\in[0,1)$. La Funzione Inverso Radicale 
-$\Phi_b$ in base $b$ converte un intero nonnegativo in una frazione $\in[0,1)$ riflettendo le cifre del numero di partenza rispetto al punto
+Un numero positivo \`e esprimibile in base $b$ come somma di cifre 
+\begin{equation}
+	a=\sum_{i=1}^{m}d_i(a)b^{i-1},\;d_i(a)\in[0,1)
+\end{equation}
+La Funzione Inverso Radicale $\Phi_b$ in base $b$ converte un intero nonnegativo in una frazione $\in[0,1)$ riflettendo le cifre del numero di 
+partenza rispetto al punto
 \begin{equation}
 	\Phi_b(a)=0.d_1(a)d_2(a)\ldots d_m(a)=\sum_{i=1}^md_i(a)b^{-i}
 \end{equation}
@@ -151,4 +155,252 @@ La star discrepancy della sequenza ottenuta \`e pari a \mbox{$D_n^*(x_a,B_u)=\ma
 Si noti che l'implementazione del calcolo di tali radicali \`e mantenuto con aritmetica intera per evitare di accumulare errore di round-off.\par
 Uno svantaggio di tale sequenza (\cite{pharr}) \`e che \`e deterministica, dunque non ne possiamo valutare la varianza di un integrale stimato con 
 essa. Inoltre, man mano che la base cresce, la sequenza diventa sempre pi\`u regolare, rendendo basi alte inutilizzabili. Per risolvere tali problemi
-si pu\`o attuare una permutazione casuale, diversa per ogni 
+si pu\`o attuare una permutazione casuale, diversa per ogni cifra, affinch\`e tali permutazioni generino una sequenza che approcci una distribuzione 
+uniforme. Tale processamento dei punti della sequenza di Halton \`e chiamata \textit{Scrambling}.\par
+In particolare, una strategia di Scrambling efficace per la sequenza di Halton \`e l'\textit{Owen Scrambling} \cite{pharr}, per il quale si pu\`o
+dimostrare diminuire l'andamento asintotico dell'errore di integrazione a
+\begin{equation}
+	\mathcal{O}\left(n^{-\frac{3}{2}}(\log n)^{\frac{d-1}{2}}\right)
+\end{equation}
+\begin{figure}[tb]
+	\centering
+	\begin{subfigure}[t]{0.4\linewidth}
+		\includegraphics[width=\linewidth]{../assets/chapter5_sampling_haltonPSD.png}
+		\caption{Senza Owen Scrambling. Prestazioni migliori rispetto al campionamento uniforme, in quanto presenta contributi minimi alle basse 
+			frequenze, ma contiene eccessiva variazione nelle alte frequenze}
+		\label{chapter5:sampling:owen:no}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.5\linewidth}
+		\includegraphics[width=\linewidth]{../assets/chapter5_sampling_owenPSD.png}
+		\caption{Con Owen Scrambling. PSD quasi unitaria nella maggior parte del dominio alle alte frequenze.}
+		\label{chapter5:sampling:owen:yes}
+	\end{subfigure}
+	\caption{Illustrazione delle Power Spectral Densities del campionatore basato sulla sequenza di Halton con basi 2 e 3, con e senza Owen Scrambling.
+		Immagini da \cite{pharr}}
+	\label{chapter5:sampling:owen}
+\end{figure}
+Il che \`e superiore all'$\mathcal{O}(n^{-1/2})$ per Monte Carlo con punti campionati uniformemente.\par
+Lo Scrambling per l'n $i$-esima coordinata del $k$-esimo punto della sequenza $x_k^{(i)}=0.d_1d_2\ldots d_m$ \`e il seguente 
+(codice completo da \cite{pharr})
+\begin{minted}{C++}
+// baseIndex <- base dell'Inverso Radicale
+// a         <- cifre dell'inverso radicale d1...dm
+// hash      <- valore casuale
+Float OvenScrambledRadicalInverse(int baseIndex, uint64_t a, 
+					uint32_t hash)
+{
+	int base = Primes[baseIndex];
+	Float invBase = 1.f / base, invBaseM = 1;
+
+	// bits Scrambled finora
+	uint64_t reversedDigits = 0;
+	int digitIndex = 0;
+
+	// finche non si esauriscono le cifre di a da 
+	// mettere nel floating point
+	while (1 - invBaseM < 1)
+	{
+		// estrai il valore della <digitIndex> cifra
+		uint64_t next = a / base; // equivalente a 
+					// un right shift del numero
+					// in base <base>
+		int digitValue = a - next * base;
+
+		// calcola un seed unico per permutare casualmente il valore 
+		// estratto nota che tale seed dipende da tutti i valori 
+		// precedentemente permutati
+		uint32_t digitHash = MixBits(hash ^ reversedDigits);
+
+		// seleziona la <digitValue>-esima permutazione 
+		// pseudocasuale basata sul seed <digitHash>, 
+		// di <base> numeri casuali
+		digitValue = PermutationElement(digitValue, base, 
+						digitHash);
+
+		// aggiungi la cifra a quelle calcolate finora
+		reversedDigits = reversedDigits * base + digitValue;
+
+		invBaseM *= invBase;
+		++digitIndex;
+		a = next;
+	}
+	return std::min(invBaseM * reversedDigits, OneMinusEpsilon);
+}
+\end{minted}
+\begin{figure}[b]
+	\centering
+	\includegraphics[width=\linewidth]{../assets/chapter5_sampling_result.png}
+	\caption{Risultato dell'applicazione del campionamento con Scrambled Halton Sequence. Immagine da \cite{pharr}}
+	\label{chapter5:sampling:result}
+\end{figure}
+\section{Ricostruzione}
+Un segnale continuo pu\`o essere ricostruito dai suoi campioni (perfettamente o meno) con una moltiplicazione nel dominio della frequenza con la 
+funzione di trasferimento di un \textit{filtro di ricostruzione} $F_r$, o equivalemntemente con la convoluzione del segnale a dominio discreto 
+rappresentato dai campioni con la risposta all'impulso del filtro, $f_r$. Ricordiamo che le immagini che andiamo a campionare non sono a banda
+limitata, in quanto presentano discontinuit\`a. L'obiettivo \`e dunque trovare una strategia che permetta di minimizzare l'errore tra la funzione 
+ricostruita e la funzione originale.\par
+Il filtro ideale risulta non essere una scelta appropriata (\cite{pharr}), in qunato esso \`e affetto dal problema del \textit{ringing} per funzioni
+oltre la \textit{nyquist frequency}, ci\`o vuol dire che i bordi degli gli oggetti risultano replicati nei pixel vicini (pi\`u formalmente noto come 
+Fenomeno di Gibbs). Inoltre, $\operatorname{sinc}$ ha estensione infinita, in quanto non va a zero per un valore finito della distanza.\par
+Si noti che i filtri di seguito descritti saranno 1D, ma da essi possiamo costruire un filtro d-dimensionale in due modi:\\
+Costruendo un \textit{filtro separabile} (si veda \ref{chapter5:reconstruction:boxFilter})
+\begin{equation}
+	f(x,y)=f(x)f(y)
+\end{equation}
+Oppure Costruendo un \textit{filtro radiale} 
+\begin{align}
+	f(x,y)&=\frac{f(\rho)}{2\pi c},\\
+	\rho &= \sqrt{x^2+y^2}\nonumber\\
+	c &= \int_0^{\infty}\rho f(\rho)\mathrm{d}\rho\nonumber
+\end{align}
+\subsection{Box Filter}\label{chapter5:reconstruction:boxFilter}
+Uno dei filtri pi\`u comunemente usati \`e il box filter, il quale rappresenta effettivamente il risultato "standard", utilizzato ad esempio per 
+comparare campionatori. Essendo il pi\`u semplice dei filtri, il quale ricostruisce una funzione piecewise constant, introduce post aliasing, anche 
+se il campionamento \`e effettuato con un elevata sampling frequency.
+\begin{align}
+	f(x)=\sqcap(x)=\left\{\begin{aligned}
+		&1 &\mathrm{se}\;|x|<\tfrac{1}{2}\\
+		&\tfrac{1}{2}\;&\mathrm{se}\;|x|=\tfrac{1}{2}\\
+		&0 &\mathrm{se}\;|x|>\tfrac{1}{2}
+	\end{aligned}\right.
+\end{align}
+Il quale ha funzione di trasferimento
+\begin{equation}
+	F(\nu)=\operatorname{sinc}(\pi\nu)
+\end{equation}
+Utilizzandolo in due dimensioni come un filtro separabile esso ha espressione \mbox{$f(x,y)=\sqcap(x)\sqcap(y)$} con 
+integrale pari a $4x_by_b$, dove $x_b$ e $y_b$ semiestensioni del filtro, e funzione di trasferimento
+\mbox{$F(\nu_x)*F(\nu_y)$}\par
+Nel caso in cui si utilizzi il box filter come filtro radiale, 
+\begin{equation}
+	f(x,y)=f\left(\tfrac{r}{c}\right)
+\end{equation}
+\begin{figure}[tb]
+	\centering 
+	\includegraphics[width=0.8\linewidth]{../assets/chapter5_reconstruction_box.png}
+	\caption{Illustrazione della risposta all'impulso del box filter. Immagine da \cite{pegoraro}}
+	\label{chapter5:reconstruction:boxFilter}
+\end{figure}
+dove $c$ semiestensione del filtro. Esso ha funzione di trasferimento
+{
+	\newcommand{\eq}{\stackrel{\small{\theta=\varphi-\phi}}{=}}
+	\newcommand{\eqa}{\mathmakebox[\widthof{x=x-x}]{=}}
+\begin{align}
+	F(\nu_x,\nu_y)&\eqa\intwhole\intwhole f(x,y)e^{-\iota 2\pi(\nu_xx + \nu_yy)}\mathrm{d}x\mathrm{d}y \nonumber\\
+	&\eqa\int_0^{2\pi}\int_0^{\infty}f\left(\tfrac{r}{c}\right)e^{-\iota 2\pi r \rho\cos(\varphi-\phi)}r\mathrm{d}r\mathrm{d}\varphi\nonumber\\
+	&\eq\int_0^{\infty}f\left(\tfrac{r}{c}\right)\int_{-\phi}^{2\pi-\phi}e^{-\iota 2\pi r\rho\cos\theta}\mathrm{d}\theta r\mathrm{d}r\nonumber\\
+	&\eqa2\pi\int_0^{\infty}f\left(\tfrac{r}{c}\right)J_0(2\pi r\rho)r\mathrm{d}r\nonumber \\
+	&\eqa 2\pi\int_0^{\tfrac{c}{2}}J_0(2\pi r\rho)r\mathrm{d}r\stackrel{\uptau=2\pi r\rho}{=}\frac{1}{2\pi\rho^2}\int_0^{c\pi\rho}
+		J_0(\uptau)\uptau\mathrm{d}\uptau\nonumber\\
+	&\eqa\frac{c}{2\rho}J_1(c\pi\rho)
+\end{align}
+}
+Per campionare il filtro separabile (vedi Equazione \ref{chapter2:camera:weightEstimatorOne}), la CDF della box function \`e pari a 
+\begin{equation}
+	2\int_0^{x_s}\sqcap(x)\mathrm{d}x=2\int_0^{x_s}=2x_s
+\end{equation}
+Dunque possiamo applicare Inverse transform sampling, dato un $\xi\sim\mathcal{U}(0,1)$, 
+\begin{equation}
+	\xi=2x_s\longrightarrow x_s=\frac{x_s}{2}
+\end{equation}
+Seguito da una scala per il dominio di interesse. Nel filtro radiale, la CDF
+\begin{equation}
+	8\int_0^{\rho_s}\sqcap(\rho)\rho\mathrm{d}\rho=8\int_0^{\rho_s}\rho\mathrm{d}\rho=4\rho_s^2
+\end{equation}
+Da cui si pu\`o applicare Inverse Transform Sampling
+\begin{equation}
+	\xi=4\rho_s^2\longrightarrow\rho_s=\frac{\sqrt{\xi}}{2}
+\end{equation}
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=.8\linewidth]{../assets/chapter5_reconstruction_box_result.png}
+	\caption{Risultato dell'applicazione del box filter ad un checkeboard pattern}
+	\label{chapter5:reconstruction:boxFilterResult}
+\end{figure}
+\subsection{Gaussian Filter}
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=0.8\linewidth, trim=0px 0px 0px 5px, clip]{../assets/chapter5_reconstruction_gaussian.png}
+	\caption{Illustrazione di una gaussiana}
+	\label{chapter5:reconstruction:gaussian}
+\end{figure}
+Questo filtro convolve l'immagine non filtrata con un kernel gaussiano. In quanto non presenta lobi negativi, tale filtro sfoca l'immagine originale, 
+il che pu\`o essere effetto indesiderato della ricostruzione. Filtri pi\`u complicati, come il Mitchell-Netvali Filter, qui non trattati 
+(si rimanda a \cite{pegoraro}, \cite{pharr}), riescono ad ottenere un risultato di qualit\`a simile al Gaussian Filter, preservandone la sharpness. 
+L'equazione di tale filtro
+\begin{equation}
+	f(x)=G(x;0,\sigma)
+\end{equation}
+dove 
+\begin{align}
+	G(x;\mu,\sigma)&=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}\\
+	\fourier{G(x,\mu,\sigma)}&=\frac{e^{\frac{\sigma^2\nu^2}{2}+\iota\mu\nu}}{\sqrt{2\pi}\sqrt{\tfrac{1}{\sigma^2}}\sigma}=
+		\frac{e^{\iota\mu\nu}}{\sigma}G\left(x;0,\tfrac{1}{\sigma}\right)\\
+	\int G(x;\mu,\sigma)\mathrm{d}x&=\frac{1}{2}\left(1+\operatorname{erf}\left(\frac{x-\mu}{\sqrt{2}\sigma}\right)\right)
+\end{align}
+La funzione di trasferimento del Gaussian Filter \`e dunque
+\begin{equation}
+	F(\nu)=\frac{1}{\sigma}G\left(x;0,\tfrac{1}{\sigma}\right)
+\end{equation}
+Per far in modo che il filtro abbia un raggio definito $x_b$ e vada a zero per un valore finito, raffiniamo il filtro come 
+\begin{equation}
+	f(x)=\left\{\begin{aligned}
+		&G(x;0,\sigma)-G(x_b;0,\sigma)\;&|x|<x_b\\
+		&0 &\;\;\mathrm{altrimenti}
+	\end{aligned}\right.
+\end{equation}
+Supponendo composizione bidimensionale come separable filter, possiamo campionare ciascuna dimensione separatamente. La CDF calcolata in un punto $x_s$
+\begin{equation}
+	2\int_0^{x_s}G(x;0,\sigma)-G(x_b;0,\sigma)\mathrm{d}x=\operatorname{erf}\left(\frac{x_s}{\sqrt{2}\sigma}\right)-
+		\operatorname{erf}\left(\frac{\-x_b}{\sqrt{2}\sigma}\right)
+\end{equation}
+Si evince che il suo campionamento risulta essere arduo con Inverse Transform Sampling. Ci sono diverse opzioni
+\begin{itemize}[topsep=0pt,noitemsep]
+	\item Utilizzare la versione classica del filtro, per il quale $x_s=\sqrt{2}\sigma\operatorname{erf}^{-1}(\xi)$ \cite{pegoraro}
+	\item Utilizzare una approssimazione polinomiale o piecewise constant, normalizzarla, e utilizzarla come CDF \cite{pharr}
+\end{itemize}
+\begin{figure}[tb]
+	\centering 
+	\includegraphics[width=0.8\linewidth]{../assets/chapter5_reconstruction_piecewise.png}
+	\caption{Illustrazione funzione definita a tratti. Immagine da \cite{pharr}}
+	\label{chapter5:reconstruction:piecewisePDF}
+\end{figure}
+Tale problema si ripropone nella composizione bidimensionale del Gaussian Filter, il quale nella sua forma classica pu\`o essere campionato mediante 
+Inverse Transform Sampling (si rimanda a \cite{pegoraro}).\par
+Il metodo alternativo che esaminiamo \`e campionare una approssimazione piecewise della funzione in questione. Esaminiamo una generica funzione 
+costante definita in $[0,1)$ con $N$ tratti 1D di equo spessore $\Delta=1/N$, 
+\begin{equation}
+	f(x)=\left\{\begin{aligned}
+		&v_0\;x_0\leq x\leq x_1\\
+		&v_1\;x_0\leq x\leq x_2\\
+		&\vdots
+	\end{aligned}\right.
+\end{equation}
+\begin{equation}
+	c=\int_0^1 f(x)\mathrm{d}x=\sum_{i=0}^{N-1}\frac{v_i}{N}
+\end{equation}
+Dunque possiamo costruire una PDF da $f(x)$ come $p(x)=\tfrac{f(x)}{c}$. Essendo la PDF una funzione costante definita a tratti, la CDF risultera 
+essere una funzione lineare definita a tratti (Figura \ref{chapter5:reconstruction:piecewisePDF})
+\begin{align}
+	P(x_0)&=0\nonumber\\
+	P(x_1)&=\int_{x_0}^{x_1}p(x)\mathrm{d}x=\frac{v_0}{cN}=P(x_0)+\frac{v_0}{cN}\nonumber\\
+	\vdots\nonumber\\
+	P(x)=\sum_{j=1}^{i}\left(\frac{v_{j-1}}{cN}\right),\;x\in[x_{i-1},x_i]
+\end{align}
+Invertire tale funzione consiste nel trovare il valore $x_s$ tale che
+\begin{equation*}
+	\xi=\int_0^{x_s}p(x)\mathrm{d}x=P(x_s)
+\end{equation*}
+In quanto la CDF \`e crescente, possiamo tradurre tale task nel trovare una coppia di punti $(x_i,x_{i+1})$ tali che $\mathmakebox{P(x_i)\leq\xi}$ e 
+$\mathmakebox{\xi\leq P_{i+1}}$ effettuando una ricerca binaria. Dopodich\`e, possiamo calcolare quanto distante $\xi$ \`e dall'estremo inferiore 
+dell'intervallo definito dai punti trovati $x_i$, $\Delta\xi=\frac{\xi-x_i}{x_{i+1}-x_i}$, dove si tiene cura di eseguire la divisione solo se
+$x_{i+1}>x_i$. Il campione per Inverse Tramsform Sampling pu\`o dunque essere posto pari a 
+\begin{equation}
+	x_s = x_i + \Delta\xi
+\end{equation}
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../assets/chapter5_reconstruction_gaussian_result.png}
+	\caption{Risultato di applicazione del Gaussian Filter radiale ad un checkerboard pattern. Immagine da \cite{pegoraro}}
+	\label{chapter5:reconstruction:gaussianResult}
+\end{figure}

@@ -21,7 +21,7 @@ Introduciamo il concetto statistico di \textit{Stimatore}
 La convergenza di uno Stimatore \`e qualificata a seconda di quanto "forte e stringente" tale convergenza \`e. In particolare, data una sequenza di 
 variabili aleatorie $X_n$, ci sono tre modi in cui essa pu\`o convergere ad una variabile aleatoria $X$
 \begin{altDescription}{chapter6:begin:convergence}
-	\item[Convergenza in Distribuzione] le CDF di $X_n$, $F_{X_n}$ convergono puntualmente\footnotemark{} alla CDF di $X$, $F_X$ in tutti i punti in 
+	\item[Convergenza in Distribuzione] le CDF di $X_n$, $F_{X_n}$ convergono puntualmente alla CDF di $X$, $F_X$ in tutti i punti in 
 		cui essa \`e definita e continua.
 		\begin{equation}
 			X_n\stackrel{d}{\rightarrow}X\;\mathrm{iff}\;\lim_{n\to\infty}F_{X_n}(x)=F_X(x)
@@ -42,7 +42,6 @@ variabili aleatorie $X_n$, ci sono tre modi in cui essa pu\`o convergere ad una 
 			X_n\stackrel{a.s.}{\rightarrow}X\;\mathrm{iff}\;\Pr\left(\left\{\omega\in\Omega\,:\,\lim_{n\to\infty}X_n(\omega)=X(\omega)\right\}\right)=1	
 		\end{equation}
 \end{altDescription}
-\footnotetext{Vedi convergenza di sequenza di funzioni \ref{appendixC:functionSeqConvergence}}
 Maggiore \`e il "grado di convergenza", e maggiore \`e la frequenza in cui lo stimatore ci restituisce un risultato quasi esatto. Dunque si dice
 \textit{Debolmente Consistente} uno Stimatore che converge in probabilit\`a allo stimando, e \textit{Fortemente Consistente} uno Stimatore che 
 converge quasi certamente allo stimando.\par

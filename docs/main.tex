@@ -35,14 +35,14 @@
 % ------------------ page layout
 \usepackage{geometry}
 \geometry{
-  inner=37.125mm,
-  outer=33.4125mm,
-  top=37.125mm,
-  bottom=37.125mm,
-  heightrounded,
-  marginparwidth=51pt,
-  marginparsep=17pt,
-  headsep=24pt,
+	inner=37.125mm,
+	outer=33.4125mm,
+	top=37.125mm,
+	bottom=37.125mm,
+	heightrounded,
+	marginparwidth=51pt,
+	marginparsep=17pt,
+	headsep=24pt,
 }
 
 % ------------- beautiful tables
@@ -64,19 +64,40 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows,arrows.meta} % Stealth arrows
 \usetikzlibrary{angles,quotes} % for \draw pic (angle labels)
+\usetikzlibrary{graphs,graphdrawing} % tree drawing for Owen Scrambling
+\usegdlibrary{trees}
 \tikzset{>=latex} % for LaTex arrow head
 
 \makeatletter
 \newsavebox{\measure@tikzpicture}
 \NewEnviron{scaletikzpicturetowidth}[1]{%
-    \def\tikz@width{#1}%
-    \def\tikzscale{1}\begin{lrbox}{\measure@tikzpicture}%
-    \BODY
-    \end{lrbox}%
-    \pgfmathparse{#1/\wd\measure@tikzpicture}%
-    \edef\tikzscale{\pgfmathresult}%
-    \BODY
+	\def\tikz@width{#1}%
+	\def\tikzscale{1}\begin{lrbox}{\measure@tikzpicture}%
+	\BODY
+	\end{lrbox}%
+	\pgfmathparse{#1/\wd\measure@tikzpicture}%
+	\edef\tikzscale{\pgfmathresult}%
+	\BODY
 }
+
+\newsavebox\myboxA
+\newsavebox\myboxB
+\newlength\mylenA
+
+\newcommand*\xoverline[2][0.75]{%
+	\sbox{\myboxA}{$\m@th#2$}%
+	\setbox\myboxB\null% Phantom box
+	\ht\myboxB=\ht\myboxA%
+	\dp\myboxB=\dp\myboxA%
+	\wd\myboxB=#1\wd\myboxA% Scale phantom
+	\sbox\myboxB{$\m@th\overline{\copy\myboxB}$}%  Overlined phantom
+	\setlength\mylenA{\the\wd\myboxA}%   calc width diff
+	\addtolength\mylenA{-\the\wd\myboxB}%
+	\ifdim\wd\myboxB<\wd\myboxA%
+	\rlap{\hskip 0.5\mylenA\usebox\myboxB}{\usebox\myboxA}%
+	\else
+	\hskip -0.5\mylenA\rlap{\usebox\myboxA}{\hskip 0.5\mylenA\usebox\myboxB}%
+	\fi}
 \makeatother
 
 % -------------------------- code highlighting 
@@ -96,9 +117,9 @@
 \colorlet{freqcol}{green!25!black}
 \colorlet{enercol}{blue!35!black}
 \pgfdeclareverticalshading{rainbow}{100bp}{
-  color(0bp)=(red); color(25bp)=(red); color(35bp)=(yellow);
-  color(45bp)=(green); color(55bp)=(cyan); color(65bp)=(blue);
-  color(75bp)=(violet); color(100bp)=(violet)
+	color(0bp)=(red); color(25bp)=(red); color(35bp)=(yellow);
+	color(45bp)=(green); color(55bp)=(cyan); color(65bp)=(blue);
+	color(75bp)=(violet); color(100bp)=(violet)
 }
 
 % ------------------- units of measurements consistent style

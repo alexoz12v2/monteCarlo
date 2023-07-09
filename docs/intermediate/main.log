@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  9 JUL 2023 02:55
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  9 JUL 2023 23:36
  system commands enabled.
 **main.tex
 (./main.tex
@@ -1629,7 +1629,29 @@ File: tikzlibraryangles.code.tex 2023-01-15 v3.1.10 (3.1.10)
 quotes.code.tex
 File: tikzlibraryquotes.code.tex 2023-01-15 v3.1.10 (3.1.10)
 )
-\measure@tikzpicture=\box84
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/graphs/tikz
+librarygraphs.code.tex
+File: tikzlibrarygraphs.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\tikz@lib@auto@number=\count490
+\tikz@qnode@count=\count491
+)
+(/usr/share/texmf-dist/tex/generic/pgf/graphdrawing/tex/tikzlibrarygraphdrawing
+.code.tex
+File: tikzlibrarygraphdrawing.code.tex 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/share/texmf-dist/tex/generic/pgf/graphdrawing/tex/pgflibrarygraphdrawing.
+code.tex
+File: pgflibrarygraphdrawing.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@gd@parameter@stack@height=\count492
+\pgf@gd@node@box=\box84
+\pgf@gd@edge@box=\box85
+\pgf@gd@prekind@box=\box86
+\pgf@gd@postkind@box=\box87
+))
+\measure@tikzpicture=\box88
+\myboxA=\box89
+\myboxB=\box90
+\mylenA=\skip162
  (/usr/share/texmf-dist/tex/latex/minted/minted.sty
 Package: minted 2022/12/12 v2.7 Yet another Pygments shim for LaTeX
 
@@ -1638,11 +1660,11 @@ Package: fvextra 2022/11/30 v1.5 fvextra - extensions and patches for fancyvrb
 
 (/usr/share/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2023/01/19 4.5a verbatim text (tvz,hv)
-\FV@CodeLineNo=\count490
+\FV@CodeLineNo=\count493
 \FV@InFile=\read4
-\FV@TabBox=\box85
-\c@FancyVerbLine=\count491
-\FV@StepNumber=\count492
+\FV@TabBox=\box91
+\c@FancyVerbLine=\count494
+\FV@StepNumber=\count495
 \FV@OutFile=\write5
 )
 (/usr/share/texmf-dist/tex/latex/upquote/upquote.sty
@@ -1654,57 +1676,57 @@ Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
 ))
 (/usr/share/texmf-dist/tex/latex/lineno/lineno.sty
 Package: lineno 2023/01/19 line numbers on paragraphs v5.1
-\linenopenalty=\count493
+\linenopenalty=\count496
 \output=\toks51
-\linenoprevgraf=\count494
+\linenoprevgraf=\count497
 \linenumbersep=\dimen330
 \linenumberwidth=\dimen331
-\c@linenumber=\count495
-\c@pagewiselinenumber=\count496
-\c@LN@truepage=\count497
-\c@internallinenumber=\count498
-\c@internallinenumbers=\count499
+\c@linenumber=\count498
+\c@pagewiselinenumber=\count499
+\c@LN@truepage=\count500
+\c@internallinenumber=\count501
+\c@internallinenumbers=\count502
 \quotelinenumbersep=\dimen332
 \bframerule=\dimen333
 \bframesep=\dimen334
-\bframebox=\box86
-\linenoamsmath@ams@eqpen=\count500
+\bframebox=\box92
+\linenoamsmath@ams@eqpen=\count503
 LaTeX Info: Redefining \\ on input line 3131.
 )
-\c@FV@TrueTabGroupLevel=\count501
-\c@FV@TrueTabCounter=\count502
-\FV@TabBox@Group=\box87
-\FV@TmpLength=\skip162
-\c@FV@HighlightLinesStart=\count503
-\c@FV@HighlightLinesStop=\count504
-\FV@LoopCount=\count505
-\FV@NCharsBox=\box88
+\c@FV@TrueTabGroupLevel=\count504
+\c@FV@TrueTabCounter=\count505
+\FV@TabBox@Group=\box93
+\FV@TmpLength=\skip163
+\c@FV@HighlightLinesStart=\count506
+\c@FV@HighlightLinesStop=\count507
+\FV@LoopCount=\count508
+\FV@NCharsBox=\box94
 \FV@BreakIndent=\dimen335
-\FV@BreakIndentNChars=\count506
+\FV@BreakIndentNChars=\count509
 \FV@BreakSymbolSepLeft=\dimen336
-\FV@BreakSymbolSepLeftNChars=\count507
+\FV@BreakSymbolSepLeftNChars=\count510
 \FV@BreakSymbolSepRight=\dimen337
-\FV@BreakSymbolSepRightNChars=\count508
+\FV@BreakSymbolSepRightNChars=\count511
 \FV@BreakSymbolIndentLeft=\dimen338
-\FV@BreakSymbolIndentLeftNChars=\count509
+\FV@BreakSymbolIndentLeftNChars=\count512
 \FV@BreakSymbolIndentRight=\dimen339
-\FV@BreakSymbolIndentRightNChars=\count510
-\c@FancyVerbLineBreakLast=\count511
-\FV@LineBox=\box89
-\FV@LineIndentBox=\box90
-\c@FV@BreakBufferDepth=\count512
+\FV@BreakSymbolIndentRightNChars=\count513
+\c@FancyVerbLineBreakLast=\count514
+\FV@LineBox=\box95
+\FV@LineIndentBox=\box96
+\c@FV@BreakBufferDepth=\count515
 \FV@LineWidth=\dimen340
 )
 (/usr/share/texmf-dist/tex/generic/xstring/xstring.sty
 (/usr/share/texmf-dist/tex/generic/xstring/xstring.tex
-\integerpart=\count513
-\decimalpart=\count514
+\integerpart=\count516
+\decimalpart=\count517
 )
 Package: xstring 2023/01/14 v1.85 String manipulations (CT)
 )
 (/usr/share/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
-\OuterFrameSep=\skip163
+\OuterFrameSep=\skip164
 \fb@frw=\dimen341
 \fb@frh=\dimen342
 \FrameRule=\dimen343
@@ -1712,19 +1734,19 @@ Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 )
 (/usr/share/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count515
+\c@float@type=\count518
 \float@exts=\toks52
-\float@box=\box91
+\float@box=\box97
 \@float@everytoks=\toks53
-\@floatcapt=\box92
+\@floatcapt=\box98
 )
 \minted@appexistsfile=\read5
-\minted@bgbox=\box93
+\minted@bgbox=\box99
 \minted@code=\write6
-\c@minted@FancyVerbLineTemp=\count516
-\c@minted@pygmentizecounter=\count517
+\c@minted@FancyVerbLineTemp=\count519
+\c@minted@pygmentizecounter=\count520
 \@float@every@listing=\toks54
-\c@listing=\count518
+\c@listing=\count521
 )
 runsystem(mkdir -p intermediate/_minted-main)...executed
 
@@ -1754,7 +1776,7 @@ Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
 \XKV@toks=\toks55
 \XKV@tempa@toks=\toks56
 )
-\XKV@depth=\count519
+\XKV@depth=\count522
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))
 (/usr/share/texmf-dist/tex/latex/mfirstuc/mfirstuc.sty
@@ -1770,7 +1792,7 @@ Package: datatool-base 2019/09/27 v2.32 (NLCT)
 
 (/usr/share/texmf-dist/tex/latex/substr/substr.sty
 Package: substr 2009/10/20 v1.2 Handle substrings
-\c@su@anzahl=\count520
+\c@su@anzahl=\count523
 )
 (/usr/share/texmf-dist/tex/latex/datatool/datatool-fp.sty
 Package: datatool-fp 2019/09/27 v2.32 (NLCT)
@@ -1781,19 +1803,19 @@ Package: fp 1995/04/02
 `Fixed Point Package', Version 0.8, April 2, 1995 (C) Michael Mehlich
 (/usr/share/texmf-dist/tex/latex/fp/defpattern.sty
 Package: defpattern 1994/10/12
-\actioncount=\count521
+\actioncount=\count524
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-basic.sty
 Package: fp-basic 1996/05/13
-\FP@xs=\count522
-\FP@xia=\count523
-\FP@xib=\count524
-\FP@xfa=\count525
-\FP@xfb=\count526
-\FP@rega=\count527
-\FP@regb=\count528
-\FP@regs=\count529
-\FP@times=\count530
+\FP@xs=\count525
+\FP@xia=\count526
+\FP@xib=\count527
+\FP@xfa=\count528
+\FP@xfb=\count529
+\FP@rega=\count530
+\FP@regb=\count531
+\FP@regs=\count532
+\FP@times=\count533
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-addons.sty
 Package: fp-addons 1995/03/15
@@ -1812,7 +1834,7 @@ Package: fp-pas 1994/08/29
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-random.sty
 Package: fp-random 1995/02/23
-\FPseed=\count531
+\FPseed=\count534
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-eqn.sty
 Package: fp-eqn 1995/04/03
@@ -1824,18 +1846,18 @@ Package: fp-upn 1996/10/21
 Package: fp-eval 1995/04/03
 )))
 \@dtl@toks=\toks59
-\@dtl@tmpcount=\count532
-\dtl@tmplength=\skip164
-\dtl@sortresult=\count533
-\@dtl@numgrpsepcount=\count534
-\@dtl@datatype=\count535
-\dtl@codeA=\count536
-\dtl@codeB=\count537
-\@dtl@foreach@level=\count538
+\@dtl@tmpcount=\count535
+\dtl@tmplength=\skip165
+\dtl@sortresult=\count536
+\@dtl@numgrpsepcount=\count537
+\@dtl@datatype=\count538
+\dtl@codeA=\count539
+\dtl@codeB=\count540
+\@dtl@foreach@level=\count541
 )
-\gls@level=\count539
+\gls@level=\count542
 \@gls@tmpb=\toks60
-\gls@tmplen=\skip165
+\gls@tmplen=\skip166
 \glskeylisttok=\toks61
 \glslabeltok=\toks62
 \glsshorttok=\toks63
@@ -1846,43 +1868,43 @@ Package: glossary-hypernav 2022/11/03 v4.52 (NLCT)
 )
 (/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-list.sty
 Package: glossary-list 2022/11/03 v4.52 (NLCT)
-\glslistdottedwidth=\skip166
+\glslistdottedwidth=\skip167
 )
 (/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-long.sty
 Package: glossary-long 2022/11/03 v4.52 (NLCT)
 
 (/usr/share/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
-\LTleft=\skip167
-\LTright=\skip168
-\LTpre=\skip169
-\LTpost=\skip170
-\LTchunksize=\count540
+\LTleft=\skip168
+\LTright=\skip169
+\LTpre=\skip170
+\LTpost=\skip171
+\LTchunksize=\count543
 \LTcapwidth=\dimen345
-\LT@head=\box94
-\LT@firsthead=\box95
-\LT@foot=\box96
-\LT@lastfoot=\box97
-\LT@gbox=\box98
-\LT@cols=\count541
-\LT@rows=\count542
-\c@LT@tables=\count543
-\c@LT@chunks=\count544
+\LT@head=\box100
+\LT@firsthead=\box101
+\LT@foot=\box102
+\LT@lastfoot=\box103
+\LT@gbox=\box104
+\LT@cols=\count544
+\LT@rows=\count545
+\c@LT@tables=\count546
+\c@LT@chunks=\count547
 \LT@p@ftn=\toks65
 )
-\glsdescwidth=\skip171
-\glspagelistwidth=\skip172
+\glsdescwidth=\skip172
+\glspagelistwidth=\skip173
 )
 (/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-super.sty
 Package: glossary-super 2022/11/03 v4.52 (NLCT)
 
 (/usr/share/texmf-dist/tex/latex/supertabular/supertabular.sty
 Package: supertabular 2020/02/02 v4.1g the supertabular environment
-\c@tracingst=\count545
+\c@tracingst=\count548
 \ST@wd=\dimen346
-\ST@rightskip=\skip173
-\ST@leftskip=\skip174
-\ST@parfillskip=\skip175
+\ST@rightskip=\skip174
+\ST@leftskip=\skip175
+\ST@parfillskip=\skip176
 \ST@pageleft=\dimen347
 \ST@headht=\dimen348
 \ST@tailht=\dimen349
@@ -1892,11 +1914,11 @@ Package: supertabular 2020/02/02 v4.1g the supertabular environment
 \ST@prevht=\dimen353
 \ST@toadd=\dimen354
 \ST@dimen=\dimen355
-\ST@pbox=\box99
+\ST@pbox=\box105
 ))
 (/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-tree.sty
 Package: glossary-tree 2022/11/03 v4.52 (NLCT)
-\glstreeindent=\skip176
+\glstreeindent=\skip177
 ))
 (./monte-carlo-glossary.sty
 Package: monte-carlo-glossary 
@@ -1905,20 +1927,20 @@ Package: monte-carlo-glossary
 \glo@main@file=\write8
 
 \openout8 = main.glo
-Package glossaries Info: Writing glossary file main.glo on input line 123.
+Package glossaries Info: Writing glossary file main.glo on input line 144.
  (/usr/share/texmf-dist/tex/latex/import/import.sty
 Package: import 2020/04/01  v 6.2
 ) (/usr/share/texmf-dist/tex/latex/titling/titling.sty
 Package: titling 2009/09/04 v2.1d maketitle typesetting
-\thanksmarkwidth=\skip177
-\thanksmargin=\skip178
-\droptitle=\skip179
+\thanksmarkwidth=\skip178
+\thanksmargin=\skip179
+\droptitle=\skip180
 )
 (/usr/share/texmf-dist/tex/latex/titlesec/titlesec.sty
 Package: titlesec 2021/07/05 v2.14 Sectioning titles
-\ttl@box=\box100
-\beforetitleunit=\skip180
-\aftertitleunit=\skip181
+\ttl@box=\box106
+\beforetitleunit=\skip181
+\aftertitleunit=\skip182
 \ttl@plus=\dimen356
 \ttl@minus=\dimen357
 \ttl@toksa=\toks66
@@ -1933,12 +1955,12 @@ Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
 \TX@old@col=\dimen363
 \TX@target=\dimen364
 \TX@delta=\dimen365
-\TX@cols=\count546
+\TX@cols=\count549
 \TX@ftn=\toks67
 )
 (/usr/share/texmf-dist/tex/latex/tabulary/tabulary.sty
 Package: tabulary 2014/06/11 v0.10 tabulary package (DPC)
-\TY@count=\count547
+\TY@count=\count550
 \TY@linewidth=\dimen366
 \tymin=\dimen367
 \tymax=\dimen368
@@ -1952,14 +1974,14 @@ Package: ltablex 2014/08/13 v1.1 Modified tabularx
 ))
 (/usr/share/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
-\multirow@colwidth=\skip182
-\multirow@cntb=\count548
-\multirow@dima=\skip183
+\multirow@colwidth=\skip183
+\multirow@cntb=\count551
+\multirow@dima=\skip184
 \bigstrutjot=\dimen370
 )
-\c@definitionS=\count549
-\c@definitionC=\count550
-\c@theoremS=\count551
+\c@definitionS=\count552
+\c@definitionC=\count553
+\c@theoremS=\count554
 luaotfload | aux : font no 48 (nil) does not define feature smcp for script latn
  with language dflt
 luaotfload | aux : font no 49 (nil) does not define feature smcp for script latn
@@ -2060,37 +2082,37 @@ e;script=latn;language=dflt;+smcp;"
 
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
 (Font)                  TU/LatinModernMath(1)/m/n --> TU/CharisSIL(1)/m/n on in
-put line 197.
+put line 218.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/CharisSIL(1)/m/it on input line 197
+(Font)                  OT1/lmr/m/it --> TU/CharisSIL(1)/m/it on input line 218
 .
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/CharisSIL(1)/b/n on input line 197.
+(Font)                  OT1/lmr/bx/n --> TU/CharisSIL(1)/b/n on input line 218.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  TU/LatinModernMath(1)/m/n --> TU/LatinModernMath(1)/m/n
- on input line 199.
+ on input line 220.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  TU/LatinModernMath(1)/b/n --> TU/LatinModernMath(1)/b/n
- on input line 199.
+ on input line 220.
 
 Package fontspec Info: LatinModernMath scale = 1.0001.
 
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  TU/LatinModernMath(2)/m/n --> TU/LatinModernMath(2)/m/n
- on input line 199.
+ on input line 220.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  TU/LatinModernMath(2)/b/n --> TU/LatinModernMath(2)/b/n
- on input line 199.
+ on input line 220.
 
 Package fontspec Info: LatinModernMath scale = 0.9999.
 
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  TU/LatinModernMath(3)/m/n --> TU/LatinModernMath(3)/m/n
- on input line 199.
+ on input line 220.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  TU/LatinModernMath(3)/b/n --> TU/LatinModernMath(3)/b/n
- on input line 199.
+ on input line 220.
 
 Package fontspec Info: Font family 'XITSMath-Regular(0)' created for font
 (fontspec)             'XITSMath-Regular' with options
@@ -2122,40 +2144,48 @@ cript=math;language=dflt;"
 \sym__um_fam1=\mathgroup7
 LaTeX Font Info:    Overwriting symbol font `__um_fam1' in version `normal'
 (Font)                  TU/XITSMath-Regular(0)/m/n --> TU/XITSMath-Regular(0)/m
-/n on input line 205.
+/n on input line 226.
 LaTeX Font Info:    Overwriting symbol font `__um_fam1' in version `bold'
 (Font)                  TU/XITSMath-Regular(0)/m/n --> TU/XITSMath-Regular(0)/b
-/n on input line 205.
+/n on input line 226.
 Package translations Info: No language package found. I am going to use `englis
-h' as default language. on input line 215.
-\@quotelevel=\count552
-\@quotereset=\count553
+h' as default language. on input line 236.
+\@quotelevel=\count555
+\@quotereset=\count556
 runsystem(which pygmentize && touch main.aex)...executed
 runsystem(rm main.aex)...executed
 
-(./intermediate/main.aux)
+(./intermediate/main.aux
+
+LaTeX Warning: Label `chapter5:reconstruction:boxFilter' multiply defined.
+
+
+LaTeX Warning: Label `chapter5:reconstruction:boxFilter@cref' multiply defined.
+
+
+)
 \openout1 = main.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 215.
-LaTeX Font Info:    ... okay on input line 215.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 215.
-LaTeX Font Info:    ... okay on input line 215.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 215.
-LaTeX Font Info:    ... okay on input line 215.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 215.
-LaTeX Font Info:    ... okay on input line 215.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 215.
-LaTeX Font Info:    ... okay on input line 215.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 215.
-LaTeX Font Info:    ... okay on input line 215.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 215.
-LaTeX Font Info:    ... okay on input line 215.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 215.
-LaTeX Font Info:    ... okay on input line 215.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 215.
-LaTeX Font Info:    ... okay on input line 215.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 215.
-LaTeX Font Info:    ... okay on input line 215.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 236.
+LaTeX Font Info:    ... okay on input line 236.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 236.
+LaTeX Font Info:    ... okay on input line 236.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 236.
+LaTeX Font Info:    ... okay on input line 236.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 236.
+LaTeX Font Info:    ... okay on input line 236.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 236.
+LaTeX Font Info:    ... okay on input line 236.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 236.
+LaTeX Font Info:    ... okay on input line 236.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 236.
+LaTeX Font Info:    ... okay on input line 236.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 236.
+LaTeX Font Info:    ... okay on input line 236.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 236.
+LaTeX Font Info:    ... okay on input line 236.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 236.
+LaTeX Font Info:    ... okay on input line 236.
 
 
 Package siunitx Warning: Detected the "physics" package:
@@ -2175,7 +2205,7 @@ File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `english'. on input line 215.
+or `english'. on input line 236.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
@@ -2188,16 +2218,16 @@ Package caption Info: End \AtBeginDocument code.
 
 (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count554
+\scratchcounter=\count557
 \scratchdimen=\dimen371
-\scratchbox=\box101
-\nofMPsegments=\count555
-\nofMParguments=\count556
+\scratchbox=\box107
+\nofMPsegments=\count558
+\nofMParguments=\count559
 \everyMPshowfont=\toks68
-\MPscratchCnt=\count557
+\MPscratchCnt=\count560
 \MPscratchDim=\dimen372
-\MPnumerator=\count558
-\makeMPintoPDFobject=\count559
+\MPnumerator=\count561
+\makeMPintoPDFobject=\count562
 \everyMPtoPDFconversion=\toks69
 ) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -2208,20 +2238,20 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 215.
+Package hyperref Info: Link coloring OFF on input line 236.
 
 (./intermediate/main.out) (./intermediate/main.out)
 \@outlinefile=\write9
 
 \openout9 = main.out
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 215.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 236.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 215.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 236.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 215.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 236.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 215.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 236.
 
 
 Package unicode-math Warning: Using \overbracket and \underbracket from
@@ -2290,14 +2320,14 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
 
 (./intermediate/main.bbl)
-Package biblatex Info: Reference section=0 on input line 215.
-Package biblatex Info: Reference segment=0 on input line 215.
+Package biblatex Info: Reference section=0 on input line 236.
+Package biblatex Info: Reference segment=0 on input line 236.
 
 
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
 your preamble.
- on input line 215.
+ on input line 236.
 
 [1
 
@@ -2320,33 +2350,33 @@ Overfull \hbox (1.66754pt too wide) detected at line 61
  []
 
 
-Overfull \hbox (1.66754pt too wide) detected at line 64
+Overfull \hbox (1.66754pt too wide) detected at line 62
+ []\TU/CharisSIL(0)/m/n/12 103
+ []
+
+
+Overfull \hbox (1.66754pt too wide) detected at line 63
  []\TU/CharisSIL(0)/m/n/12 104
  []
 
 
-Overfull \hbox (1.66754pt too wide) detected at line 65
+Overfull \hbox (1.66754pt too wide) detected at line 64
  []\TU/CharisSIL(0)/m/n/12 106
  []
 
 
+Overfull \hbox (1.66754pt too wide) detected at line 67
+ []\TU/CharisSIL(0)/m/n/12 113
+ []
+
+
 Overfull \hbox (1.66754pt too wide) detected at line 68
- []\TU/CharisSIL(0)/m/n/12 110
- []
-
-
-Overfull \hbox (1.66754pt too wide) detected at line 69
- []\TU/CharisSIL(0)/m/n/12 110
- []
-
-
-Overfull \hbox (1.66754pt too wide) detected at line 70
- []\TU/CharisSIL(0)/m/n/12 110
+ []\TU/CharisSIL(0)/m/n/12 115
  []
 
 
 Overfull \hbox (1.66754pt too wide) detected at line 71
- []\TU/CharisSIL(0)/m/n/12 110
+ []\TU/CharisSIL(0)/m/n/12 119
  []
 
 )
@@ -2538,7 +2568,7 @@ Overfull \hbox (4.32355pt too wide) in paragraph at lines 44--45
  []
 
 [17]
-<chapters/../assets/chapter2_colorimetry_cones.png, id=605, 1204.5pt x 910.4012
+<chapters/../assets/chapter2_colorimetry_cones.png, id=606, 1204.5pt x 910.4012
 5pt>
 File: chapters/../assets/chapter2_colorimetry_cones.png Graphic file (type png)
 
@@ -2547,7 +2577,7 @@ Package luatex.def Info: chapters/../assets/chapter2_colorimetry_cones.png  use
 d on input line 62.
 (luatex.def)             Requested size: 165.43602pt x 125.03816pt.
 <./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.pdf, 
-id=606, 975.4568pt x 611.9914pt>
+id=607, 975.4568pt x 611.9914pt>
 File: ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.
 pdf Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.p
@@ -2590,7 +2620,7 @@ Overfull \hbox (3.97784pt too wide) in paragraph at lines 104--105
 
 [19]
 <./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf, id=
-646, 353.94542pt x 366.81622pt>
+647, 353.94542pt x 366.81622pt>
 File: ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf
  Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf>
@@ -2635,7 +2665,7 @@ Overfull \hbox (15.83049pt too wide) detected at line 233
  []
 
 <./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf, id
-=708, 353.31148pt x 382.31808pt>
+=709, 353.31148pt x 382.31808pt>
 File: ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pd
 f Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf
@@ -2663,7 +2693,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [25]
 [26]
-<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf, id=785, 283.59102p
+<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf, id=786, 283.59102p
 t x 186.48965pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf Graphic file (
 type pdf)
@@ -2671,7 +2701,7 @@ type pdf)
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw
 .pdf  used on input line 345.
 (luatex.def)             Requested size: 283.59032pt x 186.4892pt.
-<./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf, id=786, 406.26328pt x
+<./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf, id=787, 406.26328pt x
  272.47215pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf Graphic file (typ
 e pdf)
@@ -2693,7 +2723,7 @@ Overfull \hbox (50.89758pt too wide) in paragraph at lines 359--361
 
 [28<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf><./svg-inkscape/c
 hapter2_camera_pinhole_plot_svg-raw.pdf>]
-<./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf, id=815, 318.2288
+<./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf, id=816, 318.2288
 4pt x 143.87604pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf Graphic file
  (type pdf)
@@ -2701,7 +2731,7 @@ File: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf Graphic file
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-r
 aw.pdf  used on input line 378.
 (luatex.def)             Requested size: 318.22804pt x 143.87567pt.
-<chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png, id=816, 
+<chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png, id=817, 
 362.7954pt x 218.7372pt>
 File: chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png Grap
 hic file (type png)
@@ -2736,7 +2766,7 @@ Overfull \hbox (1.4935pt too wide) in paragraph at lines 391--391
 g-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf>] [30] [31])
 (./chapters/chapter-part1-3-light-surface.tex [32]
 Chapter 3.
-<chapters/../assets/chapter3_surfaces_interaction_types.png, id=872, 387.4475pt
+<chapters/../assets/chapter3_surfaces_interaction_types.png, id=873, 387.4475pt
  x 270.00874pt>
 File: chapters/../assets/chapter3_surfaces_interaction_types.png Graphic file (
 type png)
@@ -2744,7 +2774,7 @@ type png)
 Package luatex.def Info: chapters/../assets/chapter3_surfaces_interaction_types
 .png  used on input line 5.
 (luatex.def)             Requested size: 165.43602pt x 115.28984pt.
-<chapters/../assets/chapter3_surfaces_specular_interaction.png, id=873, 471.762
+<chapters/../assets/chapter3_surfaces_specular_interaction.png, id=874, 471.762
 5pt x 234.8775pt>
 File: chapters/../assets/chapter3_surfaces_specular_interaction.png Graphic fil
 e (type png)
@@ -2861,7 +2891,7 @@ Underfull \vbox (badness 7256) has occurred while \output is active []
 Underfull \vbox (badness 7595) has occurred while \output is active []
 
  [41]
-<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf, id=1121, 811.75798
+<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf, id=1122, 811.75798
 pt x 574.46132pt>
 File: ./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf Graphic file (
 type pdf)
@@ -2901,7 +2931,7 @@ Overfull \hbox (5.91144pt too wide) in paragraph at lines 358--361
  []
 
 [44] [45]
-<chapters/../assets/chapter3_surface_angle2area.png, id=1191, 1358.07375pt x 65
+<chapters/../assets/chapter3_surface_angle2area.png, id=1192, 1358.07375pt x 65
 5.44875pt>
 File: chapters/../assets/chapter3_surface_angle2area.png Graphic file (type png
 )
@@ -2916,7 +2946,7 @@ e partono dal pre-sup-posto che tutti i fenomeni
  []
 
 [47]
-<chapters/../assets/chapter3_surface_projected_area.png, id=1223, 910.40125pt x
+<chapters/../assets/chapter3_surface_projected_area.png, id=1224, 910.40125pt x
  633.36626pt>
 File: chapters/../assets/chapter3_surface_projected_area.png Graphic file (type
  png)
@@ -2935,7 +2965,7 @@ Overfull \hbox (9.70831pt too wide) in paragraph at lines 498--509
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [49<./chapters/../assets/chapter3_surface_projected_area.png>] [50] [51]
-<chapters/../assets/chapter3_surface_microgeometry_effectsAM.png, id=1275, 1425
+<chapters/../assets/chapter3_surface_microgeometry_effectsAM.png, id=1276, 1425
 .325pt x 311.1625pt>
 File: chapters/../assets/chapter3_surface_microgeometry_effectsAM.png Graphic f
 ile (type png)
@@ -2950,7 +2980,7 @@ a sua \TU/CharisSIL(0)/m/it/12 Mi-cro BRDF $\TU/LatinModernMath(1)/m/n/12 𝑓[
 ]([], [], [])$\TU/CharisSIL(0)/m/n/12 ,
  []
 
-<chapters/../assets/chapter3_surface_microgeometry_areaAM.png, id=1288, 1405.25
+<chapters/../assets/chapter3_surface_microgeometry_areaAM.png, id=1289, 1405.25
 pt x 460.72125pt>
 File: chapters/../assets/chapter3_surface_microgeometry_areaAM.png Graphic file
  (type png)
@@ -2967,7 +2997,7 @@ Overfull \hbox (0.32745pt too wide) in paragraph at lines 712--714
 à, la cui di-mostrazione com-
  []
 
-<chapters/../assets/chapter3_surface_vcavityPG.png, id=1312, 1353.055pt x 592.2
+<chapters/../assets/chapter3_surface_vcavityPG.png, id=1313, 1353.055pt x 592.2
 125pt>
 File: chapters/../assets/chapter3_surface_vcavityPG.png Graphic file (type png)
 
@@ -2981,7 +3011,7 @@ Overfull \hbox (3.5208pt too wide) detected at line 783
  []
 
 [57]
-<chapters/../assets/chapter3_surface_refl_jacobianPG.png, id=1356, 1560.83125pt
+<chapters/../assets/chapter3_surface_refl_jacobianPG.png, id=1357, 1560.83125pt
  x 805.0075pt>
 File: chapters/../assets/chapter3_surface_refl_jacobianPG.png Graphic file (typ
 e png)
@@ -2989,7 +3019,7 @@ e png)
 Package luatex.def Info: chapters/../assets/chapter3_surface_refl_jacobianPG.pn
 g  used on input line 792.
 (luatex.def)             Requested size: 330.87836pt x 170.65341pt.
-<chapters/../assets/chapter3_surface_BRDF_paramsPG.png, id=1359, 1028.84375pt x
+<chapters/../assets/chapter3_surface_BRDF_paramsPG.png, id=1360, 1028.84375pt x
  696.6025pt>
 File: chapters/../assets/chapter3_surface_BRDF_paramsPG.png Graphic file (type 
 png)
@@ -2999,7 +3029,7 @@ Package luatex.def Info: chapters/../assets/chapter3_surface_BRDF_paramsPG.png
 (luatex.def)             Requested size: 206.79819pt x 140.00893pt.
  [58<./chapters/../assets/chapter3_surface_refl_jacobianPG.png><./chapters/../as
 sets/chapter3_surface_BRDF_paramsPG.png>] [59] [60]
-<chapters/../assets/chapter3_surface_anisotropic_BRDF.png, id=1403, 1648.1575pt
+<chapters/../assets/chapter3_surface_anisotropic_BRDF.png, id=1404, 1648.1575pt
  x 662.475pt>
 File: chapters/../assets/chapter3_surface_anisotropic_BRDF.png Graphic file (ty
 pe png)
@@ -3056,7 +3086,7 @@ te le di-rezioni $\TU/LatinModernMath(1)/m/n/12 𝐿[]([], []) =
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [72]
-<chapters/../assets/chapter3_light_sphere_sampling.png, id=1530, 1587.9325pt x 
+<chapters/../assets/chapter3_light_sphere_sampling.png, id=1531, 1587.9325pt x 
 840.13875pt>
 File: chapters/../assets/chapter3_light_sphere_sampling.png Graphic file (type 
 png)
@@ -3103,71 +3133,71 @@ Overfull \hbox (13.41649pt too wide) detected at line 43
  []
 
 [78]
-<chapters/../assets/chapter6_MC_variance.png, id=1593, 1266.7325pt x 714.67pt>
+<chapters/../assets/chapter6_MC_variance.png, id=1590, 1266.7325pt x 714.67pt>
 File: chapters/../assets/chapter6_MC_variance.png Graphic file (type png)
 <use chapters/../assets/chapter6_MC_variance.png>
 Package luatex.def Info: chapters/../assets/chapter6_MC_variance.png  used on i
-nput line 81.
+nput line 80.
 (luatex.def)             Requested size: 289.51619pt x 163.33466pt.
  [79] [80<./chapters/../assets/chapter6_MC_variance.png>]
-Overfull \hbox (1.92128pt too wide) in paragraph at lines 114--117
+Overfull \hbox (1.92128pt too wide) in paragraph at lines 113--116
 \TU/CharisSIL(0)/m/n/12 munque risultare van-tag-giosi nel caso si desideri
  []
 
 
-Overfull \hbox (2.48964pt too wide) in paragraph at lines 121--123
+Overfull \hbox (2.48964pt too wide) in paragraph at lines 120--122
 \TU/CharisSIL(0)/m/n/12 uno sti-ma-tore in re-lazione alla var-i-anza ot-tenuta
  []
 
 
-Overfull \hbox (1.21815pt too wide) in paragraph at lines 126--128
+Overfull \hbox (1.21815pt too wide) in paragraph at lines 125--127
 []\TU/CharisSIL(0)/m/n/12 Er-rore quadratico medio, stret-ta-mente col-le-gato
  []
 
 
-Overfull \hbox (7.31998pt too wide) detected at line 130
+Overfull \hbox (7.31998pt too wide) detected at line 129
 [][][]\TU/LatinModernMath(1)/m/n/12 𝑀𝑆𝐸[[]] = 𝐸 [] = 𝑉[[]] − 
 𝛽
  []
 
 
-Overfull \hbox (9.66737pt too wide) in paragraph at lines 130--135
+Overfull \hbox (9.66737pt too wide) in paragraph at lines 129--134
 \TU/CharisSIL(0)/m/n/12 Tale met-rica risulta utile quando si è a conoscenza
  []
 
 
-Overfull \hbox (2.44862pt too wide) in paragraph at lines 130--135
+Overfull \hbox (2.44862pt too wide) in paragraph at lines 129--134
 \TU/CharisSIL(0)/m/n/12 onaria per cal-co-larne il suo val-ore ap-prossi-mato.
  []
 
 [81]
-<chapters/../assets/chapter6_sampling_inverse_transform_sampling.png, id=1631, 
+<chapters/../assets/chapter6_sampling_inverse_transform_sampling.png, id=1628, 
 943.525pt x 890.32625pt>
 File: chapters/../assets/chapter6_sampling_inverse_transform_sampling.png Graph
 ic file (type png)
 <use chapters/../assets/chapter6_sampling_inverse_transform_sampling.png>
 Package luatex.def Info: chapters/../assets/chapter6_sampling_inverse_transform
-_sampling.png  used on input line 145.
+_sampling.png  used on input line 144.
 (luatex.def)             Requested size: 372.2342pt x 351.24709pt.
  [82] [83<./chapters/../assets/chapter6_sampling_inverse_transform_sampling.png>
 ]
-<chapters/../assets/chapter6_sampling_acceptance_rejection.png, id=1652, 1364.0
+<chapters/../assets/chapter6_sampling_acceptance_rejection.png, id=1649, 1364.0
 9625pt x 440.64626pt>
 File: chapters/../assets/chapter6_sampling_acceptance_rejection.png Graphic fil
 e (type png)
 <use chapters/../assets/chapter6_sampling_acceptance_rejection.png>
 Package luatex.def Info: chapters/../assets/chapter6_sampling_acceptance_reject
-ion.png  used on input line 179.
+ion.png  used on input line 178.
 (luatex.def)             Requested size: 330.87836pt x 106.88011pt.
  [84<./chapters/../assets/chapter6_sampling_acceptance_rejection.png>]
 
 Package pgfplots Warning: Axis range for axis z is approximately empty; enlargi
-ng it (it is [1.0000000000:1.0000000000]) on input line 232.
+ng it (it is [1.0000000000:1.0000000000]) on input line 231.
 
  [warning /pgfplots/warning/approx empty range enlarged]
 
 Package pgfplots Warning: Axis range for axis z is approximately empty; enlargi
-ng it (it is [1.0000000000:1.0000000000]) on input line 232.
+ng it (it is [1.0000000000:1.0000000000]) on input line 231.
 
  [warning /pgfplots/warning/approx empty range enlarged]
 
@@ -3178,26 +3208,26 @@ B512E6B2AAF5EB.pygtex
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
 (Font)              Font shape `TU/lmtt/b/n' tried instead on input line 2.
  [85] [86])
-Overfull \hbox (13.41144pt too wide) in paragraph at lines 304--307
+Overfull \hbox (13.41144pt too wide) in paragraph at lines 303--306
 \TU/CharisSIL(0)/m/n/12 Pi-ut-tosto che gener-are cam-pi-oni in maniera in-dipen
 -dente, costru-iamo una \TU/CharisSIL(0)/m/it/12 Markov
  []
 
 
-Overfull \hbox (10.32355pt too wide) in paragraph at lines 304--307
+Overfull \hbox (10.32355pt too wide) in paragraph at lines 303--306
 \TU/CharisSIL(0)/m/it/12 Chain \TU/CharisSIL(0)/m/n/12 cos-tituente un Randow Wa
 lk nello spazio cam-pi-onario, la cui dis-tribuzione,
  []
 
 
-Overfull \hbox (9.86636pt too wide) in paragraph at lines 309--310
+Overfull \hbox (9.86636pt too wide) in paragraph at lines 308--309
 []\TU/CharisSIL(0)/m/n/12 Non richiede la nor-mal-iz-zazione della fun-zione tar
 -get $\TU/LatinModernMath(1)/m/n/12 𝑓(𝑥)$\TU/CharisSIL(0)/m/n/12 . Vedi Eq
 uazione
  []
 
 [87]
-Overfull \hbox (14.87042pt too wide) in paragraph at lines 359--361
+Overfull \hbox (14.87042pt too wide) in paragraph at lines 358--360
 \TU/CharisSIL(0)/m/n/12 In-oltre, nel caso in cui la pro-posal den-sity sia sim-
 met-rica [],
  []
@@ -3208,7 +3238,7 @@ met-rica [],
 (./intermediate/_minted-main/530DD91A9BB744EB6CCE743DC9C83B8F76BC18D0E1A6ADF4BE
 B512E6B2AAF5EB.pygtex) [89] [90] [91] [92] [93] [94])
 (./chapters/chapter-part2-1-quasirandom-gen.tex
-Underfull \hbox (badness 10000) in paragraph at lines 550--5
+Underfull \hbox (badness 10000) in paragraph at lines 549--5
 
  []
 
@@ -3258,19 +3288,52 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
 
 [99]
-Overfull \hbox (1.35284pt too wide) in paragraph at lines 137--142
+Overfull \hbox (1.35284pt too wide) in paragraph at lines 137--141
 \TU/CharisSIL(0)/m/n/12 con i due frame-work breve-mente sp-ie-gati in prece-den
 za, il cam-pi-ona-tore basato
  []
 
+[100]
+<chapters/../assets/chapter5_sampling_haltonPSD.png, id=1819, 691.58376pt x 666
+.49pt>
+File: chapters/../assets/chapter5_sampling_haltonPSD.png Graphic file (type png
+)
+<use chapters/../assets/chapter5_sampling_haltonPSD.png>
+Package luatex.def Info: chapters/../assets/chapter5_sampling_haltonPSD.png  us
+ed on input line 168.
+(luatex.def)             Requested size: 165.43602pt x 159.43204pt.
 
-Overfull \hbox (61.73314pt too wide) in paragraph at lines 137--142
-\TU/CharisSIL(0)/m/n/12 Un nu-mero pos-i-tivo è es-prim-i-bile in base $\TU/La
-tinModernMath(1)/m/n/12 𝑏$ \TU/CharisSIL(0)/m/n/12 come somma di cifre $\TU/
-LatinModernMath(1)/m/n/12 𝑎 = [][] 𝑑[](𝑎)𝑏[],  𝑑[](𝑎) ∈
+Underfull \hbox (badness 10000) in paragraph at lines 170--170
+[]\TU/CharisSIL(0)/m/n/10.95 (a) |Senza Owen Scram-bling.
  []
 
-[100])
+
+Underfull \hbox (badness 5331) in paragraph at lines 170--170
+\TU/CharisSIL(0)/m/n/10.95 Prestazioni migliori rispetto al
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--170
+\TU/CharisSIL(0)/m/n/10.95 cam-pi-ona-mento uni-forme, in
+ []
+
+
+Underfull \hbox (badness 6825) in paragraph at lines 170--170
+\TU/CharisSIL(0)/m/n/10.95 ec-ces-siva vari-azione nelle alte
+ []
+
+<chapters/../assets/chapter5_sampling_owenPSD.png, id=1820, 847.165pt x 680.542
+5pt>
+File: chapters/../assets/chapter5_sampling_owenPSD.png Graphic file (type png)
+<use chapters/../assets/chapter5_sampling_owenPSD.png>
+Package luatex.def Info: chapters/../assets/chapter5_sampling_owenPSD.png  used
+ on input line 174.
+(luatex.def)             Requested size: 206.79819pt x 166.1165pt.
+
+\openout5 = main.pyg
+
+(./intermediate/_minted-main/B81DDAFE5E0A228FA45A7BDD5809BEAB9A97493BC68191CC14
+C0217C2FB20DFF.pygtex
 
 Package fancyhdr Warning: \headheight is too small (15.0pt): 
 (fancyhdr)                Make it at least 27.09418pt, for example:
@@ -3279,70 +3342,182 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
 
-[101] [102
+[101] [102<./chapters/../assets/chapter5_sampling_haltonPSD.png><./chapters/../a
+ssets/chapter5_sampling_owenPSD.png>])
+<chapters/../assets/chapter5_sampling_result.png, id=1842, 1213.53375pt x 235.8
+8126pt>
+File: chapters/../assets/chapter5_sampling_result.png Graphic file (type png)
+<use chapters/../assets/chapter5_sampling_result.png>
+Package luatex.def Info: chapters/../assets/chapter5_sampling_result.png  used 
+on input line 232.
+(luatex.def)             Requested size: 413.59637pt x 80.39291pt.
 
-] (./chapters/chapter-part3-1-light-transportintro.tex
+
+Package fancyhdr Warning: \headheight is too small (15.0pt): 
+(fancyhdr)                Make it at least 27.09418pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.09418pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
+
+[103] [104<./chapters/../assets/chapter5_sampling_result.png>]
+<chapters/../assets/chapter5_reconstruction_box.png, id=1861, 1393.205pt x 690.
+58pt>
+File: chapters/../assets/chapter5_reconstruction_box.png Graphic file (type png
+)
+<use chapters/../assets/chapter5_reconstruction_box.png>
+Package luatex.def Info: chapters/../assets/chapter5_reconstruction_box.png  us
+ed on input line 280.
+(luatex.def)             Requested size: 330.87836pt x 164.0039pt.
+
+
+LaTeX Font Warning: Command \small invalid in math mode on input line 296.
+
+
+LaTeX Font Warning: Command \small invalid in math mode on input line 296.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+Package fancyhdr Warning: \headheight is too small (15.0pt): 
+(fancyhdr)                Make it at least 27.09418pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.09418pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
+
+[105<./chapters/../assets/chapter5_reconstruction_box.png>]
+<chapters/../assets/chapter5_reconstruction_box_result.png, id=1875, 1383.1675p
+t x 1020.81375pt>
+File: chapters/../assets/chapter5_reconstruction_box_result.png Graphic file (t
+ype png)
+<use chapters/../assets/chapter5_reconstruction_box_result.png>
+Package luatex.def Info: chapters/../assets/chapter5_reconstruction_box_result.
+png  used on input line 316.
+(luatex.def)             Requested size: 330.87836pt x 244.19034pt.
+<chapters/../assets/chapter5_reconstruction_gaussian.png, id=1876, 1392.20125pt
+ x 721.69624pt>
+File: chapters/../assets/chapter5_reconstruction_gaussian.png Graphic file (typ
+e png)
+<use chapters/../assets/chapter5_reconstruction_gaussian.png>
+Package luatex.def Info: chapters/../assets/chapter5_reconstruction_gaussian.pn
+g  used on input line 323.
+(luatex.def)             Requested size: 330.87836pt x 170.32204pt.
+ [106]
+
+Package fancyhdr Warning: \headheight is too small (15.0pt): 
+(fancyhdr)                Make it at least 27.09418pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.09418pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
+
+[107<./chapters/../assets/chapter5_reconstruction_box_result.png>]
+Overfull \hbox (4.79816pt too wide) in paragraph at lines 351--353
+\TU/CharisSIL(0)/m/n/12 Sup-po-nendo com-po-sizione bidi-men-sion-ale come sep-a
+-ra-ble fil-ter, pos-si-amo cam-
+ []
+
+<chapters/../assets/chapter5_reconstruction_piecewise.png, id=1903, 1056.94875p
+t x 338.26375pt>
+File: chapters/../assets/chapter5_reconstruction_piecewise.png Graphic file (ty
+pe png)
+<use chapters/../assets/chapter5_reconstruction_piecewise.png>
+Package luatex.def Info: chapters/../assets/chapter5_reconstruction_piecewise.p
+ng  used on input line 364.
+(luatex.def)             Requested size: 330.87836pt x 105.89296pt.
+[108<./chapters/../assets/chapter5_reconstruction_gaussian.png>]
+
+Package fancyhdr Warning: \headheight is too small (15.0pt): 
+(fancyhdr)                Make it at least 27.09418pt, for example:
+(fancyhdr)                \setlength{\headheight}{27.09418pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
+
+[109<./chapters/../assets/chapter5_reconstruction_piecewise.png>]
+<chapters/../assets/chapter5_reconstruction_gaussian_result.png, id=1929, 1376.
+14125pt x 1019.81pt>
+File: chapters/../assets/chapter5_reconstruction_gaussian_result.png Graphic fi
+le (type png)
+<use chapters/../assets/chapter5_reconstruction_gaussian_result.png>
+Package luatex.def Info: chapters/../assets/chapter5_reconstruction_gaussian_re
+sult.png  used on input line 403.
+(luatex.def)             Requested size: 330.87836pt x 245.1951pt.
+) [110<./chapters/../assets/chapter5_reconstruction_gaussian_result.png>] [111
+
+]
+(./chapters/chapter-part3-1-light-transportintro.tex
 Chapter 6.
 
-Overfull \hbox (27.52332pt too wide) in paragraph at lines 12--16
+Overfull \hbox (27.52332pt too wide) in paragraph at lines 13--17
 \TU/CharisSIL(0)/m/n/12 nel caso di una su-per-fi-cie lam-ber-tiana, dunque con BRDF pari a [],
  []
 
-[103
+[112
 
 ]
-<chapters/../assets/chapter8_light_transport_equation.png, id=1839, 1223.57124p
+<chapters/../assets/chapter8_light_transport_equation.png, id=1951, 1223.57124p
 t x 961.5925pt>
 File: chapters/../assets/chapter8_light_transport_equation.png Graphic file (ty
 pe png)
 <use chapters/../assets/chapter8_light_transport_equation.png>
 Package luatex.def Info: chapters/../assets/chapter8_light_transport_equation.p
-ng  used on input line 29.
+ng  used on input line 30.
 (luatex.def)             Requested size: 330.87836pt x 260.0296pt.
 
-Overfull \hbox (22.55792pt too wide) in paragraph at lines 34--36
+Overfull \hbox (22.55792pt too wide) in paragraph at lines 35--37
 \TU/CharisSIL(0)/m/n/12 Ab-bi-amo espresso, con Equazione []3.35[], la ren-der-i
 ng equa-tion in ter-mini dell’unione
  []
 
 
-Overfull \hbox (10.46649pt too wide) in paragraph at lines 39--44
+Overfull \hbox (10.46649pt too wide) in paragraph at lines 40--46
 []\TU/CharisSIL(0)/m/n/12 , posso riscri-vere tale equazione nella
  []
 
-[104<./chapters/../assets/chapter8_light_transport_equation.png>]
-Overfull \hbox (39.52515pt too wide) detected at line 72
+[113<./chapters/../assets/chapter8_light_transport_equation.png>]
+Overfull \hbox (54.9025pt too wide) detected at line 74
 []
  []
 
-[105]
-Overfull \hbox (13.12433pt too wide) in paragraph at lines 86--87
+[114]
+Overfull \hbox (1.31383pt too wide) in paragraph at lines 83--87
+\TU/CharisSIL(0)/m/n/12 No-ti-amo che dei ter-mini $\TU/LatinModernMath(1)/m/n/
+12 𝑃({… , []})$ \TU/CharisSIL(0)/m/n/12 potreb-bero con-tenere dis-tribuzio
+ni di Dirac
+ []
+
+
+Overfull \hbox (13.12433pt too wide) in paragraph at lines 88--89
 []\TU/CharisSIL(0)/m/n/12 Un ap-proc-cio per par-tizionare la somma in-finita di
  path in-te-grals è la seguente: 
  []
 
 
-Overfull \hbox (12.18097pt too wide) in paragraph at lines 89--94
+Overfull \hbox (12.18097pt too wide) in paragraph at lines 91--96
 \TU/CharisSIL(0)/m/n/12 restanti ter-mini della somma sono sti-mati con un’ap-
 prossi-mazione più grossolana.
  []
 
-[106] [107]) [108] [109
+[115] [116]) [117] [118
 
 ] (./chapters/chapter-Appendix-C-random-num.tex
 Appendix A.
-) [110
+[119
 
-]
-Overfull \hbox (5.97702pt too wide) in paragraph at lines 271--271
+]) [120]
+Overfull \hbox (5.97702pt too wide) in paragraph at lines 292--292
 []\TU/CharisSIL(0)/m/n/12 Vin-cent Pe-go-raro. \TU/CharisSIL(0)/m/it/12 Hand-boo
 k of Dig-i-tal Im-age Syn-the-sis: Sci-en-tific Foun-
  []
 
-[111
+[121
 
 
-] (./intermediate/main.gls [112]
+] (./intermediate/main.gls [122]
 Overfull \hbox (1.67511pt too wide) in paragraph at lines 7--7
 []\TU/CharisSIL(0)/m/n/12 Per un ma-te-ri-ale as-sor-bente: (spec-tral) Ab-sorp-
 tance di uno strato
@@ -3358,7 +3533,7 @@ Overfull \hbox (13.8216pt too wide) in paragraph at lines 13--13
 []\TU/CharisSIL(0)/m/n/12 Es-prime
  []
 
-[113
+[123
 
 
 ]
@@ -3367,12 +3542,15 @@ Overfull \hbox (32.1087pt too wide) in paragraph at lines 32--34
 a sulla percezione
  []
 
-[114]) [115] (./intermediate/main.aux)
+[124]) [125] (./intermediate/main.aux)
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: A9BAF3534672B94C7CC7B95919347CEC;10778.
+(rerunfilecheck)             Checksum: 57D9A79B1219FEF198172C37FFA8EC2F;10554.
 runsystem(rm intermediate//main.pyg)...executed
 Package logreq Info: Writing requests to 'main.run.xml'.
 
@@ -3380,16 +3558,16 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 68898 strings out of 478285
- 195570,2848258 words of node,token memory allocated
- 5947 words of node memory still in use:
+ 70696 strings out of 478285
+ 195327,3417909 words of node,token memory allocated
+ 6095 words of node memory still in use:
    81 hlist, 18 vlist, 5 rule, 6 math, 126 glue, 21 kern, 15 sub_mlist, 83 glyph
-, 644 attribute, 126 glue_spec, 644 attribute_list, 2 write, 13 pdf_action nodes
+, 681 attribute, 126 glue_spec, 681 attribute_list, 2 write, 13 pdf_action nodes
 
-   avail lists: 1:9,2:21015,3:13112,4:684,5:567,6:161,7:7969,8:103,9:2791,10:22,
-11:539
- 85984 multiletter control sequences out of 65536+600000
- 166 fonts using 77797151 bytes
+   avail lists: 1:13,2:20942,3:13130,4:686,5:568,6:162,7:7969,8:103,9:2791,10:22
+,11:539,12:1
+ 87642 multiletter control sequences out of 65536+600000
+ 169 fonts using 79157623 bytes
  95i,22n,114p,2265b,2933s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.52'
@@ -3397,19 +3575,20 @@ warning  (pdf backend): unreferenced destination with name 'Hfootnote.52'
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.51'
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.26'
-</usr/share/fonts/OTF/XITSMath-Regular.otf></usr/share/texmf-dist/fonts/opentype
-/public/lm/lmmono12-regular.otf></usr/share/texmf-dist/fonts/opentype/public/lm/
-lmmonolt10-bold.otf></usr/share/fonts/OTF/XITSMath-Regular.otf></usr/share/texmf
--dist/fonts/opentype/public/lm/lmsans12-regular.otf></usr/share/texmf-dist/fonts
-/opentype/public/lm-math/latinmodern-math.otf></usr/share/fonts/TTF/CharisSIL-Bo
-ld.ttf></usr/share/texmf-dist/fonts/opentype/public/lm-math/latinmodern-math.otf
-></usr/share/texmf-dist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr
-/share/fonts/TTF/CharisSIL-Italic.ttf></usr/share/fonts/TTF/CharisSIL-Regular.tt
-f></usr/share/fonts/TTF/CharisSIL-Bold.ttf>
-Output written on main.pdf (121 pages, 4467883 bytes).
+</usr/share/texmf-dist/fonts/opentype/public/lm/lmmono10-italic.otf></usr/share/
+fonts/OTF/XITSMath-Regular.otf></usr/share/texmf-dist/fonts/opentype/public/lm/l
+mmono12-regular.otf></usr/share/texmf-dist/fonts/opentype/public/lm/lmmonolt10-b
+old.otf></usr/share/fonts/OTF/XITSMath-Regular.otf></usr/share/texmf-dist/fonts/
+opentype/public/lm/lmsans12-regular.otf></usr/share/texmf-dist/fonts/opentype/pu
+blic/lm-math/latinmodern-math.otf></usr/share/fonts/TTF/CharisSIL-Bold.ttf></usr
+/share/texmf-dist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr/share
+/texmf-dist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr/share/fonts
+/TTF/CharisSIL-Italic.ttf></usr/share/fonts/TTF/CharisSIL-Regular.ttf></usr/shar
+e/fonts/TTF/CharisSIL-Bold.ttf>
+Output written on main.pdf (131 pages, 8057593 bytes).
 
-PDF statistics: 2054 PDF objects out of 2073 (max. 8388607)
- 1645 compressed objects within 17 object streams
- 592 named destinations out of 1000 (max. 131072)
- 510 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 2187 PDF objects out of 2487 (max. 8388607)
+ 1742 compressed objects within 18 object streams
+ 637 named destinations out of 1000 (max. 131072)
+ 520 words of extra memory for PDF output out of 10000 (max. 100000000)
 

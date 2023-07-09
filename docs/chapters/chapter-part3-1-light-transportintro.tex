@@ -1,3 +1,4 @@
+\newcommand{\ptset}[1]{\ensuremath{\{\ldots,\vec{p}_{#1}\}}}
 \chapter{Light Transport Modello e Surface Reflection}\label{chapter8}
 Come gi\`a accennato in Capitolo \ref{chapter3}, ci\`o che rende difficile la risoluzione della Rendering Equation \`e il suo legame implicito con
 la scena attraverso la ray tracing function $t(\vec{p}, \hat{\omega})$. L'irradianza spettrale risultante su un punto della superficie potrebbe 
@@ -38,8 +39,9 @@ superfici visibili dal punto $\vec{p}$, qui riportata
 		= L_e(\vec{p},\hat{pq}) + \int_{A}f_s(\vec{p},\hat{\omega}_o,\hat{pq})G(\vec{p},\vec{q})L(\vec{q},-\hat{pq})\mathrm{d}A(\vec{q})
 \end{equation*}
 Si noti che un'equazione di questo tipo ha struttura nota come \textit{Equazione Integrale di Fredholm del secondo tipo}.\\
-Definendo notazione \mbox{$L_{o|e}(\vec{p}_{i+1}\to\vec{p}_i)=L_{o|e}(\vec{p}_{i+1},\hat{p_ip_{i+1}})$} e \\
-\mbox{$f_r(\vec{p}_i,\vec{p}_{i+1},\vec{p}_{i+2})=f_r(\vec{p}_{i+1},\hat{p_ip_{i+1}},\hat{p_{i+1},p_{i+2}})$}, posso riscrivere tale equazione nella 
+Definendo notazione \mbox{$L_{o|e}(\vec{p}_{i+1}\to\vec{p}_i)=L_{o|e}(\vec{p}_{i+1},\widehat{p_ip_{i+1}})$} e \\
+\mbox{$f_r(\vec{p}_i,\vec{p}_{i+1},\vec{p}_{i+2})=f_r(\vec{p}_{i+1},\widehat{p_ip_{i+1}},\widehat{p_{i+1},p_{i+2}})$}, 
+posso riscrivere tale equazione nella 
 \textit{three-point form}
 \begin{equation}\label{chapter8:LTE:3pointform}
 	L(\vec{p}_1\to\vec{p}_0) %
@@ -59,33 +61,33 @@ definizione ricorsiva di radianza, e raggruppiamo i termini per complessit\`a
 		&+\int_{A}L_e(\vec{p}_2\to\vec{p}_1)f_s(\vec{p}_0,\vec{p}_1,\vec{p}_2)G(\vec{p}_1,\vec{p}_2)\mathrm{d}A(\vec{p}_2) \nonumber \\
 		&+\int_{A}\int_{A}L_e(\vec{p}_3\to\vec{p}_2)f_s(\vec{p}_1,\vec{p}_2,\vec{p}_3)G(\vec{p}_2,\vec{p}_3)\mathrm{d}A(\vec{p}_3) \nonumber \\
 		&+\ldots \nonumber \\
-		&=\sum_{i=1}^\infty P(\bar{p}_n)
+		&=\sum_{i=1}^\infty P(\ptset{n})
 \end{align}
-Dove $\bar{p}_n=\{\vec{p}_0,\vec{p}_1,\ldots,\vec{p}_n\}$.\par
-$P(\bar{p}_n)$ restituisce la quantit\`a di radianza scattered lungo un percorso con 
+Dove $\ptset{n}=\{\vec{p}_0,\vec{p}_1,\ldots,\vec{p}_n\}$.\par
+$P(\ptset{n})$ restituisce la quantit\`a di radianza scattered lungo un percorso con 
 gli $n+1$ vertici $\vec{p}_0,\vec{p}_1,\ldots,\vec{p}_n$, nei quali assumiamo $\vec{p}_0$ \`e sul film plane e $p_n$ \`e su una sorgente luminosa, 
 pari a 
 \begin{align}
-	P(\bar{p}_n) &= \underbrace{\int_A\int_A\ldots\int_A}_{n-1\text{ volte}}L_e(\vec{p}_n\to\vec{p}_{n-1})\left(\prod_{i=1}^{n-1}%
+	P(\ptset{n}) &= \nonumber\\&\underbrace{\int_A\int_A\ldots\int_A}_{n-1\text{ volte}}L_e(\vec{p}_n\to\vec{p}_{n-1})\left(\prod_{i=1}^{n-1}%
 		f_s(\vec{p}_{i-1},\vec{p}_i,\vec{p}_{i+1})G(\vec{p_{i+1},p_{i}})\right)\mathrm{d}A(\vec{p}_2)\ldots\mathrm{d}A(\vec{p}_n) \\
-	P(\bar{p}_0) &= L_e(\vec{p}_1,\vec{p}_0) \nonumber
+	P(\ptset{0}) &= L_e(\vec{p}_1,\vec{p}_0) \nonumber
 \end{align}
 La produttoria evidenziata nell'n-esimo path integral \`e detta \textit{throughput} della path
 \begin{equation}
-	T(\bar{p}_n)=\prod_{i=1}^{n-1}f_s(\vec{p}_{i-1},\vec{p}_i,\vec{p}_{i+1})G(\vec{p_{i+1},p_{i}})
+	T(\ptset{n})=\prod_{i=1}^{n-1}f_s(\vec{p}_{i-1},\vec{p}_i,\vec{p}_{i+1})G(\vec{p_{i+1},p_{i}})
 \end{equation}
 Da cui 
 \begin{equation}
-	P(\bar{p}_n) = \underbrace{\int_A\int_A\ldots\int_A}_{n-1\text{ volte}}L_e(\vec{p}_n\to\vec{p}_{n-1})T(\bar{p}_n)%
+	P(\ptset{n}) = \underbrace{\int_A\int_A\ldots\int_A}_{n-1\text{ volte}}L_e(\vec{p}_n\to\vec{p}_{n-1})T(\ptset{n})%
 		\mathrm{d}A(\vec{p}_2)\ldots\mathrm{d}A(\vec{p}_n)
 \end{equation}
-Notiamo che dei termini $P(\bar{p}_i)$ potrebbero contenere distribuzioni di Dirac all'interno della loro funzione integranda, dovuta o a determinati 
+Notiamo che dei termini $P(\ptset{i})$ potrebbero contenere distribuzioni di Dirac all'interno della loro funzione integranda, dovuta o a determinati 
 modelli di sorgenti luminose o BSDF. Dunque le implementazioni devono gestire tale caso particolare in quanto riduce la quantit\`a di termini della 
 somma da stimare. Si consideri l'esempio da \cite{pharr} per l'illuminazione diretta con una sorgente puntiforme descritta da una distribuzione di 
 Dirac.\par
 Un approccio per partizionare la somma infinita di path integrals \`e la seguente:
 \begin{equation}
-	L(\vec{p}_1\to\vec{p}_0)=P(\bar{p}_1)+P(\bar{p}_2)+\sum_{i=3}^\infty P(\bar{p}_i)
+	L(\vec{p}_1\to\vec{p}_0)=P(\ptset{1})+P(\ptset{2})+\sum_{i=3}^\infty P(\ptset{i})
 \end{equation}
 Dove il primo termine \`e calcolato facilmente valutando la radianza emessa dal punto $\vec{p}_1$ verso $\vec{p}_0$, il secondo integrale \`e stimato 
 con accuratezza elevata e i restanti termini della somma sono stimati con un'approssimazione pi\`u grossolana. Inoltre, si potrebbero anche partizionare
@@ -104,7 +106,7 @@ dove $\hat{\omega}_j=(\vec{p}_{j+1}-\vec{p}_j)/\norm{\vec{p}_{j+1}-\vec{p}_j}$ e
 (\ref{chapter3:surface:brdf})\par
 Applicando la compensazione per tale tecnica, lo stimatore unbiased diventa
 \begin{equation}
-	\frac{1}{1-q_1}\left(P(\bar{p}_1)+\frac{1}{1-q_2}\left(P(\bar{p}_2)+\frac{1}{1-q_3}\left(P(\bar{p}_3)+\ldots\right)\right)\right)
+	\frac{1}{1-q_1}\left(P(\ptset{1})+\frac{1}{1-q_2}\left(P(\ptset{2})+\frac{1}{1-q_3}\left(P(\ptset{3})+\ldots\right)\right)\right)
 \end{equation}
 In quanto il throughput totale della path
 \begin{equation*}
@@ -112,7 +114,7 @@ In quanto il throughput totale della path
 \end{equation*}
 decresce man mano che il tracing continua, \`e garantito che la valutazione della path termini in un tempo limitato. Si noti che nonostante Russian
 Roulette aumenta l'MSE, in quanto si accumulano meno contributi, l'efficienza aumenta comunque per la notevole diminuzione del Running Time.\par
-Per stimare ciascun path integral $P(\bar{p}_n)$, necessitiamo di $n+1$ vertici dei quali $\vec{p}_0$ sia sul film plane e $\vec{p}_n$ sia su una 
+Per stimare ciascun path integral $P(\ptset{n})$, necessitiamo di $n+1$ vertici dei quali $\vec{p}_0$ sia sul film plane e $\vec{p}_n$ sia su una 
 sorgente luminosa. Un approccio potrebbe essere campionare, dopo aver scelto il vertice sul film plane da cui partire, $n-2$ punti da tutte le 
 superfici della scena con densit\`a di distribuzione uniforme, e l'ultimo campione su una delle superfici luminose presenti nella scena con equa
 probabilit\`a. Tale approccio per\`o non conta la mutua visibilit\`a tra le superfici e pu\`o condurre a risultati con alta varianza, per via della 
@@ -132,7 +134,7 @@ in quanto il path integral \`e un integrale su un area, bisogna applicare la cor
 \end{equation}
 andandosi a semplificare con il termine geometrico\footnote{omesso l'Importance Sampling per semplicit\`a e per evidenziare i passaggi seguiti}
 \begin{align}
-	P(\bar{p}_n)&\approx L_e(\vec{p}_n\to\vec{p}_{n-1})\prod_{i=1}^{n-1}\frac{f_s(\vec{p}_{i-1},\vec{p}_i,\vec{p}_{i+1})G(\vec{p_{i+1},p_{i}})}
+	P(\ptset{n})&\approx L_e(\vec{p}_n\to\vec{p}_{n-1})\prod_{i=1}^{n-1}\frac{f_s(\vec{p}_{i-1},\vec{p}_i,\vec{p}_{i+1})G(\vec{p_{i+1},p_{i}})}
 		{p_A(\vec{p}_{i+1})} \nonumber \\
 	&=L_e(\vec{p}_n\to\vec{p}_{n-1})\prod_{i=1}^{n-1}\frac{f_s(\vec{p}_{i-1},\vec{p}_i,\vec{p}_{i+1})V(\vec{p}_{i+1},\vec{p}_i)
 		\frac{|\cos\theta_{i+1}||\cos\theta_i|}{\norm{\vec{p}_{i+1}-\vec{p}_i}^2}}{p_A(\vec{p}_{i+1})} \nonumber \\
@@ -144,7 +146,7 @@ andandosi a semplificare con il termine geometrico\footnote{omesso l'Importance 
 \end{align}
 Dopodich\`e suddividiamo il termine di Direct Lighting applicando MIS
 \begin{align}
-	P(\bar{p}_i)&\approx w_l(\hat{\omega}_l)\frac{L_e(\vec{p}_l\to\vec{p}_{i-1})f_s(\vec{p}_{i-2},\vec{p}_{i-1},\vec{p}_l)
+	P(\ptset{i})&\approx w_l(\hat{\omega}_l)\frac{L_e(\vec{p}_l\to\vec{p}_{i-1})f_s(\vec{p}_{i-2},\vec{p}_{i-1},\vec{p}_l)
 		|\cos\theta_l|V(\vec{p}_{i-1},\vec{p}_l)}{p_l(\hat{\omega}_l)}\beta \nonumber \\
 	&+w_b(\hat{\omega}_e)\frac{L_e(\vec{p}_b\to\vec{p}_{i-1})f_s(\vec{p}_{i-2},\vec{p}_{i-1},\vec{p}_b)
 		|\cos\theta_b|V(\vec{p}_{i-1},\vec{p}_b)}{p_b(\hat{\omega}_b)}\beta
