@@ -256,8 +256,29 @@
 
 	\frontmatter
 	\section*{Abstract}
+	Nel seguente documento si presentano tutti i fondamenti matematici e scientifici al problema della sintesi di un immagine basata su fondamenti 
+	fisici. A tal scopo, vengono primaditutto richiamati concetti fondamentali di elettromagnetismo e ottica, per poi introdurre le basi di 
+	radiometria, fotometria e colorimetria, che costituiscono il linguaggio attraverso il quale si esprimono i vari risultati, fino alla traduzione 
+	della radianza spettrale finale in un colore sRGB da poter presentare a schermo. In tale complesso algoritmo, \`e necessario definire un modello 
+	di camera, osservatore, attraverso il quale si disegna una griglia, che rappresenta l'immagine finale. Tale immagine \`e ricostruita campionando 
+	tale griglia e proiettando dei raggi dal vertice della telecamera verso ciascun punto campionato per poi esplorare la scena e, supponendo 
+	propagazione nel vuoto, trovare la prima intersezione con una superficie di tale scena, la quale emette e/o riflette e/o trasmette radianza a 
+	seconda del materiale di cui \`e fatta e dalle condizioni di luminosit\`a. Al fine di poter calcolare quanta radianza "ritorna" dal raggio 
+	verso la camera, bisogna ricorrere all'uso di equazioni integrali ricorsive, la cui elevata dimensionalit\`a proibisce ogni tipo di approccio 
+	deterministico, lasciando come una delle possibilit\`a l'applicazione dei Metodi di Monte Carlo, oggetto principe del documento. In seguito 
+	al calcolo di tale radianza per ciascun campione, \`e necessario aggregare i vari contributi per produrre una immagine finale, continua, dai 
+	campioni calcolati, attraverso un filtro di ricostruzione.\par
+	Ciascuna problematica posta da tale complicato processo \`e esplorata singolarmente in ciascun capitolo, per poi guadagnare una visione d'insieme 
+	nel capitolo finale \`e concludere con l'algoritmo \textit{Path Tracing}
 
 	\section*{Acknowledgements}
+	Vorrei ringraziale la Prof.ssa Marina Popolizio che ha acceso in me la passione per il calcolo numerico e permesso di dedicarmici spostando anche 
+	l'attenzione sulla grafica computerizzata, oggetto della mia curiosit\`a negli ultimi tempi. Inoltre, ringrazio la mia famiglia per avermi fornito
+	coraggio e supporto per tutto il mio percorso.\par
+	Spendo le ultime parole di questa introduzione per sottolineare quanto affascinante sia la Computer Grafica, quanto complicata. Di seguito, \`e 
+	indicato il link per il codice relativo alla implementazione dei concetti spiegati qui, il quale, alla scrittura di questo documento, \`e 
+	purtroppo ancora incompleto: \href{https://github.com/alexoz12v2/monteCarlo}{https://github.com/alexoz12v2/monteCarlo}
+	Ci\`o \`e motivo di grande rammarico, ed \`e per questo che tale progetto sar\`a in un futuro prossimo arricchito con nuovi algoritmi e strategie.
 
 	\tableofcontents
 

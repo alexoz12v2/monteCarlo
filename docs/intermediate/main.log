@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  9 JUL 2023 23:36
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  10 JUL 2023 00:08
  system commands enabled.
 **main.tex
 (./main.tex
@@ -2336,8 +2336,8 @@ your preamble.
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
 
-] [1]
-(./intermediate/main.toc [2
+] [1] [2]
+(./intermediate/main.toc [3
 
 ]
 Overfull \hbox (1.66754pt too wide) detected at line 60
@@ -2383,11 +2383,10 @@ Overfull \hbox (1.66754pt too wide) detected at line 71
 \tf@toc=\write10
 
 \openout10 = main.toc
- [3] [4
-
-]
+ [4]
 warning  (pdf backend): ignoring duplicate destination with the name 'page.1'
 [1
+
 
 ] (./chapters/chapter-part1-1-electromagnetic-radiometry.tex
 Chapter 1.
@@ -2568,7 +2567,7 @@ Overfull \hbox (4.32355pt too wide) in paragraph at lines 44--45
  []
 
 [17]
-<chapters/../assets/chapter2_colorimetry_cones.png, id=606, 1204.5pt x 910.4012
+<chapters/../assets/chapter2_colorimetry_cones.png, id=608, 1204.5pt x 910.4012
 5pt>
 File: chapters/../assets/chapter2_colorimetry_cones.png Graphic file (type png)
 
@@ -2577,7 +2576,7 @@ Package luatex.def Info: chapters/../assets/chapter2_colorimetry_cones.png  use
 d on input line 62.
 (luatex.def)             Requested size: 165.43602pt x 125.03816pt.
 <./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.pdf, 
-id=607, 975.4568pt x 611.9914pt>
+id=609, 975.4568pt x 611.9914pt>
 File: ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.
 pdf Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.p
@@ -2620,7 +2619,7 @@ Overfull \hbox (3.97784pt too wide) in paragraph at lines 104--105
 
 [19]
 <./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf, id=
-647, 353.94542pt x 366.81622pt>
+649, 353.94542pt x 366.81622pt>
 File: ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf
  Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf>
@@ -2665,7 +2664,7 @@ Overfull \hbox (15.83049pt too wide) detected at line 233
  []
 
 <./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf, id
-=709, 353.31148pt x 382.31808pt>
+=711, 353.31148pt x 382.31808pt>
 File: ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pd
 f Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf
@@ -2693,7 +2692,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [25]
 [26]
-<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf, id=786, 283.59102p
+<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf, id=788, 283.59102p
 t x 186.48965pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf Graphic file (
 type pdf)
@@ -2701,7 +2700,7 @@ type pdf)
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw
 .pdf  used on input line 345.
 (luatex.def)             Requested size: 283.59032pt x 186.4892pt.
-<./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf, id=787, 406.26328pt x
+<./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf, id=789, 406.26328pt x
  272.47215pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf Graphic file (typ
 e pdf)
@@ -2723,7 +2722,7 @@ Overfull \hbox (50.89758pt too wide) in paragraph at lines 359--361
 
 [28<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf><./svg-inkscape/c
 hapter2_camera_pinhole_plot_svg-raw.pdf>]
-<./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf, id=816, 318.2288
+<./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf, id=818, 318.2288
 4pt x 143.87604pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf Graphic file
  (type pdf)
@@ -2731,7 +2730,7 @@ File: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf Graphic file
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-r
 aw.pdf  used on input line 378.
 (luatex.def)             Requested size: 318.22804pt x 143.87567pt.
-<chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png, id=817, 
+<chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png, id=819, 
 362.7954pt x 218.7372pt>
 File: chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png Grap
 hic file (type png)
@@ -2766,7 +2765,7 @@ Overfull \hbox (1.4935pt too wide) in paragraph at lines 391--391
 g-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf>] [30] [31])
 (./chapters/chapter-part1-3-light-surface.tex [32]
 Chapter 3.
-<chapters/../assets/chapter3_surfaces_interaction_types.png, id=873, 387.4475pt
+<chapters/../assets/chapter3_surfaces_interaction_types.png, id=875, 387.4475pt
  x 270.00874pt>
 File: chapters/../assets/chapter3_surfaces_interaction_types.png Graphic file (
 type png)
@@ -2774,7 +2773,7 @@ type png)
 Package luatex.def Info: chapters/../assets/chapter3_surfaces_interaction_types
 .png  used on input line 5.
 (luatex.def)             Requested size: 165.43602pt x 115.28984pt.
-<chapters/../assets/chapter3_surfaces_specular_interaction.png, id=874, 471.762
+<chapters/../assets/chapter3_surfaces_specular_interaction.png, id=876, 471.762
 5pt x 234.8775pt>
 File: chapters/../assets/chapter3_surfaces_specular_interaction.png Graphic fil
 e (type png)
@@ -2891,7 +2890,7 @@ Underfull \vbox (badness 7256) has occurred while \output is active []
 Underfull \vbox (badness 7595) has occurred while \output is active []
 
  [41]
-<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf, id=1122, 811.75798
+<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf, id=1124, 811.75798
 pt x 574.46132pt>
 File: ./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf Graphic file (
 type pdf)
@@ -2931,7 +2930,7 @@ Overfull \hbox (5.91144pt too wide) in paragraph at lines 358--361
  []
 
 [44] [45]
-<chapters/../assets/chapter3_surface_angle2area.png, id=1192, 1358.07375pt x 65
+<chapters/../assets/chapter3_surface_angle2area.png, id=1194, 1358.07375pt x 65
 5.44875pt>
 File: chapters/../assets/chapter3_surface_angle2area.png Graphic file (type png
 )
@@ -2946,7 +2945,7 @@ e partono dal pre-sup-posto che tutti i fenomeni
  []
 
 [47]
-<chapters/../assets/chapter3_surface_projected_area.png, id=1224, 910.40125pt x
+<chapters/../assets/chapter3_surface_projected_area.png, id=1226, 910.40125pt x
  633.36626pt>
 File: chapters/../assets/chapter3_surface_projected_area.png Graphic file (type
  png)
@@ -2965,7 +2964,7 @@ Overfull \hbox (9.70831pt too wide) in paragraph at lines 498--509
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [49<./chapters/../assets/chapter3_surface_projected_area.png>] [50] [51]
-<chapters/../assets/chapter3_surface_microgeometry_effectsAM.png, id=1276, 1425
+<chapters/../assets/chapter3_surface_microgeometry_effectsAM.png, id=1278, 1425
 .325pt x 311.1625pt>
 File: chapters/../assets/chapter3_surface_microgeometry_effectsAM.png Graphic f
 ile (type png)
@@ -2980,7 +2979,7 @@ a sua \TU/CharisSIL(0)/m/it/12 Mi-cro BRDF $\TU/LatinModernMath(1)/m/n/12 𝑓[
 ]([], [], [])$\TU/CharisSIL(0)/m/n/12 ,
  []
 
-<chapters/../assets/chapter3_surface_microgeometry_areaAM.png, id=1289, 1405.25
+<chapters/../assets/chapter3_surface_microgeometry_areaAM.png, id=1291, 1405.25
 pt x 460.72125pt>
 File: chapters/../assets/chapter3_surface_microgeometry_areaAM.png Graphic file
  (type png)
@@ -2997,7 +2996,7 @@ Overfull \hbox (0.32745pt too wide) in paragraph at lines 712--714
 à, la cui di-mostrazione com-
  []
 
-<chapters/../assets/chapter3_surface_vcavityPG.png, id=1313, 1353.055pt x 592.2
+<chapters/../assets/chapter3_surface_vcavityPG.png, id=1315, 1353.055pt x 592.2
 125pt>
 File: chapters/../assets/chapter3_surface_vcavityPG.png Graphic file (type png)
 
@@ -3011,7 +3010,7 @@ Overfull \hbox (3.5208pt too wide) detected at line 783
  []
 
 [57]
-<chapters/../assets/chapter3_surface_refl_jacobianPG.png, id=1357, 1560.83125pt
+<chapters/../assets/chapter3_surface_refl_jacobianPG.png, id=1359, 1560.83125pt
  x 805.0075pt>
 File: chapters/../assets/chapter3_surface_refl_jacobianPG.png Graphic file (typ
 e png)
@@ -3019,7 +3018,7 @@ e png)
 Package luatex.def Info: chapters/../assets/chapter3_surface_refl_jacobianPG.pn
 g  used on input line 792.
 (luatex.def)             Requested size: 330.87836pt x 170.65341pt.
-<chapters/../assets/chapter3_surface_BRDF_paramsPG.png, id=1360, 1028.84375pt x
+<chapters/../assets/chapter3_surface_BRDF_paramsPG.png, id=1362, 1028.84375pt x
  696.6025pt>
 File: chapters/../assets/chapter3_surface_BRDF_paramsPG.png Graphic file (type 
 png)
@@ -3029,7 +3028,7 @@ Package luatex.def Info: chapters/../assets/chapter3_surface_BRDF_paramsPG.png
 (luatex.def)             Requested size: 206.79819pt x 140.00893pt.
  [58<./chapters/../assets/chapter3_surface_refl_jacobianPG.png><./chapters/../as
 sets/chapter3_surface_BRDF_paramsPG.png>] [59] [60]
-<chapters/../assets/chapter3_surface_anisotropic_BRDF.png, id=1404, 1648.1575pt
+<chapters/../assets/chapter3_surface_anisotropic_BRDF.png, id=1406, 1648.1575pt
  x 662.475pt>
 File: chapters/../assets/chapter3_surface_anisotropic_BRDF.png Graphic file (ty
 pe png)
@@ -3086,7 +3085,7 @@ te le di-rezioni $\TU/LatinModernMath(1)/m/n/12 𝐿[]([], []) =
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [72]
-<chapters/../assets/chapter3_light_sphere_sampling.png, id=1531, 1587.9325pt x 
+<chapters/../assets/chapter3_light_sphere_sampling.png, id=1533, 1587.9325pt x 
 840.13875pt>
 File: chapters/../assets/chapter3_light_sphere_sampling.png Graphic file (type 
 png)
@@ -3133,7 +3132,7 @@ Overfull \hbox (13.41649pt too wide) detected at line 43
  []
 
 [78]
-<chapters/../assets/chapter6_MC_variance.png, id=1590, 1266.7325pt x 714.67pt>
+<chapters/../assets/chapter6_MC_variance.png, id=1592, 1266.7325pt x 714.67pt>
 File: chapters/../assets/chapter6_MC_variance.png Graphic file (type png)
 <use chapters/../assets/chapter6_MC_variance.png>
 Package luatex.def Info: chapters/../assets/chapter6_MC_variance.png  used on i
@@ -3171,7 +3170,7 @@ Overfull \hbox (2.44862pt too wide) in paragraph at lines 129--134
  []
 
 [81]
-<chapters/../assets/chapter6_sampling_inverse_transform_sampling.png, id=1628, 
+<chapters/../assets/chapter6_sampling_inverse_transform_sampling.png, id=1630, 
 943.525pt x 890.32625pt>
 File: chapters/../assets/chapter6_sampling_inverse_transform_sampling.png Graph
 ic file (type png)
@@ -3181,7 +3180,7 @@ _sampling.png  used on input line 144.
 (luatex.def)             Requested size: 372.2342pt x 351.24709pt.
  [82] [83<./chapters/../assets/chapter6_sampling_inverse_transform_sampling.png>
 ]
-<chapters/../assets/chapter6_sampling_acceptance_rejection.png, id=1649, 1364.0
+<chapters/../assets/chapter6_sampling_acceptance_rejection.png, id=1651, 1364.0
 9625pt x 440.64626pt>
 File: chapters/../assets/chapter6_sampling_acceptance_rejection.png Graphic fil
 e (type png)
@@ -3294,7 +3293,7 @@ za, il cam-pi-ona-tore basato
  []
 
 [100]
-<chapters/../assets/chapter5_sampling_haltonPSD.png, id=1819, 691.58376pt x 666
+<chapters/../assets/chapter5_sampling_haltonPSD.png, id=1821, 691.58376pt x 666
 .49pt>
 File: chapters/../assets/chapter5_sampling_haltonPSD.png Graphic file (type png
 )
@@ -3322,7 +3321,7 @@ Underfull \hbox (badness 6825) in paragraph at lines 170--170
 \TU/CharisSIL(0)/m/n/10.95 ec-ces-siva vari-azione nelle alte
  []
 
-<chapters/../assets/chapter5_sampling_owenPSD.png, id=1820, 847.165pt x 680.542
+<chapters/../assets/chapter5_sampling_owenPSD.png, id=1822, 847.165pt x 680.542
 5pt>
 File: chapters/../assets/chapter5_sampling_owenPSD.png Graphic file (type png)
 <use chapters/../assets/chapter5_sampling_owenPSD.png>
@@ -3344,7 +3343,7 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 
 [101] [102<./chapters/../assets/chapter5_sampling_haltonPSD.png><./chapters/../a
 ssets/chapter5_sampling_owenPSD.png>])
-<chapters/../assets/chapter5_sampling_result.png, id=1842, 1213.53375pt x 235.8
+<chapters/../assets/chapter5_sampling_result.png, id=1844, 1213.53375pt x 235.8
 8126pt>
 File: chapters/../assets/chapter5_sampling_result.png Graphic file (type png)
 <use chapters/../assets/chapter5_sampling_result.png>
@@ -3361,7 +3360,7 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
 
 [103] [104<./chapters/../assets/chapter5_sampling_result.png>]
-<chapters/../assets/chapter5_reconstruction_box.png, id=1861, 1393.205pt x 690.
+<chapters/../assets/chapter5_reconstruction_box.png, id=1863, 1393.205pt x 690.
 58pt>
 File: chapters/../assets/chapter5_reconstruction_box.png Graphic file (type png
 )
@@ -3389,7 +3388,7 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
 
 [105<./chapters/../assets/chapter5_reconstruction_box.png>]
-<chapters/../assets/chapter5_reconstruction_box_result.png, id=1875, 1383.1675p
+<chapters/../assets/chapter5_reconstruction_box_result.png, id=1877, 1383.1675p
 t x 1020.81375pt>
 File: chapters/../assets/chapter5_reconstruction_box_result.png Graphic file (t
 ype png)
@@ -3397,7 +3396,7 @@ ype png)
 Package luatex.def Info: chapters/../assets/chapter5_reconstruction_box_result.
 png  used on input line 316.
 (luatex.def)             Requested size: 330.87836pt x 244.19034pt.
-<chapters/../assets/chapter5_reconstruction_gaussian.png, id=1876, 1392.20125pt
+<chapters/../assets/chapter5_reconstruction_gaussian.png, id=1878, 1392.20125pt
  x 721.69624pt>
 File: chapters/../assets/chapter5_reconstruction_gaussian.png Graphic file (typ
 e png)
@@ -3420,7 +3419,7 @@ Overfull \hbox (4.79816pt too wide) in paragraph at lines 351--353
 -ra-ble fil-ter, pos-si-amo cam-
  []
 
-<chapters/../assets/chapter5_reconstruction_piecewise.png, id=1903, 1056.94875p
+<chapters/../assets/chapter5_reconstruction_piecewise.png, id=1905, 1056.94875p
 t x 338.26375pt>
 File: chapters/../assets/chapter5_reconstruction_piecewise.png Graphic file (ty
 pe png)
@@ -3438,7 +3437,7 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
 
 [109<./chapters/../assets/chapter5_reconstruction_piecewise.png>]
-<chapters/../assets/chapter5_reconstruction_gaussian_result.png, id=1929, 1376.
+<chapters/../assets/chapter5_reconstruction_gaussian_result.png, id=1931, 1376.
 14125pt x 1019.81pt>
 File: chapters/../assets/chapter5_reconstruction_gaussian_result.png Graphic fi
 le (type png)
@@ -3459,7 +3458,7 @@ Overfull \hbox (27.52332pt too wide) in paragraph at lines 13--17
 [112
 
 ]
-<chapters/../assets/chapter8_light_transport_equation.png, id=1951, 1223.57124p
+<chapters/../assets/chapter8_light_transport_equation.png, id=1953, 1223.57124p
 t x 961.5925pt>
 File: chapters/../assets/chapter8_light_transport_equation.png Graphic file (ty
 pe png)
@@ -3509,7 +3508,7 @@ Appendix A.
 [119
 
 ]) [120]
-Overfull \hbox (5.97702pt too wide) in paragraph at lines 292--292
+Overfull \hbox (5.97702pt too wide) in paragraph at lines 313--313
 []\TU/CharisSIL(0)/m/n/12 Vin-cent Pe-go-raro. \TU/CharisSIL(0)/m/it/12 Hand-boo
 k of Dig-i-tal Im-age Syn-the-sis: Sci-en-tific Foun-
  []
@@ -3567,7 +3566,7 @@ Here is how much of LuaTeX's memory you used:
    avail lists: 1:13,2:20942,3:13130,4:686,5:568,6:162,7:7969,8:103,9:2791,10:22
 ,11:539,12:1
  87642 multiletter control sequences out of 65536+600000
- 169 fonts using 79157623 bytes
+ 169 fonts using 79158199 bytes
  95i,22n,114p,2265b,2933s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.52'
@@ -3585,10 +3584,10 @@ blic/lm-math/latinmodern-math.otf></usr/share/fonts/TTF/CharisSIL-Bold.ttf></usr
 /texmf-dist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr/share/fonts
 /TTF/CharisSIL-Italic.ttf></usr/share/fonts/TTF/CharisSIL-Regular.ttf></usr/shar
 e/fonts/TTF/CharisSIL-Bold.ttf>
-Output written on main.pdf (131 pages, 8057593 bytes).
+Output written on main.pdf (131 pages, 8060431 bytes).
 
-PDF statistics: 2187 PDF objects out of 2487 (max. 8388607)
- 1742 compressed objects within 18 object streams
+PDF statistics: 2189 PDF objects out of 2487 (max. 8388607)
+ 1744 compressed objects within 18 object streams
  637 named destinations out of 1000 (max. 131072)
  520 words of extra memory for PDF output out of 10000 (max. 100000000)
 
