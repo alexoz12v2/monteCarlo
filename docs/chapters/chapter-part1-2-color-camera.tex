@@ -341,7 +341,7 @@ desiderati (i quali costituiscono l'ultima dimensione della LUT).\par
 Nota aggiuntiva: spettri di illuminanti o di coefficienti che descrivono il mezzo trasmissivo tendono ad avere valori spettrali $>1$, il che significa
 che bisogna gestire anche la conversione per coordinate RGB $>1$. Tali coordinate vengono normalizzate a $1$ o $0.5$ (a seconda della saturazione), 
 affinch\`e si possa ottenere una migliore curva spettrale, e si memorizza un coefficiente di scala da utilizzare in seguito.
-\section{camera}\label{chapter2:camera}
+\section{Camera}\label{chapter2:camera}
 Affinch\`e si possa associare ad ogni punto 2D nell'\textit{color buffer} che conterr\`a eventualmente l'immagine output uno o pi\`u coppie 
 $(\vec{p_0}, \hat{\omega_0})$ punto e direzione di partenza, necessitiamo di un \textit{camera model}
 \begin{definitionS}
@@ -399,6 +399,14 @@ Le formule che seguono utilizzano, per comodit\`a, il Camera Space.\par
 \footnotetext{Immagine da \href{http://learnwebgl.brown37.net/08\_projections/projections\_perspective.html}
 		{\mbox{http://learnwebgl.brown37.net/08\_projections/projections\_perspective.html}}}
 La mappa $\vec{q}=[y_1,y_2]^T$ da $\vec{p}=[x_1,x_2,x_3]^T$. Siano $l,r,b,t,n,f$ rispettivamente left, right, bottom, top, near, far.\par
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=0.6\linewidth]{../assets/chapter2_view_frustum.png}
+	\caption{Illustrazione della mappa da view frustum a cubo unitario. Immagine da \href{www.scratchapixel.com}{www.scratchapixel.com}}
+	\label{chapter2:camera:viewFrustum}
+\end{figure}
+Al fine di poter rappresentare una immagine finale che restituisca la percezione di uno spazio tridimensionale, ciascun punto della scena intersecato
+dal raggio visivo del campione considerato viene prima proiettato in un punto sul film plane.\par 
 Possiamo ricavare una \textit{proiezione prospettica}\footnotemark{} esprimendo il punto $\vec{p}$ in coordinate omogenee 
 e concatenando una trasformazione di 
 \footnotetext{Weak perspective projection}

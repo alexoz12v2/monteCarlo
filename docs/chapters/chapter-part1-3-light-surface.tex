@@ -30,13 +30,13 @@ del CIE Lighting Vocabulary
 	\item[\Gls{Reflectance}] \Glsdesc{Reflectance}. \mbox{Simbolo $\si{\rho}$}
 	\item[\Gls{Transmittance}] \Glsdesc{Transmittance}. \mbox{Simbolo $\si{\uptau}$}
 	\item[\Gls{Absorptance}] \Glsdesc{Absorptance}. \mbox{Simbolo $\si{\alpha}$}
-	\item[\Gls{Reflectivity}] \Glsdesc{Reflectivity}. \mbox{Simbolo $\si{\rho_\infty}$}
-	\item[\Gls{Transmissivity}] \Glsdesc{Transmissivity}. \mbox{Simbolo $\si{\uptau_u}$}
-	\item[\Gls{Absorptivity}] \Glsdesc{Absorptivity}. \mbox{Simbolo $\si{\alpha_u}$}
+%	\item[\Gls{Reflectivity}] \Glsdesc{Reflectivity}. \mbox{Simbolo $\si{\rho_\infty}$}
+%	\item[\Gls{Transmissivity}] \Glsdesc{Transmissivity}. \mbox{Simbolo $\si{\uptau_u}$}
+%	\item[\Gls{Absorptivity}] \Glsdesc{Absorptivity}. \mbox{Simbolo $\si{\alpha_u}$}
 \end{altDescription}
-Si noti che nelle definizioni di Reflectivity e Transmissivity si contano anche i contributi aggiunti (nel primo caso) / tolti (nel secondo caso) per 
-via del fenomeno di subsurface scattering\footnote{fuori scope}, dunque talvolta si considerano soltanto gli effetti di riflessione e trasmissione 
-all'interfaccia, simboli $\bar{\rho}, \bar{\uptau}$, il cui valore per i vari materiali \`e governato dalle \textit{Equazioni di Fresnel} 
+%Si noti che nelle definizioni di Reflectivity e Transmissivity si contano anche i contributi aggiunti (nel primo caso) / tolti (nel secondo caso) per 
+%via del fenomeno di subsurface scattering\footnote{fuori scope}, dunque talvolta si considerano soltanto gli effetti di riflessione e trasmissione 
+%all'interfaccia, simboli $\bar{\rho}, \bar{\uptau}$, il cui valore per i vari materiali \`e governato dalle \textit{Equazioni di Fresnel} 
 (vedi \ref{chapter3:surface:fresnel})
 \begin{table}[tb!]
 	\newcommand{\infint}[1]{\ensuremath{\int_0^\infty #1 \mathrm{d}\lambda}}
@@ -126,45 +126,45 @@ Come precedentemente accennato, per il calcolo della reflectance, vengono presi 
 		\bottomrule
 		\endlastfoot
 
-		Bidirectional Reflectance & \\
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
-			{\[\mathrm{d}\rho(\vec{p},\hat{\omega}_o, \hat{\omega}_i) = %
-			f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\vert\dotpr{o}\vert\mathrm{d}\hat{\omega}_o\]} \\
-		Directional-Conical Reflectance &\\
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
-			{\[\rho(\vec{p},\hat{\omega}_o,\hat{\omega}_i;\Omega) = \iang{\Omega}{o}\]}\\
-		Directional-Hemispherical Reflectance &  \\
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
-			{\[\rho(\vec{p},\hat{\omega}_i) = \iang{\mathcal{H}^2(\hat{n})}{o}\]}\\
-		Conical-Directional Reflectance &  \\
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
-			{\[\mathrm{d}\rho(\vec{p},\hat{\omega}_o,\hat{\omega}_i;\Omega) = %
-			\frac{\vert\dotpr{o}\vert\mathrm{d}\hat{\omega}_o}{\int_{\mathcal{H}^2(\hat{n})}\vert\dotpr{i}\vert\mathrm{d}\hat{\omega}_i}
-			\iang{\Omega}{i}\]}\\
-		Biconical Reflectance &  \\
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
-			{\[\rho(\vec{p},\hat{\omega}_o,\hat{\omega}_i;\Omega_i,\Omega_o) =%
-			\frac{1}{\int_{\mathcal{H}^2(\hat{n})}\vert\dotpr{i}\vert\mathrm{d}\hat{\omega}_i}%
-			\int_{\Omega_i}\int_{\Omega_o}f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\vert\dotpr{o}%
-			\dotpr{i}\vert\mathrm{d}\hat{\omega}_o\mathrm{d}\hat{\omega}_i\]}\\
-		Conical-Hemispherical Reflectance &  \\
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
-			{\[\rho(\vec{p},\hat{\omega}_i;\Omega) =%
-			\frac{1}{\int_{\mathcal{H}^2(\hat{n})}\vert\dotpr{i}\vert\mathrm{d}\hat{\omega}_i}%
-			\int_\Omega\int_{\mathcal{H}^2(\hat{n})}f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\vert\dotpr{o}%
-			\dotpr{i}\vert\mathrm{d}\hat{\omega}_o\mathrm{d}\hat{\omega}_i\]}\\
+	%	Bidirectional Reflectance & \\
+	%	\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+	%		{\[\mathrm{d}\rho(\vec{p},\hat{\omega}_o, \hat{\omega}_i) = %
+	%		f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\vert\dotpr{o}\vert\mathrm{d}\hat{\omega}_o\]} \\
+	%	Directional-Conical Reflectance &\\
+	%	\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+	%		{\[\rho(\vec{p},\hat{\omega}_o,\hat{\omega}_i;\Omega) = \iang{\Omega}{o}\]}\\
+	%	Directional-Hemispherical Reflectance &  \\
+	%	\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+	%		{\[\rho(\vec{p},\hat{\omega}_i) = \iang{\mathcal{H}^2(\hat{n})}{o}\]}\\
+	%	Conical-Directional Reflectance &  \\
+	%	\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+	%		{\[\mathrm{d}\rho(\vec{p},\hat{\omega}_o,\hat{\omega}_i;\Omega) = %
+	%		\frac{\vert\dotpr{o}\vert\mathrm{d}\hat{\omega}_o}{\int_{\mathcal{H}^2(\hat{n})}\vert\dotpr{i}\vert\mathrm{d}\hat{\omega}_i}
+	%		\iang{\Omega}{i}\]}\\
+	%	Biconical Reflectance &  \\
+	%	\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+	%		{\[\rho(\vec{p},\hat{\omega}_o,\hat{\omega}_i;\Omega_i,\Omega_o) =%
+	%		\frac{1}{\int_{\mathcal{H}^2(\hat{n})}\vert\dotpr{i}\vert\mathrm{d}\hat{\omega}_i}%
+	%		\int_{\Omega_i}\int_{\Omega_o}f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\vert\dotpr{o}%
+	%		\dotpr{i}\vert\mathrm{d}\hat{\omega}_o\mathrm{d}\hat{\omega}_i\]}\\
+	%	Conical-Hemispherical Reflectance &  \\
+	%	\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+	%		{\[\rho(\vec{p},\hat{\omega}_i;\Omega) =%
+	%		\frac{1}{\int_{\mathcal{H}^2(\hat{n})}\vert\dotpr{i}\vert\mathrm{d}\hat{\omega}_i}%
+	%		\int_\Omega\int_{\mathcal{H}^2(\hat{n})}f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\vert\dotpr{o}%
+	%		\dotpr{i}\vert\mathrm{d}\hat{\omega}_o\mathrm{d}\hat{\omega}_i\]}\\
+	%	Hemispherical-Directional Reflectance &  \\
+	%	\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+	%		{\[\mathrm{d}\rho(\vec{p},\hat{\omega}_o) =%
+	%		\frac{\vert\dotpr{o}\vert\mathrm{d}\hat{\omega}_o}{\pi}\iang{\mathcal{H}^2(\hat{n})}{i}\]}\\
 		Hemispherical-Directional Reflectance &  \\
 		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
-			{\[\mathrm{d}\rho(\vec{p},\hat{\omega}_o) =%
-			\frac{\vert\dotpr{o}\vert\mathrm{d}\hat{\omega}_o}{\pi}\iang{\mathcal{H}^2(\hat{n})}{i}\]}\\
-		Hemispherical-Directional Reflectance (alt)\footnotemark{} &  \\
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
 			{\begin{equation}\label{chapter3:surface:DHR}\rho(\vec{p},\hat{\omega}_o) = \iang{\mathcal{H}^2(\hat{n})}{i}\end{equation}}\\
-		Hemispherical-Conical Reflectance &  \\
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
-			{\[\rho(\vec{p}, \hat{\omega}_o;\Omega) = %
-			\frac{1}{\pi}\int_{\mathcal{H}^2(\hat{n})}\int_\Omega f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\vert\dotpr{o}%
-			\dotpr{i}\vert\mathrm{d}\hat{\omega}_o\mathrm{d}\hat{\omega}_i\]}\\
+%		Hemispherical-Conical Reflectance &  \\
+%		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
+%			{\[\rho(\vec{p}, \hat{\omega}_o;\Omega) = %
+%			\frac{1}{\pi}\int_{\mathcal{H}^2(\hat{n})}\int_\Omega f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)\vert\dotpr{o}%
+%			\dotpr{i}\vert\mathrm{d}\hat{\omega}_o\mathrm{d}\hat{\omega}_i\]}\\
 		Bi-Hemispherical Reflectance &  \\
 		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
 			{\begin{equation}\rho(\vec{p}) = \frac{1}{\pi}%
@@ -172,7 +172,7 @@ Come precedentemente accennato, per il calcolo della reflectance, vengono presi 
 			\dotpr{i}\vert\mathrm{d}\hat{\omega}_o\mathrm{d}\hat{\omega}_i\end{equation}}\\
 	\end{xltabular}
 }
-\footnotetext{La utilizziamo in seguito, per convenzione, senza normalizzazione e notazione differenziale. In tale contesto essa la chiamiamo "albedo"}
+%\footnotetext{La utilizziamo in seguito, per convenzione, senza normalizzazione e notazione differenziale. In tale contesto essa la chiamiamo "albedo"}
 \subsection{Propriet\`a ottiche delle interfacce}\label{chapter3:surface:fresnel}
 \begin{figure}[tb]
 \colorlet{myblue}{blue!50!black!70}
