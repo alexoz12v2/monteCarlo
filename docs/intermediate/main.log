@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  13 JUL 2023 17:24
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  13 JUL 2023 17:30
  system commands enabled.
 **main.tex
 (./main.tex
@@ -42,8 +42,8 @@ ing layer <2023-02-22>
 Inserting `tracingstacklevels' in `input_level_string'.
 (/usr/share/texmf-dist/tex/latex/base/book.cls
 Document Class: book 2022/07/02 v1.4n Standard LaTeX document class
-(/usr/share/texmf-dist/tex/latex/base/bk12.clo
-File: bk12.clo 2022/07/02 v1.4n Standard LaTeX file (size option)
+(/usr/share/texmf-dist/tex/latex/base/bk10.clo
+File: bk10.clo 2022/07/02 v1.4n Standard LaTeX file (size option)
 luaotfload | db : Font names database loaded from /home/alessio/.texlive/texmf-v
 ar/luatex-cache/generic/names/luaotfload-names.luc.gz)
 \c@part=\count183
@@ -845,8 +845,8 @@ Package fontspec Info: Could not resolve font "LatinModernMath/B" (it probably
 Package fontspec Info: Font family 'LatinModernMath(1)' created for font
 (fontspec)             'Latin Modern Math' with options
 (fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
-sFont={},Script=Math,SizeFeatures={{Size=10.2-},{Size=7.2-10.2,Font=Latin
-(fontspec)             Modern Math,Style=MathScript},{Size=-7.2,Font=Latin
+sFont={},Script=Math,SizeFeatures={{Size=8.5-},{Size=6-8.5,Font=Latin
+(fontspec)             Modern Math,Style=MathScript},{Size=-6,Font=Latin
 (fontspec)             Modern
 (fontspec)             Math,Style=MathScriptScript}},FontAdjustment={\__um_luat
 ex_copy_fontdimens:
@@ -856,9 +856,9 @@ ex_copy_fontdimens:
 (fontspec)             series/shapes:
 (fontspec)              
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <10.2->"LatinModernMath:mode=base;script=math;language=d
-flt;"<7.2-10.2>"LatinModernMath:mode=base;script=math;language=dflt;+ssty=0;"<-
-7.2>"LatinModernMath:mode=base;script=math;language=dflt;+ssty=1;"
+(fontspec)             <8.5->"LatinModernMath:mode=base;script=math;language=df
+lt;"<6-8.5>"LatinModernMath:mode=base;script=math;language=dflt;+ssty=0;"<-6>"L
+atinModernMath:mode=base;script=math;language=dflt;+ssty=1;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 (fontspec)             and font adjustment code:
 (fontspec)             \__um_luatex_copy_fontdimens: 
@@ -893,43 +893,43 @@ Package fontspec Info: LatinModernMath scale = 1.0001.
 Package fontspec Info: Font family 'LatinModernMath(2)' created for font
 (fontspec)             'Latin Modern Math' with options
 (fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
-sFont={},Script=Math,SizeFeatures={{Size=10.2-},{Size=7.2-10.2,Font=Latin
-(fontspec)             Modern Math,Style=MathScript},{Size=-7.2,Font=Latin
+sFont={},Script=Math,SizeFeatures={{Size=8.5-},{Size=6-8.5,Font=Latin
+(fontspec)             Modern Math,Style=MathScript},{Size=-6,Font=Latin
 (fontspec)             Modern
 (fontspec)             Math,Style=MathScriptScript}},FontAdjustment={\__um_luat
 ex_copy_fontdimens:
 (fontspec)             },ScaleAgain=1.0001,FontAdjustment={\fontdimen 8\font
-(fontspec)             =8.124pt\relax \fontdimen 9\font =4.728pt\relax
-(fontspec)             \fontdimen 10\font =5.32799pt\relax \fontdimen 11\font
-(fontspec)             =8.232pt\relax \fontdimen 12\font =4.14pt\relax
-(fontspec)             \fontdimen 13\font =4.35599pt\relax \fontdimen 14\font
-(fontspec)             =4.35599pt\relax \fontdimen 15\font =3.46799pt\relax
-(fontspec)             \fontdimen 16\font =2.96399pt\relax \fontdimen 17\font
-(fontspec)             =2.96399pt\relax \fontdimen 18\font =3.0pt\relax
-(fontspec)             \fontdimen 19\font =2.4pt\relax \fontdimen 22\font
-(fontspec)             =3.0pt\relax \fontdimen 20\font =0pt\relax \fontdimen
+(fontspec)             =6.76999pt\relax \fontdimen 9\font =3.93999pt\relax
+(fontspec)             \fontdimen 10\font =4.43999pt\relax \fontdimen 11\font
+(fontspec)             =6.85999pt\relax \fontdimen 12\font =3.45pt\relax
+(fontspec)             \fontdimen 13\font =3.62999pt\relax \fontdimen 14\font
+(fontspec)             =3.62999pt\relax \fontdimen 15\font =2.89pt\relax
+(fontspec)             \fontdimen 16\font =2.46999pt\relax \fontdimen 17\font
+(fontspec)             =2.46999pt\relax \fontdimen 18\font =2.5pt\relax
+(fontspec)             \fontdimen 19\font =2.0pt\relax \fontdimen 22\font
+(fontspec)             =2.5pt\relax \fontdimen 20\font =0pt\relax \fontdimen
 (fontspec)             21\font =0pt\relax }].
 (fontspec)              
 (fontspec)              This font family consists of the following NFSS
 (fontspec)             series/shapes:
 (fontspec)              
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <10.2->s*[1.0001]"LatinModernMath:mode=base;script=math;
-language=dflt;"<7.2-10.2>s*[1.0001]"LatinModernMath:mode=base;script=math;langu
-age=dflt;+ssty=0;"<-7.2>s*[1.0001]"LatinModernMath:mode=base;script=math;langua
-ge=dflt;+ssty=1;"
+(fontspec)             <8.5->s*[1.0001]"LatinModernMath:mode=base;script=math;l
+anguage=dflt;"<6-8.5>s*[1.0001]"LatinModernMath:mode=base;script=math;language=
+dflt;+ssty=0;"<-6>s*[1.0001]"LatinModernMath:mode=base;script=math;language=dfl
+t;+ssty=1;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 (fontspec)             and font adjustment code:
 (fontspec)             \__um_luatex_copy_fontdimens: \fontdimen 8\font
-(fontspec)             =8.124pt\relax \fontdimen 9\font =4.728pt\relax
-(fontspec)             \fontdimen 10\font =5.32799pt\relax \fontdimen 11\font
-(fontspec)             =8.232pt\relax \fontdimen 12\font =4.14pt\relax
-(fontspec)             \fontdimen 13\font =4.35599pt\relax \fontdimen 14\font
-(fontspec)             =4.35599pt\relax \fontdimen 15\font =3.46799pt\relax
-(fontspec)             \fontdimen 16\font =2.96399pt\relax \fontdimen 17\font
-(fontspec)             =2.96399pt\relax \fontdimen 18\font =3.0pt\relax
-(fontspec)             \fontdimen 19\font =2.4pt\relax \fontdimen 22\font
-(fontspec)             =3.0pt\relax \fontdimen 20\font =0pt\relax \fontdimen
+(fontspec)             =6.76999pt\relax \fontdimen 9\font =3.93999pt\relax
+(fontspec)             \fontdimen 10\font =4.43999pt\relax \fontdimen 11\font
+(fontspec)             =6.85999pt\relax \fontdimen 12\font =3.45pt\relax
+(fontspec)             \fontdimen 13\font =3.62999pt\relax \fontdimen 14\font
+(fontspec)             =3.62999pt\relax \fontdimen 15\font =2.89pt\relax
+(fontspec)             \fontdimen 16\font =2.46999pt\relax \fontdimen 17\font
+(fontspec)             =2.46999pt\relax \fontdimen 18\font =2.5pt\relax
+(fontspec)             \fontdimen 19\font =2.0pt\relax \fontdimen 22\font
+(fontspec)             =2.5pt\relax \fontdimen 20\font =0pt\relax \fontdimen
 (fontspec)             21\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
@@ -962,31 +962,31 @@ Package fontspec Info: LatinModernMath scale = 0.9999.
 Package fontspec Info: Font family 'LatinModernMath(3)' created for font
 (fontspec)             'Latin Modern Math' with options
 (fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
-sFont={},Script=Math,SizeFeatures={{Size=10.2-},{Size=7.2-10.2,Font=Latin
-(fontspec)             Modern Math,Style=MathScript},{Size=-7.2,Font=Latin
+sFont={},Script=Math,SizeFeatures={{Size=8.5-},{Size=6-8.5,Font=Latin
+(fontspec)             Modern Math,Style=MathScript},{Size=-6,Font=Latin
 (fontspec)             Modern
 (fontspec)             Math,Style=MathScriptScript}},FontAdjustment={\__um_luat
 ex_copy_fontdimens:
 (fontspec)             },ScaleAgain=0.9999,FontAdjustment={\fontdimen 8\font
-(fontspec)             =0.48pt\relax \fontdimen 9\font =2.4pt\relax \fontdimen
-(fontspec)             10\font =2.004pt\relax \fontdimen 11\font
-(fontspec)             =1.33199pt\relax \fontdimen 12\font =7.2pt\relax
+(fontspec)             =0.4pt\relax \fontdimen 9\font =2.0pt\relax \fontdimen
+(fontspec)             10\font =1.67pt\relax \fontdimen 11\font
+(fontspec)             =1.10999pt\relax \fontdimen 12\font =6.0pt\relax
 (fontspec)             \fontdimen 13\font =0pt\relax }].
 (fontspec)              
 (fontspec)              This font family consists of the following NFSS
 (fontspec)             series/shapes:
 (fontspec)              
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <10.2->s*[0.9999]"LatinModernMath:mode=base;script=math;
-language=dflt;"<7.2-10.2>s*[0.9999]"LatinModernMath:mode=base;script=math;langu
-age=dflt;+ssty=0;"<-7.2>s*[0.9999]"LatinModernMath:mode=base;script=math;langua
-ge=dflt;+ssty=1;"
+(fontspec)             <8.5->s*[0.9999]"LatinModernMath:mode=base;script=math;l
+anguage=dflt;"<6-8.5>s*[0.9999]"LatinModernMath:mode=base;script=math;language=
+dflt;+ssty=0;"<-6>s*[0.9999]"LatinModernMath:mode=base;script=math;language=dfl
+t;+ssty=1;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 (fontspec)             and font adjustment code:
 (fontspec)             \__um_luatex_copy_fontdimens: \fontdimen 8\font
-(fontspec)             =0.48pt\relax \fontdimen 9\font =2.4pt\relax \fontdimen
-(fontspec)             10\font =2.004pt\relax \fontdimen 11\font
-(fontspec)             =1.33199pt\relax \fontdimen 12\font =7.2pt\relax
+(fontspec)             =0.4pt\relax \fontdimen 9\font =2.0pt\relax \fontdimen
+(fontspec)             10\font =1.67pt\relax \fontdimen 11\font
+(fontspec)             =1.10999pt\relax \fontdimen 12\font =6.0pt\relax
 (fontspec)             \fontdimen 13\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
@@ -1008,17 +1008,17 @@ LaTeX Font Info:    Trying to load font information for OML+lmm on input line 3
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 12.00128pt on input line 34.
+(Font)              scaled to size 10.00107pt on input line 34.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 8.40088pt on input line 34.
+(Font)              scaled to size 7.00075pt on input line 34.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 6.00064pt on input line 34.
+(Font)              scaled to size 5.00053pt on input line 34.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 34.
+(Font)              scaled to size 9.99893pt on input line 34.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 8.3991pt on input line 34.
+(Font)              scaled to size 6.99925pt on input line 34.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 34.
+(Font)              scaled to size 4.99947pt on input line 34.
 LaTeX Font Info:    Trying to load font information for U+msa on input line 34.
 
 
@@ -2117,9 +2117,9 @@ LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 Package fontspec Info: Font family 'XITSMath-Regular(0)' created for font
 (fontspec)             'XITSMath-Regular' with options
 (fontspec)             [Renderer=Basic,BoldItalicFont={},ItalicFont={},SmallCap
-sFont={},Script=Math,SizeFeatures={{Size=10.2-},{Size=7.2-10.2,Font=XITSMath-Re
-gular,Style=MathScript},{Size=-7.2,Font=XITSMath-Regular,Style=MathScriptScript
-}},FontAdjustment={\__um_luatex_copy_fontdimens:
+sFont={},Script=Math,SizeFeatures={{Size=8.5-},{Size=6-8.5,Font=XITSMath-Regula
+r,Style=MathScript},{Size=-6,Font=XITSMath-Regular,Style=MathScriptScript}},Fon
+tAdjustment={\__um_luatex_copy_fontdimens:
 (fontspec)             },Extension={.otf},BoldFont={XITSMath-Bold},Path={/usr/s
 hare/fonts/OTF/}].
 (fontspec)              
@@ -2127,10 +2127,10 @@ hare/fonts/OTF/}].
 (fontspec)             series/shapes:
 (fontspec)              
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
-(fontspec)             <10.2->"[/usr/share/fonts/OTF/XITSMath-Regular.otf]:mode
-=base;script=math;language=dflt;"<7.2-10.2>"[/usr/share/fonts/OTF/XITSMath-Regu
-lar.otf]:mode=base;script=math;language=dflt;+ssty=0;"<-7.2>"[/usr/share/fonts/
-OTF/XITSMath-Regular.otf]:mode=base;script=math;language=dflt;+ssty=1;"
+(fontspec)             <8.5->"[/usr/share/fonts/OTF/XITSMath-Regular.otf]:mode=
+base;script=math;language=dflt;"<6-8.5>"[/usr/share/fonts/OTF/XITSMath-Regular.
+otf]:mode=base;script=math;language=dflt;+ssty=0;"<-6>"[/usr/share/fonts/OTF/XI
+TSMath-Regular.otf]:mode=base;script=math;language=dflt;+ssty=1;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 (fontspec)             and font adjustment code:
 (fontspec)             \__um_luatex_copy_fontdimens: 
@@ -2290,18 +2290,18 @@ Package unicode-math Warning: I'm going to overwrite the following commands
 * \paperwidth=614.295pt
 * \paperheight=794.96999pt
 * \textwidth=413.59637pt
-* \textheight=577.5pt
+* \textheight=586.0pt
 * \oddsidemargin=33.36086pt
 * \evensidemargin=22.79779pt
 * \topmargin=-2.63914pt
 * \headheight=15.0pt
 * \headsep=24.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
+* \topskip=10.0pt
+* \footskip=25.29494pt
 * \marginparwidth=51.0pt
 * \marginparsep=17.0pt
 * \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
@@ -2350,147 +2350,48 @@ File: ./assets/intro_path_tracing_online_tech_tips.png Graphic file (type png)
 Package luatex.def Info: ./assets/intro_path_tracing_online_tech_tips.png  used
  on input line 261.
 (luatex.def)             Requested size: 248.16034pt x 178.45256pt.
- [1<./assets/intro_path_tracing_online_tech_tips.png>]
-Overfull \hbox (3.2298pt too wide) in paragraph at lines 282--286
-\TU/CharisSIL(0)/m/n/12 trarre $\TU/LatinModernMath(1)/m/n/12 ∞$ \TU/CharisSI
-L(0)/m/n/12 cam-pi-oni. An-che se ciò fosse pos-si-bile, l’in-te-grale ot-ten
-uto non sarebbe
- []
+ [1<./assets/intro_path_tracing_online_tech_tips.png>] [2] (./intermediate/main
+.toc [3
 
-[2] [3] (./intermediate/main.toc [4
-
-]
-Overfull \hbox (1.66754pt too wide) detected at line 58
- []\TU/CharisSIL(0)/m/n/12 102
- []
-
-
-Overfull \hbox (1.66754pt too wide) detected at line 59
- []\TU/CharisSIL(0)/m/n/12 104
- []
-
-
-Overfull \hbox (1.66754pt too wide) detected at line 65
- []\TU/CharisSIL(0)/m/n/12 109
- []
-
-
-Overfull \hbox (1.66754pt too wide) detected at line 70
- []\TU/CharisSIL(0)/m/n/12 112
- []
-
-
-Overfull \hbox (1.66754pt too wide) detected at line 72
- []\TU/CharisSIL(0)/m/n/12 114
- []
-
-
-Overfull \hbox (1.66754pt too wide) detected at line 73
- []\TU/CharisSIL(0)/m/n/12 115
- []
-
-
-Overfull \hbox (1.66754pt too wide) detected at line 74
- []\TU/CharisSIL(0)/m/n/12 116
- []
-
-
-Overfull \hbox (1.66754pt too wide) detected at line 75
- []\TU/CharisSIL(0)/m/n/12 117
- []
-
-[5]
-Overfull \hbox (1.66754pt too wide) detected at line 76
- []\TU/CharisSIL(0)/m/n/12 118
- []
-
-)
+])
 \tf@toc=\write10
 
 \openout10 = main.toc
- [6]
+ [4]
 warning  (pdf backend): ignoring duplicate destination with the name 'page.1'
 [1
 
 
 ] (./chapters/chapter-part2-2-sampling-montecarlo.tex
 Chapter 1.
-
-Overfull \hbox (17.71222pt too wide) in paragraph at lines 2--4
-\TU/CharisSIL(0)/m/n/12 forma chiusa gen-erale, per metodi nu-merici come re-gol
-a del trape-zoide possiedono
- []
-
-
-Overfull \hbox (12.01105pt too wide) in paragraph at lines 2--4
-\TU/CharisSIL(0)/m/n/12 con-ver-genza lenta per in-te-grali mul-ti-di-men-sion-a
-li e dis-con-tinui, oltre a richiedere
- []
-
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 10.00107pt on input line 10.
+(Font)              scaled to size 8.00085pt on input line 10.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 7.00075pt on input line 10.
-LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 5.00053pt on input line 10.
+(Font)              scaled to size 6.00064pt on input line 10.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 10.
+(Font)              scaled to size 7.99915pt on input line 10.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 10.
-LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 10.
+(Font)              scaled to size 5.99936pt on input line 10.
 
 warning  (pdf backend): ignoring duplicate destination with the name 'page.2'
 [2
 
-]
-Overfull \hbox (13.41649pt too wide) detected at line 43
-[][][]\TU/LatinModernMath(1)/m/n/12 𝑋[] [] 𝑋 iff  [] [] = 1
- []
-
-[3]
-<chapters/../assets/chapter6_MC_variance.png, id=402, 1266.7325pt x 714.67pt>
+] [3]
+<chapters/../assets/chapter6_MC_variance.png, id=394, 1266.7325pt x 714.67pt>
 File: chapters/../assets/chapter6_MC_variance.png Graphic file (type png)
 <use chapters/../assets/chapter6_MC_variance.png>
 Package luatex.def Info: chapters/../assets/chapter6_MC_variance.png  used on i
 nput line 80.
 (luatex.def)             Requested size: 289.51619pt x 163.33466pt.
- [4] [5<./chapters/../assets/chapter6_MC_variance.png>]
-Overfull \hbox (1.92128pt too wide) in paragraph at lines 113--116
-\TU/CharisSIL(0)/m/n/12 munque risultare van-tag-giosi nel caso si desideri
- []
+ [4<./chapters/../assets/chapter6_MC_variance.png>]
+PGFPlots: reading {../assets/chapter6_error_data.dat}
+PGFPlots: reading {../assets/chapter6_error_data.dat}
 
+Underfull \vbox (badness 1975) has occurred while \output is active []
 
-Overfull \hbox (2.48964pt too wide) in paragraph at lines 120--122
-\TU/CharisSIL(0)/m/n/12 uno sti-ma-tore in re-lazione alla var-i-anza ot-tenuta
- []
-
-
-Overfull \hbox (1.21815pt too wide) in paragraph at lines 125--127
-[]\TU/CharisSIL(0)/m/n/12 Er-rore quadratico medio, stret-ta-mente col-le-gato
- []
-
-
-Overfull \hbox (7.31998pt too wide) detected at line 129
-[][][]\TU/LatinModernMath(1)/m/n/12 𝑀𝑆𝐸[[]] = 𝐸 [] = 𝑉[[]] − 
-𝛽
- []
-
-
-Overfull \hbox (9.66737pt too wide) in paragraph at lines 129--134
-\TU/CharisSIL(0)/m/n/12 Tale met-rica risulta utile quando si è a conoscenza
- []
-
-
-Overfull \hbox (2.44862pt too wide) in paragraph at lines 129--134
-\TU/CharisSIL(0)/m/n/12 onaria per cal-co-larne il suo val-ore ap-prossi-mato.
- []
-
+ [5]
 [6]
-PGFPlots: reading {../assets/chapter6_error_data.dat}
-PGFPlots: reading {../assets/chapter6_error_data.dat}
- [7]
-<chapters/../assets/chapter6_sampling_inverse_transform_sampling.png, id=459, 9
+<chapters/../assets/chapter6_sampling_inverse_transform_sampling.png, id=446, 9
 43.525pt x 890.32625pt>
 File: chapters/../assets/chapter6_sampling_inverse_transform_sampling.png Graph
 ic file (type png)
@@ -2498,8 +2399,8 @@ ic file (type png)
 Package luatex.def Info: chapters/../assets/chapter6_sampling_inverse_transform
 _sampling.png  used on input line 198.
 (luatex.def)             Requested size: 372.2342pt x 351.24709pt.
- [8] [9<./chapters/../assets/chapter6_sampling_inverse_transform_sampling.png>]
-<chapters/../assets/chapter6_sampling_acceptance_rejection.png, id=483, 1364.09
+ [7<./chapters/../assets/chapter6_sampling_inverse_transform_sampling.png>]
+<chapters/../assets/chapter6_sampling_acceptance_rejection.png, id=462, 1364.09
 625pt x 440.64626pt>
 File: chapters/../assets/chapter6_sampling_acceptance_rejection.png Graphic fil
 e (type png)
@@ -2507,15 +2408,12 @@ e (type png)
 Package luatex.def Info: chapters/../assets/chapter6_sampling_acceptance_reject
 ion.png  used on input line 232.
 (luatex.def)             Requested size: 330.87836pt x 106.88011pt.
- [10<./chapters/../assets/chapter6_sampling_acceptance_rejection.png>]
+
+[8<./chapters/../assets/chapter6_sampling_acceptance_rejection.png>]
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 10.95116pt on input line 273.
-LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 8.00085pt on input line 273.
+(Font)              scaled to size 9.00096pt on input line 273.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 10.94882pt on input line 273.
-LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 273.
+(Font)              scaled to size 8.99904pt on input line 273.
 
 
 Package pgfplots Warning: Axis range for axis z is approximately empty; enlargi
@@ -2527,89 +2425,43 @@ Package pgfplots Warning: Axis range for axis z is approximately empty; enlargi
 ng it (it is [1.0000000000:1.0000000000]) on input line 285.
 
  [warning /pgfplots/warning/approx empty range enlarged]
-[11]
-Overfull \hbox (13.41144pt too wide) in paragraph at lines 315--318
-\TU/CharisSIL(0)/m/n/12 Pi-ut-tosto che gener-are cam-pi-oni in maniera in-dipen
--dente, costru-iamo una \TU/CharisSIL(0)/m/it/12 Markov
+[9]
+Overfull \hbox (51.8549pt too wide) in paragraph at lines 348--351
+\TU/CharisSIL(0)/m/n/10 Affinchè tale den-sità di tran-sizione ci con-d-uca al
+l’equi-lib-rio alla PDF tar-get [],
  []
 
-
-Overfull \hbox (10.32355pt too wide) in paragraph at lines 315--318
-\TU/CharisSIL(0)/m/it/12 Chain \TU/CharisSIL(0)/m/n/12 cos-tituente un Randow Wa
-lk nello spazio cam-pi-onario, la cui dis-tribuzione,
- []
-
-
-Overfull \hbox (9.86636pt too wide) in paragraph at lines 320--321
-[]\TU/CharisSIL(0)/m/n/12 Non richiede la nor-mal-iz-zazione della fun-zione tar
--get $\TU/LatinModernMath(1)/m/n/12 𝑓(𝑥)$\TU/CharisSIL(0)/m/n/12 . Vedi Eq
-uazione
- []
-
-[12]
-Overfull \hbox (14.87042pt too wide) in paragraph at lines 370--372
-\TU/CharisSIL(0)/m/n/12 In-oltre, nel caso in cui la pro-posal den-sity sia sim-
-met-rica [],
- []
-
-[13] [14] [15] [16] [17] [18]) (./chapters/chapter-part2-1-quasirandom-gen.tex
-Underfull \hbox (badness 10000) in paragraph at lines 534--5
-
- []
-
-[19]
+[10] [11] [12] [13] [14]) (./chapters/chapter-part2-1-quasirandom-gen.tex
+[15]
 Chapter 2.
-
-Overfull \hbox (24.16048pt too wide) in paragraph at lines 6--8
-\TU/CharisSIL(0)/m/n/12 pin-hole cam-era model dipende soltanto da co-or-di-nate
- nor-mal-iz-zate [],
- []
-
-[20
+[16
 
 ]
-Overfull \hbox (1.76886pt too wide) in paragraph at lines 39--41
-\TU/CharisSIL(0)/m/n/12 Le quali pos-sono es-sere es-tese a do-mini mul-ti-di-me
-n-sion-ali ap-pli-cando la trasfor-
+
+Package fancyhdr Warning: \headheight is too small (15.0pt): 
+(fancyhdr)                Make it at least 22.47015pt, for example:
+(fancyhdr)                \setlength{\headheight}{22.47015pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-7.47015pt}.
+
+[17] [18]
+Overfull \hbox (6.71439pt too wide) in paragraph at lines 115--116
+[]\TU/CharisSIL(0)/m/n/10 Scegliamo come sud-di-vi-sione di $\TU/LatinModernMat
+h(1)/m/n/10 [0, 1)[]$ \TU/CharisSIL(0)/m/n/10 una famiglia di par-al-lelepi-pedi
+ con un ver-tice sull’orig-
  []
 
 
 Package fancyhdr Warning: \headheight is too small (15.0pt): 
-(fancyhdr)                Make it at least 27.09418pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.09418pt}.
+(fancyhdr)                Make it at least 22.47015pt, for example:
+(fancyhdr)                \setlength{\headheight}{22.47015pt}.
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 
-(fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
+(fancyhdr)                \addtolength{\topmargin}{-7.47015pt}.
 
-[21]
-Overfull \hbox (1.0713pt too wide) in paragraph at lines 66--71
-[]\TU/CharisSIL(0)/b/n/12 Th. 2.1.1. --- []\TU/CharisSIL(0)/m/n/12 Sia $\TU/Lat
-inModernMath(1)/m/n/12 𝐹(𝜈)$ \TU/CharisSIL(0)/m/n/12 seg-nale a banda lim-
-i-tata, [],
- []
-
-[22]
-Overfull \hbox (1.32355pt too wide) in paragraph at lines 97--100
-\TU/CharisSIL(0)/m/n/12 discreto, uti-lizzi-amo una sec-onda definizione, che pu
-ò es-sere ot-tenuta da questa
- []
-
-
-Package fancyhdr Warning: \headheight is too small (15.0pt): 
-(fancyhdr)                Make it at least 27.09418pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.09418pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
-
-[23]
-Overfull \hbox (1.35284pt too wide) in paragraph at lines 137--141
-\TU/CharisSIL(0)/m/n/12 con i due frame-work breve-mente sp-ie-gati in prece-den
-za, il cam-pi-ona-tore basato
- []
-
-[24]
-<chapters/../assets/chapter5_sampling_haltonPSD.png, id=647, 691.58376pt x 666.
+[19]
+<chapters/../assets/chapter5_sampling_haltonPSD.png, id=616, 691.58376pt x 666.
 49pt>
 File: chapters/../assets/chapter5_sampling_haltonPSD.png Graphic file (type png
 )
@@ -2617,34 +2469,14 @@ File: chapters/../assets/chapter5_sampling_haltonPSD.png Graphic file (type png
 Package luatex.def Info: chapters/../assets/chapter5_sampling_haltonPSD.png  us
 ed on input line 168.
 (luatex.def)             Requested size: 165.43602pt x 159.43204pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 170--170
-[]\TU/CharisSIL(0)/m/n/10.95 (a) |Senza Owen Scram-bling.
- []
-
-
-Underfull \hbox (badness 5331) in paragraph at lines 170--170
-\TU/CharisSIL(0)/m/n/10.95 Prestazioni migliori rispetto al
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 170--170
-\TU/CharisSIL(0)/m/n/10.95 cam-pi-ona-mento uni-forme, in
- []
-
-
-Underfull \hbox (badness 6825) in paragraph at lines 170--170
-\TU/CharisSIL(0)/m/n/10.95 ec-ces-siva vari-azione nelle alte
- []
-
-<chapters/../assets/chapter5_sampling_owenPSD.png, id=648, 847.165pt x 680.5425
+<chapters/../assets/chapter5_sampling_owenPSD.png, id=617, 847.165pt x 680.5425
 pt>
 File: chapters/../assets/chapter5_sampling_owenPSD.png Graphic file (type png)
 <use chapters/../assets/chapter5_sampling_owenPSD.png>
 Package luatex.def Info: chapters/../assets/chapter5_sampling_owenPSD.png  used
  on input line 174.
 (luatex.def)             Requested size: 206.79819pt x 166.1165pt.
-<chapters/../assets/chapter5_sampling_result.png, id=653, 1213.53375pt x 235.88
+<chapters/../assets/chapter5_sampling_result.png, id=622, 1213.53375pt x 235.88
 126pt>
 File: chapters/../assets/chapter5_sampling_result.png Graphic file (type png)
 <use chapters/../assets/chapter5_sampling_result.png>
@@ -2652,25 +2484,30 @@ Package luatex.def Info: chapters/../assets/chapter5_sampling_result.png  used
 on input line 187.
 (luatex.def)             Requested size: 413.59637pt x 80.39291pt.
 
+Overfull \hbox (3.0817pt too wide) in paragraph at lines 183--191
+[]\TU/CharisSIL(0)/m/n/10 Lo Scram-bling per l’n $\TU/LatinModernMath(1)/m/n/
+10 𝑖$\TU/CharisSIL(0)/m/n/10 -esima co-or-di-nata del $\TU/LatinModernMath(1
+)/m/n/10 𝑘$\TU/CharisSIL(0)/m/n/10 -esimo punto della se-quenza $\TU/LatinMo
+dernMath(1)/m/n/10 𝑥[] = 0.𝑑[]𝑑[] … 𝑑[]$
+ []
+
+[20<./chapters/../assets/chapter5_sampling_haltonPSD.png><./chapters/../assets/c
+hapter5_sampling_owenPSD.png>]
+
 Package fancyhdr Warning: \headheight is too small (15.0pt): 
-(fancyhdr)                Make it at least 27.09418pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.09418pt}.
+(fancyhdr)                Make it at least 22.47015pt, for example:
+(fancyhdr)                \setlength{\headheight}{22.47015pt}.
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 
-(fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
+(fancyhdr)                \addtolength{\topmargin}{-7.47015pt}.
 
-[25] [26<./chapters/../assets/chapter5_sampling_haltonPSD.png><./chapters/../ass
-ets/chapter5_sampling_owenPSD.png>]
+[21<./chapters/../assets/chapter5_sampling_result.png>]
+Overfull \hbox (8.5545pt too wide) in paragraph at lines 225--228
+\TU/CharisSIL(0)/m/n/10 Uti-liz-zan-dolo in due di-men-sioni come un fil-tro sep
+-a-ra-bile esso ha espres-sione []
+ []
 
-Package fancyhdr Warning: \headheight is too small (15.0pt): 
-(fancyhdr)                Make it at least 27.09418pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.09418pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
-
-[27<./chapters/../assets/chapter5_sampling_result.png>]
-<chapters/../assets/chapter5_reconstruction_box.png, id=688, 1393.205pt x 690.5
+<chapters/../assets/chapter5_reconstruction_box.png, id=649, 1393.205pt x 690.5
 8pt>
 File: chapters/../assets/chapter5_reconstruction_box.png Graphic file (type png
 )
@@ -2679,14 +2516,13 @@ Package luatex.def Info: chapters/../assets/chapter5_reconstruction_box.png  us
 ed on input line 235.
 (luatex.def)             Requested size: 330.87836pt x 164.0039pt.
 
-
 LaTeX Font Warning: Command \small invalid in math mode on input line 251.
 
 
 LaTeX Font Warning: Command \small invalid in math mode on input line 251.
 
-[28<./chapters/../assets/chapter5_reconstruction_box.png>]
-<chapters/../assets/chapter5_reconstruction_box_result.png, id=702, 1383.1675pt
+[22<./chapters/../assets/chapter5_reconstruction_box.png>]
+<chapters/../assets/chapter5_reconstruction_box_result.png, id=665, 1383.1675pt
  x 1020.81375pt>
 File: chapters/../assets/chapter5_reconstruction_box_result.png Graphic file (t
 ype png)
@@ -2694,7 +2530,7 @@ ype png)
 Package luatex.def Info: chapters/../assets/chapter5_reconstruction_box_result.
 png  used on input line 271.
 (luatex.def)             Requested size: 330.87836pt x 244.19034pt.
-<chapters/../assets/chapter5_reconstruction_gaussian.png, id=703, 1392.20125pt 
+<chapters/../assets/chapter5_reconstruction_gaussian.png, id=666, 1392.20125pt 
 x 721.69624pt>
 File: chapters/../assets/chapter5_reconstruction_gaussian.png Graphic file (typ
 e png)
@@ -2703,22 +2539,19 @@ Package luatex.def Info: chapters/../assets/chapter5_reconstruction_gaussian.pn
 g  used on input line 278.
 (luatex.def)             Requested size: 330.87836pt x 170.32204pt.
 
+Underfull \vbox (badness 4084) has occurred while \output is active []
+
+
 
 Package fancyhdr Warning: \headheight is too small (15.0pt): 
-(fancyhdr)                Make it at least 27.09418pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.09418pt}.
+(fancyhdr)                Make it at least 22.47015pt, for example:
+(fancyhdr)                \setlength{\headheight}{22.47015pt}.
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 
-(fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
+(fancyhdr)                \addtolength{\topmargin}{-7.47015pt}.
 
-[29<./chapters/../assets/chapter5_reconstruction_box_result.png>] [30<./chapters
-/../assets/chapter5_reconstruction_gaussian.png>]
-Overfull \hbox (4.79816pt too wide) in paragraph at lines 306--308
-\TU/CharisSIL(0)/m/n/12 Sup-po-nendo com-po-sizione bidi-men-sion-ale come sep-a
--ra-ble fil-ter, pos-si-amo cam-
- []
-
-<chapters/../assets/chapter5_reconstruction_piecewise.png, id=734, 1056.94875pt
+[23<./chapters/../assets/chapter5_reconstruction_box_result.png>]
+<chapters/../assets/chapter5_reconstruction_piecewise.png, id=682, 1056.94875pt
  x 338.26375pt>
 File: chapters/../assets/chapter5_reconstruction_piecewise.png Graphic file (ty
 pe png)
@@ -2726,16 +2559,8 @@ pe png)
 Package luatex.def Info: chapters/../assets/chapter5_reconstruction_piecewise.p
 ng  used on input line 319.
 (luatex.def)             Requested size: 330.87836pt x 105.89296pt.
-
-Package fancyhdr Warning: \headheight is too small (15.0pt): 
-(fancyhdr)                Make it at least 27.09418pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.09418pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-
-(fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
-
-[31<./chapters/../assets/chapter5_reconstruction_piecewise.png>]
-<chapters/../assets/chapter5_reconstruction_gaussian_result.png, id=750, 1376.1
+ [24<./chapters/../assets/chapter5_reconstruction_gaussian.png>]
+<chapters/../assets/chapter5_reconstruction_gaussian_result.png, id=702, 1376.1
 4125pt x 1019.81pt>
 File: chapters/../assets/chapter5_reconstruction_gaussian_result.png Graphic fi
 le (type png)
@@ -2743,27 +2568,20 @@ le (type png)
 Package luatex.def Info: chapters/../assets/chapter5_reconstruction_gaussian_re
 sult.png  used on input line 351.
 (luatex.def)             Requested size: 310.19728pt x 229.8675pt.
- [32<./chapters/../assets/chapter5_reconstruction_gaussian_result.png>])
+)
 (./chapters/chapter-part3-1-light-transportintro.tex
 
 Package fancyhdr Warning: \headheight is too small (15.0pt): 
-(fancyhdr)                Make it at least 27.09418pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.09418pt}.
+(fancyhdr)                Make it at least 22.47015pt, for example:
+(fancyhdr)                \setlength{\headheight}{22.47015pt}.
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 
-(fancyhdr)                \addtolength{\topmargin}{-12.09418pt}.
+(fancyhdr)                \addtolength{\topmargin}{-7.47015pt}.
 
-[33]
+[25<./chapters/../assets/chapter5_reconstruction_piecewise.png>] [26<./chapters/
+../assets/chapter5_reconstruction_gaussian_result.png>]
 Chapter 3.
-
-Overfull \hbox (27.52332pt too wide) in paragraph at lines 13--17
-\TU/CharisSIL(0)/m/n/12 nel caso di una su-per-fi-cie lam-ber-tiana, dunque con BRDF pari a [],
- []
-
-[34
-
-]
-<chapters/../assets/chapter8_light_transport_equation.png, id=774, 1223.57124pt
+<chapters/../assets/chapter8_light_transport_equation.png, id=725, 1223.57124pt
  x 961.5925pt>
 File: chapters/../assets/chapter8_light_transport_equation.png Graphic file (ty
 pe png)
@@ -2771,161 +2589,76 @@ pe png)
 Package luatex.def Info: chapters/../assets/chapter8_light_transport_equation.p
 ng  used on input line 30.
 (luatex.def)             Requested size: 330.87836pt x 260.0296pt.
+[27
 
-Overfull \hbox (22.55792pt too wide) in paragraph at lines 35--37
-\TU/CharisSIL(0)/m/n/12 Ab-bi-amo espresso, con Equazione []6.35[], la ren-der-i
-ng equa-tion in ter-mini dell’unione
- []
-
-
-Overfull \hbox (10.46649pt too wide) in paragraph at lines 40--46
-[]\TU/CharisSIL(0)/m/n/12 , posso riscri-vere tale equazione nella
- []
-
-[35<./chapters/../assets/chapter8_light_transport_equation.png>]
-Overfull \hbox (54.9025pt too wide) detected at line 74
-[]
- []
-
-[36]
-Overfull \hbox (1.31383pt too wide) in paragraph at lines 83--87
-\TU/CharisSIL(0)/m/n/12 No-ti-amo che dei ter-mini $\TU/LatinModernMath(1)/m/n/
-12 𝑃({… , []})$ \TU/CharisSIL(0)/m/n/12 potreb-bero con-tenere dis-tribuzio
-ni di Dirac
- []
-
-
-Overfull \hbox (13.12433pt too wide) in paragraph at lines 88--89
-[]\TU/CharisSIL(0)/m/n/12 Un ap-proc-cio per par-tizionare la somma in-finita di
- path in-te-grals è la seguente: 
- []
-
-
-Overfull \hbox (12.18097pt too wide) in paragraph at lines 91--96
-\TU/CharisSIL(0)/m/n/12 restanti ter-mini della somma sono sti-mati con un’ap-
-prossi-mazione più grossolana.
- []
-
-[37] [38]) [39] [40
+] [28<./chapters/../assets/chapter8_light_transport_equation.png>] [29]
+[30]) [31] [32
 
 ] (./chapters/chapter-part1-1-electromagnetic-radiometry.tex
 Chapter 4.
 
-Overfull \hbox (78.03316pt too wide) in paragraph at lines 97--98
+Overfull \hbox (62.76973pt too wide) in paragraph at lines 97--98
 [][] 
  []
 
-
-Overfull \hbox (43.87991pt too wide) in paragraph at lines 108--109
-\TU/CharisSIL(0)/m/n/12 La luce vis-i-bile all’\TU/CharisSIL(0)/m/it/12 oc-chi
-o umano \TU/CharisSIL(0)/m/n/12 cor-risponde al sot-toin-sieme dello spet-tro $
-\TU/LatinModernMath(1)/m/n/12 [383, 783] THz$\TU/CharisSIL(0)/m/n/12 ,
- []
-
-[41
+[33
 
 ]
-Overfull \hbox (8.52472pt too wide) in paragraph at lines 110--112
-\TU/CharisSIL(0)/m/n/12 vuoto sono de-ter-mi-nate dall’\TU/CharisSIL(0)/m/it/
-12 in-dice di rifrazione \TU/CharisSIL(0)/m/n/12 (IOR), dipen-dente dalla lunghe
-zza
- []
-
-
-Overfull \hbox (9.0839pt too wide) in paragraph at lines 114--118
-\TU/CharisSIL(0)/m/n/12 netico $[]$ os-cil-lanti in fase, per-pen-di-co-lari tra
- loro e alla di-rezione di propagazione
- []
-
-[42]
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 14.40152pt on input line 171.
+(Font)              scaled to size 12.00128pt on input line 171.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 14.39845pt on input line 171.
+(Font)              scaled to size 11.99872pt on input line 171.
 
-Underfull \hbox (badness 3907) in paragraph at lines 212--213
-[]|\TU/CharisSIL(0)/m/n/12 Ogni cen-timetro la luce che
+Underfull \hbox (badness 1253) in paragraph at lines 214--215
+[]|\TU/CharisSIL(0)/m/n/10 As-sorbe forte-mente la luce vi-o-letta,
  []
 
 
-Underfull \hbox (badness 1478) in paragraph at lines 216--217
-[]|\TU/CharisSIL(0)/m/n/12 As-sorbe forte-mente ra-di-azione
+Underfull \hbox (badness 10000) in paragraph at lines 216--217
+[]|\TU/CharisSIL(0)/m/n/10 As-sorbe forte-mente ra-di-azione in-
  []
 
 
-Overfull \hbox (81.1067pt too wide) in paragraph at lines 208--220
+Overfull \hbox (35.10892pt too wide) in paragraph at lines 208--220
 [][]
  []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [43]
-Overfull \hbox (8.69464pt too wide) in paragraph at lines 226--228
-\TU/CharisSIL(0)/m/n/12 propagazione nel mezzo, con-tando an-che il fenomeno del
-l’as-sor-bi-mento, definito
- []
-
-[44
+ [34]
+[35
 warning  (pdf backend): ignoring duplicate destination with the name 'Hfootnote.
 13'
 ]
-Overfull \hbox (5.83083pt too wide) in paragraph at lines 244--245
-\TU/CharisSIL(0)/m/n/12 tema ot-tico è pari alla com-bi-nazione lin-eare degli
- []
-
-
-Overfull \hbox (10.18434pt too wide) in paragraph at lines 245--247
-\TU/CharisSIL(0)/m/n/12 su-per-fi-cie o mezzo trasmis-sivo, gli \TU/CharisSIL(0
-)/m/it/12 scat-ter-ing events
- []
-
-
-Overfull \hbox (23.33789pt too wide) in paragraph at lines 249--251
-[]\TU/CharisSIL(0)/m/n/12 Il com-por-ta-mento della ra-di-azione ad una lunghezz
-a
- []
-
-[45]
 
 LaTeX Warning: Command \textperiodcentered invalid in math mode on input line 2
 71.
 
-[46]
-Overfull \hbox (7.39386pt too wide) in paragraph at lines 312--314
-\TU/CharisSIL(0)/m/n/12 L’\TU/CharisSIL(0)/m/it/12 In-ten-sità (Ra-di-ante) 
-Spet-trale \TU/CharisSIL(0)/m/n/12 è l’in-ten-sità ra-di-ante per unità di lunghezza d
-’onda 
+[36] [37] [38] [39] [40]
+Overfull \hbox (8.99803pt too wide) in paragraph at lines 435--436
+[]\TU/CharisSIL(0)/m/n/10 Es-sendo una su-per-fi-cie lam-ber-tiana, an-che la ra
+-di-anza emessa deve es-sere con-stante. Sapendo
  []
 
-[47] [48]
-Overfull \hbox (2.04425pt too wide) in paragraph at lines 363--364
-\TU/CharisSIL(0)/m/n/12 è la grandezza pro-tag-o-nista dell’al-go-ritmo di re
-n-der-ing de-ter-min-is-tico che porta
- []
-
-
-Overfull \hbox (0.2923pt too wide) in paragraph at lines 363--364
-\TU/CharisSIL(0)/m/n/12 il suo nome, \TU/CharisSIL(0)/m/it/12 Metodo della ra-di
-osità\TU/CharisSIL(0)/m/n/12 , nel quale è pos-si-bile, me-di-ante la risoluzi
-one
- []
-
-[49] [50] [51]) (./chapters/chapter-part1-2-color-camera.tex [52]
+) (./chapters/chapter-part1-2-color-camera.tex [41]
 Chapter 5.
 
-Underfull \vbox (badness 1769) has occurred while \output is active []
-
- [53
-
-]
-Overfull \hbox (4.32355pt too wide) in paragraph at lines 44--45
-\TU/CharisSIL(0)/m/n/12 Il col-ore è un fenomeno la cui orig-ine è sia fisica,
- de-ter-mi-nato dalla dis-tribuzione
+Overfull \hbox (15.4777pt too wide) in paragraph at lines 4--6
+\TU/CharisSIL(0)/m/n/10 quale è un sot-toin-sieme dello spet-tro elet-tro-mag-n
+etico cor-rispon-dente all’in-ter-vallo $\TU/LatinModernMath(1)/m/n/10 [360, 
+830]𝑠𝑖[]$\TU/CharisSIL(0)/m/n/10 ,
  []
 
-[54]
-<chapters/../assets/chapter2_colorimetry_cones.png, id=1080, 1204.5pt x 910.401
+[42
+
+]
+Overfull \hbox (4.34796pt too wide) in paragraph at lines 44--45
+\TU/CharisSIL(0)/m/n/10 Il col-ore è un fenomeno la cui orig-ine è sia fisica,
+ de-ter-mi-nato dalla dis-tribuzione nelle lunghezze
+ []
+
+<chapters/../assets/chapter2_colorimetry_cones.png, id=1013, 1204.5pt x 910.401
 25pt>
 File: chapters/../assets/chapter2_colorimetry_cones.png Graphic file (type png)
 
@@ -2934,7 +2667,7 @@ Package luatex.def Info: chapters/../assets/chapter2_colorimetry_cones.png  use
 d on input line 63.
 (luatex.def)             Requested size: 165.43602pt x 125.03816pt.
 <./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.pdf, 
-id=1081, 975.4568pt x 611.9914pt>
+id=1014, 975.4568pt x 611.9914pt>
 File: ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.
 pdf Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.p
@@ -2942,16 +2675,10 @@ df>
 Package luatex.def Info: ./svg-inkscape/chapter2_colorimetry_RGB_color_matching
 _functions_svg-raw.pdf  used on input line 68.
 (luatex.def)             Requested size: 975.45444pt x 611.9899pt.
- [55<./chapters/../assets/chapter2_colorimetry_cones.png><./svg-inkscape/chapter
-2_colorimetry_RGB_color_matching_functions_svg-raw.pdf>]
-Overfull \hbox (3.97784pt too wide) in paragraph at lines 113--114
-\TU/CharisSIL(0)/m/n/12 Dai req-ui-siti la seguente trasfor-mazione lin-eare []
-
- []
-
-[56]
+[43] [44<./chapters/../assets/chapter2_colorimetry_cones.png><./svg-inkscape/cha
+pter2_colorimetry_RGB_color_matching_functions_svg-raw.pdf>]
 <./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf, id=
-1124, 353.94542pt x 366.81622pt>
+1056, 353.94542pt x 366.81622pt>
 File: ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf
  Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf>
@@ -2959,36 +2686,27 @@ File: ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf
 Package luatex.def Info: ./svg-inkscape/chapter2_colorimetry_chromaticity_diagr
 am_1931_svg-raw.pdf  used on input line 153.
 (luatex.def)             Requested size: 353.94455pt x 366.81532pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [57]
-[58<./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf>]
+ [45]
 
 Package caption Warning: \label without proper reference on input line 206.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `chapter2:colorimetry:sRGB' on page 59 undefined on in
+LaTeX Warning: Reference `chapter2:colorimetry:sRGB' on page 46 undefined on in
 put line 195.
 
+[46<./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf>]
 
 Underfull \hbox (badness 10000) in alignment at lines 205--205
 [][][][][]
  []
 
-[59]
-Overfull \hbox (1.53432pt too wide) detected at line 226
-[][][][]\TU/LatinModernMath(1)/m/n/12 𝐶[] = []
- []
 
+Underfull \vbox (badness 2809) has occurred while \output is active []
 
-Overfull \hbox (15.83049pt too wide) detected at line 242
-[][][][] [] \TU/LatinModernMath(1)/m/n/12 = [] []
- []
-
+ [47]
 <./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf, id
-=1186, 353.31148pt x 382.31808pt>
+=1123, 353.31148pt x 382.31808pt>
 File: ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pd
 f Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf
@@ -2996,19 +2714,26 @@ f Graphic file (type pdf)
 Package luatex.def Info: ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_co
 mparison_svg-raw.pdf  used on input line 246.
 (luatex.def)             Requested size: 353.31061pt x 382.31715pt.
-[60] [61<./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.
-pdf>]
-Overfull \hbox (19.03644pt too wide) in paragraph at lines 266--268
-[]\TU/CharisSIL(0)/m/it/12 Smooth-ness \TU/CharisSIL(0)/m/n/12 Lo spet-tro ot-te
-nuto deve es-sere deriv-abile con con-ti-nu-ità affinchè,
+
+Overfull \hbox (10.64745pt too wide) in paragraph at lines 259--264
+\TU/CharisSIL(0)/m/n/10 con-ver-tire il risul-tato per ogni pixel in sRGB per di
+s-play. Men-tre la con-ver-sione []
+ []
+
+[48<./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [49]
+Overfull \hbox (5.41241pt too wide) in paragraph at lines 328--328
+\TU/CharisSIL(0)/m/n/10 Tale prob-lema di ot-timiz-zazione è risolto con il met
+odo di Gauss-Newton (si ri-manda a [[]PJH23[]]). 
  []
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1609) has occurred while \output is active []
 
- [62]
-[63]
-<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf, id=1262, 283.59102
+ [50]
+<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf, id=1190, 283.59102
 pt x 186.48965pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf Graphic file (
 type pdf)
@@ -3016,7 +2741,7 @@ type pdf)
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw
 .pdf  used on input line 354.
 (luatex.def)             Requested size: 283.59032pt x 186.4892pt.
-<./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf, id=1263, 406.26328pt 
+<./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf, id=1191, 406.26328pt 
 x 272.47215pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf Graphic file (typ
 e pdf)
@@ -3024,21 +2749,15 @@ e pdf)
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pd
 f  used on input line 355.
 (luatex.def)             Requested size: 406.26228pt x 272.47148pt.
- [64]
-Overfull \hbox (6.97998pt too wide) in paragraph at lines 365--366
-[]\TU/CharisSIL(0)/m/n/12 punto $[]$, nel quale è po-sizion-ata l’aper-tura 
-della
+
+Overfull \hbox (1.67572pt too wide) in paragraph at lines 366--368
+\TU/CharisSIL(0)/m/n/10 cam-era, dall’orig-ine $[]$. Definisce il \TU/CharisS
+IL(0)/m/it/10 field of view\TU/CharisSIL(0)/m/n/10 . An-che chiam-
  []
 
-
-Overfull \hbox (50.89758pt too wide) in paragraph at lines 368--370
-[]$[]$ \TU/CharisSIL(0)/m/n/12 e $[]$, rispet-ti-va-mente punto da proi-ettare, 
-”trasportante
- []
-
-[65<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf><./svg-inkscape/c
+[51<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf><./svg-inkscape/c
 hapter2_camera_pinhole_plot_svg-raw.pdf>]
-<./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf, id=1292, 318.228
+<./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf, id=1215, 318.228
 84pt x 143.87604pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf Graphic file
  (type pdf)
@@ -3046,7 +2765,12 @@ File: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf Graphic file
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-r
 aw.pdf  used on input line 387.
 (luatex.def)             Requested size: 318.22804pt x 143.87567pt.
-<chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png, id=1293,
+
+Underfull \hbox (badness 2547) in paragraph at lines 389--389
+[]\TU/CharisSIL(0)/m/n/9 (a) |Ge-ome-tria del pin-hole cam-era model visto
+ []
+
+<chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png, id=1216,
  362.7954pt x 218.7372pt>
 File: chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png Grap
 hic file (type png)
@@ -3055,39 +2779,23 @@ Package luatex.def Info: chapters/../assets/chapter2_camera_non_linear_mapping_
 learnwebgl.png  used on input line 392.
 (luatex.def)             Requested size: 206.79819pt x 139.7143pt.
 
-Underfull \hbox (badness 3439) in paragraph at lines 394--394
-[]\TU/CharisSIL(0)/m/n/10.95 (b) |Mostra la mappa non-lin-eare della
- []
-
-
-Overfull \hbox (2.34375pt too wide) in paragraph at lines 386--396
+Overfull \hbox (1.95313pt too wide) in paragraph at lines 386--396
 [][] [] 
  []
 
-
-Overfull \hbox (1.4935pt too wide) in paragraph at lines 400--400
-[][][]\TU/CharisSIL(0)/m/n/10 Im-mag-ine da [][][]| 
- []
-
-<chapters/../assets/chapter2_view_frustum.png, id=1297, 451.6875pt x 336.25626p
+<chapters/../assets/chapter2_view_frustum.png, id=1220, 451.6875pt x 336.25626p
 t>
 File: chapters/../assets/chapter2_view_frustum.png Graphic file (type png)
 <use chapters/../assets/chapter2_view_frustum.png>
 Package luatex.def Info: chapters/../assets/chapter2_view_frustum.png  used on 
 input line 404.
 (luatex.def)             Requested size: 248.16034pt x 184.74654pt.
-
-Overfull \hbox (15.0462pt too wide) in paragraph at lines 408--409
-[]\TU/CharisSIL(0)/m/n/12 Al fine di poter rap-p-re-sentare una im-mag-ine fi-na
-le che resti-tu-isca la percezione
- []
-
-[66<./chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png><./sv
-g-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf>] [67<./chapters/../ass
-ets/chapter2_view_frustum.png>] [68])
-(./chapters/chapter-part1-3-light-surface.tex [69]
+[52<./chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png><./sv
+g-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf>] [53<./chapters/../ass
+ets/chapter2_view_frustum.png>] [54])
+(./chapters/chapter-part1-3-light-surface.tex [55]
 Chapter 6.
-<chapters/../assets/chapter3_surfaces_interaction_types.png, id=1353, 387.4475p
+<chapters/../assets/chapter3_surfaces_interaction_types.png, id=1278, 387.4475p
 t x 270.00874pt>
 File: chapters/../assets/chapter3_surfaces_interaction_types.png Graphic file (
 type png)
@@ -3095,7 +2803,7 @@ type png)
 Package luatex.def Info: chapters/../assets/chapter3_surfaces_interaction_types
 .png  used on input line 5.
 (luatex.def)             Requested size: 165.43602pt x 115.28984pt.
-<chapters/../assets/chapter3_surfaces_specular_interaction.png, id=1354, 471.76
+<chapters/../assets/chapter3_surfaces_specular_interaction.png, id=1279, 471.76
 25pt x 234.8775pt>
 File: chapters/../assets/chapter3_surfaces_specular_interaction.png Graphic fil
 e (type png)
@@ -3103,81 +2811,24 @@ e (type png)
 Package luatex.def Info: chapters/../assets/chapter3_surfaces_specular_interact
 ion.png  used on input line 6.
 (luatex.def)             Requested size: 165.43602pt x 82.36604pt.
-
-Overfull \hbox (0.72198pt too wide) in paragraph at lines 10--15
-\TU/CharisSIL(0)/m/n/12 ma-te-ri-ali al di so-pra dello zero as-so-luto. In par-
-ti-co-lare, du-rante la propagazione
- []
-
-[70
+[56
 
 <./chapters/../assets/chapter3_surfaces_interaction_types.png><./chapters/../ass
-ets/chapter3_surfaces_specular_interaction.png>]
-Overfull \hbox (12.25987pt too wide) in paragraph at lines 30--31
-[][][]\TU/CharisSIL(0)/m/n/12 Per una data ra-di-azione con data SPD, po-lar-iz-
-zazione,
- []
-
-
-Overfull \hbox (12.25987pt too wide) in paragraph at lines 31--32
-[][][]\TU/CharisSIL(0)/m/n/12 Per una data ra-di-azione con data SPD, po-lar-iz-
-zazione,
- []
-
-
-Overfull \hbox (3.9923pt too wide) in paragraph at lines 31--32
-\TU/CharisSIL(0)/m/n/12 trasmesso e flusso ra-di-ante o ri-f-lesso in-ci-dente, nelle
- []
-
-
-Overfull \hbox (13.07199pt too wide) in paragraph at lines 65--73
-\TU/CharisSIL(0)/m/n/12 dis-tribuzione[][][] che trasforma Ir-ra-di-anza in-ci-d
-ente in Ra-di-anza ri-f-lessa o trasmessa.
- []
-
-[71]
-Underfull \vbox (badness 2726) has occurred while \output is active []
-
- [72]
-Overfull \hbox (25.388pt too wide) in paragraph at lines 78--81
-\TU/CharisSIL(0)/m/n/12 Ap-prossi-mando ul-te-ri-or-mente il com-por-ta-mento de
-lla luce, trascu-rando il fenomeno
- []
-
-
-Overfull \hbox (5.05597pt too wide) in paragraph at lines 78--81
-\TU/CharisSIL(0)/m/n/12 punto di in-ci-denza (dunque sof-fer-man-doci soltanto 
-sui fenomeni a liv-ello dell’in-
- []
-
-
-Overfull \hbox (30.02681pt too wide) in paragraph at lines 82--83
-[]\TU/CharisSIL(0)/b/n/12 Def. 6.1.2. --- []\TU/CharisSIL(0)/m/n/12 La [][]Bidi-
-rec-tional Re-flectance Dis-tri-bu-tion Func-tion[](BRDF) $\TU/LatinModernMath(
-1)/m/n/12 𝑓[]([], [], [])$
- []
-
-[73
+ets/chapter3_surfaces_specular_interaction.png>] [57] [58
 warning  (pdf backend): ignoring duplicate destination with the name 'Hfootnote.
 35'
-] [74]
-Overfull \hbox (50.54959pt too wide) in paragraph at lines 255--259
-\TU/CharisSIL(0)/m/n/12 della pos-si-bil-ità di \TU/CharisSIL(0)/m/it/12 ri-f-l
-es-sione in-terna to-tale\TU/CharisSIL(0)/m/n/12 , nel caso in cui $\TU/LatinMo
-dernMath(1)/m/n/12 𝜂[] < 𝜂[]$ \TU/CharisSIL(0)/m/n/12 e []. 
+] [59]
+Overfull \hbox (3.70343pt too wide) in paragraph at lines 288--297
+ \TU/CharisSIL(0)/m/n/10 An-che le frazioni di ra-di-azione in-ci-dente trasmess
+a e ri-f-lessa dipen-dono dall’in-dice di rifrazione,
  []
 
-
-Overfull \hbox (1.9505pt too wide) in paragraph at lines 260--261
-[]\TU/CharisSIL(0)/m/n/12 Le di-rezioni di ri-f-les-sione e rifrazione sono com-
-pu-tate me-di-ante os-ser-vazioni
+[60]
+Overfull \hbox (5.61261pt too wide) in paragraph at lines 313--316
+ \TU/CharisSIL(0)/m/n/10 Per luce non po-lar-iz-zata tali co-ef-fi-ci-enti sono pari alla me-dia tra i co-ef-fi-ci-enti per polarizzazione-
  []
 
-[75]
-Underfull \vbox (badness 7631) has occurred while \output is active []
-
- [76]
-<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf, id=1550, 811.75798
+<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf, id=1452, 811.75798
 pt x 574.46132pt>
 File: ./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf Graphic file (
 type pdf)
@@ -3186,38 +2837,13 @@ Package luatex.def Info: ./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw
 .pdf  used on input line 325.
 (luatex.def)             Requested size: 811.756pt x 574.4599pt.
 
-Overfull \hbox (2.76944pt too wide) in paragraph at lines 332--336
-\TU/CharisSIL(0)/m/n/12 d’onda (vedi Figura []6.3[]). Si sp-iega la tinta tipi
-ca
+Overfull \hbox (2.16104pt too wide) in paragraph at lines 337--341
+[]\TU/CharisSIL(0)/m/n/10 Essi non con-ducono elet-tric-ità, hanno in-dice di 
+rifrazione reale,
  []
 
-
-Overfull \hbox (0.57022pt too wide) in paragraph at lines 332--336
-\TU/CharisSIL(0)/m/n/12 trasmessa viene rap-i-da-mente as-sor-bita, ren-den-
- []
-
-[77]
-Overfull \hbox (14.7591pt too wide) in paragraph at lines 342--343
-\TU/CharisSIL(0)/m/n/12 Ap-prossi-mazioni delle equazioni di Fres-nel, per ab-ba
-t-tere il costo com-putazionale,
- []
-
-
-Overfull \hbox (18.27472pt too wide) in paragraph at lines 345--347
-\TU/CharisSIL(0)/m/n/12 e, per i dielet-trici, l’ap-prossi-mazione di Schlick [[]Sch94[]], che richiede la conoscenza
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [78<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf>]
-Overfull \hbox (5.91144pt too wide) in paragraph at lines 358--361
-\TU/CharisSIL(0)/m/n/12 es-prime la den-sita di dis-tribuzione em-is-fer-ica di ra-di-anza in-ci-dente all
-’oc-corenza
- []
-
-[79] [80]
-<chapters/../assets/chapter3_surface_angle2area.png, id=1620, 1358.07375pt x 65
+[61] [62<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf>] [63]
+<chapters/../assets/chapter3_surface_angle2area.png, id=1520, 1358.07375pt x 65
 5.44875pt>
 File: chapters/../assets/chapter3_surface_angle2area.png Graphic file (type png
 )
@@ -3225,14 +2851,15 @@ File: chapters/../assets/chapter3_surface_angle2area.png Graphic file (type png
 Package luatex.def Info: chapters/../assets/chapter3_surface_angle2area.png  us
 ed on input line 434.
 (luatex.def)             Requested size: 413.59637pt x 199.60654pt.
- [81<./chapters/../assets/chapter3_surface_angle2area.png>]
-Overfull \hbox (1.23566pt too wide) in paragraph at lines 478--480
-[]\TU/CharisSIL(0)/m/it/12 Tur-bid Mod-els\TU/CharisSIL(0)/m/n/12 : Equazioni ch
-e partono dal pre-sup-posto che tutti i fenomeni
+
+[64<./chapters/../assets/chapter3_surface_angle2area.png>]
+Overfull \hbox (4.763pt too wide) in paragraph at lines 466--468
+\TU/CharisSIL(0)/m/n/10 Pos-si-amo dunque ri-for-mu-lare la Ren-der-ing Equa-tio
+n per es-sere un in-te-grale nell’area dell’unione
  []
 
-[82]
-<chapters/../assets/chapter3_surface_projected_area.png, id=1648, 910.40125pt x
+[65]
+<chapters/../assets/chapter3_surface_projected_area.png, id=1552, 910.40125pt x
  633.36626pt>
 File: chapters/../assets/chapter3_surface_projected_area.png Graphic file (type
  png)
@@ -3240,18 +2867,9 @@ File: chapters/../assets/chapter3_surface_projected_area.png Graphic file (type
 Package luatex.def Info: chapters/../assets/chapter3_surface_projected_area.png
   used on input line 504.
 (luatex.def)             Requested size: 330.87836pt x 230.19583pt.
-
-Overfull \hbox (9.70831pt too wide) in paragraph at lines 498--509
-\TU/CharisSIL(0)/m/n/12 Ri-cor-dando l’equazione per \TU/CharisSIL(0)/m/it/12
- Hemispherical-Directional Re-flectance \TU/CharisSIL(0)/m/n/12 (Equazione []6.5
-[]),
- []
-
-[83]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [84<./chapters/../assets/chapter3_surface_projected_area.png>] [85] [86]
-<chapters/../assets/chapter3_surface_microgeometry_effectsAM.png, id=1702, 1425
+ [66<./chapters/../assets/chapter3_surface_projected_area.png>] [67]
+[68]
+<chapters/../assets/chapter3_surface_microgeometry_effectsAM.png, id=1599, 1425
 .325pt x 311.1625pt>
 File: chapters/../assets/chapter3_surface_microgeometry_effectsAM.png Graphic f
 ile (type png)
@@ -3259,14 +2877,7 @@ ile (type png)
 Package luatex.def Info: chapters/../assets/chapter3_surface_microgeometry_effe
 ctsAM.png  used on input line 618.
 (luatex.def)             Requested size: 413.59637pt x 90.29178pt.
- [87<./chapters/../assets/chapter3_surface_microgeometry_effectsAM.png>]
-Overfull \hbox (23.33717pt too wide) in paragraph at lines 640--641
-[]\TU/CharisSIL(0)/m/n/12 Ogni mi-cro-facet di nor-male $[]$, possiede an-che un
-a sua \TU/CharisSIL(0)/m/it/12 Mi-cro BRDF $\TU/LatinModernMath(1)/m/n/12 𝑓[
-]([], [], [])$\TU/CharisSIL(0)/m/n/12 ,
- []
-
-<chapters/../assets/chapter3_surface_microgeometry_areaAM.png, id=1714, 1405.25
+<chapters/../assets/chapter3_surface_microgeometry_areaAM.png, id=1603, 1405.25
 pt x 460.72125pt>
 File: chapters/../assets/chapter3_surface_microgeometry_areaAM.png Graphic file
  (type png)
@@ -3274,16 +2885,9 @@ File: chapters/../assets/chapter3_surface_microgeometry_areaAM.png Graphic file
 Package luatex.def Info: chapters/../assets/chapter3_surface_microgeometry_area
 AM.png  used on input line 644.
 (luatex.def)             Requested size: 413.59637pt x 135.60226pt.
-
-Underfull \vbox (badness 5548) has occurred while \output is active []
-
- [88<./chapters/../assets/chapter3_surface_microgeometry_areaAM.png>] [89]
-Overfull \hbox (0.32745pt too wide) in paragraph at lines 712--714
-[]\TU/CharisSIL(0)/m/n/12 Anal-izzi-amo breve-mente due mod-elli di vis-i-bil-it
-à, la cui di-mostrazione com-
- []
-
-<chapters/../assets/chapter3_surface_vcavityPG.png, id=1738, 1353.055pt x 592.2
+ [69<./chapters/../assets/chapter3_surface_microgeometry_effectsAM.png>]
+[70<./chapters/../assets/chapter3_surface_microgeometry_areaAM.png>]
+<chapters/../assets/chapter3_surface_vcavityPG.png, id=1629, 1353.055pt x 592.2
 125pt>
 File: chapters/../assets/chapter3_surface_vcavityPG.png Graphic file (type png)
 
@@ -3291,13 +2895,8 @@ File: chapters/../assets/chapter3_surface_vcavityPG.png Graphic file (type png)
 Package luatex.def Info: chapters/../assets/chapter3_surface_vcavityPG.png  use
 d on input line 717.
 (luatex.def)             Requested size: 372.2342pt x 162.91766pt.
-[90] [91<./chapters/../assets/chapter3_surface_vcavityPG.png>]
-Overfull \hbox (3.5208pt too wide) detected at line 783
-[]
- []
-
-[92]
-<chapters/../assets/chapter3_surface_refl_jacobianPG.png, id=1780, 1560.83125pt
+ [71<./chapters/../assets/chapter3_surface_vcavityPG.png>] [72]
+<chapters/../assets/chapter3_surface_refl_jacobianPG.png, id=1665, 1560.83125pt
  x 805.0075pt>
 File: chapters/../assets/chapter3_surface_refl_jacobianPG.png Graphic file (typ
 e png)
@@ -3305,7 +2904,7 @@ e png)
 Package luatex.def Info: chapters/../assets/chapter3_surface_refl_jacobianPG.pn
 g  used on input line 792.
 (luatex.def)             Requested size: 330.87836pt x 170.65341pt.
-<chapters/../assets/chapter3_surface_BRDF_paramsPG.png, id=1783, 1028.84375pt x
+<chapters/../assets/chapter3_surface_BRDF_paramsPG.png, id=1668, 1028.84375pt x
  696.6025pt>
 File: chapters/../assets/chapter3_surface_BRDF_paramsPG.png Graphic file (type 
 png)
@@ -3313,9 +2912,9 @@ png)
 Package luatex.def Info: chapters/../assets/chapter3_surface_BRDF_paramsPG.png 
  used on input line 798.
 (luatex.def)             Requested size: 206.79819pt x 140.00893pt.
- [93<./chapters/../assets/chapter3_surface_refl_jacobianPG.png><./chapters/../as
-sets/chapter3_surface_BRDF_paramsPG.png>] [94] [95]
-<chapters/../assets/chapter3_surface_anisotropic_BRDF.png, id=1829, 1648.1575pt
+ [73<./chapters/../assets/chapter3_surface_refl_jacobianPG.png>] [74<./chapters/
+../assets/chapter3_surface_BRDF_paramsPG.png>] [75]
+<chapters/../assets/chapter3_surface_anisotropic_BRDF.png, id=1716, 1648.1575pt
  x 662.475pt>
 File: chapters/../assets/chapter3_surface_anisotropic_BRDF.png Graphic file (ty
 pe png)
@@ -3323,25 +2922,8 @@ pe png)
 Package luatex.def Info: chapters/../assets/chapter3_surface_anisotropic_BRDF.p
 ng  used on input line 909.
 (luatex.def)             Requested size: 330.87836pt x 132.99808pt.
- [96] [97<./chapters/../assets/chapter3_surface_anisotropic_BRDF.png>] [98] [99
-] [100]
-Overfull \hbox (8.78723pt too wide) in paragraph at lines 1054--1060
-\TU/CharisSIL(0)/m/n/12 mente spec-u-lari, la \TU/CharisSIL(0)/m/it/12 Oren-Naya
-r BRDF \TU/CharisSIL(0)/m/n/12 as-sume mi-crostrut-ture \TU/CharisSIL(0)/m/it/1
-2 Lam-ber-tiane \TU/CharisSIL(0)/m/n/12 affinchè
- []
-
-
-Overfull \hbox (1.2591pt too wide) in paragraph at lines 1054--1060
-\TU/CharisSIL(0)/m/n/12 possa model-lare ma-te-ri-ali che pre-sen-tano ri-f-les-
-sione dif-fusa con back-scattering
- []
-
-
-Underfull \vbox (badness 5446) has occurred while \output is active []
-
- [101]
-[102] [103] [104
+ [76<./chapters/../assets/chapter3_surface_anisotropic_BRDF.png>] [77] [78] [79
+] [80] [81] [82
 Missing character: There is no . (U+002E) in font nullfont!
 Missing character: There is no 0 (U+0030) in font nullfont!
 Missing character: There is no 1 (U+0031) in font nullfont!
@@ -3352,27 +2934,8 @@ Missing character: There is no 0 (U+0030) in font nullfont!
 Missing character: There is no 1 (U+0031) in font nullfont!
 Missing character: There is no p (U+0070) in font nullfont!
 Missing character: There is no t (U+0074) in font nullfont!
-]
-Overfull \hbox (3.00519pt too wide) in paragraph at lines 1167--1168
-[]\TU/CharisSIL(0)/m/n/12 Al fine del cam-pi-ona-mento delle sor-genti pro-porzi
-onale alla potenza emessa,
- []
-
-
-Underfull \vbox (badness 2941) has occurred while \output is active []
-
- [105]
-[106]
-Overfull \hbox (1.42377pt too wide) in paragraph at lines 1240--1242
-[]\TU/CharisSIL(0)/m/n/12 Sup-po-nendo in-vece ra-di-anza emessa costante da tut
-te le di-rezioni $\TU/LatinModernMath(1)/m/n/12 𝐿[]([], []) =
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [107]
-<chapters/../assets/chapter3_light_sphere_sampling.png, id=1955, 1587.9325pt x 
+] [83]
+<chapters/../assets/chapter3_light_sphere_sampling.png, id=1821, 1587.9325pt x 
 840.13875pt>
 File: chapters/../assets/chapter3_light_sphere_sampling.png Graphic file (type 
 png)
@@ -3380,56 +2943,46 @@ png)
 Package luatex.def Info: chapters/../assets/chapter3_light_sphere_sampling.png 
  used on input line 1249.
 (luatex.def)             Requested size: 248.16034pt x 131.28416pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [108<./chapters/../assets/chapter3_light_sphere_sampling.png>]
-Overfull \hbox (7.61847pt too wide) in paragraph at lines 1285--1289
-\TU/CharisSIL(0)/m/n/12 aia di sor-genti lu-mi-nose, con-sid-er-arle tutte com-p
-orta un costo ec-ces-sivo. Dunque
+ [84] [85<./chapters/../assets/chapter3_light_sphere_sampling.png>]
+Overfull \hbox (1.42316pt too wide) in paragraph at lines 1298--1299
+[]\TU/CharisSIL(0)/m/n/10 Le due strate-gie qui anal-iz-zate sono \TU/CharisSIL
+(0)/m/it/10 Cam-pi-ona-mento Uni-forme \TU/CharisSIL(0)/m/n/10 e \TU/CharisSIL(
+0)/m/it/10 Cam-pi-ona-mento pro-porzionale
  []
 
-[109]
-Overfull \hbox (1.52277pt too wide) in paragraph at lines 1305--1309
-\TU/CharisSIL(0)/m/n/12 La prob-a-bil-ità di cam-pi-onare una par-ti-co-lare so
-r-gente lu-mi-nosa è pro-porzionale
- []
-
-) [110] [111
+) [86] [87
 
 ] (./chapters/chapter-Appendix-C-random-num.tex
 Appendix A.
-[112
 
-]) (./chapters/chapter-Appendix-D-vulkan-code.tex [113]
+Overfull \hbox (122.25526pt too wide) in paragraph at lines 17--20
+[]\TU/CharisSIL(0)/m/n/10 Un al-tra cat-e-go-ria di RNG è il $[]$ di or-dine[]
+[][] $\TU/LatinModernMath(1)/m/n/10 𝑘$\TU/CharisSIL(0)/m/n/10 , con stato $[
+]$,
+ []
+
+[88
+
+]) (./chapters/chapter-Appendix-D-vulkan-code.tex [89]
 Appendix B.
 
 \openout5 = main.pyg
 (./intermediate/_minted-main/default.pygstyle)
 (./intermediate/_minted-main/67FB42AA52940A526A16A4B2C224C86A9A97493BC68191CC14
 C0217C2FB20DFF.pygtex
-LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `TU/lmtt/b/n' tried instead on input line 5.
- [114
+ [90
 
 ])
-Overfull \hbox (14.45491pt too wide) in paragraph at lines 47--47
-|[]\TU/CharisSIL(0)/b/n/17.28 Acceptance-Rejection Sam-pling di un disco uni-
- []
-
-
 \openout5 = main.pyg
 
 (./intermediate/_minted-main/992024B3365BE991EA5CE468B3F1DD0676BC18D0E1A6ADF4BE
-B512E6B2AAF5EB.pygtex [115])
+B512E6B2AAF5EB.pygtex [91])
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 17.28183pt on input line 91.
+(Font)              scaled to size 14.40152pt on input line 91.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 17.27815pt on input line 91.
-
-Overfull \hbox (6.49837pt too wide) in paragraph at lines 91--91
-|[]\TU/CharisSIL(0)/b/n/17.28 Metropolis-Hastings Sam-pling per cam-pi-onare
- []
+(Font)              scaled to size 14.39845pt on input line 91.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
@@ -3447,46 +3000,52 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 \openout5 = main.pyg
 
 (./intermediate/_minted-main/6B1C83B108D96A807BFFA704AA54D1A076BC18D0E1A6ADF4BE
-B512E6B2AAF5EB.pygtex [116])
+B512E6B2AAF5EB.pygtex)
 \openout5 = main.pyg
 
 (./intermediate/_minted-main/4A89BEB136DE9B50113D21CA9B0997D276BC18D0E1A6ADF4BE
-B512E6B2AAF5EB.pygtex [117])
+B512E6B2AAF5EB.pygtex [92])
 \openout5 = main.pyg
 
 (./intermediate/_minted-main/9FF028AEDCBE835D9E350FC495648B2F9A97493BC68191CC14
-C0217C2FB20DFF.pygtex [118] [119])
-<chapters/../assets/appendixD_result_8.png, id=2043, 1027.84pt x 770.88pt>
+C0217C2FB20DFF.pygtex
+Overfull \hbox (8.56671pt too wide) in paragraph at lines 149--1
+\TU/CharisSIL(0)/m/n/10 Segue una sem-plice im-ple-men-tazione dell’Al-go-ritm
+o del Path Trac-ing, rifer-ito a []http://www.kev-
+ []
+
+[93] [94])
+<chapters/../assets/appendixD_result_8.png, id=1906, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_8.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_8.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_8.png  used on inp
 ut line 256.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
-<chapters/../assets/appendixD_result_40.png, id=2044, 1027.84pt x 770.88pt>
+<chapters/../assets/appendixD_result_40.png, id=1907, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_40.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_40.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_40.png  used on in
 put line 261.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
-<chapters/../assets/appendixD_result_200.png, id=2045, 1027.84pt x 770.88pt>
+<chapters/../assets/appendixD_result_200.png, id=1908, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_200.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_200.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_200.png  used on i
 nput line 265.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
-<chapters/../assets/appendixD_result_1000.png, id=2046, 1027.84pt x 770.88pt>
+<chapters/../assets/appendixD_result_1000.png, id=1909, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_1000.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_1000.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_1000.png  used on 
 input line 270.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
-<chapters/../assets/appendixD_result_5k.png, id=2047, 1027.84pt x 770.88pt>
+<chapters/../assets/appendixD_result_5k.png, id=1910, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_5k.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_5k.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_5k.png  used on in
 put line 275.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
-<chapters/../assets/appendixD_result_25k.png, id=2048, 1027.84pt x 770.88pt>
+<chapters/../assets/appendixD_result_25k.png, id=1911, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_25k.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_25k.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_25k.png  used on i
@@ -3497,38 +3056,33 @@ Underfull \hbox (badness 10000) in paragraph at lines 254--283
 []$[]$  $[]$
  []
 
-) [120] [121<./chapters/../assets/appendixD_result_8.png><./chapters/../assets/a
-ppendixD_result_40.png><./chapters/../assets/appendixD_result_200.png><./chapter
-s/../assets/appendixD_result_1000.png><./chapters/../assets/appendixD_result_5k.
-png><./chapters/../assets/appendixD_result_25k.png>]
-Overfull \hbox (5.97702pt too wide) in paragraph at lines 340--340
-[]\TU/CharisSIL(0)/m/n/12 Vin-cent Pe-go-raro. \TU/CharisSIL(0)/m/it/12 Hand-boo
-k of Dig-i-tal Im-age Syn-the-sis: Sci-en-tific Foun-
+) [95] [96<./chapters/../assets/appendixD_result_8.png><./chapters/../assets/app
+endixD_result_40.png><./chapters/../assets/appendixD_result_200.png><./chapters/
+../assets/appendixD_result_1000.png><./chapters/../assets/appendixD_result_5k.pn
+g><./chapters/../assets/appendixD_result_25k.png>]
+Overfull \hbox (1.6926pt too wide) in paragraph at lines 340--340
+[]\TU/CharisSIL(0)/m/n/10 Janos Schanda. \TU/CharisSIL(0)/m/it/10 Col-orime-try.
+ Un-der-stand-ing The CIE Sys-tem\TU/CharisSIL(0)/m/n/10 . Wi-ley In-ter-science
+, 2007. 
  []
 
-[122
-
-
-] (./intermediate/main.gls [123]
-Overfull \hbox (2.17902pt too wide) in paragraph at lines 9--11
-[]\TU/CharisSIL(0)/m/n/12 Es-prime la pro-porzione tra
- []
-
-
-Overfull \hbox (13.8216pt too wide) in paragraph at lines 11--11
-[]\TU/CharisSIL(0)/m/n/12 Es-prime
- []
-
-[124
+(./intermediate/main.gls [97
 
 
 ]
-Overfull \hbox (32.1087pt too wide) in paragraph at lines 30--32
-[]\TU/CharisSIL(0)/m/n/12 Misura della in-ten-sità ra-di-ante spet-trale pe-sat
-a sulla percezione
+Overfull \hbox (6.6966pt too wide) in paragraph at lines 9--11
+[]\TU/CharisSIL(0)/m/n/10 Es-prime la pro-porzione tra ir-ra-di-anza (spet-
  []
 
-) [125] (./intermediate/main.aux)
+
+Overfull \hbox (8.09308pt too wide) in paragraph at lines 11--11
+[]\TU/CharisSIL(0)/m/n/10 Es-prime la pro-porzione
+ []
+
+[98
+
+
+]) [99] (./intermediate/main.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -3544,15 +3098,15 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 70978 strings out of 478285
- 195327,2848258 words of node,token memory allocated
- 3589 words of node memory still in use:
-   7 hlist, 2 vlist, 2 rule, 76 glue, 4 kern, 15 sub_mlist, 1 glyph, 531 attribu
-te, 126 glue_spec, 531 attribute_list, 2 write, 10 pdf_action nodes
-   avail lists: 1:24,2:20272,3:13163,4:1830,5:488,6:114,7:7423,8:103,9:1830,10:2
-2,11:564,12:1
- 87795 multiletter control sequences out of 65536+600000
- 178 fonts using 83058367 bytes
+ 70913 strings out of 478285
+ 244160,2848258 words of node,token memory allocated
+ 3592 words of node memory still in use:
+   7 hlist, 2 vlist, 2 rule, 79 glue, 4 kern, 15 sub_mlist, 1 glyph, 531 attribu
+te, 126 glue_spec, 531 attribute_list, 2 write, 7 pdf_action nodes
+   avail lists: 1:23,2:20383,3:13201,4:2302,5:559,6:104,7:10670,8:103,9:2061,10:
+22,11:763,12:1
+ 87758 multiletter control sequences out of 65536+600000
+ 142 fonts using 66965183 bytes
  95i,22n,114p,2265b,2933s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.59'
@@ -3562,18 +3116,18 @@ warning  (pdf backend): unreferenced destination with name 'Hfootnote.58'
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.34'
 </usr/share/texmf-dist/fonts/opentype/public/lm/lmmonolt10-bold.otf></usr/share/
 texmf-dist/fonts/opentype/public/lm/lmmono10-italic.otf></usr/share/fonts/TTF/Ch
-arisSIL-Bold.ttf></usr/share/texmf-dist/fonts/opentype/public/lm/lmmono12-regula
+arisSIL-Bold.ttf></usr/share/texmf-dist/fonts/opentype/public/lm/lmmono10-regula
 r.otf></usr/share/fonts/OTF/XITSMath-Regular.otf></usr/share/fonts/OTF/XITSMath-
-Regular.otf></usr/share/texmf-dist/fonts/opentype/public/lm/lmsans12-regular.otf
+Regular.otf></usr/share/texmf-dist/fonts/opentype/public/lm/lmsans10-regular.otf
 ></usr/share/texmf-dist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr
 /share/fonts/TTF/CharisSIL-Italic.ttf></usr/share/texmf-dist/fonts/opentype/publ
 ic/lm-math/latinmodern-math.otf></usr/share/texmf-dist/fonts/opentype/public/lm-
 math/latinmodern-math.otf></usr/share/fonts/TTF/CharisSIL-Regular.ttf></usr/shar
 e/fonts/TTF/CharisSIL-Bold.ttf>
-Output written on main.pdf (133 pages, 17842490 bytes).
+Output written on main.pdf (105 pages, 17818798 bytes).
 
-PDF statistics: 2207 PDF objects out of 2487 (max. 8388607)
- 1759 compressed objects within 18 object streams
- 642 named destinations out of 1000 (max. 131072)
+PDF statistics: 2066 PDF objects out of 2073 (max. 8388607)
+ 1647 compressed objects within 17 object streams
+ 614 named destinations out of 1000 (max. 131072)
  560 words of extra memory for PDF output out of 10000 (max. 100000000)
 
