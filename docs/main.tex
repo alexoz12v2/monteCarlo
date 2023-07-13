@@ -256,20 +256,52 @@
 
 	\frontmatter
 	\section*{Abstract}
+	\begin{figure}[t]
+		\centering
+		\includegraphics[width=0.6\linewidth]{./assets/intro_path_tracing_online_tech_tips.png}
+		\caption{Illustrazione dell'algoritmo Path Tracing. L'obiettivo di questo documento \`e spiegare come i Metodi di Monte Carlo rendono 
+			possibile la stima della funzione immagine $r_f(x,y)$}
+		\label{intro:pathTracing}
+	\end{figure}
 	Nel seguente documento si presentano tutti i fondamenti matematici e scientifici al problema della sintesi di un immagine basata su fondamenti 
-	fisici. A tal scopo, vengono primaditutto richiamati concetti fondamentali di elettromagnetismo e ottica, per poi introdurre le basi di 
-	radiometria, fotometria e colorimetria, che costituiscono il linguaggio attraverso il quale si esprimono i vari risultati, fino alla traduzione 
-	della radianza spettrale finale in un colore sRGB da poter presentare a schermo. In tale complesso algoritmo, \`e necessario definire un modello 
-	di camera, osservatore, attraverso il quale si disegna una griglia, che rappresenta l'immagine finale. Tale immagine \`e ricostruita campionando 
-	tale griglia e proiettando dei raggi dal vertice della telecamera verso ciascun punto campionato per poi esplorare la scena e, supponendo 
-	propagazione nel vuoto, trovare la prima intersezione con una superficie di tale scena, la quale emette e/o riflette e/o trasmette radianza a 
-	seconda del materiale di cui \`e fatta e dalle condizioni di luminosit\`a. Al fine di poter calcolare quanta radianza "ritorna" dal raggio 
-	verso la camera, bisogna ricorrere all'uso di equazioni integrali ricorsive, la cui elevata dimensionalit\`a proibisce ogni tipo di approccio 
-	deterministico, lasciando come una delle possibilit\`a l'applicazione dei Metodi di Monte Carlo, oggetto principe del documento. In seguito 
-	al calcolo di tale radianza per ciascun campione, \`e necessario aggregare i vari contributi per produrre una immagine finale, continua, dai 
-	campioni calcolati, attraverso un filtro di ricostruzione.\par
-	Ciascuna problematica posta da tale complicato processo \`e esplorata singolarmente in ciascun capitolo, per poi guadagnare una visione d'insieme 
-	nel capitolo finale \`e concludere con l'algoritmo \textit{Path Tracing}
+	fisici. A tal scopo, l'algoritmo proposto per la renderizzazione di scene tridimensionali \`e il \textit{Path Tracing}, il quale risolve il problema
+	della \textit{Global Illumination}, cio\`e colorazione delle superfici contando illuminazione diretta ed indiretta.\par
+	Immediatamente so presenta un problema per il calcolo di tale immagine (mostrata in Figura \ref{intro:pathTracing}): al fine di poter costituire 
+	il risultato finale, l'\textit{Image Plane} \`e suddiviso a formare una griglia uniforme. In seguito, supponendo $r(x,y)$ funzione immagine,
+	una data cella di area $A_{px}$ avr\`a colorazione pari all'integrale 
+	\begin{equation}
+		r_f(x,y)=\int_{A_{px}}r(x^\prime,y^\prime)\mathrm{d}A
+	\end{equation}
+	Immediatamente ci si rende conto che tale funzione non solo non \`e analiticamente integrabile, ma non \`e nota analiticamente. Infatti, $r(x,y)$
+	pu\`o soltanto essere campionata, generando dei raggi con origine $\vec{o}$ pari alla posizione dell'osservatore, e direzione $\hat{\omega}$
+	pari a $\mathmakebox{\tfrac{\vec{p}_i-\vec{o}}{\norm{\vec{p}_i-\vec{o}}}}$. Una volta campionato tale segnale bidimensionale, un filtro di
+	ricostruzione $f(x,y)$ \`e utilizzato, mediante l'operazione di convoluzione $*$, per ottenere un'approssimazione della funzione immagine, filtrata,
+	$r_f(x,y)$.
+	\begin{equation}
+		r_f(x,y)=\int_{A_{px}}f(x-x^\prime,y-y^\prime)r(x^\prime,y^\prime)\mathrm{d}A = (f*r)(x,y)
+	\end{equation}
+	Rimane per\`o il problema iniziale: per risolvere tale integrale, dovremmo estrarre $\infty$ campioni. Anche se ci\`o fosse possibile, l'integrale
+	ottenuto non sarebbe risolvibile analiticamente. Tale espressione si presta alla risoluzione mediante i Metodi di Monte Carlo, del quale si 
+	riporta qui lo stimatore pi\`u semplice
+	\begin{equation}
+		r_f(x,y)\approx\frac{\norm{A_{px}}}{n}\sum_{i=1}^{n}f(x-x_i,y-y_i)r(x_i,y_i)
+	\end{equation}
+	Si sposta l'attenzione allora al calcolo di ciascun campione: il suddetto raggio \`e propagato per la scena, finch\`e non interseca una superficie.
+	Dunque, il compito adesso \`e quello di calcolare il colore che tale superficie emette. In quanto il concetto di colore \`e strettamente legato 
+	alla percezione umana, tale computazione vede come grandezza utilizzata la \textit{Radianza Spettrale}, potenza uscente o incidente in un punto di 
+	una superficie, da/a una data direzione. Tale grandezza \`e opportunamente campionata in punti equispaziati dello spettro visibile.\par 
+	Come illustrato nei capitoli seguenti, l'equazione che determina la radianza spettrale uscente \`e l'\textit{Equazione del Rendering}
+	\begin{equation}
+		L_o(\vec{p},\hat{\omega}_o,\hat{\omega}_i)=L_e(\vec{p},\hat{\omega}_o)+%
+			\int_{\mathcal{S}^2}f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)L_i(\vec{p},\hat{\omega}_i)|\langle\hat{n},\hat{\omega}_i\rangle|
+				\mathrm{d}\hat{\omega}_i
+	\end{equation}
+	Ovviamente, tale integrale presenta le stesse problematiche dell'equazione per pixel filtering, dunque va anch'esso risolto con il metodo di 
+	Monte Carlo. Si noti per\`o, che tale espressione \`e ben pi\`u complicata da risolvere, e non solo perch\`e \`e ricorsiva.
+	La funzione integranda presenta pi\`u fattori, altamente variabili, di termini fisici complessi, ed infatti la spiegazione di ciascuno 
+	dei termini coinvolti e tattiche di campionamento per la funzione integranda sono oggetto di ben tre capitoli.\par
+	Nelle pagine a seguire si propone di introdurre i Metodi di Monte Carlo, dimostrando la loro grande potenzialit\`a nella risoluzione del problema 
+	presentato, fino a formulare la strategia completa dell'algoritmo di Path Tracing.
 
 	\section*{Acknowledgements}
 	Vorrei ringraziale la Prof.ssa Marina Popolizio che ha acceso in me la passione per il calcolo numerico e permesso di dedicarmici spostando anche 

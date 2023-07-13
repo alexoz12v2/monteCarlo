@@ -95,6 +95,7 @@ il rapporto tra le costanti nel mezzo e le costanti nel vuoto definiscono \texti
 	  %\node[enercol,scale=1] at (5.91+9,\yE-0.69*\h) {\strut GeV};
 	  
 	\end{tikzpicture}
+	\caption{spettro delle radiazioni elettromagnetiche, delle quali quelle visibili costituiscono una piccola parte.}
 	\label{chapter1:spectrum}
 \end{figure}
 %
@@ -106,38 +107,15 @@ Come osservi in figura \ref{chapter1:spectrum}, un'onda monocromatica \`e caratt
 	& & \lambda = vT = \frac{v}{\nu}
 \end{alignat}
 La luce visibile all'\textit{occhio umano} corrisponde al sottoinsieme dello spettro $[383, 783]\ \si{THz}$, equivalentemente $[783, 383]\ \si{nm}$\par
-Inoltre si definisce \textit{numero d'onda angolare} [\si{rd/m}]
-\begin{alignat}{2}
-	& \text{nel vuoto } k_0 &= \frac{2\pi}{\lambda_0} = \frac{2\pi}{c}\nu = \frac{\omega}{c} \\
-	& \text{nel mezzo }  k &= \frac{2\pi}{\lambda} = \frac{2\pi}{v}\nu = \frac{\omega}{v}
-\end{alignat}
-che rappresenta lo shift di fase dell'onda. 
-Assieme alla direzione di propagazione $\hat{k}$ definiscono il \textit{vettore d'onda} $\overrightarrow{k} = k \hat{k}$\par
 Le propriet\`a dell'onda in un mezzo relative alle propriet\`a dell'onda nel vuoto sono determinate dall'\textit{indice di rifrazione} (IOR), dipendente
 dalla lunghezza d'onda
-\[ \eta = \sqrt{\mu_r \epsilon_r} = \sqrt{\frac{\mu \epsilon}{\mu_0 \epsilon_0}} = \frac{c}{v} = \frac{k}{k_0} \]
+\begin{equation}
+	\eta = \sqrt{\mu_r \epsilon_r} = \sqrt{\frac{\mu \epsilon}{\mu_0 \epsilon_0}} = \frac{c}{v} 
+\end{equation}
 \textit{radiazione elettromagnetica} \`e composta da campo elettrico $\overrightarrow{E}$ ed un campo magnetico 
 $\overrightarrow{B}$ oscillanti in fase, perpendicolari tra loro e alla direzione di propagazione $\hat{k}$ (Figura \ref{chapter1:EMwave}). 
 Le propriet\`a di tali campi sono descritti in funzione della posizione $\overrightarrow{r}$ e tempo $t$ dalle \textit{Equazioni di Maxwell}
-\footnote{qui mostrate le equazioni per propagazione nel vuoto}
-\cite{pegoraro}:
-\begin{align}
-	\nabla \cdot \overrightarrow{E}(\overrightarrow{r}, t) &= \frac{\rho}{\epsilon_0} \\
-	\nabla \cdot \overrightarrow{B}(\overrightarrow{r}, t) &= 0 \\
-	\nabla \times \overrightarrow{E}(\overrightarrow{r}, t) &= -\frac{\partial\overrightarrow{B}(\overrightarrow{r}, t)}{\partial t} \\
-	\begin{split}
-	\nabla \times \overrightarrow{B}(\overrightarrow{r}, t) \ 
-	&= \mu_0 \left( \epsilon_0\frac{\partial \overrightarrow{E}(\overrightarrow{r}, t)}{\partial t} + \overrightarrow{J}(\overrightarrow{r}, t) \right)
-	\end{split}
-\end{align}
-dove $\rho$ \`e la densit\`a di carica totale e $\overrightarrow{J}$ la densit\`a di corrente.\par
-Tali equazioni, date le condizioni a contorno e condizioni iniziali, portano ad una equazione differenziale parziale detta equazione d'onda, che 
-per assenza di cariche $\rho = 0$, assenza di corrente $\overrightarrow{J}(\overrightarrow{r}, t) = \overrightarrow{0}$, e propagazione nel vuoto 
-porta a\footnote{$\overrightarrow{x}$ \`e sostituibile sia con $\overrightarrow{E}$ che con $\overrightarrow{B}$}
-\[ \left(\frac{1}{c^2}\frac{\partial^2}{\partial t^2} - \nabla^2\right) \overrightarrow{x} = 0\]
-la cui soluzione \`e una qualsiasi funzione differenziabile due volte della forma
-\[ \overrightarrow{E}(\overrightarrow{r}, t) = f(\hat{k}\cdot\overrightarrow{r}-ct) 
-	= f\left(\frac{\overrightarrow{k}\cdot\overrightarrow{r} - ct}{k}\right) \]
+\cite{pegoraro}\par
 Propriet\`a importante per un'onda elettromagnetica \`e la sua \textit{polarizzazione}, la quale specifica l'orientemento nello spazio del campo
 elettrico (per convenzione) nella propagazione nello spazio dell'onda. Il campo elettrico pu\`o avere direzione fissa o essere rotante in base ad una
 data funzione \cite{rad-phot}. Esso \`e importante per le propriet\`a ottiche dei materiali, discussi in seguito. Gli stati di polarizzazione 
@@ -152,7 +130,6 @@ Una delle propriet\`a ottiche cangianti con lo stato di polarizzazione \`e la \t
 radiazione linearmente polarizzata con piano di vibrazione $\parallel$ e $\perp$ al piano di incidenza.\par
 Tratteremo principalmente luce non polarizzata, la quale \`e una buona approssimazione considerando che la luce del cielo, che si propaga nell'
 atmosfera, \`e parzialmente polarizzata.
-%
 \begin{figure}[t]
 	% Electromagnetic wave - colored
 	\begin{tikzpicture}[x=(-15:1.2), y=(90:1.0), z=(-150:1.0),
@@ -219,22 +196,13 @@ atmosfera, \`e parzialmente polarizzata.
 	    \fi
 	  }
 	\end{tikzpicture}
+	\caption{Illustrazione di un'onda elettromagnetica 1D che si propaga in direzione $\hat{k}$ con polarizzazione lineare}
 	\label{chapter1:EMwave}
 \end{figure}
-%
-\section{Dualit\`a onda-particella}
-Una radiazione elettromagnetica mostra sia aspetti ondulatori che aspetti particellari. Tale fenomeno \`e detto \textit{dualit\`a onda-particella}.
-La luce \`e assorbita ed emessa in pacchetti discreti di energia elettromagnetica chiamati \textit{fotoni}. Dunque il campo elettromagnetico
-\footnote{inteso come spostamento di energia} \`e quantizzato. Ciascuna delle sue particelle elementari costituenti ha energia definita dall'
-\textit{equazione di Planck-Einstein} 
-\label{chapter1:plankEinstein}
-\[\xi = h\nu\] 
-dove $h$ costante di Plank. Si osservi come l'energia di un singolo fotone \`e dipendente dallalunghezza d'onda.\par
-
-Il modello fornito dall'elettrodinamica quantistica \`e stato citato in quanto esso ci suggerisce un nuovo modello operativo della luce, orientato 
+Il modello fornito dall'elettrodinamica della radiazione luminosa \`e troppo complesso per essere simulato in tempo reale da dei sistemi di rendering.
+Allora, il pi\`u delle volte si opta per l'utilizzo di un nuovo modello operativo della luce, orientato 
 alla misurazione piuttosto che alla formulazione da primi principi, nel quale ci disinteressiamo dell'origine fisica della luce e misuriamo
 l'energia aggregata trasportata dai fotoni contenuti in una radiazione. Tale scienza \`e la \textit{Radiometria} (sezione \nameref{radiometria})\par
-
 \section{Introduzione all'assorbimento di radiazione}
 \begin{table}[tb]
 	\begin{tabular}{cccp{6cm}}
@@ -253,30 +221,14 @@ l'energia aggregata trasportata dai fotoni contenuti in una radiazione. Tale sci
 \end{table}
 Quando la luce passa per un mezzo, parte di essa viene rifratta e riflessa (capitolo 3). In alcuni materiali\footnote{come i metalli}, quando la 
 luce passa attraverso il mezzo \`e assorbita, e il wavelength-dependent \textit{coefficiente di assorbimento} $\kappa_a$ [\si{m^{-1}}], il quale 
-indica la percentuale di energia di onda elettromagnetica assorbita, per una data lunghezza d'onda, nella propagazione nel materiale.
+indica la percentuale di energia di onda elettromagnetica assorbita, per una data lunghezza d'onda, nella propagazione nel materiale \cite{pegoraro}.
 Alcuni esempi di coefficiente di assorbimento sono mostrati in Tabella \nameref{chapter1:absorption-table}\par
-Dall'coefficiente di assorbimento, caratterizzante il decadimento della energia nella propagazione dell'onda, e il numero d'onda, caratterizzante 
-lo shift di fase dell'onda stessa, si definisce il \textit{numero d'onda complesso}
-\[ \underline{k} = k + \iu\frac{\kappa_a}{2} \]
-Ricordiamo l'equazione di un'onda elettromagnetica linearmente polarizzata, in assenza di assorbimento
-\[\overrightarrow{E}(\overrightarrow{r}, t) = \Re\left( \overrightarrow{E}_0 e^{\iu (\overrightarrow{k}\cdot\overrightarrow{r}-\omega t)} \right)\]
-Introducendo un coefficiente di assorbimento non-nullo, e supponendo propagazione nell'asse z, $\hat{k} = [0, 0, 1]^T$
-\[\overrightarrow{E}(z, t) = \Re\left( \overrightarrow{E}_0 e^{\iu (\underline{k}\cdot z-\omega t)} \right) = 
-	\Re\left( e^{-\frac{\kappa_a}{2}z} \overrightarrow{E}_0 e^{\iu ( kz-\omega t )}\right)\]
-Da cui l'\textit{intensit\`a}\footnotemark dell'onda (potenza media nel periodo trasferita per unit\`a di superficie) [\si{W/m^2}] 
-diventa \cite{pegoraro}
-\begin{align}
-	I(z) &= \frac{1}{T} \int_T \lvert \overrightarrow{E}_0 e^{\iu (\underline{k}z-\omega t)} \rvert^2 \mathrm{d}t = 
-	\frac{1}{T} \lvert e^{-\frac{\kappa_a}{2}z} \overrightarrow{E}_0 e^{\iu ( kz-\omega t )} \rvert \\ 
-	&= \lvert e^{-\frac{\kappa_a}{2}z} \rvert \frac{1}{T} \int_T \lvert \overrightarrow{E}_0 e^{-\iu (kz-\omega t)} \rvert^2 \mathrm{d}t = 
-	e^{-\kappa_az} I_0
-\end{align}
-dove $I_0$ \`e l'intensit\`a in assenza di assorbimento. La distanza alla quale l'intensit\`a si riduce di un fattore $e^{-1}$, ($z=\kappa_a^{-1}$),
-\`e detta \textit{profondit\`a di penetrazione}\par
-Altro coefficiente caratterizzante il materiale e la sua interazione con radiazione incidente, contando anche l'assorbimento, \`e l'
-\textit{indice di rifrazione complesso}
-\[\underline{\eta} = \frac{k}{k_0} + \iu \frac{\kappa_a}{2k_0} = \eta + \iu\kappa\]
-dove $\kappa = \frac{\kappa_a}{2k_0}$ \`e l'\textit{indice di assorbimento} della superficie
+Combinando indice di rifrazione $\eta$ e indice di assorbimento $\kappa_a$ otteniamo una quantit\`a che descrive completamente come si comporta la 
+radiazione nella propagazione nel mezzo, contando anche il fenomeno dell'assorbimento, definito come \textit{indice di rifrazione complesso}
+\begin{equation}
+	\underline{\eta} = \eta + \iu\kappa
+\end{equation}
+dove $\kappa = \frac{\kappa_a}{2k_0}$ \`e l'\textit{indice di assorbimento} della superficie, $k_0$ numero d'onda.
 \footnotetext{In fotometria e radiometria \textit{intensit\`a} ha un altro significato: essa \`e la potenza radiante o luminosa per unit\`a di 
 	angolo solido. In Ottica e Termodinamica, \textit{intensit\`a} essa \`e associata alla potenza media nel periodo per unit\`a di superficie, come 
 	in questo caso, altre volte all'intensit\`a radiante o luminosa, oppure all'irradianza o alla radianza. Per Radiometria, vedi \nameref{radiometria}}
@@ -323,14 +275,14 @@ Le unit\`a fondamentali della radiometria sono riassunte nella tabella \ref{chap
 \begin{definitionS}
 	L'\textit{Energia Radiante} $Q_e$ \`e l'energia aggregata di tutti i fotoni, ognuno ad una particolare lunghezza d'onda con contributo energetico
 	diverso, \textit{verso/attraverso/da} una superficie in un dato intervallo di tempo\par
-	Ciascuno di questi fotoni trasporta energia pari all'Equazione di plank-Einstein $Q_\lambda=\frac{hc}{\lambda}$\ref{chapter1:plankEinstein}
+	Ciascuno di questi fotoni trasporta energia pari all'Equazione di plank-Einstein $Q_\lambda=\frac{hc}{\lambda}$
 \end{definitionS}
 \begin{definitionS}
 	L'\textit{Energia Radiante Spettrale} $Q_{e,\lambda}$\footnotemark{} \`e il contributo di una singola lunghezza d'onda all'energia radiante 
 	complessiva
 	\[ Q_{e,\lambda}= \frac{\partial Q_e}{\partial\lambda} \]
 \end{definitionS}
-\footnotetext{Le grandezze spettrali possono essere espresse in funzione della lunghezza d'onda \lambda ( e.g. $Q_{e,\lambda}$ ) o del suo inverso, la
+\footnotetext{Le grandezze spettrali possono essere espresse in funzione della lunghezza d'onda $\lambda$ ( e.g. $Q_{e,\lambda}$ ) o del suo inverso, la
 	frequenza ( e.g. $Q_{e,\nu}$ )}
 Data l'assunzione di sistema a regime, siamo interessati a misurare l'energia radiante in un istante piuttosto che per un periodo definito di tempo.
 Dunque definiamo
@@ -390,14 +342,18 @@ Relazione significativa che coinvolge l'\textit{Irradianza} \`e la \textit{Legge
 \begin{definitionS}
 	La \textit{Legge del coseno di Lambert} afferma che L'\textit{Intensit\`a Radiante}\footnote{o Intensit\`a Luminosa} osservata da un 
 	\textit{Radiatore Lambertiano}/verso una \textit{Superficie Lambertiana} \`e direttamente proporzionale all'angolo $\theta$ tra l'osservatore e la
-	normale alla superficie
-	\[ I = I_0\cos\theta \]\footnote{da cui $E = E_0\cos\theta$}
+	normale alla superficie\footnote{da cui $E = E_0\cos\theta$}
+	\begin{equation*}
+		I = I_0\cos\theta
+	\end{equation*}
 \end{definitionS}
 Dove per \textit{Radiatore Lambertiano} si intende ogni superficie radiante la cui radianza emessa \`e indipendente dalla direzione considerata, mentre
 per \textit{Superficie Lambertiana} si intende ogni superficie che obbedisce alla legge del coseno, e riflette radianza incidente in tutte le direzioni
 in modo uniforme, e tale tipologia di riflessione \`e detta \textit{Riflessione diffusa}, che riprendiamo in seguito.\par 
 La \textit{Radiosit\`a}, la quale pu\`o essere scomposta in 
-\[ J_e(\vec{p}) = \frac{\partial \Phi_e}{\partial A} = M_e(\vec{p}) + J_{e,r}(\vec{p}) + J_{e,t}(\vec{p}) \]
+\begin{equation*}
+	J_e(\vec{p}) = \frac{\partial \Phi_e}{\partial A} = M_e(\vec{p}) + J_{e,r}(\vec{p}) + J_{e,t}(\vec{p})
+\end{equation*}
 dove 
 \begin{itemize}[topsep=0pt, noitemsep]
 	\item $M_e$ Emittanza Radiante dalla superficie nel punto $\vec{p}$, componente emessa della radiosit\`a
@@ -486,7 +442,7 @@ In equilibrio termico, tale radianza ha espressione detta \textit{Legge di Planc
 \end{equation}
 dove
 \begin{align}
-	h &= 6.626176\cdot 10^{-34} \si{J/s}\text{ costante di Planck}
+	h &= 6.626176\cdot 10^{-34} \si{J/s}\text{ costante di Planck}\\
 	k &= 1.380662\cdot 10^{-23} \si{J/K}\text{ costante di Boltzmann}
 \end{align}
 \`E facile dimostrare come, integrando nell'emisfera unitaria, si ottiene un emittanza radiante corrispondente alla legge di Stefan-Boltzmann\par

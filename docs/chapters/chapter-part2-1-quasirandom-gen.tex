@@ -91,7 +91,7 @@ Ricordiamo la definizione di \textit{Power Spectral Density}, per un segnale con
 \begin{align}
 	S_f(\nu)&=\lim_{T\to\infty}\frac{1}{T}|\fourier{f_T(x)}|^2\\
 	f_T(x)&=\left\{\begin{aligned}
-		&f(x)\;\text{se }x\in[-T,T]\nonumber\\
+		&f(x)\;&\mathrm{se}\;x\in[-T,T]\nonumber\\
 		&0&\mathrm{altrimenti}\nonumber
 	\end{aligned}\right.\nonumber
 \end{align}
@@ -181,7 +181,7 @@ dimostrare diminuire l'andamento asintotico dell'errore di integrazione a
 \end{figure}
 Il che \`e superiore all'$\mathcal{O}(n^{-1/2})$ per Monte Carlo con punti campionati uniformemente.\par
 Lo Scrambling per l'n $i$-esima coordinata del $k$-esimo punto della sequenza $x_k^{(i)}=0.d_1d_2\ldots d_m$ \`e mostrato in 
-\ref{appendixD:owenScrambling} con codice C++ ripreso da \cite{pharr} e commentato.
+\ref{appendixD:owenScrambling} con codice C\texttt{++} ripreso da \cite{pharr} e commentato.
 \begin{figure}[b]
 	\centering
 	\includegraphics[width=\linewidth]{../assets/chapter5_sampling_result.png}
@@ -290,7 +290,7 @@ dove
 \begin{align}
 	G(x;\mu,\sigma)&=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}\\
 	\fourier{G(x,\mu,\sigma)}&=\frac{e^{\frac{\sigma^2\nu^2}{2}+\iota\mu\nu}}{\sqrt{2\pi}\sqrt{\tfrac{1}{\sigma^2}}\sigma}=
-		\frac{e^{\iota\mu\nu}}{\sigma}G\left(x;0,\tfrac{1}{\sigma}\right)\\
+		\frac{e^{\iota\mu\nu}}{\sigma}G\left(\nu;0,\tfrac{1}{\sigma}\right)\\
 	\int G(x;\mu,\sigma)\mathrm{d}x&=\frac{1}{2}\left(1+\operatorname{erf}\left(\frac{x-\mu}{\sqrt{2}\sigma}\right)\right)
 \end{align}
 La funzione di trasferimento del Gaussian Filter \`e dunque
@@ -346,6 +346,12 @@ Invertire tale funzione consiste nel trovare il valore $x_s$ tale che
 \begin{equation*}
 	\xi=\int_0^{x_s}p(x)\mathrm{d}x=P(x_s)
 \end{equation*}
+\begin{figure}[tb!]
+	\centering
+	\includegraphics[width=0.75\linewidth]{../assets/chapter5_reconstruction_gaussian_result.png}
+	\caption{Risultato di applicazione del Gaussian Filter radiale ad un checkerboard pattern. Immagine da \cite{pegoraro}}
+	\label{chapter5:reconstruction:gaussianResult}
+\end{figure}
 In quanto la CDF \`e crescente, possiamo tradurre tale task nel trovare una coppia di punti $(x_i,x_{i+1})$ tali che $\mathmakebox{P(x_i)\leq\xi}$ e 
 $\mathmakebox{\xi\leq P_{i+1}}$ effettuando una ricerca binaria. Dopodich\`e, possiamo calcolare quanto distante $\xi$ \`e dall'estremo inferiore 
 dell'intervallo definito dai punti trovati $x_i$, $\Delta\xi=\frac{\xi-x_i}{x_{i+1}-x_i}$, dove si tiene cura di eseguire la divisione solo se
@@ -353,9 +359,3 @@ $x_{i+1}>x_i$. Il campione per Inverse Tramsform Sampling pu\`o dunque essere po
 \begin{equation}
 	x_s = x_i + \Delta\xi
 \end{equation}
-\begin{figure}[tb]
-	\centering
-	\includegraphics[width=0.8\linewidth]{../assets/chapter5_reconstruction_gaussian_result.png}
-	\caption{Risultato di applicazione del Gaussian Filter radiale ad un checkerboard pattern. Immagine da \cite{pegoraro}}
-	\label{chapter5:reconstruction:gaussianResult}
-\end{figure}

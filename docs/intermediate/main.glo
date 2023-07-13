@@ -1,33 +1,33 @@
-\glossaryentry{Energia Radiante?\glossentry{Energia Radiante}|setentrycounter[]{page}"\glsnumberformat}{48}
-\glossaryentry{Flusso Radiante?\glossentry{Flusso Radiante}|setentrycounter[]{page}"\glsnumberformat}{48}
-\glossaryentry{Intensit"\`a Radiante?\glossentry{Intensita Radiante}|setentrycounter[]{page}"\glsnumberformat}{48}
-\glossaryentry{Irradianza?\glossentry{Irradianza}|setentrycounter[]{page}"\glsnumberformat}{48}
-\glossaryentry{Emittanza Radiante?\glossentry{Emittanza Radiante}|setentrycounter[]{page}"\glsnumberformat}{48}
-\glossaryentry{Radiosit"\`a?\glossentry{Radiosita}|setentrycounter[]{page}"\glsnumberformat}{48}
-\glossaryentry{Radianza?\glossentry{Radianza}|setentrycounter[]{page}"\glsnumberformat}{48}
-\glossaryentry{Radianza?\glossentry{Radianza}|setentrycounter[]{page}"\glsnumberformat}{52}
-\glossaryentry{Energia Luminosa?\glossentry{Energia Luminosa}|setentrycounter[]{page}"\glsnumberformat}{56}
-\glossaryentry{Flusso Luminoso?\glossentry{Flusso Luminoso}|setentrycounter[]{page}"\glsnumberformat}{56}
-\glossaryentry{Illuminanza?\glossentry{Illuminanza}|setentrycounter[]{page}"\glsnumberformat}{56}
-\glossaryentry{Emittanza Luminosa?\glossentry{Emittanza Luminosa}|setentrycounter[]{page}"\glsnumberformat}{56}
-\glossaryentry{Intensit"\`a Luminosa?\glossentry{Intensita Luminosa}|setentrycounter[]{page}"\glsnumberformat}{56}
-\glossaryentry{Luminanza?\glossentry{Luminanza}|setentrycounter[]{page}"\glsnumberformat}{56}
-\glossaryentry{Reflectance?\glossentry{Reflectance}|setentrycounter[]{page}"\glsnumberformat}{73}
-\glossaryentry{Reflectance?\glossentry{Reflectance}|setentrycounter[]{page}"\glsnumberformat}{73}
-\glossaryentry{Trasmittance?\glossentry{Transmittance}|setentrycounter[]{page}"\glsnumberformat}{73}
-\glossaryentry{Trasmittance?\glossentry{Transmittance}|setentrycounter[]{page}"\glsnumberformat}{73}
-\glossaryentry{Absorptance?\glossentry{Absorptance}|setentrycounter[]{page}"\glsnumberformat}{73}
-\glossaryentry{Absorptance?\glossentry{Absorptance}|setentrycounter[]{page}"\glsnumberformat}{73}
-\glossaryentry{Reflectivity?\glossentry{Reflectivity}|setentrycounter[]{page}"\glsnumberformat}{73}
-\glossaryentry{Reflectivity?\glossentry{Reflectivity}|setentrycounter[]{page}"\glsnumberformat}{73}
-\glossaryentry{Trasmissivity?\glossentry{Transmissivity}|setentrycounter[]{page}"\glsnumberformat}{73}
-\glossaryentry{Trasmissivity?\glossentry{Transmissivity}|setentrycounter[]{page}"\glsnumberformat}{73}
-\glossaryentry{Absorptivity?\glossentry{Absorptivity}|setentrycounter[]{page}"\glsnumberformat}{74}
-\glossaryentry{Absorptivity?\glossentry{Absorptivity}|setentrycounter[]{page}"\glsnumberformat}{74}
-\glossaryentry{Bidirectional Scattering-Surface Reflectance Distribution Function?\glossentry{BSSRDF}|setentrycounter[]{page}"\glsnumberformat}{74}
-\glossaryentry{Bidirectional Scattering-Surface Reflectance Distribution Function?\glossentry{BSSRDF}|setentrycounter[]{page}"\glsnumberformat}{74}
-\glossaryentry{Bidirectional Scattering-Surface Reflectance Distribution Function?\glossentry{BSSRDF}|setentrycounter[]{page}"\glsnumberformat}{74}
-\glossaryentry{Bidirectional Reflectance Distribution Function?\glossentry{BRDF}|setentrycounter[]{page}"\glsnumberformat}{76}
-\glossaryentry{Bidirectional Reflectance Distribution Function?\glossentry{BRDF}|setentrycounter[]{page}"\glsnumberformat}{76}
-\glossaryentry{Bidirectional Reflectance Distribution Function?\glossentry{BRDF}|setentrycounter[]{page}"\glsnumberformat}{76}
-\glossaryentry{Bidirectional Reflectance Distribution Function?\glossentry{BRDF}|setentrycounter[]{page}"\glsnumberformat}{83}
+\glossaryentry{Energia Radiante?\glossentry{Energia Radiante}|setentrycounter[]{page}"\glsnumberformat}{46}
+\glossaryentry{Flusso Radiante?\glossentry{Flusso Radiante}|setentrycounter[]{page}"\glsnumberformat}{46}
+\glossaryentry{Intensit"\`a Radiante?\glossentry{Intensita Radiante}|setentrycounter[]{page}"\glsnumberformat}{46}
+\glossaryentry{Irradianza?\glossentry{Irradianza}|setentrycounter[]{page}"\glsnumberformat}{46}
+\glossaryentry{Emittanza Radiante?\glossentry{Emittanza Radiante}|setentrycounter[]{page}"\glsnumberformat}{46}
+\glossaryentry{Radiosit"\`a?\glossentry{Radiosita}|setentrycounter[]{page}"\glsnumberformat}{46}
+\glossaryentry{Radianza?\glossentry{Radianza}|setentrycounter[]{page}"\glsnumberformat}{46}
+\glossaryentry{Radianza?\glossentry{Radianza}|setentrycounter[]{page}"\glsnumberformat}{50}
+\glossaryentry{Energia Luminosa?\glossentry{Energia Luminosa}|setentrycounter[]{page}"\glsnumberformat}{54}
+\glossaryentry{Flusso Luminoso?\glossentry{Flusso Luminoso}|setentrycounter[]{page}"\glsnumberformat}{54}
+\glossaryentry{Illuminanza?\glossentry{Illuminanza}|setentrycounter[]{page}"\glsnumberformat}{54}
+\glossaryentry{Emittanza Luminosa?\glossentry{Emittanza Luminosa}|setentrycounter[]{page}"\glsnumberformat}{54}
+\glossaryentry{Intensit"\`a Luminosa?\glossentry{Intensita Luminosa}|setentrycounter[]{page}"\glsnumberformat}{54}
+\glossaryentry{Luminanza?\glossentry{Luminanza}|setentrycounter[]{page}"\glsnumberformat}{54}
+\glossaryentry{Reflectance?\glossentry{Reflectance}|setentrycounter[]{page}"\glsnumberformat}{71}
+\glossaryentry{Reflectance?\glossentry{Reflectance}|setentrycounter[]{page}"\glsnumberformat}{71}
+\glossaryentry{Trasmittance?\glossentry{Transmittance}|setentrycounter[]{page}"\glsnumberformat}{71}
+\glossaryentry{Trasmittance?\glossentry{Transmittance}|setentrycounter[]{page}"\glsnumberformat}{71}
+\glossaryentry{Absorptance?\glossentry{Absorptance}|setentrycounter[]{page}"\glsnumberformat}{71}
+\glossaryentry{Absorptance?\glossentry{Absorptance}|setentrycounter[]{page}"\glsnumberformat}{71}
+\glossaryentry{Reflectivity?\glossentry{Reflectivity}|setentrycounter[]{page}"\glsnumberformat}{71}
+\glossaryentry{Reflectivity?\glossentry{Reflectivity}|setentrycounter[]{page}"\glsnumberformat}{71}
+\glossaryentry{Trasmissivity?\glossentry{Transmissivity}|setentrycounter[]{page}"\glsnumberformat}{71}
+\glossaryentry{Trasmissivity?\glossentry{Transmissivity}|setentrycounter[]{page}"\glsnumberformat}{71}
+\glossaryentry{Absorptivity?\glossentry{Absorptivity}|setentrycounter[]{page}"\glsnumberformat}{72}
+\glossaryentry{Absorptivity?\glossentry{Absorptivity}|setentrycounter[]{page}"\glsnumberformat}{72}
+\glossaryentry{Bidirectional Scattering-Surface Reflectance Distribution Function?\glossentry{BSSRDF}|setentrycounter[]{page}"\glsnumberformat}{72}
+\glossaryentry{Bidirectional Scattering-Surface Reflectance Distribution Function?\glossentry{BSSRDF}|setentrycounter[]{page}"\glsnumberformat}{72}
+\glossaryentry{Bidirectional Scattering-Surface Reflectance Distribution Function?\glossentry{BSSRDF}|setentrycounter[]{page}"\glsnumberformat}{72}
+\glossaryentry{Bidirectional Reflectance Distribution Function?\glossentry{BRDF}|setentrycounter[]{page}"\glsnumberformat}{74}
+\glossaryentry{Bidirectional Reflectance Distribution Function?\glossentry{BRDF}|setentrycounter[]{page}"\glsnumberformat}{74}
+\glossaryentry{Bidirectional Reflectance Distribution Function?\glossentry{BRDF}|setentrycounter[]{page}"\glsnumberformat}{74}
+\glossaryentry{Bidirectional Reflectance Distribution Function?\glossentry{BRDF}|setentrycounter[]{page}"\glsnumberformat}{81}
