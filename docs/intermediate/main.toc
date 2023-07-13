@@ -1,73 +1,78 @@
-\contentsline {part}{I\hspace {1em}Fondamenti fisici e presentazione del problema}{1}{part.1}%
-\contentsline {chapter}{\numberline {1}Richiami sull'elettromagnetismo e Radiometria}{2}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Radiazione Elettromagnetica}{2}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Dualit\`a onda-particella}{5}{section.1.2}%
-\contentsline {section}{\numberline {1.3}Introduzione all'assorbimento di radiazione}{6}{section.1.3}%
-\contentsline {section}{\numberline {1.4}Radiometria}{7}{section.1.4}%
-\contentsline {subsection}{\numberline {1.4.1}Propriet\`a Particolari}{11}{subsection.1.4.1}%
-\contentsline {subsection}{\numberline {1.4.2}Radianza incidente ed uscente}{13}{subsection.1.4.2}%
-\contentsline {section}{\numberline {1.5}Radiazione di Corpo Nero}{14}{section.1.5}%
-\contentsline {chapter}{\numberline {2}Fotometria, Colore e Camera}{16}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Fotometria}{16}{section.2.1}%
-\contentsline {subsection}{\numberline {2.1.1}fotometria e sistemi di rendering}{17}{subsection.2.1.1}%
-\contentsline {section}{\numberline {2.2}Colorimetria}{17}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}xy chromaticity diagram}{21}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}sRGB color space}{22}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Conversione da XYZ o RGB a SPD}{24}{subsection.2.2.3}%
-\contentsline {section}{\numberline {2.3}camera}{27}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}pinhole camera model}{28}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}filtrare image samples}{31}{subsection.2.3.2}%
-\contentsline {chapter}{\numberline {3}Modelli di Fonti Luminose e Superfici}{33}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Modellazione di Superfici}{33}{section.3.1}%
-\contentsline {subsection}{\numberline {3.1.1}Propriet\`a ottiche delle interfacce}{39}{subsection.3.1.1}%
-\contentsline {subsection}{\numberline {3.1.2}BRDF e BSSRDF}{44}{subsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.1.3}Modelli di BRDF}{47}{subsection.3.1.3}%
-\contentsline {subsubsection}{Lambertian BRDF}{48}{equation.3.1.36}%
-\contentsline {subsubsection}{Specular BDRF}{50}{equation.3.1.43}%
-\contentsline {subsection}{\numberline {3.1.4}Modelli di superficie secondo Microfacet Theory}{52}{subsection.3.1.4}%
-\contentsline {subsubsection}{V-Cavity Function}{55}{equation.3.1.62}%
-\contentsline {subsubsection}{Smith's Visibility Function}{57}{equation.3.1.67}%
-\contentsline {subsubsection}{BRDF: Modello di Cook-Torrance}{58}{equation.3.1.72}%
-\contentsline {subsubsection}{Beckmann NDF}{61}{equation.3.1.84}%
-\contentsline {subsubsection}{Trowbridge-Reitz NDF}{64}{equation.3.1.97}%
-\contentsline {subsubsection}{Oren-Nayar BRDF}{66}{equation.3.1.109}%
-\contentsline {section}{\numberline {3.2}Sorgenti Luminose}{67}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Modelli di sorgenti luminose}{69}{subsection.3.2.1}%
-\contentsline {subsubsection}{Point Omni Lights}{69}{subsection.3.2.1}%
-\contentsline {subsubsection}{Spotlight}{70}{equation.3.2.116}%
-\contentsline {subsubsection}{Directional Light}{71}{equation.3.2.119}%
-\contentsline {subsubsection}{Diffuse Area Light}{72}{equation.3.2.121}%
-\contentsline {subsubsection}{Infinite Area Light}{72}{equation.3.2.122}%
-\contentsline {subsection}{\numberline {3.2.2}Light Sampling}{74}{subsection.3.2.2}%
-\contentsline {subsubsection}{Campionamento Uniforme di Sorgenti Luminose}{75}{equation.3.2.127}%
-\contentsline {subsubsection}{Campionamento proporzionale alla Potenza di Sorgenti Luminose}{75}{equation.3.2.128}%
-\contentsline {part}{II\hspace {1em}Metodi di Monte Carlo}{76}{part.2}%
-\contentsline {chapter}{\numberline {4}Integrazione di Monte Carlo}{77}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Preliminari}{77}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Monte Carlo Integration}{79}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Schemi di Campionamento}{82}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Inverse Transform Sampling}{82}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Acceptance-Rejection Method}{84}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}Metriopolis-Hastings Sampling}{87}{subsection.4.3.3}%
-\contentsline {section}{\numberline {4.4}Metodi di Riduzione della Varianza}{90}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Stratified Sampling}{91}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Importance Sampling}{93}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Russian Roulette}{94}{subsection.4.4.3}%
-\contentsline {subsection}{\numberline {4.4.4}Splitting}{94}{subsection.4.4.4}%
-\contentsline {chapter}{\numberline {5}Campionamento e Ricostruzione con Quasirandom Number Generation}{96}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Campionamento}{97}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Richiami Fourier Analysis}{97}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Quasirandom Number Generation}{100}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Halton Sampler}{101}{subsection.5.1.3}%
-\contentsline {section}{\numberline {5.2}Ricostruzione}{103}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Box Filter}{104}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Gaussian Filter}{106}{subsection.5.2.2}%
-\contentsline {part}{III\hspace {1em}Applicazione}{111}{part.3}%
-\contentsline {chapter}{\numberline {6}Light Transport Modello e Surface Reflection}{112}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Path Integral della Rendering Equation}{113}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Path Tracing}{115}{section.6.2}%
-\contentsline {part}{IV\hspace {1em}Appendici}{118}{part.4}%
-\contentsline {chapter}{\numberline {A}Numeri Pseudocasuali e Algoritmi Vari}{119}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Generazione di numeri Pseudorandom}{119}{section.A.1}%
-\contentsline {chapter}{Bibliography}{121}{equation.A.1.4}%
-\contentsline {chapter}{Glossary}{123}{section*.41}%
+\contentsline {part}{I\hspace {1em}Introduzione ai Metodi di Monte Carlo}{1}{part.1}%
+\contentsline {chapter}{\numberline {1}Integrazione di Monte Carlo}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Preliminari}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Monte Carlo Integration}{4}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Esempio: Risoluzione di Integrali Semplici}{7}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Schemi di Campionamento}{8}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Inverse Transform Sampling}{8}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Acceptance-Rejection Method}{10}{subsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.4.3}Metriopolis-Hastings Sampling}{12}{subsection.1.4.3}%
+\contentsline {section}{\numberline {1.5}Metodi di Riduzione della Varianza}{14}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Stratified Sampling}{15}{subsection.1.5.1}%
+\contentsline {subsection}{\numberline {1.5.2}Importance Sampling}{17}{subsection.1.5.2}%
+\contentsline {subsection}{\numberline {1.5.3}Russian Roulette}{18}{subsection.1.5.3}%
+\contentsline {subsection}{\numberline {1.5.4}Splitting}{19}{subsection.1.5.4}%
+\contentsline {chapter}{\numberline {2}Campionamento e Ricostruzione con Quasirandom Number Generation}{20}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Campionamento}{21}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Richiami Fourier Analysis}{21}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Quasirandom Number Generation}{24}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Halton Sampler}{25}{subsection.2.1.3}%
+\contentsline {section}{\numberline {2.2}Ricostruzione}{26}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Box Filter}{27}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Gaussian Filter}{30}{subsection.2.2.2}%
+\contentsline {chapter}{\numberline {3}Light Transport Modello e Surface Reflection}{34}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Path Integral della Rendering Equation}{35}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Path Tracing}{37}{section.3.2}%
+\contentsline {part}{II\hspace {1em}Fondamenti Fisici}{40}{part.2}%
+\contentsline {chapter}{\numberline {4}Richiami sull'elettromagnetismo e Radiometria}{41}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Radiazione Elettromagnetica}{41}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Dualit\`a onda-particella}{44}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Introduzione all'assorbimento di radiazione}{45}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Radiometria}{46}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Propriet\`a Particolari}{50}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Radianza incidente ed uscente}{52}{subsection.4.4.2}%
+\contentsline {section}{\numberline {4.5}Radiazione di Corpo Nero}{53}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Fotometria, Colore e Camera}{55}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Fotometria}{55}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}fotometria e sistemi di rendering}{56}{subsection.5.1.1}%
+\contentsline {section}{\numberline {5.2}Colorimetria}{56}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}xy chromaticity diagram}{60}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}sRGB color space}{61}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Conversione da XYZ o RGB a SPD}{63}{subsection.5.2.3}%
+\contentsline {section}{\numberline {5.3}camera}{66}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}pinhole camera model}{67}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}filtrare image samples}{70}{subsection.5.3.2}%
+\contentsline {chapter}{\numberline {6}Modelli di Fonti Luminose e Superfici}{72}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Modellazione di Superfici}{72}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Propriet\`a ottiche delle interfacce}{78}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}BRDF e BSSRDF}{83}{subsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.1.3}Modelli di BRDF}{86}{subsection.6.1.3}%
+\contentsline {subsubsection}{Lambertian BRDF}{87}{equation.6.1.36}%
+\contentsline {subsubsection}{Specular BDRF}{89}{equation.6.1.43}%
+\contentsline {subsection}{\numberline {6.1.4}Modelli di superficie secondo Microfacet Theory}{91}{subsection.6.1.4}%
+\contentsline {subsubsection}{V-Cavity Function}{94}{equation.6.1.62}%
+\contentsline {subsubsection}{Smith's Visibility Function}{96}{equation.6.1.67}%
+\contentsline {subsubsection}{BRDF: Modello di Cook-Torrance}{97}{equation.6.1.72}%
+\contentsline {subsubsection}{Beckmann NDF}{100}{equation.6.1.84}%
+\contentsline {subsubsection}{Trowbridge-Reitz NDF}{103}{equation.6.1.97}%
+\contentsline {subsubsection}{Oren-Nayar BRDF}{105}{equation.6.1.109}%
+\contentsline {section}{\numberline {6.2}Sorgenti Luminose}{106}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Modelli di sorgenti luminose}{108}{subsection.6.2.1}%
+\contentsline {subsubsection}{Point Omni Lights}{108}{subsection.6.2.1}%
+\contentsline {subsubsection}{Spotlight}{109}{equation.6.2.116}%
+\contentsline {subsubsection}{Directional Light}{110}{equation.6.2.119}%
+\contentsline {subsubsection}{Diffuse Area Light}{111}{equation.6.2.121}%
+\contentsline {subsubsection}{Infinite Area Light}{111}{equation.6.2.122}%
+\contentsline {subsection}{\numberline {6.2.2}Light Sampling}{113}{subsection.6.2.2}%
+\contentsline {subsubsection}{Campionamento Uniforme di Sorgenti Luminose}{114}{equation.6.2.127}%
+\contentsline {subsubsection}{Campionamento proporzionale alla Potenza di Sorgenti Luminose}{114}{equation.6.2.128}%
+\contentsline {part}{III\hspace {1em}Appendici}{115}{part.3}%
+\contentsline {chapter}{\numberline {A}Numeri Pseudocasuali e Algoritmi Vari}{116}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Generazione di numeri Pseudorandom}{116}{section.A.1}%
+\contentsline {chapter}{\numberline {B}Codice}{118}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Owen Scrambling di punti della Sequenza di Halton}{118}{section.B.1}%
+\contentsline {section}{\numberline {B.2}Acceptance-Rejection Sampling di un disco unitario}{119}{section.B.2}%
+\contentsline {section}{\numberline {B.3}Metropolis-Hastings Sampling per campionare $\symcal {N}(0,1)$}{120}{section.B.3}%
+\contentsline {section}{\numberline {B.4}Monte Carlo Integration per un integrale semplice}{121}{section.B.4}%
+\contentsline {chapter}{Bibliography}{123}{section.B.4}%
+\contentsline {chapter}{Glossary}{125}{section*.42}%

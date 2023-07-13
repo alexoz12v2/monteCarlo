@@ -132,6 +132,60 @@ Altre caratteristiche dello stimatore sono \textit{efficienza}, \textit{bias}, \
 		varianza, stimata con lo stimatore varianza campionaria con correzione di Bessel, in quanto la varianza campionaria, per distribuzioni con 
 		densit\`a aventi ripidi picchi, pu\`o trascurarli nel campionamento, rendendo la stima non veritiera
 \end{altDescription}
+\section{Esempio: Risoluzione di Integrali Semplici}\label{chapter6:MCExample}
+\begin{figure}[t]
+	\centering
+	\begin{subfigure}[t]{0.45\linewidth}
+		\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+			\begin{axis} [
+				axis lines = left,
+				ylabel=$f(x)$,
+				xlabel=$x$,
+				ymin=0, ymax=4,
+				xmin=0, xmax=11,
+				declare function={
+					s(\x)=sqrt(((pi^2)/10)*\x);
+					func(\x)=sin(s(\x)*180/pi)*e^s(\x)/s(\x);
+				},
+			]
+				\addplot[color=black, domain=0.001:11, domain y=0:4, samples=50,]{func(x)};
+			\end{axis}
+		\end{tikzpicture}\end{scaletikzpicturetowidth}
+		\caption{Funzione specificata in Equazione \ref{chapter6:MCExample:function}}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.45\linewidth}
+		\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+			\begin{axis} [
+				axis lines = left,
+				xlabel=nSamples,
+				ylabel=$\tilde{F}_n-F$,
+			]
+				\addplot [black,] table[ignore chars={(,)},col sep=comma] {../assets/chapter6_error_data.dat};
+			\end{axis}
+		\end{tikzpicture}\end{scaletikzpicturetowidth}
+		\caption{Funzione Errore}
+		\label{chapter6:MCExample:1Dfunction:error}
+	\end{subfigure}
+	\caption{Grafico della funzione nell'Esempio di Sezione \ref{chapter6:MCExample}, con errore della stima ottenuta da Equazione 
+		\ref{chapter6:MC:crudeEstimator}}
+	\label{chapter6:MCExample:1Dfunction}
+\end{figure}
+Al fine di rendere chiara l'applicazione della Equazione \ref{chapter6:MC:crudeEstimator} al calcolo degli integrali, applichiamo il metodo di 
+Monte Carlo all'integrale definito in $[0,10]$ della seguente funzione:
+\begin{equation}\label{chapter6:MCExample:function}
+	f(x)=\frac{\sin\left(\sqrt{\frac{\pi^{2}}{10}x}\right)}{\sqrt{\frac{\pi^{2}}{10}x}}e^{\sqrt{\frac{\pi^{2}}{10}x}}
+\end{equation}
+per la quale \`e possibile giungere alla soluzione analitica
+\begin{equation}
+	\hat{f}(x)=
+		\frac{10\left(\sin\left(\pi\sqrt{\frac{x}{10}}\right)−\cos\left(\pi\sqrt{\frac{x}{10}}\right)\right)e^{\pi\sqrt{\frac{x}{10}}}}{\pi^2} + C
+\end{equation}
+Per cui il valore di tale integrale \`e noto e pari a 
+\begin{equation}
+	F = \int_0^{10}f(x)\mathrm{d}x = \hat{f}(10) - \hat{f}(0) = \frac{10e^\pi+10}{\pi^2}\approx 24.45963551499059
+\end{equation}
+I risultati ottenuti dalla simulazione di Monte Carlo con codice mostrato in Appendice \ref{appendixD:MC} sono mostrati in Figura 
+\ref{chapter6:MCExample:1Dfunction}\subref{chapter6:MCExample:1Dfunction:error}
 \section{Schemi di Campionamento}
 Supponendo si abbia a disposizione un algoritmo per estrarre un numero casuale uniformemente distribuito nell'intervallo $[0,1]$ 
 (vedi \ref{appendixC:RNG}) oppure un algoritmo che permetta di estrarre numeri quasirandom da una sequenza con low discrepancy (vedi \ref{chapter5}),
@@ -252,52 +306,10 @@ con proposed distribution
 		&0 &\mathrm{altrimenti}
 	\end{aligned}\right.
 \end{equation}
-Da cui si evince che $b\geq4/\pi$, il che fa in modo che un campione sia accettato dopo aver generato $\approx1.27$ samples. Di seguito si riporta del
-codice python:
-\begin{minted}{python}
-import numpy as np
-
-def target_pdf(x, y):
-    return (4 / np.pi) if (x**2 + y**2 <= 1 and x >= 0 and y >= 0) 
-	else 0
-
-def instrumental_pdf(x, y):
-    return 1 if (0 <= x <= 1 and 0 <= y <= 1) else 0
-
-def acceptance_probability(x, y, b):
-    return 
-
-def rejection_sampling(num_samples):
-    samples = []
-    accepted_samples = 0
-	 b = 4 / np.pi
-
-    while accepted_samples < num_samples:
-        x = np.random.uniform(0, 1)
-        y = np.random.uniform(0, 1)
-        if np.random.uniform(0, 1)*b*target_pdf(x, y) 
-		<= instrumental_pdf(x, y):
-            samples.append((x, y))
-            accepted_samples += 1
-
-    return samples
-
-def alt_rejection_sampling(num_samples):
-	samples = []
-	accepted_samples = 0
-	attempts = 0
-    while accepted_samples < num_samples:
-		attempts++
-        x = np.random.uniform(0, 1)
-        y = np.random.uniform(0, 1)
-        if x**2+y**2 <= 1:
-            samples.append((x, y))
-            accepted_samples += 1
-
-	pi_estimate = accepted_samples / attempts
-	return (samples, pi_estimate)
-\end{minted}
-\footnotetext{\`e interessante notare come, riformulando tale procedura come mostrato in \textrm{alt\_rejection\_sampling}, si possa stimare il valore 
+Da cui si evince che $b\geq4/\pi$, il che fa in modo che un campione sia accettato dopo aver generato $\approx1.27$ samples. Il codice Python che 
+implementa tale procedura \`e in Appendice \ref{appendixD:rejectionSampling}
+\label{appendixD:rejectionSampling}.
+\footnotetext{\`E interessante notare come, riformulando tale procedura come mostrato in \textrm{alt\_rejection\_sampling}, si possa stimare il valore 
 di $\pi$}
 \subsection{Metriopolis-Hastings Sampling}
 Piuttosto che generare campioni in maniera indipendente, costruiamo una \textit{Markov Chain} costituente un Randow Walk nello spazio campionario,
@@ -372,34 +384,7 @@ Si pu\`o delineare dunque la procedura di Metropolis-Hastings Sampling
 \end{itemize}
 Esempio: Applico l'algoritmo per campionare una distribuzione gaussiana standard. Scelgo come $p_p$ una gaussiana centrata in $x_i$ con 
 deviazione standard $0.05$. In quanto tale PDF simmetrica, \mbox{$p_p(x_i|x^*)=p_p(x^*|x_i)$}, tale PDF si semplifica nel calcolo della probabilit\`a 
-di accettazione.
-\begin{minted}{python}
-import math
-import numpy as np
-from numpy.random import default_rng
-
-_rng : Generator = default_rng()
-
-def normPdf(value, mean = 0.0, stddev = 1.0):
-    rSqrt2Pi = 0.39894228
-    rStddev = 1 / stddev
-    return rSqrt2Pi * rStddev 
-		* math.exp(-0.5*((value - mean)* rStddev)**2)
-
-def metropolisHastings(samples, N):
-    for i in np.arange(N-1):
-        u = _rng.uniform()
-        proposedSample = _rng.normal(samples[i], 0.05)
-
-        acceptance = np.clip(min(1, normPdf(proposedSample) 
-		/ normPdf(samples[i])), 0., 1.)
-        if u < acceptance:
-            samples[i+1] = proposedSample
-        else:
-            samples[i+1] = samples[i]
-
-    return
-\end{minted}
+di accettazione. Il codice Python dedicato \`e trovato in Appendice \ref{appendixD:metropolisHastings}\par
 Dato che la PDF di ogni campione $x_i$ approccia la densit\`a di distribuzione stazionaria solamente al limite per $x\to\infty$, i primi campioni
 generati non sono sufficientemente accurati. L'algoritmo soffre del cosiddetto \textit{Startup Bias}, il quale pu\`o essere mitigato scartando 
 dei campioni iniziali, pur non sapendo a priori quanti scartare. Tale strategia \`e nominata \textit{Burn-In Phase}.\par

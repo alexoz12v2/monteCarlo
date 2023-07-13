@@ -59,16 +59,24 @@ i risultati.\par
 \end{definitionS}
 \begin{figure}
 	\centering
-	\includegraphics[width=0.4\textwidth]{../assets/chapter2_colorimetry_cones.png}
-	\includesvg[width=0.55\textwidth, inkscapelatex=false]{../assets/chapter2_colorimetry_RGB_color_matching_functions.svg}
-	\label{chapter2:figure:coneSpectralSensitivity}
-	\label{chapter2:figure:RGBColorMatchingFunctions}
+	\begin{subfigure}[t]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{../assets/chapter2_colorimetry_cones.png}
+		\subcaption{Sensibilit\`a Spettrali coni}
+		\label{chapter2:CMFs:coneSpectralSensitivity}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.55\textwidth}
+		\includesvg[width=\textwidth, inkscapelatex=false]{../assets/chapter2_colorimetry_RGB_color_matching_functions.svg}
+		\subcaption{CMFs}
+		\label{chapter2:CMFs:RGBColorMatchingFunctions}
+	\end{subfigure}
 	\caption{\textit{A destra}, Sensibilit\`a spettrali per i tre tipi di coni dell'occhio umano. \textit{A sinistra}, color matching functions del 
 			CIE 1931 RGB Color Space}
+	\label{chapter2:CMFs}
 \end{figure}
 Un \textit{color stimulus} pu\`o essere ricostruito dalla combinazione lineare da tre stimoli (distribuzioni spettrali) di base indipendenti 
 [\cite{color}], in quanto dei fotorecettori umani che distinguono il colore, i coni, ce ne sono di \textit{tre tipi} (vedi figura 
-\ref{chapter2:figure:coneSpectralSensitivity}). Tale mappa da SPD a \textit{tristimulus values} non \`e biunivoca, infatti, nei diversi color 
+\ref{chapter2:CMFs})\subref{chapter2:CMFs:coneSpectralSensitivity}. Tale mappa da SPD a \textit{tristimulus values} non \`e biunivoca, 
+infatti, nei diversi color 
 spaces che definiamo, esistono valori tristimolo che possono risultare dalla scomposizione di diverse SPDs. Tali colori 
 sono detti \textit{metameri}.\par 
 Dunque l'obiettivo \`e quello di ottenere distribuzioni spettrali $\langle R\rangle, \langle G\rangle, \langle B\rangle$ tali che ogni colore 
@@ -76,7 +84,8 @@ possa essere rappresentato come
 \begin{equation}\label{chapter2:colorimetry:color}
 	C = R\langle R\rangle + G\langle G\rangle + B\langle B\rangle
 \end{equation}
-tale compito non \`e scontato in quanto, da come si osserva in figura \ref{chapter2:figure:coneSpectralSensitivity}, quasi tutte le lunghezza d'onda 
+tale compito non \`e scontato in quanto, da come si osserva in figura \ref{chapter2:CMFs}\subref{chapter2:CMFs:RGBColorMatchingFunctions}, 
+quasi tutte le lunghezza d'onda 
 stimolano con diversa intensit\`a almeno due tipi di coni. Dunque, nel 1931, fu derivato il CIE 1931 RGB Trichromatic system, cio\`e una terna di 
 color matching functions $\bar{r}(\lambda)$, $\bar{g}(\lambda)$, $\bar{b}(\lambda)$, derivate compiendo dei test con un 
 \textit{osservatore standard colorimetrico}, cio\`e limitando il field of view dei soggetti testati a $2^o$ dentro la fovea, per eliminare la 
@@ -90,7 +99,7 @@ tali che, se addizionate, restituiscono uno spettro costante la cui intensit\`a 
 	L_v &= 1.0000 R + 4.5907 G + 0.0601 B\;[\si{cd/m^2}]
 \end{align}
 Le tre color matching functions (CMFs) cos\`i 
-ottenute sono mostrate in figura \ref{chapter2:figure:RGBColorMatchingFunctions}.\par
+ottenute sono mostrate in figura \ref{chapter2:CMFs}\subref{chapter2:CMFs:RGBColorMatchingFunctions}.\par
 Ai tempi della standardizzazione di un sistema tricromatico, in assenza di computers, risultava complicato fare calcoli con queste tre CMFs per via dei
 lobi negativi. Dunque, sempre nel 1931, fu standardizzato il \textit{CIE 1931 XYZ Color System}, nel quale sono stati scelti tre 
 \textit{primari immaginari}\footnote{non percepibili all'occhio umano} a partire dai primari del sistema CIE RGB 1931 in modo tale che
@@ -234,10 +243,10 @@ standard}
 \footnotetext{i valori tristimolo X,Y,Z qui utilizzati/ottenuti sono scalati in modo tale che l'illuminante standard D65 abbia luminanza unitaria, 
 cio\`e moltiplicate per $\approx 3.039513678$}
 \begin{figure}[tb]
-	\label{chapter2:colorimetry:gamut}
 	\includesvg[width=0.6\textwidth, inkscapelatex=false]{../assets/chapter2_colorimetry_CIE1931xy_gamut_comparison.svg}
 	\caption{comparazione tra i diversi colorspaces, ed i colori percepibili che riescono a rappresentare. Notiamo che sRGB copre all'incirca $35\%$
 	del color gamut}
+	\label{chapter2:colorimetry:gamut}
 \end{figure}
 \subsection{Conversione da XYZ o RGB a SPD}
 I color spaces sono spazi vettoriali, per i quali sono definite le operazioni di addizione tra colori (vettori) e moltiplicazione scalare colore.
@@ -249,7 +258,7 @@ color gamut, producendo un colore impossibile, si veda in figura \ref{chapter2:c
 eccessivamente pi\`u scuri e saturati.\par
 Si giustifica dunque l'affermazione precedente di dover interpretare i colori in input negli arbitrari formati/color spaces supportati in uno spettro,
 eseguire la computazione, ed infine convertire il risultato per ogni pixel in sRGB per display. Mentre la conversione 
-\mbox{color space $\rightarrow$ SPD} \`e ben definita (vedi \ref{chapter2:colorimetry:spectrum2XYZ4Rad} e 
+\mbox{SPD$\rightarrow$Color Space} \`e ben definita (vedi \ref{chapter2:colorimetry:spectrum2XYZ4Rad} e 
 \ref{chapter2:colorimetry:spectrum2XYZ4Source}), non vale lo stesso per l'operazione inversa ed \`e ad oggi oggetto di ricerca [\cite{spectrum}].
 Ci\`o che complica tale compito sono i requisiti di 
 \begin{itemize}[topsep=0pt, noitemsep]
@@ -258,7 +267,7 @@ Ci\`o che complica tale compito sono i requisiti di
 		di riflessione presenti seams visibili
 	\item[] \textit{Conservazione dell'energia} Lo spettro ottenuto deve avere integrale $\in [0,1]$ se $[R, G, B]^T \in [0,1]^3$
 \end{itemize}
-L'approccio qui seguito \`e quello proposto da [\cite{pharr}] e [\cite{rgb2spec}], il quale consiste nel ricostruire un valore RGB utilizzando una
+L'approccio qui seguito \`e quello proposto da \cite{pharr} e \cite{rgb2spec}, il quale consiste nel ricostruire un valore RGB utilizzando una
 parabola parametrizzata da tre coefficienti $c_0,c_1,c_2$, la quale \`e prima resa limitata da una funzione sigmoide per poter ottenere un risultato
 limitato in $[0,1]$. Vedi figura \ref{chapter2:colorimetry:Slambda}.
 \begin{align}\label{chapter2:colorimetry:rgb2spec}
@@ -337,9 +346,9 @@ Affinch\`e si possa associare ad ogni punto 2D nell'\textit{color buffer} che co
 $(\vec{p_0}, \hat{\omega_0})$ punto e direzione di partenza, necessitiamo di un \textit{camera model}
 \begin{definitionS}
 	Un \textit{camera model} descrive la relazione matematica tra le coordinate 3D di un punto nella scena dal quale la luce proviene e le coordinate 
-	2D della sua proiezione nel \textit{film plane}\footnotemark{} [\cite{vision}]
+	2D della sua proiezione nel \textit{film plane}\footnotemark{} \cite{vision}
 \end{definitionS}
-\footnotetext{\textit{film} \`e il termine che utilizziamo per il piano dell'immagine finale [\cite{pharr}]}
+\footnotetext{\textit{film} \`e il termine che utilizziamo per il piano dell'immagine finale \cite{pharr}}
 \subsection{pinhole camera model}
 \begin{figure}[tb]
 	\includesvg[width=0.35\textwidth, inkscapelatex=false]{../assets/chapter2_camera_pinhole_diagram.svg}
@@ -431,7 +440,7 @@ dando pi\`u importanza ai valori vicini alla camera. Vedi figura \ref{chapter2:c
 	\end{bmatrix}
 \end{equation}
 Combinando \ref{chapter2:camera:remapDepthNonlinear} e \ref{chapter2:camera:fromFrustum2nbynquad} si ottiene una trasformazione che mappa il view
-frustum, piramide retta a base piramidale con dimensioni arbitrarie, ad un cubo $[-1,1]^3$
+frustum, piramide retta a base rettangolare con dimensioni arbitrarie, ad un cubo $[-1,1]^3$
 \begin{equation}\label{chapter2:camera:perspectiveMatrix}
 	\begin{bmatrix}
 		1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & \frac{f+n}{f-n} & -\frac{2fn}{f-n} \\ 0 & 0 & 1 & 0

@@ -1,1 +1,147 @@
-\chapter{Codice Vulkan \& HLSL}
+\chapter{Codice}
+\section{Owen Scrambling di punti della Sequenza di Halton}\label{appendixD:owenScrambling}
+\begin{minted}[tabsize=2,obeytabs]{C++}
+// baseIndex <- base dell'Inverso Radicale
+// a         <- cifre dell'inverso radicale d1...dm
+// hash      <- valore casuale
+Float OvenScrambledRadicalInverse(int baseIndex, uint64_t a, 
+                                  uint32_t hash)
+{
+	int base = Primes[baseIndex];
+	Float invBase = 1.f / base, invBaseM = 1;
+
+	// bits Scrambled finora
+	uint64_t reversedDigits = 0;
+	int digitIndex = 0;
+
+	// finche non si esauriscono le cifre di a da 
+	// mettere nel floating point
+	while (1 - invBaseM < 1)
+	{
+		// estrai il valore della <digitIndex> cifra.
+		// Equivalente a un right shift del numero
+		// in base <base>
+		uint64_t next = a / base;
+		int digitValue = a - next * base;
+
+		// calcola un seed unico per permutare casualmente il valore 
+		// estratto nota che tale seed dipende da tutti i valori 
+		// precedentemente permutati
+		uint32_t digitHash = MixBits(hash ^ reversedDigits);
+
+		// seleziona la <digitValue>-esima permutazione 
+		// pseudocasuale basata sul seed <digitHash>, 
+		// di <base> numeri casuali
+		digitValue = PermutationElement(digitValue, base, digitHash);
+
+		// aggiungi la cifra a quelle calcolate finora
+		reversedDigits = reversedDigits * base + digitValue;
+
+		invBaseM *= invBase;
+		++digitIndex;
+		a = next;
+	}
+	return std::min(invBaseM * reversedDigits, OneMinusEpsilon);
+}
+\end{minted}
+\section{Acceptance-Rejection Sampling di un disco unitario}\label{appendixD:rejectionSampling}
+\begin{minted}[tabsize=2,obeytabs]{python}
+import numpy as np
+
+def target_pdf(x, y):
+    return (4 / np.pi) if (x**2 + y**2 <= 1 and x >= 0 and y >= 0) 
+	else 0
+
+def instrumental_pdf(x, y):
+    return 1 if (0 <= x <= 1 and 0 <= y <= 1) else 0
+
+def acceptance_probability(x, y, b):
+    return 
+
+def rejection_sampling(num_samples):
+    samples = []
+    accepted_samples = 0
+	 b = 4 / np.pi
+
+    while accepted_samples < num_samples:
+        x = np.random.uniform(0, 1)
+        y = np.random.uniform(0, 1)
+        if np.random.uniform(0, 1)*b*target_pdf(x, y) 
+		<= instrumental_pdf(x, y):
+            samples.append((x, y))
+            accepted_samples += 1
+
+    return samples
+
+def alt_rejection_sampling(num_samples):
+	samples = []
+	accepted_samples = 0
+	attempts = 0
+    while accepted_samples < num_samples:
+		attempts++
+        x = np.random.uniform(0, 1)
+        y = np.random.uniform(0, 1)
+        if x**2+y**2 <= 1:
+            samples.append((x, y))
+            accepted_samples += 1
+
+	pi_estimate = accepted_samples / attempts
+	return (samples, pi_estimate)
+\end{minted}
+\section{Metropolis-Hastings Sampling per campionare $\mathcal{N}(0,1)$}\label{appendixD:metropolisHastings}
+\begin{minted}[tabsize=2,obeytabs]{python}
+import math
+import numpy as np
+from numpy.random import default_rng
+
+_rng : Generator = default_rng()
+
+def normPdf(value, mean = 0.0, stddev = 1.0):
+    rSqrt2Pi = 0.39894228
+    rStddev = 1 / stddev
+    return rSqrt2Pi * rStddev * math.exp(-0.5*((value - mean)* rStddev)**2)
+
+def metropolisHastings(samples, N):
+    for i in np.arange(N-1):
+        u = _rng.uniform()
+        proposedSample = _rng.normal(samples[i], 0.05)
+
+		acceptance = 
+			np.clip(min(1, normPdf(proposedSample) / normPdf(samples[i])), 0., 1.)
+        if u < acceptance:
+            samples[i+1] = proposedSample
+        else:
+            samples[i+1] = samples[i]
+
+    return
+\end{minted}
+\section{Monte Carlo Integration per un integrale semplice}\label{appendixD:MC}
+Ripreso dal codice della repository del progetto:
+\begin{minted}[tabsize=2,obeytabs]{python}
+import math
+import numpy as np
+import numpy.typing as npt
+import sys
+from numpy.random import default_rng
+from typing import Generator, Annotated, Callable
+from annotated_types import Gt
+
+_rng : Generator = default_rng()
+
+def integrand(x : float):
+    arg : float = math.pi*math.sqrt(x*0.1)
+    return (math.sin(arg)/arg)*math.e**arg;
+
+# suppone il calcolo dell'integrale definito e' nell'intervallo [0,10]
+def trueIntegralValue():
+    return (10*math.e**math.pi+10)/(math.pi**2)
+
+def monteCarloIntegration(integrandFunction : Callable[[float], float], 
+                          domainSize : float, nSamples : Annotated[int, Gt(0)]):
+    sum : float = 0.;
+    for i in np.arange(0, nSamples):
+        u : float = _rng.uniform()
+        x_i = 10. * u + sys.float_info.epsilon * (u == 0)
+        sum += integrandFunction(x_i)
+    return domainSize * sum / nSamples
+\end{minted}

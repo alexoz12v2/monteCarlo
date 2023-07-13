@@ -180,53 +180,8 @@ dimostrare diminuire l'andamento asintotico dell'errore di integrazione a
 	\label{chapter5:sampling:owen}
 \end{figure}
 Il che \`e superiore all'$\mathcal{O}(n^{-1/2})$ per Monte Carlo con punti campionati uniformemente.\par
-Lo Scrambling per l'n $i$-esima coordinata del $k$-esimo punto della sequenza $x_k^{(i)}=0.d_1d_2\ldots d_m$ \`e il seguente 
-(codice completo da \cite{pharr})
-\begin{minted}{C++}
-// baseIndex <- base dell'Inverso Radicale
-// a         <- cifre dell'inverso radicale d1...dm
-// hash      <- valore casuale
-Float OvenScrambledRadicalInverse(int baseIndex, uint64_t a, 
-					uint32_t hash)
-{
-	int base = Primes[baseIndex];
-	Float invBase = 1.f / base, invBaseM = 1;
-
-	// bits Scrambled finora
-	uint64_t reversedDigits = 0;
-	int digitIndex = 0;
-
-	// finche non si esauriscono le cifre di a da 
-	// mettere nel floating point
-	while (1 - invBaseM < 1)
-	{
-		// estrai il valore della <digitIndex> cifra
-		uint64_t next = a / base; // equivalente a 
-					// un right shift del numero
-					// in base <base>
-		int digitValue = a - next * base;
-
-		// calcola un seed unico per permutare casualmente il valore 
-		// estratto nota che tale seed dipende da tutti i valori 
-		// precedentemente permutati
-		uint32_t digitHash = MixBits(hash ^ reversedDigits);
-
-		// seleziona la <digitValue>-esima permutazione 
-		// pseudocasuale basata sul seed <digitHash>, 
-		// di <base> numeri casuali
-		digitValue = PermutationElement(digitValue, base, 
-						digitHash);
-
-		// aggiungi la cifra a quelle calcolate finora
-		reversedDigits = reversedDigits * base + digitValue;
-
-		invBaseM *= invBase;
-		++digitIndex;
-		a = next;
-	}
-	return std::min(invBaseM * reversedDigits, OneMinusEpsilon);
-}
-\end{minted}
+Lo Scrambling per l'n $i$-esima coordinata del $k$-esimo punto della sequenza $x_k^{(i)}=0.d_1d_2\ldots d_m$ \`e mostrato in 
+\ref{appendixD:owenScrambling} con codice C++ ripreso da \cite{pharr} e commentato.
 \begin{figure}[b]
 	\centering
 	\includegraphics[width=\linewidth]{../assets/chapter5_sampling_result.png}
@@ -325,7 +280,7 @@ Da cui si pu\`o applicare Inverse Transform Sampling
 	\label{chapter5:reconstruction:gaussian}
 \end{figure}
 Questo filtro convolve l'immagine non filtrata con un kernel gaussiano. In quanto non presenta lobi negativi, tale filtro sfoca l'immagine originale, 
-il che pu\`o essere effetto indesiderato della ricostruzione. Filtri pi\`u complicati, come il Mitchell-Netvali Filter, qui non trattati 
+il che pu\`o essere effetto indesiderato nella ricostruzione. Filtri pi\`u complicati, come il Mitchell-Netvali Filter, qui non trattati 
 (si rimanda a \cite{pegoraro}, \cite{pharr}), riescono ad ottenere un risultato di qualit\`a simile al Gaussian Filter, preservandone la sharpness. 
 L'equazione di tale filtro
 \begin{equation}
@@ -385,7 +340,7 @@ essere una funzione lineare definita a tratti (Figura \ref{chapter5:reconstructi
 	P(x_0)&=0\nonumber\\
 	P(x_1)&=\int_{x_0}^{x_1}p(x)\mathrm{d}x=\frac{v_0}{cN}=P(x_0)+\frac{v_0}{cN}\nonumber\\
 	\vdots\nonumber\\
-	P(x)=\sum_{j=1}^{i}\left(\frac{v_{j-1}}{cN}\right),\;x\in[x_{i-1},x_i]
+	P(x)&=\sum_{j=1}^{i}\left(\frac{v_{j-1}}{cN}\right),\;x\in[x_{i-1},x_i]
 \end{align}
 Invertire tale funzione consiste nel trovare il valore $x_s$ tale che
 \begin{equation*}
