@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  14 JUL 2023 22:25
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  14 JUL 2023 22:36
  system commands enabled.
 **main.tex
 (./main.tex
@@ -2841,44 +2841,44 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-7.47015pt}.
 
 [36])
-<chapters/../assets/appendixD_result_8.png, id=916, 1027.84pt x 770.88pt>
+<chapters/../assets/appendixD_result_8.png, id=918, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_8.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_8.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_8.png  used on inp
-ut line 437.
+ut line 439.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
-<chapters/../assets/appendixD_result_40.png, id=917, 1027.84pt x 770.88pt>
+<chapters/../assets/appendixD_result_40.png, id=919, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_40.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_40.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_40.png  used on in
-put line 442.
+put line 444.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
-<chapters/../assets/appendixD_result_200.png, id=918, 1027.84pt x 770.88pt>
+<chapters/../assets/appendixD_result_200.png, id=920, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_200.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_200.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_200.png  used on i
-nput line 446.
+nput line 448.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
-<chapters/../assets/appendixD_result_1000.png, id=919, 1027.84pt x 770.88pt>
+<chapters/../assets/appendixD_result_1000.png, id=921, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_1000.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_1000.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_1000.png  used on 
-input line 451.
+input line 453.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
-<chapters/../assets/appendixD_result_5k.png, id=920, 1027.84pt x 770.88pt>
+<chapters/../assets/appendixD_result_5k.png, id=922, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_5k.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_5k.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_5k.png  used on in
-put line 456.
+put line 458.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
-<chapters/../assets/appendixD_result_25k.png, id=921, 1027.84pt x 770.88pt>
+<chapters/../assets/appendixD_result_25k.png, id=923, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_25k.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_25k.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_25k.png  used on i
-nput line 461.
+nput line 463.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 435--464
+Underfull \hbox (badness 10000) in paragraph at lines 437--466
 []$[]$  $[]$
  []
 
@@ -2961,7 +2961,7 @@ Overfull \hbox (4.34796pt too wide) in paragraph at lines 44--45
  de-ter-mi-nato dalla dis-tribuzione nelle lunghezze
  []
 
-<chapters/../assets/chapter2_colorimetry_cones.png, id=1178, 1204.5pt x 910.401
+<chapters/../assets/chapter2_colorimetry_cones.png, id=1180, 1204.5pt x 910.401
 25pt>
 File: chapters/../assets/chapter2_colorimetry_cones.png Graphic file (type png)
 
@@ -2970,7 +2970,7 @@ Package luatex.def Info: chapters/../assets/chapter2_colorimetry_cones.png  use
 d on input line 63.
 (luatex.def)             Requested size: 165.43602pt x 125.03816pt.
 <./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.pdf, 
-id=1179, 975.4568pt x 611.9914pt>
+id=1181, 975.4568pt x 611.9914pt>
 File: ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.
 pdf Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_RGB_color_matching_functions_svg-raw.p
@@ -2985,7 +2985,7 @@ LaTeX Warning: Reference `chapter6:MC:unbiasedEstimator' on page 53 undefined o
 n input line 152.
 
 <./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf, id=
-1221, 353.94542pt x 366.81622pt>
+1223, 353.94542pt x 366.81622pt>
 File: ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf
  Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_chromaticity_diagram_1931_svg-raw.pdf>
@@ -3010,7 +3010,7 @@ Underfull \hbox (badness 10000) in alignment at lines 207--207
 
 [55]
 <./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf, id
-=1286, 353.31148pt x 382.31808pt>
+=1289, 353.31148pt x 382.31808pt>
 File: ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pd
 f Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf
@@ -3037,7 +3037,7 @@ odo di Gauss-Newton (si ri-manda a [[]PJH23[]]).
 Underfull \vbox (badness 1609) has occurred while \output is active []
 
  [58]
-<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf, id=1354, 283.59102
+<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf, id=1356, 283.59102
 pt x 186.48965pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf Graphic file (
 type pdf)
@@ -3045,7 +3045,7 @@ type pdf)
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw
 .pdf  used on input line 356.
 (luatex.def)             Requested size: 283.59032pt x 186.4892pt.
-<./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf, id=1355, 406.26328pt 
+<./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf, id=1357, 406.26328pt 
 x 272.47215pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf Graphic file (typ
 e pdf)
@@ -3061,7 +3061,7 @@ IL(0)/m/it/10 field of view\TU/CharisSIL(0)/m/n/10 . An-che chiam-
 
 [59<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf><./svg-inkscape/c
 hapter2_camera_pinhole_plot_svg-raw.pdf>]
-<./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf, id=1379, 318.228
+<./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf, id=1381, 318.228
 84pt x 143.87604pt>
 File: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf Graphic file
  (type pdf)
@@ -3074,7 +3074,7 @@ Underfull \hbox (badness 2547) in paragraph at lines 391--391
 []\TU/CharisSIL(0)/m/n/9 (a) |Ge-ome-tria del pin-hole cam-era model visto
  []
 
-<chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png, id=1380,
+<chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png, id=1382,
  362.7954pt x 218.7372pt>
 File: chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png Grap
 hic file (type png)
@@ -3087,7 +3087,7 @@ Overfull \hbox (1.95313pt too wide) in paragraph at lines 388--398
 [][] [] 
  []
 
-<chapters/../assets/chapter2_view_frustum.png, id=1384, 451.6875pt x 336.25626p
+<chapters/../assets/chapter2_view_frustum.png, id=1386, 451.6875pt x 336.25626p
 t>
 File: chapters/../assets/chapter2_view_frustum.png Graphic file (type png)
 <use chapters/../assets/chapter2_view_frustum.png>
@@ -3099,7 +3099,7 @@ g-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf>] [61<./chapters/../ass
 ets/chapter2_view_frustum.png>] [62])
 (./chapters/chapter-part1-3-light-surface.tex [63]
 Chapter 6.
-<chapters/../assets/chapter3_surfaces_interaction_types.png, id=1442, 387.4475p
+<chapters/../assets/chapter3_surfaces_interaction_types.png, id=1444, 387.4475p
 t x 270.00874pt>
 File: chapters/../assets/chapter3_surfaces_interaction_types.png Graphic file (
 type png)
@@ -3107,7 +3107,7 @@ type png)
 Package luatex.def Info: chapters/../assets/chapter3_surfaces_interaction_types
 .png  used on input line 5.
 (luatex.def)             Requested size: 165.43602pt x 115.28984pt.
-<chapters/../assets/chapter3_surfaces_specular_interaction.png, id=1443, 471.76
+<chapters/../assets/chapter3_surfaces_specular_interaction.png, id=1445, 471.76
 25pt x 234.8775pt>
 File: chapters/../assets/chapter3_surfaces_specular_interaction.png Graphic fil
 e (type png)
@@ -3132,7 +3132,7 @@ Overfull \hbox (5.61261pt too wide) in paragraph at lines 313--316
  \TU/CharisSIL(0)/m/n/10 Per luce non po-lar-iz-zata tali co-ef-fi-ci-enti sono pari alla me-dia tra i co-ef-fi-ci-enti per polarizzazione-
  []
 
-<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf, id=1613, 811.75798
+<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf, id=1615, 811.75798
 pt x 574.46132pt>
 File: ./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf Graphic file (
 type pdf)
@@ -3147,7 +3147,7 @@ rifrazione reale,
  []
 
 [69] [70<./svg-inkscape/chapter3_surface_fresnel_factor_svg-raw.pdf>] [71]
-<chapters/../assets/chapter3_surface_angle2area.png, id=1680, 1358.07375pt x 65
+<chapters/../assets/chapter3_surface_angle2area.png, id=1682, 1358.07375pt x 65
 5.44875pt>
 File: chapters/../assets/chapter3_surface_angle2area.png Graphic file (type png
 )
@@ -3163,7 +3163,7 @@ n per es-sere un in-te-grale nell’area dell’unione
  []
 
 [73]
-<chapters/../assets/chapter3_surface_projected_area.png, id=1712, 910.40125pt x
+<chapters/../assets/chapter3_surface_projected_area.png, id=1714, 910.40125pt x
  633.36626pt>
 File: chapters/../assets/chapter3_surface_projected_area.png Graphic file (type
  png)
@@ -3173,7 +3173,7 @@ Package luatex.def Info: chapters/../assets/chapter3_surface_projected_area.png
 (luatex.def)             Requested size: 330.87836pt x 230.19583pt.
  [74<./chapters/../assets/chapter3_surface_projected_area.png>] [75]
 [76]
-<chapters/../assets/chapter3_surface_microgeometry_effectsAM.png, id=1757, 1425
+<chapters/../assets/chapter3_surface_microgeometry_effectsAM.png, id=1759, 1425
 .325pt x 311.1625pt>
 File: chapters/../assets/chapter3_surface_microgeometry_effectsAM.png Graphic f
 ile (type png)
@@ -3181,7 +3181,7 @@ ile (type png)
 Package luatex.def Info: chapters/../assets/chapter3_surface_microgeometry_effe
 ctsAM.png  used on input line 618.
 (luatex.def)             Requested size: 413.59637pt x 90.29178pt.
-<chapters/../assets/chapter3_surface_microgeometry_areaAM.png, id=1761, 1405.25
+<chapters/../assets/chapter3_surface_microgeometry_areaAM.png, id=1763, 1405.25
 pt x 460.72125pt>
 File: chapters/../assets/chapter3_surface_microgeometry_areaAM.png Graphic file
  (type png)
@@ -3191,7 +3191,7 @@ AM.png  used on input line 644.
 (luatex.def)             Requested size: 413.59637pt x 135.60226pt.
  [77<./chapters/../assets/chapter3_surface_microgeometry_effectsAM.png>]
 [78<./chapters/../assets/chapter3_surface_microgeometry_areaAM.png>]
-<chapters/../assets/chapter3_surface_vcavityPG.png, id=1787, 1353.055pt x 592.2
+<chapters/../assets/chapter3_surface_vcavityPG.png, id=1789, 1353.055pt x 592.2
 125pt>
 File: chapters/../assets/chapter3_surface_vcavityPG.png Graphic file (type png)
 
@@ -3200,7 +3200,7 @@ Package luatex.def Info: chapters/../assets/chapter3_surface_vcavityPG.png  use
 d on input line 717.
 (luatex.def)             Requested size: 372.2342pt x 162.91766pt.
  [79<./chapters/../assets/chapter3_surface_vcavityPG.png>] [80]
-<chapters/../assets/chapter3_surface_refl_jacobianPG.png, id=1822, 1560.83125pt
+<chapters/../assets/chapter3_surface_refl_jacobianPG.png, id=1825, 1560.83125pt
  x 805.0075pt>
 File: chapters/../assets/chapter3_surface_refl_jacobianPG.png Graphic file (typ
 e png)
@@ -3208,7 +3208,7 @@ e png)
 Package luatex.def Info: chapters/../assets/chapter3_surface_refl_jacobianPG.pn
 g  used on input line 792.
 (luatex.def)             Requested size: 330.87836pt x 170.65341pt.
-<chapters/../assets/chapter3_surface_BRDF_paramsPG.png, id=1825, 1028.84375pt x
+<chapters/../assets/chapter3_surface_BRDF_paramsPG.png, id=1828, 1028.84375pt x
  696.6025pt>
 File: chapters/../assets/chapter3_surface_BRDF_paramsPG.png Graphic file (type 
 png)
@@ -3218,7 +3218,7 @@ Package luatex.def Info: chapters/../assets/chapter3_surface_BRDF_paramsPG.png
 (luatex.def)             Requested size: 206.79819pt x 140.00893pt.
  [81<./chapters/../assets/chapter3_surface_refl_jacobianPG.png>] [82<./chapters/
 ../assets/chapter3_surface_BRDF_paramsPG.png>] [83]
-<chapters/../assets/chapter3_surface_anisotropic_BRDF.png, id=1874, 1648.1575pt
+<chapters/../assets/chapter3_surface_anisotropic_BRDF.png, id=1876, 1648.1575pt
  x 662.475pt>
 File: chapters/../assets/chapter3_surface_anisotropic_BRDF.png Graphic file (ty
 pe png)
@@ -3239,7 +3239,7 @@ Missing character: There is no 1 (U+0031) in font nullfont!
 Missing character: There is no p (U+0070) in font nullfont!
 Missing character: There is no t (U+0074) in font nullfont!
 ] [91]
-<chapters/../assets/chapter3_light_sphere_sampling.png, id=1979, 1587.9325pt x 
+<chapters/../assets/chapter3_light_sphere_sampling.png, id=1981, 1587.9325pt x 
 840.13875pt>
 File: chapters/../assets/chapter3_light_sphere_sampling.png Graphic file (type 
 png)
@@ -3351,7 +3351,7 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 72191 strings out of 478285
+ 72193 strings out of 478285
  244159,2848258 words of node,token memory allocated
  3654 words of node memory still in use:
    7 hlist, 2 vlist, 2 rule, 81 glue, 4 kern, 15 sub_mlist, 1 glyph, 543 attribu
@@ -3359,7 +3359,7 @@ te, 126 glue_spec, 543 attribute_list, 2 write, 7 pdf_action nodes
    avail lists: 1:19,2:20359,3:13206,4:2302,5:571,6:110,7:10678,8:103,9:2071,10:
 22,11:763,12:1
  88588 multiletter control sequences out of 65536+600000
- 152 fonts using 68162183 bytes
+ 152 fonts using 68161895 bytes
  95i,22n,114p,2265b,2933s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.60'
@@ -3378,10 +3378,10 @@ ic/lm-math/latinmodern-math.otf></usr/share/texmf-dist/fonts/opentype/public/lm-
 math/latinmodern-math.otf></usr/share/fonts/TTF/CharisSIL-Regular.ttf></usr/shar
 e/fonts/TTF/CharisSIL-Bold.ttf></usr/share/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmtt10.pfb>
-Output written on main.pdf (115 pages, 18780193 bytes).
+Output written on main.pdf (115 pages, 18780403 bytes).
 
-PDF statistics: 2220 PDF objects out of 2487 (max. 8388607)
- 1751 compressed objects within 18 object streams
- 638 named destinations out of 1000 (max. 131072)
+PDF statistics: 2222 PDF objects out of 2487 (max. 8388607)
+ 1753 compressed objects within 18 object streams
+ 640 named destinations out of 1000 (max. 131072)
  576 words of extra memory for PDF output out of 10000 (max. 100000000)
 

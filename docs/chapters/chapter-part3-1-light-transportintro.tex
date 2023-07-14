@@ -389,6 +389,8 @@ si assume indice di rifrazione unitario per l'ambiente circostante. Il funzionam
 	\item Altrimenti calcola anzi tempo la direzione trasmessa (Equazione \ref{chapter3:surface:refractedDirection})
 	\item Calcola la riflettanza per la direzione di incidenza con l'approssimazione di Schlick, utilizzabile in quanto si sta supponendo vetro 
 		come materiale, che \`e un dielettrico (Equazione \ref{chapter3:surface:schFresnel}).
+	\item Calcola il contributo di raggio riflesso e raggio trasmesso
+	\item Russian Roulette: se \texttt{depth} $> 2$, allora uno dei due raggi, riflesso o trasmesso, uno dei due \`e terminato
 \end{enumerate}
 Il codice \`e il seguente:
 \codesnippet{Calcola contributo per BRDF Speculare Translucente e reitera}
