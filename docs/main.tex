@@ -1,5 +1,9 @@
 \documentclass[10pt, openany]{book}
 
+\usepackage[svgnames]{xcolor}
+% ------------ pdf import per liberatoria e dichiarazione di conformita'
+\usepackage{pdfpages}
+
 % --------- math packages
 % theorems
 \usepackage{amsthm}
@@ -13,7 +17,6 @@
 \usepackage{stackrel}
 \usepackage{mathtools} % norm
 \usepackage[inline]{enumitem}
-\usepackage[svgnames]{xcolor}
 \usepackage{fancyhdr}
 \usepackage{hyperref}
 \usepackage{cleveref}
@@ -254,6 +257,9 @@
 		\end{center}
 	\end{titlepage}
 
+	\includepdf{./LIBERATORIA_TESI.pdf}
+	\includepdf{./Dichiarazione tesi conforme.pdf}
+
 	\frontmatter
 	\section*{Abstract}
 	\begin{figure}[t]
@@ -308,9 +314,8 @@
 	l'attenzione sulla grafica computerizzata, oggetto della mia curiosit\`a negli ultimi tempi. Inoltre, ringrazio la mia famiglia per avermi fornito
 	coraggio e supporto per tutto il mio percorso.\par
 	Spendo le ultime parole di questa introduzione per sottolineare quanto affascinante sia la Computer Grafica, quanto complicata. Di seguito, \`e 
-	indicato il link per il codice relativo alla implementazione dei concetti spiegati qui, il quale, alla scrittura di questo documento, \`e 
-	purtroppo ancora incompleto: \href{https://github.com/alexoz12v2/monteCarlo}{https://github.com/alexoz12v2/monteCarlo}
-	Ci\`o \`e motivo di grande rammarico, ed \`e per questo che tale progetto sar\`a in un futuro prossimo arricchito con nuovi algoritmi e strategie.
+	indicato il link per il codice relativo alla implementazione dei concetti qui spiegati:\\
+	\href{https://github.com/alexoz12v2/monteCarlo}{https://github.com/alexoz12v2/monteCarlo}
 
 	\tableofcontents
 

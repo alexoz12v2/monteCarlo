@@ -1,4 +1,11 @@
 \newcommand{\ptset}[1]{\ensuremath{\{\ldots,\vec{p}_{#1}\}}}
+\newcommand{\codesnippet}[1]{\vspace{0.75em}\\
+	$\left\langle\textit{#1}\right\rangle+\hspace{-4pt}\equiv$
+	\vspace{-0.75em}
+}
+\newcommand{\codesnippetinl}[1]{
+	$\left\langle\textit{#1}\right\rangle$
+}
 \chapter{Light Transport Modello e Surface Reflection}\label{chapter8}
 Come gi\`a accennato in Capitolo \ref{chapter3}, ci\`o che rende difficile la risoluzione della Rendering Equation \`e il suo legame implicito con
 la scena attraverso la ray tracing function $t(\vec{p}, \hat{\omega})$. L'irradianza spettrale risultante su un punto della superficie potrebbe 
@@ -152,3 +159,184 @@ Dopodich\`e suddividiamo il termine di Direct Lighting applicando MIS
 		|\cos\theta_b|V(\vec{p}_{i-1},\vec{p}_b)}{p_b(\hat{\omega}_b)}\beta
 \end{align}
 dove i pesi sono calcolati con la \textit{balance heuristic} o la \textit{power heuristic} (Sezione \ref{chapter6:variance:importanceSampling}).\par
+L'algoritmo completo implementante le tecniche qui discusse pu\`o essere trovato in \cite{pharr}.
+\section{Applicazione del Metodo di Monte Carlo: Esempio Path Tracing Semplificato}
+Al fine di chiarificare come tali metodologie sono applicate in pratica, si propone di seguito un Path Tracer semplificato, supportante
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../assets/chapter8_MCRendering_reference.png}
+	\caption{Cornell Box scene utilizzata per il test.}
+	\label{chapter8:MCRendering:reference}
+\end{figure}
+\begin{itemize}[topsep=0pt,noitemsep]
+	\item Tre tipi di BRDF, in particolare Lambertiana (\textrm{DIFF}), Speculare opaca (\textrm{SPEC}), Speculare traslucente (\textrm{}) 
+	\item Russian Roulette, applicata per terminare la valutazione di una path e per scegliere tra riflessione o trasmissione nel caso di 
+		BRDF traslucente
+	\item Stratified Sampling, dividendo ciascun pixel cell in 4 caselle, e campionando per ciascuna di esse un numero di samples pari all'input da 
+		linea di comando. 
+	\item Ciascun sample in ciascun strata \`e scelto casualmente con PDF triangolare
+\end{itemize}
+Il quale crea una resa della celebre \textit{Cornell Box}, scena utilizzata per testare 3D rendering software creata e presentata nel SIGGRAPH 1984
+(vedi Figura \ref{chapter8:MCRendering:reference}).\par
+In questa implementazione, la scena \`e composta esclusivamente da sfere, definite attraverso un raggio, posizione, radianza emessa, 
+riflettanza spettrale (informalmente "colore"), tipologia di materiale.
+\codesnippet{Definizione \textrm{Sphere} struct}
+\begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
+	struct Sphere { 
+	  double rad;
+	  Vec p, e, c;
+	  Refl_t refl;      
+	 ¬\codesnippetinl{Costruttore (\ref{appendixD:pathTracer})}¬
+	 ¬\codesnippetinl{Metodo per intersezione (\ref{appendixD:pathTracer})}¬
+	}; 
+\end{minted}
+Da cui possiamo definire i lati del cubo come sfere con raggio elevato, la sorgente luminosa come sfera con radianza emessa non nulla riflettanza 
+spettrale nulla, e le comuni sfere, con radianza emessa nulla e riflettanza spettrale non nulla, definente la tinta del materiale
+\codesnippet{Definizione della scena}
+\begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
+	Sphere spheres[] = {
+	  Sphere(1e5, Vec( 1e5+1,40.8,81.6), Vec(),Vec(.75,.25,.25),DIFF),
+	  Sphere(1e5, Vec(-1e5+99,40.8,81.6),Vec(),Vec(.25,.25,.75),DIFF),
+	  Sphere(1e5, Vec(50,40.8, 1e5),     Vec(),Vec(.75,.75,.75),DIFF),
+	  Sphere(1e5, Vec(50,40.8,-1e5+170), Vec(),Vec(),           DIFF),
+	  Sphere(1e5, Vec(50, 1e5, 81.6),    Vec(),Vec(.75,.75,.75),DIFF),
+	  Sphere(1e5, Vec(50,-1e5+81.6,81.6),Vec(),Vec(.75,.75,.75),DIFF),
+	  Sphere(16.5,Vec(27,16.5,47),       Vec(),Vec(1,1,1)*.999, SPEC),
+	  Sphere(16.5,Vec(73,16.5,78),       Vec(),Vec(1,1,1)*.999, REFR),
+	  Sphere(600, Vec(50,681.6-.27,81.6),Vec(12,12,12),  Vec(), DIFF) 
+	}; 
+\end{minted}
+Il codice parte nella funzione \texttt{main}, la quale opera nel seguente modo
+\codesnippet{\texttt{main} outline}
+\begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
+	int main(int argc, char *argv[]){ 
+		// definisci risoluzione griglia film plane (schermo) e numero di campioni
+		// per pixel da linea di comando
+		int w=1024, h=768, samps = argc==2 ? atoi(argv[1])/4 : 1; 
+
+		// definisci posizione e direzione osservatore, utilizzando il 
+		// Pinhole Camera Model
+		Ray cam(Vec(50,52,295.6), Vec(0,-0.042612,-1).norm()); 
+
+		// definisci direzione orizzontale ¬$\mathtt{cx}\text{ e verticale }\mathtt{cy}$¬
+		// della camera. "%" e' definito come prodotto vettoriale ¬$\mathrm{vedi}\;\ref{appendixD:pathTracer}$¬
+		Vec cx=Vec(w*.5135/h), cy=(cx%cam.d).norm()*.5135; 
+
+		// variabile che conterra' la stima effettuata per ogni sample
+		Vec r; 
+
+		// Buffer che conterra' l'immagine finale
+		Vec* c=new Vec[w*h]; 
+
+		// direttiva per la programmazione multicore con OpenMP
+	#pragma omp parallel for schedule(dynamic, 1) private(r)
+		// per ogni pixel
+		for (int y=0; y<h; y++){                       
+			printf(stderr,"\rRendering (%d spp) %5.2f%%",samps*4,100.*y/(h-1)); 
+			for (unsigned short x=0, Xi[3]={0,0,y*y*y}; x<w; x++)   
+			  ¬\codesnippetinl{Calcola il colore mostrato dal pixel}¬
+		} 
+
+		// salva l'immagine sintetizzata in un file
+		FILE *f = fopen("image.ppm", "w");         
+		fprintf(f, "P3\n%d %d\n%d\n", w, h, 255); 
+		for (int i=0; i<w*h; i++) 
+			fprintf(f,"%d %d %d ", toInt(c[i].x), toInt(c[i].y), toInt(c[i].z)); 
+	} 
+\end{minted}
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=0.6\linewidth]{../assets/chapter8_triangular_function.png}
+	\caption{Grafico funzione triangolare $\wedge(x)$. Immagine da \cite{pegoraro}}
+\end{figure}
+Per ogni pixel cell, ciascuno dei quattro strata viene campionato con un numero di samples pari all'input dato al programma in console (default: $1$),
+con PDF pari alla funzione triangolare normalizzata, cio\`e
+\begin{align}
+	f(x,y)&=\wedge(x)\wedge(y) \\
+	\wedge(x)&=\max\{0,1-|x|\}\nonumber
+\end{align}
+Da cui Inverse Transform Sampling pu\`o essere applicato calcolandone CDF separabile
+\begin{equation}
+	2\int_0^{t_s}\wedge(t)\mathrm{d}t=2\int_0^{t_s}1-|t|\mathrm{d}t=2\left[t-\frac{t^2}{2}\right]_{t=0}^{t_s}=t_s(2-t_s)
+\end{equation}
+e invertendola, dato un $\xi\sim\mathcal{U}(0,1)$ (vedi Sezione \ref{chapter6:sampling:inverseTransformSection})
+\begin{equation}
+	\xi=t_s(2-t_s)\longrightarrow t_s=1-\sqrt{1-\xi}
+\end{equation}
+Tale espressione pu\`o essere utilizzata per calcolare ascissa e ordinata del subpixel sample
+\codesnippet{Calcola il colore mostrato dal pixel}
+\begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
+	// per ogni strata
+	for (int sy=0, i=(h-y-1)*w+x; sy<2; sy++)     
+		for (int sx=0; sx<2; sx++, r=Vec()){        
+			// per ogni campione nello strata
+			for (int s=0; s<samps; s++){ 
+				// genera un numero casuale basato sul seed ¬$\mathtt{Xi}$¬ con PDF 
+				// triangolare per ogni coordinata del campione...
+				double r1=erand48(Xi), dx=1-sqrt(1-r1); 
+				double r2=erand48(Xi), dy=1-sqrt(1-r2); 
+
+				// ...e utilizzalo come scostamento dal centro dello strata 
+				// (tecnica nota come ¬$\textit{jittering}$¬), tramite il quale possiamo
+				// definire la direzione del raggio da proiettare dall'osservatore, di 
+				// posizione ¬$\mathtt{cam.o}$¬
+				Vec d = cx*( ( (sx+.5 + dx)/2 + x)/w - .5) 
+					  + cy*( ( (sy+.5 + dy)/2 + y)/h - .5) + cam.d; 
+
+				¬\codesnippetinl{Applica lo Stimatore di Monte Carlo}¬
+			} 
+
+			// Il colore finale del pixel \`e pari alla media dei quattro colori 
+			// calcolati per ogni strata
+			c[i] = c[i] + Vec(clamp(r.x),clamp(r.y),clamp(r.z))*.25; 
+		} 
+\end{minted}
+Dove giungiamo finalmente all'applicazione dell'Equazione \ref{chapter6:MC:crudeEstimator}
+\codesnippet{Applica lo Stimatore di Monte Carlo}
+\begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
+	r = r + radiance(Ray(cam.o+d*140,d.norm()),0,Xi)*(1./samps); 
+\end{minted}
+Dove la funzione \texttt{radiance} \`e una funzione ricorsiva, che ritorna un campione della funzione immagine, i cui parametri sono
+\begin{itemize}[topsep=0pt,noitemsep]
+	\item Raggio da proiettare
+	\item \textit{ray depth} corrente, ovvero il numero di "rimbalzi" gi\`a effettuati
+	\item seed per RNG
+	\item booleano che indica se contare radianza emessa o meno
+\end{itemize}
+La cui definizione \`e la seguente
+\codesnippet{Funzione \texttt{radiance}}
+\begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
+	Vec radiance(const Ray &r, int depth, unsigned short *Xi){ 
+		double t;                               
+		int id=0;                               
+		if (!intersect(r, t, id)) return Vec(); 
+
+		const Sphere &obj = spheres[id];        
+		Vec x=r.o+r.d*t, n=(x-obj.p).norm(), nl=n.dot(r.d)<0?n:n*-1, f=obj.c; 
+		double p = f.x>f.y && f.x>f.z ? f.x : f.y>f.z ? f.y : f.z; 
+
+		if (++depth>5) if (erand48(Xi)<p) f=f*(1/p); else return obj.e; 
+
+		if (obj.refl == DIFF){                  
+			double r1=2*M_PI*erand48(Xi), r2=erand48(Xi), r2s=sqrt(r2); 
+			Vec w=nl, u=((fabs(w.x)>.1?Vec(0,1):Vec(1))%w).norm(), v=w%u; 
+			Vec d = (u*cos(r1)*r2s + v*sin(r1)*r2s + w*sqrt(1-r2)).norm(); 
+			return obj.e + f.mult(radiance(Ray(x,d),depth,Xi)); 
+		} else if (obj.refl == SPEC)            
+			return obj.e + f.mult(radiance(Ray(x,r.d-n*2*n.dot(r.d)),depth,Xi)); 
+
+		Ray reflRay(x, r.d-n*2*n.dot(r.d));     
+		bool into = n.dot(nl)>0;                
+		double nc=1, nt=1.5, nnt=into?nc/nt:nt/nc, ddn=r.d.dot(nl), cos2t; 
+
+		if ((cos2t=1-nnt*nnt*(1-ddn*ddn))<0)    
+			return obj.e + f.mult(radiance(reflRay,depth,Xi)); 
+
+		Vec tdir = (r.d*nnt - n*((into?1:-1)*(ddn*nnt+sqrt(cos2t)))).norm(); 
+		double a=nt-nc, b=nt+nc, R0=a*a/(b*b), c = 1-(into?-ddn:tdir.dot(n)); 
+		double Re=R0+(1-R0)*c*c*c*c*c,Tr=1-Re,P=.25+.5*Re,RP=Re/P,TP=Tr/(1-P); 
+		return obj.e + f.mult(depth>2 ? (erand48(Xi)<P ?   
+			radiance(reflRay,depth,Xi)*RP:radiance(Ray(x,tdir),depth,Xi)*TP) : 
+			radiance(reflRay,depth,Xi)*Re+radiance(Ray(x,tdir),depth,Xi)*Tr); 
+	} 
+\end{minted}

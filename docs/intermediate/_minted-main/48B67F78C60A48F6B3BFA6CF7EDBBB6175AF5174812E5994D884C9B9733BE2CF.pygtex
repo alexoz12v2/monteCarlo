@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{+w}{	}\PYG{n}{r}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{r}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{radiance}\PYG{p}{(}\PYG{n}{Ray}\PYG{p}{(}\PYG{n}{cam}\PYG{p}{.}\PYG{n}{o}\PYG{o}{+}\PYG{n}{d}\PYG{o}{*}\PYG{l+m+mi}{140}\PYG{p}{,}\PYG{n}{d}\PYG{p}{.}\PYG{n}{norm}\PYG{p}{(}\PYG{p}{)}\PYG{p}{)}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{Xi}\PYG{p}{)}\PYG{o}{*}\PYG{p}{(}\PYG{l+m+mf}{1.}\PYG{o}{/}\PYG{n}{samps}\PYG{p}{)}\PYG{p}{;}
+\end{Verbatim}

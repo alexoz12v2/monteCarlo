@@ -202,12 +202,25 @@ Costruendo un \textit{filtro separabile} (si veda \ref{chapter5:reconstruction:b
 \begin{equation}
 	f(x,y)=f(x)f(y)
 \end{equation}
-Oppure Costruendo un \textit{filtro radiale} 
+Il cui campionamento pu\`o essere compiuto integrando in ogni quadrante, supponendo $f$ simmetrica
+\begin{equation}
+	4\int_0^{y_s}\int_0^{x_s}f(x,y)\mathrm{d}x\mathrm{d}y = \left(2\int_0^{x_s}f(x)\mathrm{d}x\right)\left(2\int_0^{y_s}f(y)\mathrm{d}y\right)
+\end{equation}
+da cui basta applicare Inverse Transform Sampling alla CDF definita da ciascuno degli integrali monodimensionali. Inoltre, per scalare tale 
+filtro per $t=Tx$, basta sostituire
+\begin{equation}
+	2\int_0^{t_s}\frac{1}{|T|}f\left(\frac{t}{T}\right)\mathrm{d}t=2\int_0^{\frac{t_s}{T}}f(t)\mathrm{d}t
+\end{equation}
+La seconda scelta per costruire un filtro bidimensionale da uno monodimensionale \`e un \textit{filtro radiale}
 \begin{align}
 	f(x,y)&=\frac{f(\rho)}{2\pi c},\\
 	\rho &= \sqrt{x^2+y^2}\nonumber\\
 	c &= \int_0^{\infty}\rho f(\rho)\mathrm{d}\rho\nonumber
 \end{align}
+Per il quale, seguendo ragionamento analogo al precedente \cite{pegoraro}, possiamo applicare inverse transform sampling
+\begin{equation}
+	\int_0^{\rho_s}\frac{1}{T|T|}\frac{1}{c}f\left(\frac{\rho}{T}\right)\rho\mathrm{d}\rho=\int_0^{\frac{\rho_s}{T}}\frac{1}{c}f(\rho)\rho\mathrm{d}\rho
+\end{equation}
 \subsection{Box Filter}\label{chapter5:reconstruction:boxFilter}
 Uno dei filtri pi\`u comunemente usati \`e il box filter, il quale rappresenta effettivamente il risultato "standard", utilizzato ad esempio per 
 comparare campionatori. Essendo il pi\`u semplice dei filtri, il quale ricostruisce una funzione piecewise constant, introduce post aliasing, anche 

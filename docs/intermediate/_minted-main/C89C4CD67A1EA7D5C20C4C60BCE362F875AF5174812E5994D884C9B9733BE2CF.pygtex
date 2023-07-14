@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{+w}{	}\PYG{c+c1}{// per ogni strata}
+\PYG{+w}{	}\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{sy}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{=}\PYG{p}{(}\PYG{n}{h}\PYG{o}{\PYGZhy{}}\PYG{n}{y}\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{)}\PYG{o}{*}\PYG{n}{w}\PYG{o}{+}\PYG{n}{x}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{sy}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{sy}\PYG{o}{+}\PYG{o}{+}\PYG{p}{)}
+\PYG{+w}{		}\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{sx}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{sx}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{sx}\PYG{o}{+}\PYG{o}{+}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{r}\PYG{o}{=}\PYG{n}{Vec}\PYG{p}{(}\PYG{p}{)}\PYG{p}{)}\PYG{p}{\PYGZob{}}
+\PYG{+w}{			}\PYG{c+c1}{// per ogni campione nello strata}
+\PYG{+w}{			}\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{s}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{s}\PYG{o}{\PYGZlt{}}\PYG{n}{samps}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{s}\PYG{o}{+}\PYG{o}{+}\PYG{p}{)}\PYG{p}{\PYGZob{}}
+\PYG{+w}{				}\PYG{c+c1}{// genera un numero casuale basato sul seed ¬$\mathtt{Xi}$¬ con PDF}
+\PYG{+w}{				}\PYG{c+c1}{// triangolare per ogni coordinata del campione...}
+\PYG{+w}{				}\PYG{k+kt}{double}\PYG{+w}{ }\PYG{n}{r1}\PYG{o}{=}\PYG{n}{erand48}\PYG{p}{(}\PYG{n}{Xi}\PYG{p}{)}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{dx}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{o}{\PYGZhy{}}\PYG{n}{sqrt}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZhy{}}\PYG{n}{r1}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{				}\PYG{k+kt}{double}\PYG{+w}{ }\PYG{n}{r2}\PYG{o}{=}\PYG{n}{erand48}\PYG{p}{(}\PYG{n}{Xi}\PYG{p}{)}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{dy}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{o}{\PYGZhy{}}\PYG{n}{sqrt}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZhy{}}\PYG{n}{r2}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{				}\PYG{c+c1}{// ...e utilizzalo come scostamento dal centro dello strata}
+\PYG{+w}{				}\PYG{c+c1}{// (tecnica nota come ¬$\textit{jittering}$¬), tramite il quale possiamo}
+\PYG{+w}{				}\PYG{c+c1}{// definire la direzione del raggio da proiettare dall\PYGZsq{}osservatore, di}
+\PYG{+w}{				}\PYG{c+c1}{// posizione ¬$\mathtt{cam.o}$¬}
+\PYG{+w}{				}\PYG{n}{Vec}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{cx}\PYG{o}{*}\PYG{p}{(}\PYG{+w}{ }\PYG{p}{(}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{sx}\PYG{o}{+}\PYG{l+m+mf}{.5}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{dx}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{)}\PYG{o}{/}\PYG{n}{w}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mf}{.5}\PYG{p}{)}
+\PYG{+w}{					  }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{cy}\PYG{o}{*}\PYG{p}{(}\PYG{+w}{ }\PYG{p}{(}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{sy}\PYG{o}{+}\PYG{l+m+mf}{.5}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{dy}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{)}\PYG{o}{/}\PYG{n}{h}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mf}{.5}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{cam}\PYG{p}{.}\PYG{n}{d}\PYG{p}{;}
+
+\PYG{+w}{				}\PYG{esc}{\codesnippetinl{Applica lo Stimatore di Monte Carlo}}
+\PYG{+w}{			}\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{			}\PYG{c+c1}{// Il colore finale del pixel \PYGZbs{}`e pari alla media dei quattro colori}
+\PYG{+w}{			}\PYG{c+c1}{// calcolati per ogni strata}
+\PYG{+w}{			}\PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{Vec}\PYG{p}{(}\PYG{n}{clamp}\PYG{p}{(}\PYG{n}{r}\PYG{p}{.}\PYG{n}{x}\PYG{p}{)}\PYG{p}{,}\PYG{n}{clamp}\PYG{p}{(}\PYG{n}{r}\PYG{p}{.}\PYG{n}{y}\PYG{p}{)}\PYG{p}{,}\PYG{n}{clamp}\PYG{p}{(}\PYG{n}{r}\PYG{p}{.}\PYG{n}{z}\PYG{p}{)}\PYG{p}{)}\PYG{o}{*}\PYG{l+m+mf}{.25}\PYG{p}{;}
+\PYG{+w}{		}\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

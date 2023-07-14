@@ -1,0 +1,36 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{+w}{	}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{argc}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{char}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{argv}\PYG{p}{[}\PYG{p}{]}\PYG{p}{)}\PYG{p}{\PYGZob{}}
+\PYG{+w}{		}\PYG{c+c1}{// definisci risoluzione griglia film plane (schermo) e numero di campioni}
+\PYG{+w}{		}\PYG{c+c1}{// per pixel da linea di comando}
+\PYG{+w}{		}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{w}\PYG{o}{=}\PYG{l+m+mi}{1024}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{h}\PYG{o}{=}\PYG{l+m+mi}{768}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{samps}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{argc}\PYG{o}{=}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{n}{atoi}\PYG{p}{(}\PYG{n}{argv}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{4}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+
+\PYG{+w}{		}\PYG{c+c1}{// definisci posizione e direzione osservatore, utilizzando il}
+\PYG{+w}{		}\PYG{c+c1}{// Pinhole Camera Model}
+\PYG{+w}{		}\PYG{n}{Ray}\PYG{+w}{ }\PYG{n}{cam}\PYG{p}{(}\PYG{n}{Vec}\PYG{p}{(}\PYG{l+m+mi}{50}\PYG{p}{,}\PYG{l+m+mi}{52}\PYG{p}{,}\PYG{l+m+mf}{295.6}\PYG{p}{)}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Vec}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mf}{\PYGZhy{}0.042612}\PYG{p}{,}\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{)}\PYG{p}{.}\PYG{n}{norm}\PYG{p}{(}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}
+
+\PYG{+w}{		}\PYG{c+c1}{// definisci direzione orizzontale ¬$\mathtt{cx}\text{ e verticale }\mathtt{cy}$¬}
+\PYG{+w}{		}\PYG{c+c1}{// della camera. \PYGZdq{}\PYGZpc{}\PYGZdq{} e\PYGZsq{} definito come prodotto vettoriale ¬$\mathrm{vedi}\;\ref{appendixD:pathTracer}$¬}
+\PYG{+w}{		}\PYG{n}{Vec}\PYG{+w}{ }\PYG{n}{cx}\PYG{o}{=}\PYG{n}{Vec}\PYG{p}{(}\PYG{n}{w}\PYG{o}{*}\PYG{l+m+mf}{.5135}\PYG{o}{/}\PYG{n}{h}\PYG{p}{)}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{cy}\PYG{o}{=}\PYG{p}{(}\PYG{n}{cx}\PYG{o}{\PYGZpc{}}\PYG{n}{cam}\PYG{p}{.}\PYG{n}{d}\PYG{p}{)}\PYG{p}{.}\PYG{n}{norm}\PYG{p}{(}\PYG{p}{)}\PYG{o}{*}\PYG{l+m+mf}{.5135}\PYG{p}{;}
+
+\PYG{+w}{		}\PYG{c+c1}{// variabile che conterra\PYGZsq{} la stima effettuata per ogni sample}
+\PYG{+w}{		}\PYG{n}{Vec}\PYG{+w}{ }\PYG{n}{r}\PYG{p}{;}
+
+\PYG{+w}{		}\PYG{c+c1}{// Buffer che conterra\PYGZsq{} l\PYGZsq{}immagine finale}
+\PYG{+w}{		}\PYG{n}{Vec}\PYG{o}{*}\PYG{+w}{ }\PYG{n}{c}\PYG{o}{=}\PYG{k}{new}\PYG{+w}{ }\PYG{n}{Vec}\PYG{p}{[}\PYG{n}{w}\PYG{o}{*}\PYG{n}{h}\PYG{p}{]}\PYG{p}{;}
+
+\PYG{+w}{		}\PYG{c+c1}{// direttiva per la programmazione multicore con OpenMP}
+\PYG{+w}{	}\PYG{c+cp}{\PYGZsh{}}\PYG{c+cp}{pragma omp parallel for schedule(dynamic, 1) private(r)}
+\PYG{+w}{		}\PYG{c+c1}{// per ogni pixel}
+\PYG{+w}{		}\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{y}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{y}\PYG{o}{\PYGZlt{}}\PYG{n}{h}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{y}\PYG{o}{+}\PYG{o}{+}\PYG{p}{)}\PYG{p}{\PYGZob{}}
+\PYG{+w}{			}\PYG{n}{printf}\PYG{p}{(}\PYG{n}{stderr}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}r}\PYG{l+s}{Rendering (\PYGZpc{}d spp) \PYGZpc{}5.2f\PYGZpc{}\PYGZpc{}}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{samps}\PYG{o}{*}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{l+m+mf}{100.}\PYG{o}{*}\PYG{n}{y}\PYG{o}{/}\PYG{p}{(}\PYG{n}{h}\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{			}\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{unsigned}\PYG{+w}{ }\PYG{k+kt}{short}\PYG{+w}{ }\PYG{n}{x}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Xi}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{]}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{y}\PYG{o}{*}\PYG{n}{y}\PYG{o}{*}\PYG{n}{y}\PYG{p}{\PYGZcb{}}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{x}\PYG{o}{\PYGZlt{}}\PYG{n}{w}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{x}\PYG{o}{+}\PYG{o}{+}\PYG{p}{)}
+\PYG{+w}{			  }\PYG{esc}{\codesnippetinl{Calcola il colore mostrato dal pixel}}
+\PYG{+w}{		}\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{		}\PYG{c+c1}{// salva l\PYGZsq{}immagine sintetizzata in un file}
+\PYG{+w}{		}\PYG{k+kt}{FILE}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{f}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{fopen}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{image.ppm}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{w}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{		}\PYG{n}{fprintf}\PYG{p}{(}\PYG{n}{f}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{P3}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZpc{}d \PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{w}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{h}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{255}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{		}\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{w}\PYG{o}{*}\PYG{n}{h}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{+}\PYG{o}{+}\PYG{p}{)}
+\PYG{+w}{			}\PYG{n}{fprintf}\PYG{p}{(}\PYG{n}{f}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{\PYGZpc{}d \PYGZpc{}d \PYGZpc{}d }\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{toInt}\PYG{p}{(}\PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{.}\PYG{n}{x}\PYG{p}{)}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{toInt}\PYG{p}{(}\PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{.}\PYG{n}{y}\PYG{p}{)}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{toInt}\PYG{p}{(}\PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{.}\PYG{n}{z}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}
+\PYG{+w}{	}\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

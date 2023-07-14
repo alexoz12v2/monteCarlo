@@ -145,7 +145,7 @@ def monteCarloIntegration(integrandFunction : Callable[[float], float],
         sum += integrandFunction(x_i)
     return domainSize * sum / nSamples
 \end{minted}
-\section{Semplice Path Tracer}
+\section{Semplice Path Tracer}\label{appendixD:pathTracer}
 Segue una semplice implementazione dell'Algoritmo del Path Tracing, riferito a 
 \href{http://www.kevinbeason.com/smallpt/}{http://www.kevinbeason.com/smallpt/}
 \begin{minted}[tabsize=2,obeytabs]{C++}
@@ -167,8 +167,8 @@ struct Vec {
 struct Ray { Vec o, d; Ray(Vec o_, Vec d_) : o(o_), d(d_) {} }; 
 enum Refl_t { DIFF, SPEC, REFR };  
 struct Sphere { 
-  double rad;       
-  Vec p, e, c;      
+  double rad;
+  Vec p, e, c;
   Refl_t refl;      
   Sphere(double rad_, Vec p_, Vec e_, Vec c_, Refl_t refl_): 
     rad(rad_), p(p_), e(e_), c(c_), refl(refl_) {} 
@@ -235,8 +235,8 @@ int main(int argc, char *argv[]){
       for (int sy=0, i=(h-y-1)*w+x; sy<2; sy++)     
         for (int sx=0; sx<2; sx++, r=Vec()){        
           for (int s=0; s<samps; s++){ 
-            double r1=2*erand48(Xi), dx=r1<1 ? sqrt(r1)-1: 1-sqrt(2-r1); 
-            double r2=2*erand48(Xi), dy=r2<1 ? sqrt(r2)-1: 1-sqrt(2-r2); 
+            double r1=erand48(Xi), dx=1-sqrt(1-r1); 
+            double r2=erand48(Xi), dy=1-sqrt(1-r2); 
             Vec d = cx*( ( (sx+.5 + dx)/2 + x)/w - .5) + 
                     cy*( ( (sy+.5 + dy)/2 + y)/h - .5) + cam.d; 
             r = r + radiance(Ray(cam.o+d*140,d.norm()),0,Xi)*(1./samps); 
@@ -282,3 +282,9 @@ int main(int argc, char *argv[]){
     \end{subfigure}
     \caption{Risultati dell'esecuzione dell'algoritmo con numero crescente di campioni per pixel}
 \end{figure}
+Comandi per la compilazione e resa (linux):
+\begin{verbatim*}
+g++ -O3 -fopenmp smallpt.cpp -o smallpt 
+time ./smallpt 5000
+display image.ppm
+\end{verbatim*}

@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{+w}{	}\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{Sphere}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{	  }\PYG{k+kt}{double}\PYG{+w}{ }\PYG{n}{rad}\PYG{p}{;}
+\PYG{+w}{	  }\PYG{n}{Vec}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{e}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{;}
+\PYG{+w}{	  }\PYG{n}{Refl\PYGZus{}t}\PYG{+w}{ }\PYG{n}{refl}\PYG{p}{;}
+\PYG{+w}{	 }\PYG{esc}{\codesnippetinl{Costruttore (\ref{appendixD:pathTracer})}}
+\PYG{+w}{	 }\PYG{esc}{\codesnippetinl{Metodo per intersezione (\ref{appendixD:pathTracer})}}
+\PYG{+w}{	}\PYG{p}{\PYGZcb{}}\PYG{p}{;}
+\end{Verbatim}

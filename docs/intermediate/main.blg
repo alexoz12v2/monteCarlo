@@ -1,15 +1,15 @@
 [0] Config.pm:307> INFO - This is Biber 2.19
 [0] Config.pm:310> INFO - Logfile is './intermediate/main.blg'
-[48] biber:340> INFO - === Thu Jul 13, 2023, 17:30:11
+[48] biber:340> INFO - === Fri Jul 14, 2023, 16:03:04
 [58] Biber.pm:419> INFO - Reading './intermediate/main.bcf'
-[112] Biber.pm:979> INFO - Found 15 citekeys in bib section 0
-[122] Biber.pm:4419> INFO - Processing section 0
-[129] Biber.pm:4610> INFO - Looking for bibtex file 'references.bib' for section 0
-[129] bibtex.pm:1713> INFO - LaTeX decoding ...
-[140] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
-[210] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[211] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[211] Biber.pm:4239> INFO - Sorting list 'ynt/global//global/global' of type 'entry' with template 'ynt' and locale 'en-US'
-[211] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
-[220] bbl.pm:660> INFO - Writing './intermediate/main.bbl' with encoding 'UTF-8'
-[223] bbl.pm:763> INFO - Output to ./intermediate/main.bbl
+[114] Biber.pm:979> INFO - Found 15 citekeys in bib section 0
+[123] Biber.pm:4419> INFO - Processing section 0
+[130] Biber.pm:4610> INFO - Looking for bibtex file 'references.bib' for section 0
+[131] bibtex.pm:1713> INFO - LaTeX decoding ...
+[142] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
+[213] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[213] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[213] Biber.pm:4239> INFO - Sorting list 'ynt/global//global/global' of type 'entry' with template 'ynt' and locale 'en-US'
+[213] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[222] bbl.pm:660> INFO - Writing './intermediate/main.bbl' with encoding 'UTF-8'
+[226] bbl.pm:763> INFO - Output to ./intermediate/main.bbl

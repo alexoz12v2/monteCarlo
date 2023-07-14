@@ -15,7 +15,7 @@ stato del generatore e $m>0$ modulo, $a$, $c$ parametri del generatore, allora
 \end{align}
 Una scelta standard per questi parametri \cite{dirk} \`e $a=7^5$, $c=0$, $m=2^{31}-1$\par
 Un altra categoria di RNG \`e il $\textit{Generatore Ricorsivo-Multiplo}$ di ordine\footnotemark{} $k$, con stato 
-$\mathmakebox{\vec{x}_t=[x_{t-k+1},\ldots,x_t]^T\in\{0,\ldots,m-1\}^k}$, le cui transizioni di stato sono definite dalla generazione di un nuovo 
+\\$\mathmakebox{\vec{x}_t=[x_{t-k+1},\ldots,x_t]^T\in\{0,\ldots,m-1\}^k}$, le cui transizioni di stato sono definite dalla generazione di un nuovo 
 componente. Lo spazio output dell'algoritmo \`e un vettore distribuito con PDF $\mathcal{U}(0,1)^k$.
 \begin{align}
 	x_t&=(a_1x_{t-1}+\cdots+a_kx_{t-k})\operatorname{mod}m,\;t=k,k+1,\ldots
