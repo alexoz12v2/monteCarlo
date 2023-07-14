@@ -250,38 +250,6 @@ int main(int argc, char *argv[]){
     fprintf(f,"%d %d %d ", toInt(c[i].x), toInt(c[i].y), toInt(c[i].z)); 
 } 
 \end{minted}
-\begin{figure}[tb]
-    \begin{subfigure}[c]{0.4\linewidth}
-	\centering
-	\includegraphics[width=\linewidth]{../assets/appendixD_result_8.png}
-	\caption{8 campioni per pixel}
-    \end{subfigure}\hspace{12pt}
-    \begin{subfigure}[c]{0.4\linewidth}
-	\centering
-	\includegraphics[width=\linewidth]{../assets/appendixD_result_40.png}
-	\caption{40 campioni per pixel}
-    \end{subfigure}\hfill
-    \begin{subfigure}[c]{0.4\linewidth}
-	\includegraphics[width=\linewidth]{../assets/appendixD_result_200.png}
-	\caption{200 campioni per pixel}
-    \end{subfigure}\hfill
-    \begin{subfigure}[c]{0.4\linewidth}
-	\centering
-	\includegraphics[width=\linewidth]{../assets/appendixD_result_1000.png}
-	\caption{1000 campioni per pixel}
-    \end{subfigure}\hfill
-    \begin{subfigure}[c]{0.4\linewidth}
-	\centering
-	\includegraphics[width=\linewidth]{../assets/appendixD_result_5k.png}
-	\caption{5000 campioni per pixel}
-    \end{subfigure}\hfill
-    \begin{subfigure}[c]{0.4\linewidth}
-	\centering
-	\includegraphics[width=\linewidth]{../assets/appendixD_result_25k.png}
-	\caption{25000 campioni per pixel}
-    \end{subfigure}
-    \caption{Risultati dell'esecuzione dell'algoritmo con numero crescente di campioni per pixel}
-\end{figure}
 Comandi per la compilazione e resa (linux):
 \begin{verbatim*}
 g++ -O3 -fopenmp smallpt.cpp -o smallpt 

@@ -112,7 +112,7 @@ a priori. Un approccio per la scelta di tali probabilit\`a \`e la seguente (gius
 dove $\hat{\omega}_j=(\vec{p}_{j+1}-\vec{p}_j)/\norm{\vec{p}_{j+1}-\vec{p}_j}$ e $p_\omega(\hat{\omega}_j)$ PDF della BSDF 
 (\ref{chapter3:surface:brdf})\par
 Applicando la compensazione per tale tecnica, lo stimatore unbiased diventa
-\begin{equation}
+\begin{equation}\label{chapter8:pt:russianroulette}
 	\frac{1}{1-q_1}\left(P(\ptset{1})+\frac{1}{1-q_2}\left(P(\ptset{2})+\frac{1}{1-q_3}\left(P(\ptset{3})+\ldots\right)\right)\right)
 \end{equation}
 In quanto il throughput totale della path
@@ -169,7 +169,7 @@ Al fine di chiarificare come tali metodologie sono applicate in pratica, si prop
 	\label{chapter8:MCRendering:reference}
 \end{figure}
 \begin{itemize}[topsep=0pt,noitemsep]
-	\item Tre tipi di BRDF, in particolare Lambertiana (\textrm{DIFF}), Speculare opaca (\textrm{SPEC}), Speculare traslucente (\textrm{}) 
+	\item Tre tipi di BRDF, in particolare Lambertiana (\textrm{DIFF}), Speculare opaca (\textrm{SPEC}), Speculare traslucente (\textrm{REFL}) 
 	\item Russian Roulette, applicata per terminare la valutazione di una path e per scegliere tra riflessione o trasmissione nel caso di 
 		BRDF traslucente
 	\item Stratified Sampling, dividendo ciascun pixel cell in 4 caselle, e campionando per ciascuna di esse un numero di samples pari all'input da 
@@ -179,7 +179,7 @@ Al fine di chiarificare come tali metodologie sono applicate in pratica, si prop
 Il quale crea una resa della celebre \textit{Cornell Box}, scena utilizzata per testare 3D rendering software creata e presentata nel SIGGRAPH 1984
 (vedi Figura \ref{chapter8:MCRendering:reference}).\par
 In questa implementazione, la scena \`e composta esclusivamente da sfere, definite attraverso un raggio, posizione, radianza emessa, 
-riflettanza spettrale (informalmente "colore"), tipologia di materiale.
+riflettanza spettrale (formalmente DHR o albedo, Equazione \ref{chapter3:surface:DHR}, informalmente "colore"), tipologia di materiale.
 \codesnippet{Definizione \textrm{Sphere} struct}
 \begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
 	struct Sphere { 
@@ -209,39 +209,39 @@ spettrale nulla, e le comuni sfere, con radianza emessa nulla e riflettanza spet
 Il codice parte nella funzione \texttt{main}, la quale opera nel seguente modo
 \codesnippet{\texttt{main} outline}
 \begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
-	int main(int argc, char *argv[]){ 
+	int main(int argc, char *argv[]) {
 		// definisci risoluzione griglia film plane (schermo) e numero di campioni
 		// per pixel da linea di comando
-		int w=1024, h=768, samps = argc==2 ? atoi(argv[1])/4 : 1; 
+		int w=1024, h=768, samps = argc==2 ? atoi(argv[1])/4 : 1;
 
-		// definisci posizione e direzione osservatore, utilizzando il 
+		// definisci posizione e direzione osservatore, utilizzando il
 		// Pinhole Camera Model
-		Ray cam(Vec(50,52,295.6), Vec(0,-0.042612,-1).norm()); 
+		Ray cam(Vec(50,52,295.6), Vec(0,-0.042612,-1).norm());
 
-		// definisci direzione orizzontale ¬$\mathtt{cx}\text{ e verticale }\mathtt{cy}$¬
-		// della camera. "%" e' definito come prodotto vettoriale ¬$\mathrm{vedi}\;\ref{appendixD:pathTracer}$¬
-		Vec cx=Vec(w*.5135/h), cy=(cx%cam.d).norm()*.5135; 
+		// definisci direzione orizzontale $\mathtt{cx}\text{ e verticale }\mathtt{cy}$
+		// della camera. "%" e' definito come prodotto vettoriale $\mathrm{vedi}\;\ref{appendixD:pathTracer}$
+		Vec cx=Vec(w*.5135/h), cy=(cx%cam.d).norm()*.5135;
 
 		// variabile che conterra' la stima effettuata per ogni sample
-		Vec r; 
+		Vec r;
 
 		// Buffer che conterra' l'immagine finale
-		Vec* c=new Vec[w*h]; 
+		Vec* c=new Vec[w*h];
 
 		// direttiva per la programmazione multicore con OpenMP
 	#pragma omp parallel for schedule(dynamic, 1) private(r)
 		// per ogni pixel
-		for (int y=0; y<h; y++){                       
-			printf(stderr,"\rRendering (%d spp) %5.2f%%",samps*4,100.*y/(h-1)); 
-			for (unsigned short x=0, Xi[3]={0,0,y*y*y}; x<w; x++)   
+		for (int y=0; y<h; y++) {
+			printf(stderr,"\rRendering (%d spp) %5.2f%%",samps*4,100.*y/(h-1));
+			for (unsigned short x=0, Xi[3]={0,0,y*y*y}; x<w; x++)
 			  ¬\codesnippetinl{Calcola il colore mostrato dal pixel}¬
 		} 
 
 		// salva l'immagine sintetizzata in un file
-		FILE *f = fopen("image.ppm", "w");         
-		fprintf(f, "P3\n%d %d\n%d\n", w, h, 255); 
-		for (int i=0; i<w*h; i++) 
-			fprintf(f,"%d %d %d ", toInt(c[i].x), toInt(c[i].y), toInt(c[i].z)); 
+		FILE *f = fopen("image.ppm", "w");
+		fprintf(f, "P3\n%d %d\n%d\n", w, h, 255);
+		for (int i=0; i<w*h; i++)
+			fprintf(f,"%d %d %d ", toInt(c[i].x), toInt(c[i].y), toInt(c[i].z));
 	} 
 \end{minted}
 \begin{figure}[tb]
@@ -271,22 +271,22 @@ Tale espressione pu\`o essere utilizzata per calcolare ascissa e ordinata del su
 		for (int sx=0; sx<2; sx++, r=Vec()){        
 			// per ogni campione nello strata
 			for (int s=0; s<samps; s++){ 
-				// genera un numero casuale basato sul seed ¬$\mathtt{Xi}$¬ con PDF 
+				// genera un numero casuale basato sul seed $\mathtt{Xi}$ con PDF 
 				// triangolare per ogni coordinata del campione...
 				double r1=erand48(Xi), dx=1-sqrt(1-r1); 
 				double r2=erand48(Xi), dy=1-sqrt(1-r2); 
 
 				// ...e utilizzalo come scostamento dal centro dello strata 
-				// (tecnica nota come ¬$\textit{jittering}$¬), tramite il quale possiamo
+				// (tecnica nota come $\textit{jittering}$), tramite il quale possiamo
 				// definire la direzione del raggio da proiettare dall'osservatore, di 
-				// posizione ¬$\mathtt{cam.o}$¬
+				// posizione $\mathtt{cam.o}$
 				Vec d = cx*( ( (sx+.5 + dx)/2 + x)/w - .5) 
 					  + cy*( ( (sy+.5 + dy)/2 + y)/h - .5) + cam.d; 
 
 				¬\codesnippetinl{Applica lo Stimatore di Monte Carlo}¬
 			} 
 
-			// Il colore finale del pixel \`e pari alla media dei quattro colori 
+			// Il colore finale del pixel e' pari alla media dei quattro colori 
 			// calcolati per ogni strata
 			c[i] = c[i] + Vec(clamp(r.x),clamp(r.y),clamp(r.z))*.25; 
 		} 
@@ -301,42 +301,164 @@ Dove la funzione \texttt{radiance} \`e una funzione ricorsiva, che ritorna un ca
 	\item Raggio da proiettare
 	\item \textit{ray depth} corrente, ovvero il numero di "rimbalzi" gi\`a effettuati
 	\item seed per RNG
-	\item booleano che indica se contare radianza emessa o meno
+	\item booleano che indica se contare radianza emessa o meno (default: \texttt{true})
 \end{itemize}
 La cui definizione \`e la seguente
-\codesnippet{Funzione \texttt{radiance}}
+\codesnippet{Funzione $\mathtt{radiance}$}
 \begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
 	Vec radiance(const Ray &r, int depth, unsigned short *Xi){ 
-		double t;                               
-		int id=0;                               
-		if (!intersect(r, t, id)) return Vec(); 
+		double t;
+		int id=0;
+		if (!intersect(r, t, id)) return Vec();
 
-		const Sphere &obj = spheres[id];        
-		Vec x=r.o+r.d*t, n=(x-obj.p).norm(), nl=n.dot(r.d)<0?n:n*-1, f=obj.c; 
-		double p = f.x>f.y && f.x>f.z ? f.x : f.y>f.z ? f.y : f.z; 
+		const Sphere &obj = spheres[id]; 
 
-		if (++depth>5) if (erand48(Xi)<p) f=f*(1/p); else return obj.e; 
+		/*
+		 * Rispettivamente:
+		 * x  <- punto di intersezione tra sfera e raggio
+		 * n  <- normale della sfera
+		 * nl <- normale riorientata in modo da formare un angolo acuto con l'osservatore
+		 * f  <- riflettanza della sfera, usata per modulare il contributo della BRDF
+		 */
+		Vec x=r.o+r.d*t, n=(x-obj.p).norm(), nl=n.dot(r.d)<0?n:n*-1, f=obj.c;
 
-		if (obj.refl == DIFF){                  
-			double r1=2*M_PI*erand48(Xi), r2=erand48(Xi), r2s=sqrt(r2); 
-			Vec w=nl, u=((fabs(w.x)>.1?Vec(0,1):Vec(1))%w).norm(), v=w%u; 
-			Vec d = (u*cos(r1)*r2s + v*sin(r1)*r2s + w*sqrt(1-r2)).norm(); 
-			return obj.e + f.mult(radiance(Ray(x,d),depth,Xi)); 
-		} else if (obj.refl == SPEC)            
-			return obj.e + f.mult(radiance(Ray(x,r.d-n*2*n.dot(r.d)),depth,Xi)); 
+		// Applica Russian Roulette per tutti i raggi con depth > 5, dunque 
+		// - Dal termine $P(\ptset{5})$ in poi, con probabilita' $\mathtt{p}$.
+		// - Applica la compensazione (Equazione $\ref{chapter8:pt:russianroulette}$) in caso il raggio persista.
+		// - Confronta la probabilita' estratta con la componente massima della 
+		//   riflettanza per decidere se terminare il raggio o meno
+		double p = f.x>f.y && f.x>f.z ? f.x:
+		                      f.y>f.z ? f.y:
+		                                f.z;
+		if (++depth>5) {
+			if (erand48(Xi)<p) f=f*(1/p); 
+			else return obj.e;
+		}
 
-		Ray reflRay(x, r.d-n*2*n.dot(r.d));     
-		bool into = n.dot(nl)>0;                
-		double nc=1, nt=1.5, nnt=into?nc/nt:nt/nc, ddn=r.d.dot(nl), cos2t; 
+		// Se la sfera ha BRDF lambertiana
+		if (obj.refl == DIFF) {
+			¬\codesnippetinl{Calcola contributo per BRDF Lambertiana e reitera}¬
+		} 
 
-		if ((cos2t=1-nnt*nnt*(1-ddn*ddn))<0)    
-			return obj.e + f.mult(radiance(reflRay,depth,Xi)); 
+		// Se la sfera ha BRDF speculare opaca
+		else if (obj.refl == SPEC)
+			¬\codesnippetinl{Calcola contributo per BRDF Speculare Opaca e reitera}¬
 
-		Vec tdir = (r.d*nnt - n*((into?1:-1)*(ddn*nnt+sqrt(cos2t)))).norm(); 
-		double a=nt-nc, b=nt+nc, R0=a*a/(b*b), c = 1-(into?-ddn:tdir.dot(n)); 
-		double Re=R0+(1-R0)*c*c*c*c*c,Tr=1-Re,P=.25+.5*Re,RP=Re/P,TP=Tr/(1-P); 
-		return obj.e + f.mult(depth>2 ? (erand48(Xi)<P ?   
-			radiance(reflRay,depth,Xi)*RP:radiance(Ray(x,tdir),depth,Xi)*TP) : 
-			radiance(reflRay,depth,Xi)*Re+radiance(Ray(x,tdir),depth,Xi)*Tr); 
-	} 
+		// Se la sfera ha BRDF speculare translucente
+	   ¬\codesnippetinl{Calcola contributo per BRDF Speculare Translucente e reitera}¬
+	}
 \end{minted}
+In tutti e tre i casi di BRDF, il risultato \`e pari alla radianza emessa sommata alla radianza riflessa/trasmessa, come prescrive 
+la Rendering Equation (Equazione \ref{chapter3:surface:renderingEq}). Per quest'ultima, si esegue una chiamata ricorsiva alla funzione 
+\texttt{radiance}, con direzione campionata dipendente dalla BRDF in questione.\par
+Per una BRDF lambdertiana, il campionamento seguendo pu\`o 
+\codesnippet{Calcola contributo per BRDF Lambertiana e reitera}
+\begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
+	// $\phi$, angolo azimuthale (Figura $\ref{chapter3:surface:projectedArea}$)
+	double r1=2*M_PI*erand48(Xi);
+
+	// $\sin\theta$, dove $\theta$ angolo rispetto allo zenith (Figura $\ref{chapter3:surface:projectedArea}$)
+	double r2=erand48(Xi), r2s=sqrt(r2);
+
+	/*
+	 * definizione del sistema di riferimento con i tre versori
+	 * w <- normale, direzione dello zenith
+	 * u <- direzione tangente alla superficie
+	 * v <- direzione bitangente alla superficie
+	 */
+	Vec w=nl, u=((fabs(w.x)>.1?Vec(0,1):Vec(1))%w).norm(), v=w%u;
+
+	// conversione da coordinate sferiche a coordinate cartesiane
+	Vec d = (u*cos(r1)*r2s + v*sin(r1)*r2s + w*sqrt(1-r2)).norm();
+
+	// calcolo della radianza finale con ricorsione a $P(\ptset{i+1})$.
+	// ($\mathtt{f.mult}$ indica prodotto di Hadamard)
+	return obj.e + f.mult(radiance(Ray(x,d),depth,Xi));
+\end{minted}
+Una BRDF speculare opaca non calcola alcuna direzione casuale, per via della distribuzione di Dirac presente nella sua BRDF 
+(Equazione \ref{chapter3:BRDF:specular}), dunque riflette solamente nella direzione indicata in Equazione \ref{chapter3:surface:reflectedDirection}
+\codesnippet{Calcola contributo per BRDF Speculare Opaca e reitera}
+\begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
+	return obj.e + f.mult(radiance(Ray(x,r.d-n*2*n.dot(r.d)),depth,Xi));
+\end{minted}
+Infine, la BRDF speculare traslucente \`e pensata per modellare una superficie vetrosa. Infatti, il suo IOR \`e assunto pari a $\eta_t=1.5$, mentre 
+si assume indice di rifrazione unitario per l'ambiente circostante. Il funzionamento \`e il seguente:
+\begin{enumerate}[topsep=0pt,noitemsep]
+	\item calcola l'indice di rifrazione relativo, pari al rapporto IOR entrante e IOR uscente. Calcola anzi tempo la direzione riflessa
+	\item Se si \`e nel caso di riflessione interna, si fa ricorsione a $P(\ptset{i+1})$ con la direzione riflessa
+	\item Altrimenti calcola anzi tempo la direzione trasmessa (Equazione \ref{chapter3:surface:refractedDirection})
+	\item Calcola la riflettanza per la direzione di incidenza con l'approssimazione di Schlick, utilizzabile in quanto si sta supponendo vetro 
+		come materiale, che \`e un dielettrico (Equazione \ref{chapter3:surface:schFresnel}).
+\end{enumerate}
+Il codice \`e il seguente:
+\codesnippet{Calcola contributo per BRDF Speculare Translucente e reitera}
+\begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
+	// Calcola direzione riflessa
+	Ray reflRay(x, r.d-n*2*n.dot(r.d));
+
+	// calcola indice di rifrazione relativo e $\mathtt{ddn}=\langle\hat{n},\hat{\omega}_i\rangle$
+	bool into = n.dot(nl)>0;
+	double nc=1, nt=1.5, nnt=into?nc/nt:nt/nc, ddn=r.d.dot(nl)
+
+	// test per riflessione interna totale
+	double cos2t = 1-nnt*nnt*(1-ddn*ddn);
+	if (cos2t<0)
+		return obj.e + f.mult(radiance(reflRay,depth,Xi));
+
+	// calcola direzione di trasmissione
+	Vec tdir = (r.d*nnt - n*((into?1:-1)*(ddn*nnt+sqrt(cos2t)))).norm();
+
+	// calcola coefficienti di fresnel di riflessione e trasmissione
+	double a=nt-nc, b=nt+nc, R0=a*a/(b*b), c = 1-(into?-ddn:tdir.dot(n));
+	double Re=R0+(1-R0)*c*c*c*c*c;
+	double Tr=1-Re;
+
+	// Applicazione Russian Roulette: se $\mathtt{depth}$ del raggio e' maggiore di
+	// 2, allora uno dei due raggi e' terminato. La scelta tra il raggio riflesso $\mathtt{reflRay}$
+	// e raggio trasmesso $\mathtt{Ray(x,tdir)}$ e' dettata dalla riflettanza di Fresnel $\mathtt{Re}$: piu' e' alta,
+	// e piu' la probabilita' $\mathtt{P}$ di scegliere di terminare il raggio rifratto e' alta
+	double P=.25+.5*Re;
+
+	// Applica la compensazione prevista dalla tecnica Russian Roulette
+	double RP=Re/P;
+	double TP=Tr/(1-P);
+
+	// Calcola il contributo di radianza finale
+	return obj.e + f.mult(depth>2 ? (erand48(Xi)<P ? radiance(reflRay,depth,Xi)*RP:
+	                                                 radiance(Ray(x,tdir),depth,Xi)*TP)
+	                              : radiance(reflRay,depth,Xi)*Re 
+	                                + radiance(Ray(x,tdir),depth,Xi)*Tr);
+\end{minted}
+\begin{figure}[tb]
+    \begin{subfigure}[c]{0.4\linewidth}
+	\centering
+	\includegraphics[width=\linewidth]{../assets/appendixD_result_8.png}
+	\caption{8 campioni per strata}
+    \end{subfigure}\hspace{12pt}
+    \begin{subfigure}[c]{0.4\linewidth}
+	\centering
+	\includegraphics[width=\linewidth]{../assets/appendixD_result_40.png}
+	\caption{40 campioni per strata}
+    \end{subfigure}\hfill
+    \begin{subfigure}[c]{0.4\linewidth}
+	\includegraphics[width=\linewidth]{../assets/appendixD_result_200.png}
+	\caption{200 campioni per strata}
+    \end{subfigure}\hfill
+    \begin{subfigure}[c]{0.4\linewidth}
+	\centering
+	\includegraphics[width=\linewidth]{../assets/appendixD_result_1000.png}
+	\caption{1000 campioni per strata}
+    \end{subfigure}\hfill
+    \begin{subfigure}[c]{0.4\linewidth}
+	\centering
+	\includegraphics[width=\linewidth]{../assets/appendixD_result_5k.png}
+	\caption{5000 campioni per strata}
+    \end{subfigure}\hfill
+    \begin{subfigure}[c]{0.4\linewidth}
+	\centering
+	\includegraphics[width=\linewidth]{../assets/appendixD_result_25k.png}
+	\caption{25000 campioni per strata}
+    \end{subfigure}
+    \caption{Risultati dell'esecuzione dell'algoritmo con numero crescente di campioni per pixel}
+\end{figure}
+Il codice completo pu\`o essere trovato in Appendice \ref{appendixD:pathTracer} assieme ai comandi per la compilazione.

@@ -258,7 +258,7 @@ ottica geometrica, \`e interamente governata dalle
 Ricordiamo che le implementazioni per la Legge di Snell devono tener conto della possibilit\`a di \textit{riflessione interna totale}, nel caso in
 cui $\eta_t < \eta_i$ e \mbox{$\theta_i \geq \theta_c = \arcsin(\eta_i/\eta_t)$}.\par
 Le direzioni di riflessione e rifrazione sono computate mediante osservazioni geometriche (Figura \ref{chapter3:surface:specular})
-\begin{equation}
+\begin{equation}\label{chapter3:surface:reflectedDirection}
 	\hat{\omega}_r =\uptau_r(\hat{n},\hat{\omega}_i)= %
 		-(\hat{\omega}_i - 2\langle\hat{n},\hat{\omega}_i\rangle) = 2\langle\hat{n},\hat{\omega}_i\rangle - \hat{\omega}_i
 \end{equation}
@@ -274,7 +274,7 @@ allora la direzione di trasmissione
 {
 	\newcommand{\dotprr}{\langle\hat{n},\hat{\omega}_i\rangle}
 	\newcommand{\eq}{\mathmakebox[\widthof{(\ref{chapter3:surface:snellCosine})}]{=}}
-	\begin{align}
+	\begin{align}\label{chapter3:surface:refractedDirection}
 		\hat{\omega}_t \eq& \uptau_t(\hat{n},\hat{\omega}_i) = \sin\theta_t\hat{x} - \cos\theta_t\hat{n} \\ 
 			\stackrel{(\ref{chapter3:surface:directionComponents})}{\eq}&%
 				\frac{\sin\theta_t}{\sin\theta_i}(\cos\theta_i\hat{n}-\hat{\omega}_i)-\cos\theta_t\hat{n} \nonumber \\
@@ -555,7 +555,7 @@ Possiamo derivare una BRDF per una superficie che mostra riflessione speculare i
 La quale risulta essere evidente come una Distribuzione di dirac moltiplicata per un opportuno fattore\footnotemark{}
 \footnotetext{Le distribuzioni di Dirac, sia per le superfici che per le sorgenti luminose, devono essere riconosciute e trattate in maniera differente
 	nelle routines di sampling}
-\begin{equation}
+\begin{equation}\label{chapter3:BRDF:specular}
 	f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)=F_r(\langle\hat{n},\hat{\omega}_o\rangle)%
 		\frac{\delta(\hat{\omega}_i-\hat{\omega}_r)}{\vert\langle\hat{n},\hat{\omega}_i\rangle\vert}
 \end{equation}
