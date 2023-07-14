@@ -1,0 +1,25 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{from} \PYG{n+nn}{PIL} \PYG{k+kn}{import} \PYG{n}{Image}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+
+\PYG{k}{def} \PYG{n+nf}{compute\PYGZus{}image\PYGZus{}variances}\PYG{p}{(}\PYG{n}{image\PYGZus{}path}\PYG{p}{):}
+    \PYG{c+c1}{\PYGZsh{} Open the image}
+    \PYG{n}{image} \PYG{o}{=} \PYG{n}{Image}\PYG{o}{.}\PYG{n}{open}\PYG{p}{(}\PYG{n}{image\PYGZus{}path}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} Convert the image to a numpy array}
+    \PYG{n}{image\PYGZus{}array} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{image}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} Convert the image to the linear RGB color space}
+    \PYG{n}{image\PYGZus{}linear\PYGZus{}rgb} \PYG{o}{=} \PYG{n}{image\PYGZus{}array}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{float32}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mf}{255.0}
+
+    \PYG{c+c1}{\PYGZsh{} Compute the variances for each color channel}
+    \PYG{n}{channel\PYGZus{}variances} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{var}\PYG{p}{(}\PYG{n}{image\PYGZus{}linear\PYGZus{}rgb}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{))}
+
+    \PYG{c+c1}{\PYGZsh{} Compute the luminance channel, using RGB\PYGZhy{}\PYGZgt{}Luma from Photometric/digital ITU BT.709:}
+    \PYG{n}{luminance} \PYG{o}{=} \PYG{l+m+mf}{0.2126} \PYG{o}{*} \PYG{n}{image\PYGZus{}linear\PYGZus{}rgb}\PYG{p}{[:,} \PYG{p}{:,} \PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{+} \PYG{l+m+mf}{0.7152} \PYG{o}{*} \PYG{n}{image\PYGZus{}linear\PYGZus{}rgb}\PYG{p}{[:,} \PYG{p}{:,} \PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{+} \PYG{l+m+mf}{0.0722} \PYG{o}{*} \PYG{n}{image\PYGZus{}linear\PYGZus{}rgb}\PYG{p}{[:,} \PYG{p}{:,} \PYG{l+m+mi}{2}\PYG{p}{]}
+
+    \PYG{c+c1}{\PYGZsh{} Compute the variance of the luminance channel}
+    \PYG{n}{luminance\PYGZus{}variance} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{var}\PYG{p}{(}\PYG{n}{luminance}\PYG{p}{)}
+
+    \PYG{k}{return} \PYG{n}{channel\PYGZus{}variances}\PYG{p}{,} \PYG{n}{luminance\PYGZus{}variance}
+\end{Verbatim}
