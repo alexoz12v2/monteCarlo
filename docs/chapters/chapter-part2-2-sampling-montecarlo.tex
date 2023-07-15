@@ -1,11 +1,11 @@
 \chapter{Integrazione di Monte Carlo}\label{chapter6}
-Il Rendering \`e fondato su equazioni integrali, le quali, non possiedono una forma chiusa generale, per metodi numerici come regola del trapezoide
+Il Rendering \`e fondato su equazioni integrali, le quali, non possiedono una forma chiusa generale, per metodi numerici come la regola del trapezio
 possiedono convergenza lenta per integrali multidimensionali e discontinui, oltre a richiedere un gran numero di sample points, crescente 
 esponenzialmente con la dimensionalit\`a del problema (\textit{Curse of Dimensionality}).\par
 Dunque, per risolvere tali problemi, si opta ad un approccio non deterministico, Monte Carlo Integration, il quale ci permette di stimare il valore 
 di un integrale $\int f(x)\mathrm{d}x$ arbitrario con il solo prerequisito di poter calcolare la funzione integranda in determinati punti.\par
 Si noti che gli algoritmi di Monte Carlo, in quanto basano la scelta dei punti del dominio in cui valutare la funzione integranda casualmente, 
-\textit{forniscono diversi risultati} in ogni esecuzione, dato lo stesso input, ma fornisce un risultato che \textit{statisticamente, in media, 
+\textit{forniscono diversi risultati} in ogni esecuzione, dato lo stesso input, ma forniscono un risultato che \textit{statisticamente, in media, 
 \`e vicino alla soluzione corretta}\footnotemark{}.
 \footnotetext{Per essere pi\`u precisi, si dovrebbe affermare che il risultato fornito \textit{converge in probabilit\`a} alla soluzione}
 \section{Preliminari}
@@ -45,11 +45,6 @@ variabili aleatorie $X_n$, ci sono tre modi in cui essa pu\`o convergere ad una 
 Maggiore \`e il "grado di convergenza", e maggiore \`e la frequenza in cui lo stimatore ci restituisce un risultato quasi esatto. Dunque si dice
 \textit{Debolmente Consistente} uno Stimatore che converge in probabilit\`a allo stimando, e \textit{Fortemente Consistente} uno Stimatore che 
 converge quasi certamente allo stimando.\par
-Si ricordi che la aspettazione di una variabile aleatoria $X$, la cui PDF $p_X$ definita in un dominio $D$ \`e pari a 
-\mbox{$E[X]=\int_Dxp_X(x)\mathrm{d}x$}, per la quale vale la propriet\`a gi\`a sfruttata in Capitolo \ref{chapter3}: sia $y=f(x)$
-\begin{equation*}
-	E[f(X)]=\int_{\Omega_y}yp_Y(y)\mathrm{d}y=\int_{\Omega_x}f(x)p_y(f(x))\left|\det(J_f(x))\right|\mathrm{d}x=\int_{\Omega_x}f(x)p_X(x)\mathrm{d}x
-\end{equation*}
 Tale parametro pu\`o essere stimato con lo stimatore \textit{Media Campionaria}, il quale \`e definito come 
 \begin{equation}
 	\tilde{E}_n[X]=\frac{1}{n}\sum_{i=1}^nx_i
@@ -62,15 +57,22 @@ Tale stima pu\`o essere incrementalmente raffinata come
 \end{equation}
 Si dimostra, rispettivamente, tramite la WLLN (Legge dei grandi numeri debole) che lo stimatore media campionaria \`e debolmente consistente, e tramite
 la SLLN (Legge dei grandi numeri forte) che lo stimatore \textit{media campionaria \`e fortemente consistente}. Ci\`o, assieme al fatto che 
-tale stimatore altro non fa che stimare un integrale, rende la media campionaria ottimo candidato per formulare lo stimatore di Monte Carlo.\par
+tale stimatore altro non fa che stimare un integrale, rende la media campionaria un ottimo candidato per formulare lo stimatore di Monte Carlo.\par
 \section{Monte Carlo Integration}
-Assumendo una densit\`a di probabilit\`a uniforme, ricavare una versione semplice di uno stimatore per un integrale, osserviamo che l'aspettazione
-si riduce alla media della funzione nel dominio
+Si ricordi che la aspettazione di una variabile aleatoria $X$, la cui PDF $p_X$ definita in un dominio $D$ \`e pari a 
+\mbox{$E[X]=\int_Dxp_X(x)\mathrm{d}x$}, per la quale vale la seguente propriet\`a: sia $y=f(x)$, allora
+\begin{equation*}
+	E[f(X)]=\int_{\Omega_y}yp_Y(y)\mathrm{d}y=\int_{\Omega_x}f(x)p_y(f(x))\left|\det(J_f(x))\right|\mathrm{d}x=\int_{\Omega_x}f(x)p_X(x)\mathrm{d}x
+\end{equation*}
+\`E possibile ricavare uno stimatore per l'integrale di una funzione integranda arbitraria $f(x)$
 \begin{equation}
-	E[f(X)]=\int_{\mathcal{D}}f(x)p_X(x)\mathrm{d}x=\frac{1}{\norm{\mathcal{D}}}\int_{\mathcal{D}}f(x)\mathrm{d}x
+	E\left[\frac{f(X)}{p_X(X)}\right]=\int_{\mathcal{D}}\frac{f(x)}{p_X(x)}p_X(x)\mathrm{d}x=\int_{\mathcal{D}}f(x)p_X(x)\mathrm{d}x
 \end{equation}
-Dunque, moltiplicando tale valore, e sostituendo l'aspettazione con la media campionaria, otteniamo uno stimatore \textit{unbiased}\footnotemark{} 
-per l'integrale
+Assumendo densit\`a di probabilit\`a uniforme nel dominio $\mathcal{D}$, si ottiene
+\begin{equation}
+	\norm{\mathcal{D}}E[f(X)]=\norm{\mathcal{D}}\int_{\mathcal{D}}f(x)p_X(x)\mathrm{d}x=\int_{\mathcal{D}}f(x)\mathrm{d}x
+\end{equation}
+Ssostituendo l'aspettazione con la media campionaria, otteniamo uno stimatore \textit{unbiased}\footnotemark{} per l'integrale
 \begin{equation}\label{chapter6:MC:crudeEstimator}
 	\tilde{F}_n=\norm{\mathcal{D}}\tilde{E}_n[f(X)]=\frac{\norm{\mathcal{D}}}{n}\sum_{i=1}^nf(X_i)
 \end{equation}
@@ -98,16 +100,16 @@ Da cui la deviazione standard, la quale rappresenta l'errore dello stimatore di 
 \begin{equation}
 	\sigma[\tilde{F}_n]=\sqrt{V[\tilde{F}_n]}=\sqrt{\frac{\norm{\mathcal{D}}^2}{n}V[f(X)]}=\frac{\norm{\mathcal{D}}}{n^{\frac{1}{2}}}\sigma[f(X)]
 \end{equation}
-Essa diminuisce come \mbox{$\mathcal{O}\left(n^{-\frac{1}{2}}\right)$}, Il che dimostra che il \textit{rateo di convergenza} dello stimatore \`e 
+Essa diminuisce come \mbox{$\mathcal{O}\left(n^{-\frac{1}{2}}\right)$}, Il che dimostra che l'\textit{ordine di convergenza} dello stimatore \`e 
 $1/2$. Esso \`e chiamato "diminishing return" dal fatto che 
-per abbattere l'errore atteso di un fattore $1/n$ bisogna campionare un numero di campioni pari a $n^2$ volte. Si noti che tecniche di quadratura 
+per abbattere l'errore atteso di un fattore $1/n$ bisogna campionare $n^2$ volte la funzione in esame. Si noti che tecniche di quadratura 
 convergono pi\`u velocemente per integrali 1D, ma appena si passa a integrali multidimensionali il loro costo e convergenza peggiorano 
 considerevolmente, mentre la accuratezza di Monte Carlo non dipende dalla dimensionalit\`a, rendendolo l'unica alternativa.
 \footnotetext{Ricordiamo che $V[aX+b]=a^2V[X]$ e che, se le variabili $\left\{X_i\right\}_{i=1}^n$ sono incorrelate, 
 	\mbox{$V\left[\tilde{E}_n[f(X)]\right]=V[X]/n$}}
 Altre caratteristiche dello stimatore sono \textit{efficienza}, \textit{bias}, \textit{mse}
-\begin{altDescription}{chapter6:MC:estimatorQualities}
-	\item[Bias] Aspettazione della differenza tra il valore stimato e lo stimando
+\begin{altDescription}{qualities}
+	\item[Bias] Differenza tra aspettazione dello stimatore e lo stimando
 		\begin{equation}
 			\beta = E[\tilde{F}_n(X)]-\int_{\mathcal{D}}f(x)\mathrm{d}x
 		\end{equation}
@@ -128,9 +130,7 @@ Altre caratteristiche dello stimatore sono \textit{efficienza}, \textit{bias}, \
 			MSE[\tilde{F}_n]=E\left[\left(\tilde{F}_n-\int_{\mathcal{D}}f(x)\mathrm{d}x\right)^2\right]=V[\tilde{F}_n]-\beta
 		\end{equation}
 		Tale metrica risulta utile quando si \`e a conoscenza di una previa stima, magari con un numero elevato di campioni, di un integrale $F$,
-		per la quale possiamo applicare lo stimatore media campionaria per calcolarne il suo valore approssimato. Essa \`e pi\`u consistente della 
-		varianza, stimata con lo stimatore varianza campionaria con correzione di Bessel, in quanto la varianza campionaria, per distribuzioni con 
-		densit\`a aventi ripidi picchi, pu\`o trascurarli nel campionamento, rendendo la stima non veritiera
+		per la quale possiamo applicare lo stimatore media campionaria per calcolarne il suo valore approssimato.
 \end{altDescription}
 \section{Esempio: Risoluzione di Integrali Semplici}\label{chapter6:MCExample}
 \begin{figure}[t]
@@ -188,7 +188,8 @@ I risultati ottenuti dalla simulazione di Monte Carlo con codice mostrato in App
 \ref{chapter6:MCExample:1Dfunction}\subref{chapter6:MCExample:1Dfunction:error}
 \section{Schemi di Campionamento}
 Supponendo si abbia a disposizione un algoritmo per estrarre un numero casuale uniformemente distribuito nell'intervallo $[0,1]$ 
-(vedi \ref{appendixC:RNG}) oppure un algoritmo che permetta di estrarre numeri quasirandom da una sequenza con low discrepancy (vedi \ref{chapter5}),
+(Appendice \ref{appendixC:RNG}) oppure un algoritmo che permetta di estrarre numeri quasirandom da una sequenza con low discrepancy 
+(Sezione \ref{chapter5:sampling:QuasiMonteCarlo}),
 analizziamo metodi per poter campionare samples da una distribuzione arbitraria, come quelle analizzate in Capitolo \ref{chapter3}.\par
 Le tre tecniche che citiamo a tal scopo sono \textit{Inverse Transform Sampling}, \textit{Acceptance-Rejection Sampling}, 
 \textit{Metropolis Hastings Sampling}
@@ -223,9 +224,7 @@ inverse transform sampling alla sua PDF marginale $p_x(x)=\int_{\Omega_y}p(x,y)\
 campionata applicando la procedura di inverse transform sampling alla PDF condizionale $p_{y|x}(y|x_i)=p(x_i,y) / p_x(x_i)$.\par
 Nel caso in cui la PDF congiunta risulta separabile, cio\`e le variabili sono indipendenti 
 \mbox{$\int\int p(x,y)\mathrm{d}x\mathrm{d}y=\int p_x(x)\mathrm{d}x\int p_y(y)\mathrm{d}y$} allora siamo in grado di applicare inverse transform 
-sampling a ciascuna coordinata utilizzando le rispettive PDFs marginali.\par
-In quanto siamo in grado di generare programmaticamente numeri pseudocasuali uniformemente distribuiti, tipicamente $X\sim\mathcal{U}(0,1)$. 
-Per esempi di applicazione del metodo si veda Capitolo \ref{chapter3}, come Equazione \ref{chapter3:surface:wardInverseTransformSampling}
+sampling a ciascuna coordinata utilizzando le rispettive PDFs marginali.
 \subsection{Acceptance-Rejection Method}
 \begin{figure}[tb]
 	\centering
@@ -233,9 +232,9 @@ Per esempi di applicazione del metodo si veda Capitolo \ref{chapter3}, come Equa
 	\caption{Illustrazione del rejection sampling. Immagine da \cite{pegoraro}}
 	\label{chapter6:sampling:rejectionSampling}
 \end{figure}
-Alcune funzioni, una volta normalizzate\footnotemark{}, possiedono CDFs non invertibili o non calcolabili. \textit{Acceptance-Rejection Sampling} 
-permette di campionare samples secondo una data PDF $p(x)$ possedendo la possibilit\`a di campionare, mediante altri metodi, una PDF $q(x)$, 
-richiedendo l'esistenza di un upper bound $b>p(x)/q(x)$, $\forall x\in\Omega$ tale che
+Alcune funzioni, una volta normalizzate\footnotemark{}, possiedono CDFs non invertibili o non calcolabili. Il metodo 
+\textit{Acceptance-Rejection Sampling} permette di campionare samples secondo una data PDF $p(x)$ supponendo di avere la possibilit\`a di campionare, 
+mediante altri metodi, una PDF $q(x)$, tale che esista un upper bound $b>p(x)/q(x)$, $\forall x\in\Omega$ cio\`e
 \begin{equation}
 	0\leq\frac{p(x)}{bq(x)}\leq 1
 \end{equation}
@@ -290,7 +289,7 @@ La cui aspettazione rappresenta la proporzione di campioni accettati
 in media, dunque, $b$ campioni sono estratti in media prima di accettarne uno. Ci\`o nonostante, Rejection-Sampling pu\`o non essere efficace nel 
 campionamento di distribuzioni altamente concentrate in una piccola regione del loro dominio. Inoltre, man mano che la dimensionalit\`a del problema
 aumenta, il volume "in eccesso" della distribuzione strumentale aumenta, rendendo il metodo soggetto alla curse of dimensionality.\par
-Come esempio di applicazione, si consideri campionare con distribuzione uniforme di dominio pari ad un quarto di disco unitario, 
+Come esempio di applicazione, si consideri il campionamento con distribuzione uniforme di dominio pari ad un quarto di disco unitario, 
 utilizzando come proposal distribution una distribuzione uniforme definita in un quadrato unitario\footnotemark{}.\par
 la PDF target \`e dunque 
 \begin{equation}
@@ -414,123 +413,123 @@ l'efficienza (Equazione \ref{chapter6:MC:efficiency}). Le tecniche di seguito il
 	\item[Splitting] Al contrario di Russian Roulette, aumenta il numero di campioni in alcune dimensioni di un integrale multidimensionale
 \end{altDescription}
 Ulteriori tecniche di campionamento sono esplorate in Capitolo \ref{chapter5}
-\subsection{Stratified Sampling}
-Una funzione generalmente varia meno in un dominio ridotto. \textit{Stratified Sampling} consiste nella suddivisione del dominio di integrazione 
-$\mathcal{D}$ in un insieme esaustivo e mutialmente esclusivo di $n$ \textit{Strata} $\mathcal{D}_i$, dunque tali che
-\begin{align*}
-	\bigcup_{i=1}^n\mathcal{D}_i &= \mathcal{D} \\
-	\mathcal{D}_i\cap\mathcal{D}_j &= \text{\O},\,\forall i,j\in\{1,\ldots,n\}\backepsilon^\prime i\neq j
-\end{align*}
-Tale che per campionare $\mathcal{D}$, campioniamo $n_i$ punti da ciascun stratum con densit\`a di probabilit\`a $p_i$. Ideale applicazione di tale 
-tecnica \`e il campionamento di punti all'interno di ciascun pixel del film plane (vedi \ref{chapter2:camera}). Tale approccio permette di evitare 
-il rischio di accumulare campioni in una singola zona del dominio. L'integrale originario pu\`o dunque essere riscritto come
-\begin{equation}
-	\int_{\mathcal{D}}f(x)\mathrm{d}x=\sum_{i=1}^n\int_{\mathcal{D}_i}f(x)\mathrm{d}x
-\end{equation}
-Per cui, riprendendo Equazione \ref{chapter6:MC:importanceEstimator}, lo stimatore diventa
-\begin{equation}
-	\tilde{F}=\sum_{j=1}^n\frac{v_j}{n_j}\sum_{i=1}^{n_j}\frac{f(X_{ij})}{p_j(X_{ij})}=\sum_{j=1}^nv_j\tilde{F}_j
-\end{equation}
-dove $v_j\in[0,1]$ rappresenta la frazione di volume contenuta nello stratum $\mathcal{D}_i$. Ciascuna variabile aleatoria $X_{ij}$ \`e campionata 
-secondo la sua PDF $p_j$. Un esempio di tali variabili \`e $X_{ij}=c_j+\norm{\mathcal{D}_j}\xi_{ij}$.\par
-L'aspettazione di ciascun stratum $j$ \`e pari a
-\begin{align}
-	E\left[\tilde{F}_j\right]&=E\left[\frac{1}{n_j}\sum_{i=1}^{n_j}\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
-		&=\frac{1}{n_j}\sum_{i=1}^{n_j}E\left[\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
-		&=\frac{1}{n_j}\sum_{i=1}^{n_j}\int_{\mathcal{D}_j}f(x_j)\mathrm{d}x_j \nonumber \\
-		&=\int_{\mathcal{D}_j}f(x_j)\mathrm{d}x_j
-\end{align}
-da cui segue che lo stimatore complessivo ha aspettazione pari al valore vero dell'integrale. La varianza di uno stratum j, assumendo che ciascun 
-stratum sia campionato indipendentemente rispetto all'altro\footnote{In tal caso, $V[aX+bY]=a^2V[X]+b^2V[X]$}
-\begin{align}
-	V\left[\tilde{F}_j\right]&=V\left[\frac{1}{n_j}\sum_{i=1}^{n_j}\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
-		&=\frac{1}{n_j^2}\sum_{i=1}^{n_j}V\left[\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
-		&=\frac{1}{n_j^2}\sum_{i=1}^{n_j}\int_{\mathcal{D}_j}p_j(x_j)\left(\frac{f(x_j)}{p_j(x_j)}-E\left[\frac{f(x_j)}{p_j(x_j)}\right]\right)^2
-			\mathrm{d}x_j \nonumber \\
-		&=\frac{1}{n_j^2}\sum_{i=1}^{n_j}\int_{\mathcal{D}_j}\left(f(x_j)-\mu_j\right)^2\mathrm{d}x_j
-\end{align}
-Da cui la varianza totale risulta essere, assumendo che il numero di campioni per stratum sia proporzionale al loro volume \mbox{$n_j=v_jn$}
-\begin{equation}
-	V\left[\tilde{F}\right]=V\left[\sum_{j=1}^nv_j\tilde{F}_j\right]=\sum_{j=1}^nv_j^2V\left[\tilde{F}_j\right]
-		=\sum_{j=1}^n\frac{v_j^2\sigma_j^2}{n_j}=\frac{1}{n}\sum_{j=1}^nv_j\sigma_j^2
-\end{equation}
-dove $\sigma_j^2 = n_j^2V\left[\tilde{F}_j\right]$. Si pu\`o dimostrare, considerando il campionamento non stratificato come campionamento prima 
-scegliendo stratum casuale $I$ secondo una PMF definita dai $v_j$, seguita dal sampling di un numero casuale $X$ in $\mathcal{D}_I$, con PDF 
-condizionale da $I$, che la varianza dello stratified sampling \`e inferiore della varianza del monte carlo estimator di base \cite{pharr}, la 
-quale si pu\`o esprimere come
-\begin{equation}
-	V\left[{\tilde{F}}\right]=\frac{1}{n}\left(\sum_{i=1}^nv_i\sigma_i^2+\sum_{i=1}^nv_i(\mu_i-Q)^2\right)
-\end{equation}
-dove $Q$ media di $f$ nel dominio $\mathcal{D}$.\par
-Dunque stratified sampling non pu\`o mai aumentare la varianza; nel caso peggiore, che accade quando
-gli strata hanno stessa media, lascia la varianza originale invariata.\par
-Il grosso svantaggio dello stratified sampling \`e che \`e afflitto dalla curse of dimensionality, in quanto, in $D$ dimensioni, bisognerebbe 
-campionare ogni stratum con $S^D$ campioni, dunque l'approccio spesso seguito \`e quello di stratificare solo alcune dimensioni del dominio, contenenti
-la maggior variazione della funzione integranda.
-\subsection{Importance Sampling}\label{chapter6:variance:importanceSampling}
-L'obiettivo dell'Importance sampling \`e concentrare i samples nelle regioni del dominio di integrazione in cui $|f(x)|$ sia relativamente elevato, 
-dunque campionando con PDF proporzionale alla funzione integranda $f(x)$. Per dimostrare la sua efficacia, consideriamo lo stimatore in 
-Equazione \ref{chapter6:MC:importanceEstimator}. Assumendo variabili incorrelate, la sua varianza \`e pari a
-\begin{equation}
-	V[\tilde{F}]=V\left[\frac{1}{n}\sum_{i=1}^n\frac{f(X_i)}{p(X_i)}\right]=\frac{1}{n^2}\sum_{i=1}^nV\left[\frac{f(X_i)}{p(X_i)}\right]
-\end{equation}
-Ci\`o vuol dire che, se il rapporto $f(X)/p(X)$ \`e approssimativamente costante, la varianza diminuisce. Nel caso ideale, in cui il rapporto \`e 
-costante, si ottiene uno stimatore perfetto. Al contrario, se la varianza di tale rapporto \`e alta, il che consegue dalla scelta di una PDF che 
-non segue l'andamento della funzione integranda, la varianza aumenta.\par
-Molto spesso ci troviamo di fronte ad integrali la cui funzione integranda \`e prodotto di pi\`u funzioni, $\int f_a(x)f_b(x)\mathrm{d}x$. Spesso
-\`e possibile individuare strategie di campionamento per ciascuna presa singolarmente, ma non insieme. \`E questo il caso dell'integrale della 
-Rendering Equation (Equazione \ref{chapter3:surface:renderingEq}), nella quale un singolo contributo \`e rappresentato come prodotto tra BSDF, 
-radianza incidente, fattore coseno. Trovati metodi di campionamento per ciascuno di essi singolarmente $p_a$ e $p_b$, introduciamo la strategia
-\textit{Multiple Importance Sampling}. Essa consiste nel combinare due strategie di campionamento utilizzanti Importance Sampling e sommarne i 
-contributi mediante una combinazione convessa con pesi opportunamente scelti. Siano $n_j$ numero di campioni scelti con PDF $p_j$, tali che la loro
-somma sia pari a $n$. Allora, il MIS Monte Carlo Estimator
-\begin{equation}\label{chapter6:variance:MISMC}
-	\tilde{F}=\sum_{j=1}^n\frac{1}{n_j}\sum_{i=1}^{n_j}w_j(X_{ij})\frac{f(X_{ij})}{p_j(X_{ij})}
-\end{equation}
-Dove i pesi sono ricavati applicando minimizzazione utilizzando moltiplicatori di Lagrange \cite{pegoraro} per ottenere una formula nota come 
-\textit{balance heuristic}
-\begin{equation}
-	W_j(x)=\frac{n_jp_j(x)}{\sum_{k=1}^{n_j}n_kp_k(x)}
-\end{equation}
-Da quest'ultima formula si pu\`o anche ricavare una controparte manovrabile, che permette di dare pi\`u rilevanza a dei campioni piuttosto che altri 
-tramite esponenziazione, detta \textit{power heuristic}
-\begin{equation}
-	w_j(x)=\frac{\left(n_jp_j(x)\right)^\beta}{\sum_{k=1}^{n_j}\left(n_kp_k(x)\right)^\beta}
-\end{equation}
-\subsection{Russian Roulette}\label{chapter6:variance:russianRoulette}
-Tecnica che mira a migliorare la efficienza dello stimatore di Monte Carlo saltando la valutazione di campioni che avrebbero piccolo contributo 
-sul valore finale della stima dell'integrale. Tale tecnica \`e particolarmente conveniente per via del costo della valutazione della funzione 
-integranda, un esempio \`e la necessit\`a, nell'integrale di rendering, di computare la ray tracing function per calcolare il punto di intersezione 
-della prossima superficie, e se la funzione integranda assume piccolo valore, saltarne la valutazione risulta particolarmente conveniente. La semplice 
-terminazione del processo di stima porterebbe a sottostimare sistematicamente l'integrale generando un bias.\par
-Per ovviare a ci\`o, la stima \`e pesata con un fattore correttivo che mantiene lo stimatore unbiased. In particolare, scelta una \textit{probabilit\`a
-di terminazione} $q$, lo stimatore \`e valutato con probabilit\`a $1-q$ e pesato con fattore $1/(1-q)$, ottenendo
-\begin{equation}\label{chapter6:variance:russianEstimator}
-	\tilde{F}^\prime=\left\{\begin{aligned}
-		&\frac{\tilde{F}-qc}{1-q}\;\;&\xi>q\\
-		&c &\text{altrimenti}
-	\end{aligned}\right.
-\end{equation}
-la cui derivazione \cite{pegoraro}, e dove $c$ costante arbitraria, tipicamente nulla.\par
-Applicando la definizione di aspettazione, si ottiene la conferma di unbiasedness e correttezza
-\begin{equation}
-	E[\tilde{F}^\prime]=(1-q)\left(\frac{E[\tilde{F}]-qc}{1-q}\right)+qc=E[\tilde{F}]
-\end{equation}
-Inoltre, \textit{Russian Roulette non riduce mai la varianza}, a meno che \\ $c=F=\int f(x)\mathrm{d}x$, in quanto si pu\`o dimostrare che 
-(\cite{pegoraro})
-\begin{equation}
-	V[\tilde{F}^\prime]=\frac{\norm{\mathcal{D}}^2V[f(X)]+(1-q)(F-c)^2}{q}\geq\frac{\norm{\mathcal{D}}^2V[f(X)]}{q}=V[\tilde{F}]
-\end{equation}
-\subsection{Splitting}
-Tecnica duale a Russian Roulette, Splitting offre una tecnica unbiased di prelevare un numero maggiore di campioni in alcune dimensioni di un 
-integrale multidimensionale per migliorare l'efficienza dello stimatore. Ad esempio, l'integrale 
-\begin{equation*}
-	\int_A\int_Bf(x,y)\mathrm{d}x\mathrm{d}y\approx\frac{1}{n}\sum_{i=1}^n\frac{f(X_i,Y_i)}{p_x(X_i)p_y(Y_i)}
-\end{equation*}
-assumendo campioni nelle due dimensioni sono prelevati indipendentemente.\par
-Potremmo, ad esempio, voler campionare $m$ volte la seconda dimensione per ogni campione della prima, portando alla formulazione del seguente stimatore
-\begin{equation*}
-	\frac{1}{n}\sum_{i=1}^n\frac{1}{m}\sum_{j=1}^m\frac{f(X_i,Y_{ij})}{p_x(X_i)p_y(Y_{ij})}
-\end{equation*}
-Inoltre (\cite{pharr}), se \`e possibile valutare parzialmente $f(X_i,\cdot)$, il campionamento degli $mn$ samples di $Y_{ij}$ possono essere presi 
-in maniera pi\`u efficiente.
+%\subsection{Stratified Sampling}
+%Una funzione generalmente varia meno in un dominio ridotto. \textit{Stratified Sampling} consiste nella suddivisione del dominio di integrazione 
+%$\mathcal{D}$ in un insieme esaustivo e mutialmente esclusivo di $n$ \textit{Strata} $\mathcal{D}_i$, dunque tali che
+%\begin{align*}
+%	\bigcup_{i=1}^n\mathcal{D}_i &= \mathcal{D} \\
+%	\mathcal{D}_i\cap\mathcal{D}_j &= \text{\O},\,\forall i,j\in\{1,\ldots,n\}\backepsilon^\prime i\neq j
+%\end{align*}
+%Tale che per campionare $\mathcal{D}$, campioniamo $n_i$ punti da ciascun stratum con densit\`a di probabilit\`a $p_i$. Ideale applicazione di tale 
+%tecnica \`e il campionamento di punti all'interno di ciascun pixel del film plane (vedi \ref{chapter2:camera}). Tale approccio permette di evitare 
+%il rischio di accumulare campioni in una singola zona del dominio. L'integrale originario pu\`o dunque essere riscritto come
+%\begin{equation}
+%	\int_{\mathcal{D}}f(x)\mathrm{d}x=\sum_{i=1}^n\int_{\mathcal{D}_i}f(x)\mathrm{d}x
+%\end{equation}
+%Per cui, riprendendo Equazione \ref{chapter6:MC:importanceEstimator}, lo stimatore diventa
+%\begin{equation}
+%	\tilde{F}=\sum_{j=1}^n\frac{v_j}{n_j}\sum_{i=1}^{n_j}\frac{f(X_{ij})}{p_j(X_{ij})}=\sum_{j=1}^nv_j\tilde{F}_j
+%\end{equation}
+%dove $v_j\in[0,1]$ rappresenta la frazione di volume contenuta nello stratum $\mathcal{D}_i$. Ciascuna variabile aleatoria $X_{ij}$ \`e campionata 
+%secondo la sua PDF $p_j$. Un esempio di tali variabili \`e $X_{ij}=c_j+\norm{\mathcal{D}_j}\xi_{ij}$.\par
+%L'aspettazione di ciascun stratum $j$ \`e pari a
+%\begin{align}
+%	E\left[\tilde{F}_j\right]&=E\left[\frac{1}{n_j}\sum_{i=1}^{n_j}\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
+%		&=\frac{1}{n_j}\sum_{i=1}^{n_j}E\left[\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
+%		&=\frac{1}{n_j}\sum_{i=1}^{n_j}\int_{\mathcal{D}_j}f(x_j)\mathrm{d}x_j \nonumber \\
+%		&=\int_{\mathcal{D}_j}f(x_j)\mathrm{d}x_j
+%\end{align}
+%da cui segue che lo stimatore complessivo ha aspettazione pari al valore vero dell'integrale. La varianza di uno stratum j, assumendo che ciascun 
+%stratum sia campionato indipendentemente rispetto all'altro\footnote{In tal caso, $V[aX+bY]=a^2V[X]+b^2V[X]$}
+%\begin{align}
+%	V\left[\tilde{F}_j\right]&=V\left[\frac{1}{n_j}\sum_{i=1}^{n_j}\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
+%		&=\frac{1}{n_j^2}\sum_{i=1}^{n_j}V\left[\frac{f(X_{ij})}{p_j(X_{ij})}\right] \nonumber \\
+%		&=\frac{1}{n_j^2}\sum_{i=1}^{n_j}\int_{\mathcal{D}_j}p_j(x_j)\left(\frac{f(x_j)}{p_j(x_j)}-E\left[\frac{f(x_j)}{p_j(x_j)}\right]\right)^2
+%			\mathrm{d}x_j \nonumber \\
+%		&=\frac{1}{n_j^2}\sum_{i=1}^{n_j}\int_{\mathcal{D}_j}\left(f(x_j)-\mu_j\right)^2\mathrm{d}x_j
+%\end{align}
+%Da cui la varianza totale risulta essere, assumendo che il numero di campioni per stratum sia proporzionale al loro volume \mbox{$n_j=v_jn$}
+%\begin{equation}
+%	V\left[\tilde{F}\right]=V\left[\sum_{j=1}^nv_j\tilde{F}_j\right]=\sum_{j=1}^nv_j^2V\left[\tilde{F}_j\right]
+%		=\sum_{j=1}^n\frac{v_j^2\sigma_j^2}{n_j}=\frac{1}{n}\sum_{j=1}^nv_j\sigma_j^2
+%\end{equation}
+%dove $\sigma_j^2 = n_j^2V\left[\tilde{F}_j\right]$. Si pu\`o dimostrare, considerando il campionamento non stratificato come campionamento prima 
+%scegliendo stratum casuale $I$ secondo una PMF definita dai $v_j$, seguita dal sampling di un numero casuale $X$ in $\mathcal{D}_I$, con PDF 
+%condizionale da $I$, che la varianza dello stratified sampling \`e inferiore della varianza del monte carlo estimator di base \cite{pharr}, la 
+%quale si pu\`o esprimere come
+%\begin{equation}
+%	V\left[{\tilde{F}}\right]=\frac{1}{n}\left(\sum_{i=1}^nv_i\sigma_i^2+\sum_{i=1}^nv_i(\mu_i-Q)^2\right)
+%\end{equation}
+%dove $Q$ media di $f$ nel dominio $\mathcal{D}$.\par
+%Dunque stratified sampling non pu\`o mai aumentare la varianza; nel caso peggiore, che accade quando
+%gli strata hanno stessa media, lascia la varianza originale invariata.\par
+%Il grosso svantaggio dello stratified sampling \`e che \`e afflitto dalla curse of dimensionality, in quanto, in $D$ dimensioni, bisognerebbe 
+%campionare ogni stratum con $S^D$ campioni, dunque l'approccio spesso seguito \`e quello di stratificare solo alcune dimensioni del dominio, contenenti
+%la maggior variazione della funzione integranda.
+%\subsection{Importance Sampling}\label{chapter6:variance:importanceSampling}
+%L'obiettivo dell'Importance sampling \`e concentrare i samples nelle regioni del dominio di integrazione in cui $|f(x)|$ sia relativamente elevato, 
+%dunque campionando con PDF proporzionale alla funzione integranda $f(x)$. Per dimostrare la sua efficacia, consideriamo lo stimatore in 
+%Equazione \ref{chapter6:MC:importanceEstimator}. Assumendo variabili incorrelate, la sua varianza \`e pari a
+%\begin{equation}
+%	V[\tilde{F}]=V\left[\frac{1}{n}\sum_{i=1}^n\frac{f(X_i)}{p(X_i)}\right]=\frac{1}{n^2}\sum_{i=1}^nV\left[\frac{f(X_i)}{p(X_i)}\right]
+%\end{equation}
+%Ci\`o vuol dire che, se il rapporto $f(X)/p(X)$ \`e approssimativamente costante, la varianza diminuisce. Nel caso ideale, in cui il rapporto \`e 
+%costante, si ottiene uno stimatore perfetto. Al contrario, se la varianza di tale rapporto \`e alta, il che consegue dalla scelta di una PDF che 
+%non segue l'andamento della funzione integranda, la varianza aumenta.\par
+%Molto spesso ci troviamo di fronte ad integrali la cui funzione integranda \`e prodotto di pi\`u funzioni, $\int f_a(x)f_b(x)\mathrm{d}x$. Spesso
+%\`e possibile individuare strategie di campionamento per ciascuna presa singolarmente, ma non insieme. \`E questo il caso dell'integrale della 
+%Rendering Equation (Equazione \ref{chapter3:surface:renderingEq}), nella quale un singolo contributo \`e rappresentato come prodotto tra BSDF, 
+%radianza incidente, fattore coseno. Trovati metodi di campionamento per ciascuno di essi singolarmente $p_a$ e $p_b$, introduciamo la strategia
+%\textit{Multiple Importance Sampling}. Essa consiste nel combinare due strategie di campionamento utilizzanti Importance Sampling e sommarne i 
+%contributi mediante una combinazione convessa con pesi opportunamente scelti. Siano $n_j$ numero di campioni scelti con PDF $p_j$, tali che la loro
+%somma sia pari a $n$. Allora, il MIS Monte Carlo Estimator
+%\begin{equation}\label{chapter6:variance:MISMC}
+%	\tilde{F}=\sum_{j=1}^n\frac{1}{n_j}\sum_{i=1}^{n_j}w_j(X_{ij})\frac{f(X_{ij})}{p_j(X_{ij})}
+%\end{equation}
+%Dove i pesi sono ricavati applicando minimizzazione utilizzando moltiplicatori di Lagrange \cite{pegoraro} per ottenere una formula nota come 
+%\textit{balance heuristic}
+%\begin{equation}
+%	W_j(x)=\frac{n_jp_j(x)}{\sum_{k=1}^{n_j}n_kp_k(x)}
+%\end{equation}
+%Da quest'ultima formula si pu\`o anche ricavare una controparte manovrabile, che permette di dare pi\`u rilevanza a dei campioni piuttosto che altri 
+%tramite esponenziazione, detta \textit{power heuristic}
+%\begin{equation}
+%	w_j(x)=\frac{\left(n_jp_j(x)\right)^\beta}{\sum_{k=1}^{n_j}\left(n_kp_k(x)\right)^\beta}
+%\end{equation}
+%\subsection{Russian Roulette}\label{chapter6:variance:russianRoulette}
+%Tecnica che mira a migliorare la efficienza dello stimatore di Monte Carlo saltando la valutazione di campioni che avrebbero piccolo contributo 
+%sul valore finale della stima dell'integrale. Tale tecnica \`e particolarmente conveniente per via del costo della valutazione della funzione 
+%integranda, un esempio \`e la necessit\`a, nell'integrale di rendering, di computare la ray tracing function per calcolare il punto di intersezione 
+%della prossima superficie, e se la funzione integranda assume piccolo valore, saltarne la valutazione risulta particolarmente conveniente. La semplice 
+%terminazione del processo di stima porterebbe a sottostimare sistematicamente l'integrale generando un bias.\par
+%Per ovviare a ci\`o, la stima \`e pesata con un fattore correttivo che mantiene lo stimatore unbiased. In particolare, scelta una \textit{probabilit\`a
+%di terminazione} $q$, lo stimatore \`e valutato con probabilit\`a $1-q$ e pesato con fattore $1/(1-q)$, ottenendo
+%\begin{equation}\label{chapter6:variance:russianEstimator}
+%	\tilde{F}^\prime=\left\{\begin{aligned}
+%		&\frac{\tilde{F}-qc}{1-q}\;\;&\xi>q\\
+%		&c &\text{altrimenti}
+%	\end{aligned}\right.
+%\end{equation}
+%la cui derivazione \cite{pegoraro}, e dove $c$ costante arbitraria, tipicamente nulla.\par
+%Applicando la definizione di aspettazione, si ottiene la conferma di unbiasedness e correttezza
+%\begin{equation}
+%	E[\tilde{F}^\prime]=(1-q)\left(\frac{E[\tilde{F}]-qc}{1-q}\right)+qc=E[\tilde{F}]
+%\end{equation}
+%Inoltre, \textit{Russian Roulette non riduce mai la varianza}, a meno che \\ $c=F=\int f(x)\mathrm{d}x$, in quanto si pu\`o dimostrare che 
+%(\cite{pegoraro})
+%\begin{equation}
+%	V[\tilde{F}^\prime]=\frac{\norm{\mathcal{D}}^2V[f(X)]+(1-q)(F-c)^2}{q}\geq\frac{\norm{\mathcal{D}}^2V[f(X)]}{q}=V[\tilde{F}]
+%\end{equation}
+%\subsection{Splitting}
+%Tecnica duale a Russian Roulette, Splitting offre una tecnica unbiased di prelevare un numero maggiore di campioni in alcune dimensioni di un 
+%integrale multidimensionale per migliorare l'efficienza dello stimatore. Ad esempio, l'integrale 
+%\begin{equation*}
+%	\int_A\int_Bf(x,y)\mathrm{d}x\mathrm{d}y\approx\frac{1}{n}\sum_{i=1}^n\frac{f(X_i,Y_i)}{p_x(X_i)p_y(Y_i)}
+%\end{equation*}
+%assumendo campioni nelle due dimensioni sono prelevati indipendentemente.\par
+%Potremmo, ad esempio, voler campionare $m$ volte la seconda dimensione per ogni campione della prima, portando alla formulazione del seguente stimatore
+%\begin{equation*}
+%	\frac{1}{n}\sum_{i=1}^n\frac{1}{m}\sum_{j=1}^m\frac{f(X_i,Y_{ij})}{p_x(X_i)p_y(Y_{ij})}
+%\end{equation*}
+%Inoltre (\cite{pharr}), se \`e possibile valutare parzialmente $f(X_i,\cdot)$, il campionamento degli $mn$ samples di $Y_{ij}$ possono essere presi 
+%in maniera pi\`u efficiente.

@@ -66,7 +66,8 @@ definizione ricorsiva di radianza, e raggruppiamo i termini per complessit\`a
 \begin{align}
 	L(\vec{p}_1\to\vec{p}_0)&=L_e(\vec{p}_1\to\vec{p}_0) \nonumber \\
 		&+\int_{A}L_e(\vec{p}_2\to\vec{p}_1)f_s(\vec{p}_0,\vec{p}_1,\vec{p}_2)G(\vec{p}_1,\vec{p}_2)\mathrm{d}A(\vec{p}_2) \nonumber \\
-		&+\int_{A}\int_{A}L_e(\vec{p}_3\to\vec{p}_2)f_s(\vec{p}_1,\vec{p}_2,\vec{p}_3)G(\vec{p}_2,\vec{p}_3)\mathrm{d}A(\vec{p}_3) \nonumber \\
+		&+\int_{A}\int_{A}L_e(\vec{p}_3\to\vec{p}_2)f_s(\vec{p}_1,\vec{p}_2,\vec{p}_3)G(\vec{p}_2,\vec{p}_3) \nonumber \\
+		&\;\;\;\;\;\;\;\;\;\;\;\;\times f_s(\vec{p}_0,\vec{p}_1,\vec{p}_2)G(\vec{p}_1,\vec{p}_2)\mathrm{d}A(\vec{p}_2)\mathrm{d}A(\vec{p}_3) \nonumber\\
 		&+\ldots \nonumber \\
 		&=\sum_{i=1}^\infty P(\ptset{n})
 \end{align}
@@ -323,7 +324,7 @@ La cui definizione \`e la seguente
 		Vec x=r.o+r.d*t, n=(x-obj.p).norm(), nl=n.dot(r.d)<0?n:n*-1, f=obj.c;
 
 		// Applica Russian Roulette per tutti i raggi con depth > 5, dunque 
-		// - Dal termine $P(\ptset{5})$ in poi, con probabilita' $\mathtt{p}$.
+		// - Dalla quinta superficie intersecata in poi, con probabilita' $\mathtt{p}$.
 		// - Applica la compensazione (Equazione $\ref{chapter8:pt:russianroulette}$) in caso il raggio persista.
 		// - Confronta la probabilita' estratta con la componente massima della 
 		//   riflettanza per decidere se terminare il raggio o meno
@@ -351,7 +352,23 @@ La cui definizione \`e la seguente
 In tutti e tre i casi di BRDF, il risultato \`e pari alla radianza emessa sommata alla radianza riflessa/trasmessa, come prescrive 
 la Rendering Equation (Equazione \ref{chapter3:surface:renderingEq}). Per quest'ultima, si esegue una chiamata ricorsiva alla funzione 
 \texttt{radiance}, con direzione campionata dipendente dalla BRDF in questione.\par
-Per una BRDF lambdertiana, il campionamento seguendo pu\`o 
+Per una BRDF lambertiana, Equazione \ref{chapter3:surface:lambert}, il campionamento pu\`o seguire una cosine-lobe distribution di grado $1$, 
+approccio illustrato in Equazione \ref{chapter3:surface:cosineLobeSampling}.\par
+In quanto un approccio basato sui path presentato nelle sezioni precedenti richiederebbe un codice molto lungo, ci limitiamo a seguire un approccio
+basato sulle direzioni, e supponendo BRDF Lambertiana la Rendering Equation diventa
+\begin{align}
+	L_o(\vec{p},\hat{\omega}_o)&=L_e(\vec{p},\hat{\omega}_o)+\int_{\mathcal{H}^2(\hat{n})}%
+		L_i(\vec{p},\hat{\omega}_i)\frac{\rho(\vec{p})}{\pi}\langle\hat{n},\hat{\omega}_i\rangle\mathrm{d}\hat{\omega}_i\nonumber\\
+	&=L_e(\vec{p},\hat{\omega}_i)+\frac{\rho(\vec{p})}{\pi}\int_{\mathcal{H}^2(\hat{n})}%
+		L_i(\vec{p},\hat{\omega}_i)|\langle\hat{n},\hat{\omega}_i\rangle|\mathrm{d}\hat{\omega}_i\nonumber\\
+\end{align}
+applicando lo stimatore di Monte Carlo con un singolo campione ($n=1$)
+\begin{align}
+	L_o(\vec{p},\hat{\omega}_o)&\approx L_e(\vec{p},\hat{\omega}_o)+\frac{\norm{\mathcal{H}^2(\hat{n})}}{n}\frac{\rho}{\pi}
+		\frac{L_i(\vec{p},\hat{\omega})|\langle\hat{n},\hat{\omega}\rangle|}{p_\omega(\hat{\omega})}\nonumber \\
+	&=L_e(\vec{p},\hat{\omega}_o)+\rho\frac{L_i(\vec{p},\hat{\omega})|\langle\hat{n},\hat{\omega}\rangle|}{p_\omega(\hat{\omega})}
+\end{align}
+Che \`e l'equazione implementata nella riga finale del seguente codice
 \codesnippet{Calcola contributo per BRDF Lambertiana e reitera}
 \begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
 	// $\phi$, angolo azimuthale (Figura $\ref{chapter3:surface:projectedArea}$)
@@ -371,26 +388,37 @@ Per una BRDF lambdertiana, il campionamento seguendo pu\`o
 	// conversione da coordinate sferiche a coordinate cartesiane
 	Vec d = (u*cos(r1)*r2s + v*sin(r1)*r2s + w*sqrt(1-r2)).norm();
 
-	// calcolo della radianza finale con ricorsione a $P(\ptset{i+1})$.
+	// calcolo della radianza finale con ricorsione
 	// ($\mathtt{f.mult}$ indica prodotto di Hadamard)
 	return obj.e + f.mult(radiance(Ray(x,d),depth,Xi));
 \end{minted}
 Una BRDF speculare opaca non calcola alcuna direzione casuale, per via della distribuzione di Dirac presente nella sua BRDF 
 (Equazione \ref{chapter3:BRDF:specular}), dunque riflette solamente nella direzione indicata in Equazione \ref{chapter3:surface:reflectedDirection}
+\begin{align}
+	L_o(\vec{p},\hat{\omega}_o)&=L_e(\vec{p},\hat{\omega}_o)+\int_{\mathcal{H}^2(\hat{n})}%
+		L_i(\vec{p},\hat{\omega}_i)F_r(\langle\hat{n},\hat{\omega}_o\rangle)%
+		\frac{\delta(\hat{\omega}_i-\hat{\omega}_r)}{\vert\langle\hat{n},\hat{\omega}_i\rangle\vert}
+		\langle\hat{n},\hat{\omega}_i\rangle\mathrm{d}\hat{\omega}_i\nonumber\\
+	&=L_e(\vec{p},\hat{\omega}_o)+F_r(\langle\hat{n},\hat{\omega}_o\rangle)L_i(\vec{p},\hat{\omega}_r)\nonumber\\
+	&=L_e(\vec{p},\hat{\omega}_o)+\xoverline{F}_rL_i(\vec{p},\hat{\omega}_r)
+\end{align}
+Dove $\xoverline{F}_r$ indica il valor medio della Fresnel Reflectance, rappresentato dal parametro \texttt{c} memorizzato dalle \texttt{Sphere}s, 
+approssimazione valida solamente per i dielettrici.
 \codesnippet{Calcola contributo per BRDF Speculare Opaca e reitera}
 \begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
 	return obj.e + f.mult(radiance(Ray(x,r.d-n*2*n.dot(r.d)),depth,Xi));
 \end{minted}
 Infine, la BRDF speculare traslucente \`e pensata per modellare una superficie vetrosa. Infatti, il suo IOR \`e assunto pari a $\eta_t=1.5$, mentre 
-si assume indice di rifrazione unitario per l'ambiente circostante. Il funzionamento \`e il seguente:
+si assume indice di rifrazione unitario per l'ambiente circostante. Le equazioni sono simili alle precedenti con l'aggiunta del termine di 
+radianza trasmessa. Il funzionamento \`e il seguente:
 \begin{enumerate}[topsep=0pt,noitemsep]
 	\item calcola l'indice di rifrazione relativo, pari al rapporto IOR entrante e IOR uscente. Calcola anzi tempo la direzione riflessa
-	\item Se si \`e nel caso di riflessione interna, si fa ricorsione a $P(\ptset{i+1})$ con la direzione riflessa
+	\item Se si \`e nel caso di riflessione interna, si fa ricorsione con la direzione riflessa
 	\item Altrimenti calcola anzi tempo la direzione trasmessa (Equazione \ref{chapter3:surface:refractedDirection})
 	\item Calcola la riflettanza per la direzione di incidenza con l'approssimazione di Schlick, utilizzabile in quanto si sta supponendo vetro 
 		come materiale, che \`e un dielettrico (Equazione \ref{chapter3:surface:schFresnel}).
 	\item Calcola il contributo di raggio riflesso e raggio trasmesso
-	\item Russian Roulette: se \texttt{depth} $> 2$, allora uno dei due raggi, riflesso o trasmesso, uno dei due \`e terminato
+	\item Russian Roulette: se \texttt{depth} $> 2$, allora uno dei due raggi, riflesso o trasmesso, \`e terminato
 \end{enumerate}
 Il codice \`e il seguente:
 \codesnippet{Calcola contributo per BRDF Speculare Translucente e reitera}
@@ -398,7 +426,7 @@ Il codice \`e il seguente:
 	// Calcola direzione riflessa
 	Ray reflRay(x, r.d-n*2*n.dot(r.d));
 
-	// calcola indice di rifrazione relativo e $\mathtt{ddn}=\langle\hat{n},\hat{\omega}_i\rangle$
+	// calcola indice di rifrazione relativo e $\mathtt{ddn}=\langle\hat{n},\hat{\omega}_o\rangle$
 	bool into = n.dot(nl)>0;
 	double nc=1, nt=1.5, nnt=into?nc/nt:nt/nc, ddn=r.d.dot(nl)
 
@@ -433,82 +461,86 @@ Il codice \`e il seguente:
 	                              : radiance(reflRay,depth,Xi)*Re 
 	                                + radiance(Ray(x,tdir),depth,Xi)*Tr);
 \end{minted}
-\begin{figure}[tb]
+\begin{figure}[p]
     \begin{subfigure}[c]{0.4\linewidth}
 	\centering
 	\includegraphics[width=\linewidth]{../assets/appendixD_result_8.png}
-	\caption{8 campioni per strata}
+	\caption{8 campioni per stratum}
     \end{subfigure}\hspace{12pt}
     \begin{subfigure}[c]{0.4\linewidth}
 	\centering
 	\includegraphics[width=\linewidth]{../assets/appendixD_result_40.png}
-	\caption{40 campioni per strata}
+	\caption{40 campioni per stratum}
     \end{subfigure}\hfill
     \begin{subfigure}[c]{0.4\linewidth}
 	\includegraphics[width=\linewidth]{../assets/appendixD_result_200.png}
-	\caption{200 campioni per strata}
+	\caption{200 campioni per stratum}
     \end{subfigure}\hfill
     \begin{subfigure}[c]{0.4\linewidth}
 	\centering
 	\includegraphics[width=\linewidth]{../assets/appendixD_result_1000.png}
-	\caption{1000 campioni per strata}
+	\caption{1000 campioni per stratum}
     \end{subfigure}\hfill
     \begin{subfigure}[c]{0.4\linewidth}
 	\centering
 	\includegraphics[width=\linewidth]{../assets/appendixD_result_5k.png}
-	\caption{5000 campioni per strata}
+	\caption{5000 campioni per stratum}
     \end{subfigure}\hfill
     \begin{subfigure}[c]{0.4\linewidth}
 	\centering
 	\includegraphics[width=\linewidth]{../assets/appendixD_result_25k.png}
-	\caption{25000 campioni per strata}
+	\caption{25000 campioni per stratum}
     \end{subfigure}
     \caption{Risultati dell'esecuzione dell'algoritmo con numero crescente di campioni per pixel}
 \end{figure}
 Il codice completo pu\`o essere trovato in Appendice \ref{appendixD:pathTracer} assieme ai comandi per la compilazione.
-\begin{table}[tb]
+\begin{table}[p]
+	\begin{threeparttable}[b]
 	\begin{tabularx}{\linewidth}{Yc}
 		\toprule
 		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}
-		{Varianza trovata per le immagini risultanti\footnotemark} \\
+		{Varianza trovata per le immagini risultanti\tnote{1}} \\
 		\midrule
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}{8 campioni per strata}\\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}{8 campioni per stratum}\\
 		Red channel variance & 0.07344142 \\
 		Green channel variance & 0.06190188 \\
 		Blue channel variance & 0.07339846 \\
-		Luminance variance & 0.063803904 \\
+		Luminance variance & 0.06380390 \\
 		\midrule
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}{40 campioni per strata}\\
-		Red channel variance & 0.051329777 \\
-		Green channel variance & 0.047143742 \\
-		Blue channel variance & 0.051755887 \\
-		Luminance variance & 0.046217173 \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}{40 campioni per stratum}\\
+		Red channel variance & 0.05132978 \\
+		Green channel variance & 0.04714374 \\
+		Blue channel variance & 0.05175589 \\
+		Luminance variance & 0.04621717 \\
 		\midrule
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}{200 campioni per strata}\\
-		Red channel variance & 0.024821362 \\
-		Green channel variance & 0.024533229 \\
-		Blue channel variance & 0.025177956 \\
-		Luminance variance & 0.022768421 \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}{200 campioni per stratum}\\
+		Red channel variance & 0.02482136 \\
+		Green channel variance & 0.02453323 \\
+		Blue channel variance & 0.02517796 \\
+		Luminance variance & 0.02276842 \\
 		\midrule
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}{1000 campioni per strata}\\
-		Red channel variance & 0.020023584 \\
-		Green channel variance & 0.020198254 \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}{1000 campioni per stratum}\\
+		Red channel variance & 0.02023584 \\
+		Green channel variance & 0.02019825 \\
 		Blue channel variance & 0.02031221 \\
-		Luminance variance & 0.018400965 \\
+		Luminance variance & 0.01840096 \\
 		\midrule
-		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}{5000 campioni per strata}\\
-		Red channel variance & 0.019040858 \\
-		Green channel variance & 0.019367754 \\
-		Blue channel variance & 0.019303076 \\
-		Luminance variance & 0.017542794 \\
+		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}{5000 campioni per stratum}\\
+		Red channel variance & 0.01904086 \\
+		Green channel variance & 0.01936775 \\
+		Blue channel variance & 0.01930308 \\
+		Luminance variance & 0.01754279 \\
 		\midrule
 		\multicolumn{2}{>{\hsize=\dimexpr2\hsize- + 2\tabcolsep\relax}X}{25000 campioni per strata}\\
-		Red channel variance & 0.018850269 \\
-		Green channel variance & 0.019195538 \\
+		Red channel variance & 0.01885027 \\
+		Green channel variance & 0.01919554 \\
 		Blue channel variance & 0.01911878 \\
-		Luminance variance & 0.017376354 \\
+		Luminance variance & 0.01737635 \\
 		\bottomrule
 	\end{tabularx}
 	\caption{Tabella delle varianze}
+	\begin{tablenotes}
+		\item[1] {Ciascuna componente RGB \`e assunta normalizzata}
+	\end{tablenotes}
+	\end{threeparttable}
 \end{table}
-\footnotetext{Ciascuna componente RGB \`e assunta normalizzata}

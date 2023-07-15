@@ -511,7 +511,7 @@ perfetta.
 		= f_r(\vec{p})\pi = \rho(\vec{p})
 \end{equation}
 da cui
-\begin{equation}
+\begin{equation}\label{chapter3:surface:lambert}
 	f_r(\vec{p}) = \frac{\rho(\vec{p})}{\pi}
 \end{equation}
 Il campionamento di tale BRDF pu\`o essere compiuto estraendo una direzione casuale nell'emisfera proiettata (vedi Figura 
@@ -533,7 +533,7 @@ L'integrale in un angolo solido $\Omega_i$ per la \textit{Cosine-Lobe Distributi
 	&= \frac{\varphi_i}{2\pi}\left(1-\cos^{n+1}\theta_i\right)
 \end{align}
 Applicando \textit{Inverse Transform Sampling} permette di compiere \textit{Importance Sampling} come
-\begin{align}
+\begin{align}\label{chapter3:surface:cosineLobeSampling}
 	\xi_\varphi = \frac{\varphi_i}{2\pi} &\longrightarrow\varphi_i = 2\pi\xi_\varphi \\
 	\xi_\theta = 1-\cos^{n+1}\theta_i &\longrightarrow\theta_i = \arccos\left(\sqrt[n+1]{1-\xi_\theta}\right)
 \end{align}
