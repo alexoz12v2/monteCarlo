@@ -396,11 +396,11 @@ Una BRDF speculare opaca non calcola alcuna direzione casuale, per via della dis
 (Equazione \ref{chapter3:BRDF:specular}), dunque riflette solamente nella direzione indicata in Equazione \ref{chapter3:surface:reflectedDirection}
 \begin{align}
 	L_o(\vec{p},\hat{\omega}_o)&=L_e(\vec{p},\hat{\omega}_o)+\int_{\mathcal{H}^2(\hat{n})}%
-		L_i(\vec{p},\hat{\omega}_i)F_r(\langle\hat{n},\hat{\omega}_o\rangle)%
+		L_i(\vec{p},\hat{\omega}_i)F_r(\vert\langle\hat{n},\hat{\omega}_o\rangle\vert)%
 		\frac{\delta(\hat{\omega}_i-\hat{\omega}_r)}{\vert\langle\hat{n},\hat{\omega}_i\rangle\vert}
-		\langle\hat{n},\hat{\omega}_i\rangle\mathrm{d}\hat{\omega}_i\nonumber\\
-	&=L_e(\vec{p},\hat{\omega}_o)+F_r(\langle\hat{n},\hat{\omega}_o\rangle)L_i(\vec{p},\hat{\omega}_r)\nonumber\\
-	&=L_e(\vec{p},\hat{\omega}_o)+\xoverline{F}_rL_i(\vec{p},\hat{\omega}_r)
+		\vert\langle\hat{n},\hat{\omega}_i\rangle\vert\mathrm{d}\hat{\omega}_i\nonumber\\
+	&=L_e(\vec{p},\hat{\omega}_o)+F_r(\vert\langle\hat{n},\hat{\omega}_o\rangle\vert)L_i(\vec{p},\hat{\omega}_r)\nonumber\\
+	&=L_e(\vec{p},\hat{\omega}_o)+\bar{F}_rL_i(\vec{p},\hat{\omega}_r)
 \end{align}
 Dove $\xoverline{F}_r$ indica il valor medio della Fresnel Reflectance, rappresentato dal parametro \texttt{c} memorizzato dalle \texttt{Sphere}s, 
 approssimazione valida solamente per i dielettrici.
@@ -461,6 +461,15 @@ Il codice \`e il seguente:
 	                              : radiance(reflRay,depth,Xi)*Re 
 	                                + radiance(Ray(x,tdir),depth,Xi)*Tr);
 \end{minted}
+I risultati dell'algoritmo sono mostrati in Figura \ref{chapter8:LT:results}, seguite da Tabella \ref{chapter8:LT:variances}. Quest'ultima riporta, 
+per ogni simulazione eseguita, con numero differenta di pixel per stratum, campionati con PDF triangolare, la varianza di ciascuna immagine risultante
+per red channel, green channel, blue channel, e luminance channel. Quest'ultimo, in particolare, \`e stato calcolato per ogni pixel come luma channel 
+definito dal color space standardizzato ITU BT.709 $YC_BC_R$
+\begin{equation*}
+	Y = 0.2126R+0.7152G+0.0722B
+\end{equation*}
+Si pone l'accento su esso in quanto sono visibili incrementi notevoli di qualit\`a dell'immagine ogni qual volta la varianza per 
+tale canale diminuisce di $0.01$
 \begin{figure}[p]
     \begin{subfigure}[c]{0.4\linewidth}
 	\centering
@@ -492,6 +501,7 @@ Il codice \`e il seguente:
 	\caption{25000 campioni per stratum}
     \end{subfigure}
     \caption{Risultati dell'esecuzione dell'algoritmo con numero crescente di campioni per pixel}
+	\label{chapter8:LT:results}
 \end{figure}
 Il codice completo pu\`o essere trovato in Appendice \ref{appendixD:pathTracer} assieme ai comandi per la compilazione.
 \begin{table}[p]
@@ -539,6 +549,7 @@ Il codice completo pu\`o essere trovato in Appendice \ref{appendixD:pathTracer} 
 		\bottomrule
 	\end{tabularx}
 	\caption{Tabella delle varianze}
+	\label{chapter8:LT:variances}
 	\begin{tablenotes}
 		\item[1] {Ciascuna componente RGB \`e assunta normalizzata}
 	\end{tablenotes}

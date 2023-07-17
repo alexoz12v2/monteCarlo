@@ -265,16 +265,16 @@
 
 	\frontmatter
 	\section*{Abstract}
-	\begin{figure}[t]
+	Nel seguente documento si presentano tutti i fondamenti matematici e scientifici al problema della sintesi di un'immagine basata su fondamenti 
+	fisici. A tal scopo, l'algoritmo proposto per la renderizzazione di scene tridimensionali \`e il \textit{Path Tracing}, il quale risolve il problema
+	della \textit{Global Illumination}, cio\`e colorazione delle superfici contando illuminazione diretta ed indiretta.\par
+	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.6\linewidth]{./assets/intro_path_tracing_online_tech_tips.png}
 		\caption{Illustrazione dell'algoritmo Path Tracing. L'obiettivo di questo documento \`e spiegare come i Metodi di Monte Carlo rendono 
 			possibile la stima della funzione immagine $r_f(x,y)$}
 		\label{intro:pathTracing}
 	\end{figure}
-	Nel seguente documento si presentano tutti i fondamenti matematici e scientifici al problema della sintesi di un'immagine basata su fondamenti 
-	fisici. A tal scopo, l'algoritmo proposto per la renderizzazione di scene tridimensionali \`e il \textit{Path Tracing}, il quale risolve il problema
-	della \textit{Global Illumination}, cio\`e colorazione delle superfici contando illuminazione diretta ed indiretta.\par
 	Immediatamente si presenta un problema per il calcolo di tale immagine (mostrata in Figura \ref{intro:pathTracing}): al fine di poter costituire 
 	il risultato finale, l'\textit{Image Plane}\footnotemark \`e suddiviso a formare una griglia uniforme. In seguito, 
 	supponendo $r(x,y)$ funzione immagine,

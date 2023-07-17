@@ -4,73 +4,69 @@
 \contentsline {section}{\numberline {1.2}Monte Carlo Integration}{3}{section.1.2}%
 \contentsline {section}{\numberline {1.3}Esempio: Risoluzione di Integrali Semplici}{5}{section.1.3}%
 \contentsline {section}{\numberline {1.4}Schemi di Campionamento}{6}{section.1.4}%
-\contentsline {subsection}{\numberline {1.4.1}Inverse Transform Sampling}{6}{subsection.1.4.1}%
-\contentsline {subsection}{\numberline {1.4.2}Acceptance-Rejection Method}{8}{subsection.1.4.2}%
-\contentsline {subsection}{\numberline {1.4.3}Metriopolis-Hastings Sampling}{9}{subsection.1.4.3}%
-\contentsline {section}{\numberline {1.5}Metodi di Riduzione della Varianza}{11}{section.1.5}%
-\contentsline {chapter}{\numberline {2}Campionamento e Ricostruzione con Quasirandom Number Generation}{13}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Campionamento}{14}{section.2.1}%
-\contentsline {subsection}{\numberline {2.1.1}Richiami Fourier Analysis}{14}{subsection.2.1.1}%
-\contentsline {subsection}{\numberline {2.1.2}Quasirandom Number Generation}{16}{subsection.2.1.2}%
-\contentsline {subsection}{\numberline {2.1.3}Halton Sampler}{16}{subsection.2.1.3}%
-\contentsline {section}{\numberline {2.2}Ricostruzione}{18}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Box Filter}{19}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Gaussian Filter}{20}{subsection.2.2.2}%
-\contentsline {chapter}{\numberline {3}Light Transport Modello e Surface Reflection}{24}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Path Integral della Rendering Equation}{25}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Path Tracing}{27}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Applicazione del Metodo di Monte Carlo: Esempio Path Tracing Semplificato}{28}{section.3.3}%
-\contentsline {part}{II\hspace {1em}Fondamenti Fisici}{38}{part.2}%
-\contentsline {chapter}{\numberline {4}Richiami sull'elettromagnetismo e Radiometria}{39}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Radiazione Elettromagnetica}{39}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Introduzione all'assorbimento di radiazione}{41}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Radiometria}{41}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Propriet\`a Particolari}{44}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Radianza incidente ed uscente}{46}{subsection.4.3.2}%
-\contentsline {section}{\numberline {4.4}Radiazione di Corpo Nero}{46}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Fotometria, Colore e Camera}{48}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Fotometria}{48}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}fotometria e sistemi di rendering}{49}{subsection.5.1.1}%
-\contentsline {section}{\numberline {5.2}Colorimetria}{49}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}xy chromaticity diagram}{51}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}sRGB color space}{53}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Conversione da XYZ o RGB a SPD}{54}{subsection.5.2.3}%
-\contentsline {section}{\numberline {5.3}Camera}{57}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}pinhole camera model}{57}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}filtrare image samples}{60}{subsection.5.3.2}%
-\contentsline {chapter}{\numberline {6}Modelli di Fonti Luminose e Superfici}{62}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Modellazione di Superfici}{62}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}Propriet\`a ottiche delle interfacce}{65}{subsection.6.1.1}%
-\contentsline {subsection}{\numberline {6.1.2}BRDF e BSSRDF}{69}{subsection.6.1.2}%
-\contentsline {subsection}{\numberline {6.1.3}Modelli di BRDF}{71}{subsection.6.1.3}%
-\contentsline {subsubsection}{Lambertian BRDF}{72}{equation.6.1.36}%
-\contentsline {subsubsection}{Specular BDRF}{73}{equation.6.1.43}%
-\contentsline {subsection}{\numberline {6.1.4}Modelli di superficie secondo Microfacet Theory}{75}{subsection.6.1.4}%
-\contentsline {subsubsection}{V-Cavity Function}{77}{equation.6.1.62}%
-\contentsline {subsubsection}{Smith's Visibility Function}{78}{equation.6.1.67}%
-\contentsline {subsubsection}{BRDF: Modello di Cook-Torrance}{79}{equation.6.1.72}%
-\contentsline {subsubsection}{Beckmann NDF}{82}{equation.6.1.84}%
-\contentsline {subsubsection}{Trowbridge-Reitz NDF}{84}{equation.6.1.97}%
-\contentsline {subsubsection}{Oren-Nayar BRDF}{86}{equation.6.1.109}%
-\contentsline {section}{\numberline {6.2}Sorgenti Luminose}{86}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Modelli di sorgenti luminose}{87}{subsection.6.2.1}%
-\contentsline {subsubsection}{Point Omni Lights}{87}{subsection.6.2.1}%
-\contentsline {subsubsection}{Spotlight}{88}{equation.6.2.116}%
-\contentsline {subsubsection}{Directional Light}{89}{equation.6.2.119}%
-\contentsline {subsubsection}{Diffuse Area Light}{90}{equation.6.2.121}%
-\contentsline {subsubsection}{Infinite Area Light}{90}{equation.6.2.122}%
-\contentsline {subsection}{\numberline {6.2.2}Light Sampling}{91}{subsection.6.2.2}%
-\contentsline {subsubsection}{Campionamento Uniforme di Sorgenti Luminose}{92}{equation.6.2.127}%
-\contentsline {subsubsection}{Campionamento proporzionale alla Potenza di Sorgenti Luminose}{92}{equation.6.2.128}%
-\contentsline {part}{III\hspace {1em}Appendici}{93}{part.3}%
-\contentsline {chapter}{\numberline {A}Numeri Pseudocasuali e Algoritmi Vari}{94}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Generazione di numeri Pseudorandom}{94}{section.A.1}%
-\contentsline {chapter}{\numberline {B}Codice}{96}{appendix.B}%
-\contentsline {section}{\numberline {B.1}Owen Scrambling di punti della Sequenza di Halton}{96}{section.B.1}%
-\contentsline {section}{\numberline {B.2}Acceptance-Rejection Sampling di un disco unitario}{97}{section.B.2}%
-\contentsline {section}{\numberline {B.3}Metropolis-Hastings Sampling per campionare $\symcal {N}(0,1)$}{98}{section.B.3}%
-\contentsline {section}{\numberline {B.4}Monte Carlo Integration per un integrale semplice}{98}{section.B.4}%
-\contentsline {section}{\numberline {B.5}Semplice Path Tracer}{99}{section.B.5}%
-\contentsline {section}{\numberline {B.6}Calcolo della varianza di un'immagine}{101}{section.B.6}%
-\contentsline {chapter}{Bibliography}{103}{section.B.6}%
-\contentsline {chapter}{Glossary}{104}{section*.49}%
+\contentsline {subsection}{\numberline {1.4.1}Inverse Transform Sampling}{7}{subsection.1.4.1}%
+\contentsline {subsection}{\numberline {1.4.2}Acceptance-Rejection Method}{9}{subsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.4.3}Metriopolis-Hastings Sampling}{10}{subsection.1.4.3}%
+\contentsline {section}{\numberline {1.5}Metodi di Riduzione della Varianza}{12}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Importance Sampling}{13}{subsection.1.5.1}%
+\contentsline {chapter}{\numberline {2}Campionamento e Ricostruzione con Quasirandom Number Generation}{14}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Campionamento}{15}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Richiami Fourier Analysis}{15}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Quasirandom Number Generation}{17}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Halton Sampler}{17}{subsection.2.1.3}%
+\contentsline {section}{\numberline {2.2}Ricostruzione}{19}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Box Filter}{20}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Gaussian Filter}{21}{subsection.2.2.2}%
+\contentsline {chapter}{\numberline {3}Light Transport Modello e Surface Reflection}{25}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Path Integral della Rendering Equation}{26}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Path Tracing}{28}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Applicazione del Metodo di Monte Carlo: Esempio Path Tracing Semplificato}{29}{section.3.3}%
+\contentsline {part}{II\hspace {1em}Fondamenti Fisici}{39}{part.2}%
+\contentsline {chapter}{\numberline {4}Richiami sull'elettromagnetismo e Radiometria}{40}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Radiometria}{40}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Radianza incidente ed uscente}{43}{subsection.4.1.1}%
+\contentsline {section}{\numberline {4.2}Radiazione di Corpo Nero}{43}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Fotometria, Colore e Camera}{45}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Fotometria}{45}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}fotometria e sistemi di rendering}{46}{subsection.5.1.1}%
+\contentsline {section}{\numberline {5.2}Colorimetria}{46}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}sRGB color space}{49}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Conversione da XYZ o RGB a SPD}{50}{subsection.5.2.2}%
+\contentsline {section}{\numberline {5.3}Camera}{52}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}pinhole camera model}{52}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}filtrare image samples}{55}{subsection.5.3.2}%
+\contentsline {chapter}{\numberline {6}Modelli di Fonti Luminose e Superfici}{57}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Modellazione di Superfici}{57}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Propriet\`a ottiche delle interfacce}{60}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}BRDF}{63}{subsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.1.3}Modelli di BRDF}{66}{subsection.6.1.3}%
+\contentsline {subsubsection}{Lambertian BRDF}{66}{equation.6.1.35}%
+\contentsline {subsubsection}{Specular BDRF}{68}{equation.6.1.42}%
+\contentsline {subsection}{\numberline {6.1.4}Modelli di superficie secondo Microfacet Theory}{69}{subsection.6.1.4}%
+\contentsline {subsubsection}{V-Cavity Function}{72}{equation.6.1.61}%
+\contentsline {subsubsection}{BRDF: Modello di Cook-Torrance}{73}{equation.6.1.66}%
+\contentsline {subsubsection}{Beckmann NDF}{75}{equation.6.1.74}%
+\contentsline {subsubsection}{Trowbridge-Reitz NDF}{76}{equation.6.1.78}%
+\contentsline {subsubsection}{Oren-Nayar BRDF}{77}{equation.6.1.89}%
+\contentsline {section}{\numberline {6.2}Sorgenti Luminose}{78}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Modelli di sorgenti luminose}{79}{subsection.6.2.1}%
+\contentsline {subsubsection}{Point Omni Lights}{79}{subsection.6.2.1}%
+\contentsline {subsubsection}{Spotlight}{80}{equation.6.2.96}%
+\contentsline {subsubsection}{Directional Light}{81}{equation.6.2.99}%
+\contentsline {subsubsection}{Diffuse Area Light}{81}{equation.6.2.101}%
+\contentsline {subsubsection}{Infinite Area Light}{82}{equation.6.2.102}%
+\contentsline {subsection}{\numberline {6.2.2}Light Sampling}{83}{subsection.6.2.2}%
+\contentsline {subsubsection}{Campionamento Uniforme di Sorgenti Luminose}{84}{equation.6.2.107}%
+\contentsline {subsubsection}{Campionamento proporzionale alla Potenza di Sorgenti Luminose}{84}{equation.6.2.108}%
+\contentsline {part}{III\hspace {1em}Appendici}{85}{part.3}%
+\contentsline {chapter}{\numberline {A}Numeri Pseudocasuali e Algoritmi Vari}{86}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Generazione di numeri Pseudorandom}{86}{section.A.1}%
+\contentsline {chapter}{\numberline {B}Codice}{88}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Owen Scrambling di punti della Sequenza di Halton}{88}{section.B.1}%
+\contentsline {section}{\numberline {B.2}Acceptance-Rejection Sampling di un disco unitario}{89}{section.B.2}%
+\contentsline {section}{\numberline {B.3}Metropolis-Hastings Sampling per campionare $\symcal {N}(0,1)$}{90}{section.B.3}%
+\contentsline {section}{\numberline {B.4}Monte Carlo Integration per un integrale semplice}{90}{section.B.4}%
+\contentsline {section}{\numberline {B.5}Semplice Path Tracer}{91}{section.B.5}%
+\contentsline {section}{\numberline {B.6}Calcolo della varianza di un'immagine}{93}{section.B.6}%
+\contentsline {chapter}{Bibliography}{95}{section.B.6}%
+\contentsline {chapter}{Glossary}{96}{section*.46}%

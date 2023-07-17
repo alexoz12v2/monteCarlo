@@ -1,5 +1,15 @@
 \documentclass[14pt, aspectratio=169]{beamer}
 
+% pseudocode first slide
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\Inputt{\item[\algorithmicinput]}
+
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\Outputt{\item[\algorithmicoutput]}
+
 % -------------------- beamer configuration
 % theme
 \usetheme{Copenhagen}
@@ -364,6 +374,36 @@
 	\end{frame}
 
 	\begin{frame}{Introduzione}
+		\begin{columns}
+			\begin{column}{0.4\textwidth}
+				\includegraphics[width=\linewidth]{../assets/intro_path_tracing_online_tech_tips.png}
+				\small Stima della funzione immagine $r_f(x,y)$ attraverso Path Tracing.
+			\end{column}
+			\begin{column}{0.6\textwidth}
+				\only<1>{
+					\scriptsize
+					\begin{tabularx}{\linewidth}{X}
+					\toprule
+					\textbf{Path Tracing}\label{pathTracing} \\
+					\midrule
+					\begin{algorithmic}
+						\Inputt scena $\sigma$, risoluzione richiesta $(w,h)$, camera $c$
+						\Outputt funzione immagine filtrata $r_f(x,y)$
+						\State $r_f$ \gets Array($w$,$h$);
+						\For{\textbf{each} pixel $(x,y)$ \textbf{in} $r_f$}
+							\State ss \gets GenerateSamplesWithinPixel(x,y);
+							\For{\textbf{each} sample ($\vec{s}$) \textbf{in} ss.positions}
+								\State $\rho$ \gets CastRay$\left(c.\vec{p},\tfrac{\vec{s}-c.\vec{p}}{\norm{\vec{s}-c.\vec{p}}}\right)$;
+								\State ss.contributions($\vec{s}$)\gets SampleRadiance($\sigma$,$\rho$, depth$=0$);
+							\EndFor
+							\State $r_f(x,y)$\gets Aggregate(ss.contributions);
+						\EndFor
+					\end{algorithmic}\\
+					\bottomrule
+					\end{tabularx}
+				}
+			\end{column}
+		\end{columns}
 	\end{frame}
 
 	\begin{frame}{Indice}

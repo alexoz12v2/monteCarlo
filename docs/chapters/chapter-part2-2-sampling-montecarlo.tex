@@ -127,7 +127,7 @@ Altre caratteristiche dello stimatore sono \textit{efficienza}, \textit{bias}, \
 	\item[MSE] Errore quadratico medio, strettamente collegato alla varianza, in quanto \`e definito come l'aspettezione del quadrato della 
 		differenza tra uno stimatore ed il valore vero
 		\begin{equation}
-			MSE[\tilde{F}_n]=E\left[\left(\tilde{F}_n-\int_{\mathcal{D}}f(x)\mathrm{d}x\right)^2\right]=V[\tilde{F}_n]-\beta
+			MSE[\tilde{F}_n]=E\left[\left(\tilde{F}_n-\int_{\mathcal{D}}f(x)\mathrm{d}x\right)^2\right]=V[\tilde{F}_n]+\beta^2
 		\end{equation}
 		Tale metrica risulta utile quando si \`e a conoscenza di una previa stima, magari con un numero elevato di campioni, di un integrale $F$,
 		per la quale possiamo applicare lo stimatore media campionaria per calcolarne il suo valore approssimato.
@@ -159,6 +159,7 @@ Altre caratteristiche dello stimatore sono \textit{efficienza}, \textit{bias}, \
 				axis lines = left,
 				xlabel=nSamples,
 				ylabel=$\tilde{F}_n-F$,
+				ymax=2, ymin=-2,
 			]
 				\addplot [black,] table[ignore chars={(,)},col sep=comma] {../assets/chapter6_error_data.dat};
 			\end{axis}
@@ -169,6 +170,55 @@ Altre caratteristiche dello stimatore sono \textit{efficienza}, \textit{bias}, \
 	\caption{Grafico della funzione nell'Esempio di Sezione \ref{chapter6:MCExample}, con errore della stima ottenuta da Equazione 
 		\ref{chapter6:MC:crudeEstimator}}
 	\label{chapter6:MCExample:1Dfunction}
+\end{figure}
+\begin{figure}[tb!]
+	\centering
+	\begin{subfigure}[t]{0.45\linewidth}
+		\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+			\begin{axis} [
+				axis lines = left,
+				xlabel=nSamples,
+				ylabel=$\tilde{F}_n^{\beta}-F$,
+				ymin=-2, ymax=0,
+			]
+				\addplot [black,] table[ignore chars={(,)},col sep=comma] {../assets/chapter6_biased_estimator_error_data.dat};
+			\end{axis}
+		\end{tikzpicture}\end{scaletikzpicturetowidth}
+		\caption{Funzione errore derivata dall'uso dello stimatore biased $\tfrac{1}{2}\operatorname{max}\{f(X_1),\ldots\}$. 
+			Si osserva come la varianza sia visibilmente diminuita, a costo della convergenza al valore corretto.}
+		\label{chapter6:MCExample:1Dfunction:bias}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.45\linewidth}
+		\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+			\begin{axis} [
+				axis lines = left,
+				xlabel=nSamples,
+				ylabel={$MSE\left[\tilde{F}_n\right]$},
+				ymax=5, ymin=0,
+			]
+				\addplot [black,] table[ignore chars={(,)},col sep=comma] {../assets/chapter6_mse_data.dat};
+			\end{axis}
+		\end{tikzpicture}\end{scaletikzpicturetowidth}
+		\caption{$MSE$ dello stimatore unbiased}
+		\label{chapter6:MCExample:1Dfunction:mse}
+	\end{subfigure}
+	\begin{subfigure}[t]{0.45\linewidth}
+		\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+			\begin{axis} [
+				axis lines = left,
+				xlabel=nSamples,
+				ylabel={$T\left[\tilde{F}_n\right]$},
+				ymax=5, ymin=0,
+			]
+				\addplot [black,] table[ignore chars={(,)},col sep=comma] {../assets/chapter6_efficiency.dat};
+			\end{axis}
+		\end{tikzpicture}\end{scaletikzpicturetowidth}
+		\caption{Funzione efficienza $T[\tilde{F}_n]$ dello stimatore unbiased. Si noti come esso presenta varie fluttuazioni, 
+			derivanti dalle condizioni continuamente variabili del calcolatore.}
+		\label{chapter6:MCExample:1Dfunction:efficiency}
+	\end{subfigure}
+	\caption{Ulteriori risultati dell'Esempio presentato in Sezione \ref{chapter6:MCExample}}
+	\label{chapter6:MC:plots}
 \end{figure}
 Al fine di rendere chiara l'applicazione della Equazione \ref{chapter6:MC:crudeEstimator} al calcolo degli integrali, applichiamo il metodo di 
 Monte Carlo all'integrale definito in $[0,10]$ della seguente funzione:
@@ -184,8 +234,13 @@ Per cui il valore di tale integrale \`e noto e pari a
 \begin{equation}
 	F = \int_0^{10}f(x)\mathrm{d}x = \hat{f}(10) - \hat{f}(0) = \frac{10e^\pi+10}{\pi^2}\approx 24.45963551499059
 \end{equation}
+Al fine di poter stimare numericamente tale integrale, \`e stata applicata Equazione \ref{chapter6:MC:crudeEstimator}, dove i campioni $x_i$ sono stati
+estratti con distribuzione uniforme nel dominio $[0,10]$, la cui generazione \`e stata implementata mediante la libreria \texttt{numpy}. In particolare,
+dei generatori supportati, \`e stato utilizzato un Generatore Congruenziale Permutato
+\footnote{Brevemente introdotti in Appendice \ref{appendixC}, per pi\`u informazioni si rimanda a 
+\href{https://en.wikipedia.org/wiki/Permuted\_congruential\_generator}{https://en.wikipedia.org/wiki/Permuted\_congruential\_generator}}
 I risultati ottenuti dalla simulazione di Monte Carlo con codice mostrato in Appendice \ref{appendixD:MC} sono mostrati in Figura 
-\ref{chapter6:MCExample:1Dfunction}\subref{chapter6:MCExample:1Dfunction:error}
+\ref{chapter6:MCExample:1Dfunction}\subref{chapter6:MCExample:1Dfunction:error} e Figura \ref{chapter6:MC:plots}
 \section{Schemi di Campionamento}
 Supponendo si abbia a disposizione un algoritmo per estrarre un numero casuale uniformemente distribuito nell'intervallo $[0,1]$ 
 (Appendice \ref{appendixC:RNG}) oppure un algoritmo che permetta di estrarre numeri quasirandom da una sequenza con low discrepancy 
@@ -289,9 +344,12 @@ La cui aspettazione rappresenta la proporzione di campioni accettati
 in media, dunque, $b$ campioni sono estratti in media prima di accettarne uno. Ci\`o nonostante, Rejection-Sampling pu\`o non essere efficace nel 
 campionamento di distribuzioni altamente concentrate in una piccola regione del loro dominio. Inoltre, man mano che la dimensionalit\`a del problema
 aumenta, il volume "in eccesso" della distribuzione strumentale aumenta, rendendo il metodo soggetto alla curse of dimensionality.\par
-Come esempio di applicazione, si consideri il campionamento con distribuzione uniforme di dominio pari ad un quarto di disco unitario, 
+Per \textit{Curse of Dimensionality} si riferisce all'insieme di fenomeni che penalizzano o rallentano determinati algoritmi numerici, i quali 
+diventano pi\`u evidenti man mano che la dimensionalit\`a aumenta. Nel caso del campionamento, tale problema deriva dall'aumento esponenziale del 
+volume all'aggiunta di una dimensione extra in uno spazio campionario.\par
+Come esempio di applicazione, si consideri il campionamento con distribuzione uniforme di un dominio pari ad un quarto di disco unitario, 
 utilizzando come proposal distribution una distribuzione uniforme definita in un quadrato unitario\footnotemark{}.\par
-la PDF target \`e dunque 
+La PDF target \`e dunque 
 \begin{equation}
 	q(x,y) = \left\{\begin{aligned}
 		&\frac{4}{\pi}\;&\mathrm{se}\;x^2+y^2\leq1\text{ e }x,y\geq0\\
@@ -305,46 +363,40 @@ con proposed distribution
 		&0 &\mathrm{altrimenti}
 	\end{aligned}\right.
 \end{equation}
-Da cui si evince che $b\geq4/\pi$, il che fa in modo che un campione sia accettato dopo aver generato $\approx1.27$ samples. Il codice Python che 
+da cui si evince che $b\geq4/\pi$, il che fa in modo che un campione sia accettato dopo aver generato $\approx1.27$ samples. Il codice Python che 
 implementa tale procedura \`e in Appendice \ref{appendixD:rejectionSampling}
 \label{appendixD:rejectionSampling}.
 \footnotetext{\`E interessante notare come, riformulando tale procedura come mostrato in \textrm{alt\_rejection\_sampling}, si possa stimare il valore 
 di $\pi$}
 \subsection{Metriopolis-Hastings Sampling}
-Piuttosto che generare campioni in maniera indipendente, costruiamo una \textit{Markov Chain} costituente un Randow Walk nello spazio campionario,
+Piuttosto che generare campioni in maniera indipendente, costruiamo una \textit{Markov Chain} co\-stituente un Randow Walk nello spazio campionario,
 la cui distribuzione, al limite, converge alla distribuzione desiderata, detta \textit{distribuzione stazionaria} o distribuzione all'equilibrio. I 
 vantaggi rispetto agli altri metodi qui presentati sono
 \begin{itemize}[topsep=0pt,noitemsep]
-	\item Ogni iterazione produ8ce un campione
+	\item Ogni iterazione produce un campione
 	\item Non richiede la normalizzazione della funzione target $f(x)$. Vedi Equazione \ref{chapter6:metropolis:acceptance}
 	\item Non richiede una CDF calcolabile ed invertibile
 \end{itemize}
-Il suo difetto \`e quello di generare campioni correlati tra loro, e ci\`o rende inefficaci tecnice di riduzione della varianza come Stratibied 
+Il suo difetto \`e quello di generare campioni correlati tra loro, e ci\`o rende inefficaci tecniche di riduzione della varianza come Stratified 
 Sampling.\par
-In quanto formanti una catena di markov, la probabilit\`a condizionale di ottenere un dato campione $x_i$ dipende solamente dal campione precedente
+In quanto si tratta di una catena di Markov, la probabilit\`a condizionale di ottenere un dato campione $x_i$ dipende solamente dal campione precedente
 (\textit{Markov Property})
 \begin{equation}
 	p(x_i | x_0,\ldots,x_{i-1})=p(x_i|x_{i-1})
 \end{equation}
-Inoltre tale catena si dice \textit{reversibile} in quanto gode addizionalmente della propriet\`a (\textit{detailed balance property})
+Inoltre tale catena si dice \textit{reversibile} in quanto gode della propriet\`a (\textit{detailed balance property})
 \begin{equation}
 	p(x_{i-1})p(x_i|x_{i-1})=p(x_i)p(x_{i-1}|x_i)
 \end{equation}
-Si parte da un campione iniziale, ottenuto arbitrariamente, $x_0$ detto \textit{seed}, e pescare samples successivi applicando perturbazioni tramite 
-una funzione di transizione\footnotemark{} $p_t(x_{i-1}\to x_i)$, per cui ogni campione \`e pescato con densit\`a di probabilit\`a
+Si parte da un campione iniziale, ottenuto arbitrariamente, $x_0$ detto \textit{seed}, per poi pescare samples successivi applicando perturbazioni 
+tramite una funzione di transizione\footnotemark{} $p_t(x_{i-1}\to x_i)$, per cui ogni campione \`e pescato con densit\`a di probabilit\`a
 \footnotetext{$p_t(x_{i-1}\to x_i) = p_t(x_i|x_{i-1})$}
 \begin{equation}% Questo viene dalla teoria delle markov chains
 	p_i(x_i)=\int_{\Omega}p_{i-1}(x_{i-1})p_t(x_{i-1}\to x_i)\mathrm{d}x_{i-1}
 \end{equation}
-La condizione per la convergenza \`e data dalla propriet\`a di reversibilit\`a per la PDF $p_\infty(x)$, in modo tale che per perturbazioni successive 
-al raggiungimento dell'equilibrio, tale equilibrio sia preservato: Si Supponga che al campione $x_{i-1}$ si sia raggiunta la PDF stazionaria, per la 
-quale vale la detailed balance property
-\begin{align}
-	p_i(x_i)&=\int_{\Omega}p_\infty(x_{i-1})p_t(x_{i-1}\to x_i)\mathrm{d}x_{i-1}\nonumber \\
-	&=\int_{\Omega}p_\infty(x_i)p_t(x_i\to x_{i-1})\mathrm{d}x_{i-1}\nonumber \\
-	&=p_\infty(x_i)\int_{\Omega}p_t(x_i\to x_{i-1})\mathrm{d}x_{i-1}\nonumber \\
-	&=p_\infty(x_i)
-\end{align}
+Si pu\`o dimostrare che 
+la condizione per la convergenza \`e data dalla propriet\`a di reversibilit\`a per la PDF $p_\infty(x)$, e che una volta soddisfatta, la densit\`a di 
+probabilit\`a dei campioni \mbox{$x_i, x_{i+1}, \ldots$} rimane fissa a $p_\infty(x)$.\par
 Affinch\`e tale densit\`a di transizione ci conduca all'equilibrio alla PDF target \mbox{$p_\infty(x)=p(x)=f(x)/\int f(x)\mathrm{d}x$},
 l'approccio utilizzato \`e quello di dividere la densit\`a di distribuzione di transizione in 
 \begin{itemize}[noitemsep,topsep=0pt]
@@ -371,7 +423,8 @@ Inoltre, nel caso in cui la proposal density sia simmetrica \mbox{$p_p(x_{i-1}|x
 \begin{equation}
 	a(x_{i-1}\to x_i)=\min\left\{\frac{f(x_i)}{f(x_{i-1})}, 1\right\}
 \end{equation}
-cioe' il cammino casuale non dipende dalla direzione ma solo dalla distanza.\par
+cioe' il cammino casuale non dipende dalla direzione ma solo dalla distanza, e nella pratica (incluso il codice in appendice) questo \`e l'approccio 
+seguito.\par
 Si pu\`o delineare dunque la procedura di Metropolis-Hastings Sampling
 \begin{itemize}[noitemsep,topsep=0pt]
 	\item Data target PDF $f(x)/\int f(x)\mathrm{d}x$ e sample iniziale $x_o$ ripeti per $n$ volte
@@ -466,36 +519,38 @@ Ulteriori tecniche di campionamento sono esplorate in Capitolo \ref{chapter5}
 %Il grosso svantaggio dello stratified sampling \`e che \`e afflitto dalla curse of dimensionality, in quanto, in $D$ dimensioni, bisognerebbe 
 %campionare ogni stratum con $S^D$ campioni, dunque l'approccio spesso seguito \`e quello di stratificare solo alcune dimensioni del dominio, contenenti
 %la maggior variazione della funzione integranda.
-%\subsection{Importance Sampling}\label{chapter6:variance:importanceSampling}
-%L'obiettivo dell'Importance sampling \`e concentrare i samples nelle regioni del dominio di integrazione in cui $|f(x)|$ sia relativamente elevato, 
-%dunque campionando con PDF proporzionale alla funzione integranda $f(x)$. Per dimostrare la sua efficacia, consideriamo lo stimatore in 
-%Equazione \ref{chapter6:MC:importanceEstimator}. Assumendo variabili incorrelate, la sua varianza \`e pari a
-%\begin{equation}
-%	V[\tilde{F}]=V\left[\frac{1}{n}\sum_{i=1}^n\frac{f(X_i)}{p(X_i)}\right]=\frac{1}{n^2}\sum_{i=1}^nV\left[\frac{f(X_i)}{p(X_i)}\right]
-%\end{equation}
-%Ci\`o vuol dire che, se il rapporto $f(X)/p(X)$ \`e approssimativamente costante, la varianza diminuisce. Nel caso ideale, in cui il rapporto \`e 
-%costante, si ottiene uno stimatore perfetto. Al contrario, se la varianza di tale rapporto \`e alta, il che consegue dalla scelta di una PDF che 
-%non segue l'andamento della funzione integranda, la varianza aumenta.\par
-%Molto spesso ci troviamo di fronte ad integrali la cui funzione integranda \`e prodotto di pi\`u funzioni, $\int f_a(x)f_b(x)\mathrm{d}x$. Spesso
-%\`e possibile individuare strategie di campionamento per ciascuna presa singolarmente, ma non insieme. \`E questo il caso dell'integrale della 
-%Rendering Equation (Equazione \ref{chapter3:surface:renderingEq}), nella quale un singolo contributo \`e rappresentato come prodotto tra BSDF, 
-%radianza incidente, fattore coseno. Trovati metodi di campionamento per ciascuno di essi singolarmente $p_a$ e $p_b$, introduciamo la strategia
-%\textit{Multiple Importance Sampling}. Essa consiste nel combinare due strategie di campionamento utilizzanti Importance Sampling e sommarne i 
-%contributi mediante una combinazione convessa con pesi opportunamente scelti. Siano $n_j$ numero di campioni scelti con PDF $p_j$, tali che la loro
-%somma sia pari a $n$. Allora, il MIS Monte Carlo Estimator
-%\begin{equation}\label{chapter6:variance:MISMC}
-%	\tilde{F}=\sum_{j=1}^n\frac{1}{n_j}\sum_{i=1}^{n_j}w_j(X_{ij})\frac{f(X_{ij})}{p_j(X_{ij})}
-%\end{equation}
-%Dove i pesi sono ricavati applicando minimizzazione utilizzando moltiplicatori di Lagrange \cite{pegoraro} per ottenere una formula nota come 
-%\textit{balance heuristic}
-%\begin{equation}
-%	W_j(x)=\frac{n_jp_j(x)}{\sum_{k=1}^{n_j}n_kp_k(x)}
-%\end{equation}
-%Da quest'ultima formula si pu\`o anche ricavare una controparte manovrabile, che permette di dare pi\`u rilevanza a dei campioni piuttosto che altri 
-%tramite esponenziazione, detta \textit{power heuristic}
-%\begin{equation}
-%	w_j(x)=\frac{\left(n_jp_j(x)\right)^\beta}{\sum_{k=1}^{n_j}\left(n_kp_k(x)\right)^\beta}
-%\end{equation}
+\subsection{Importance Sampling}\label{chapter6:variance:importanceSampling}
+Approfondiamo la tecnica dell'\textit{Importance Sampling}, la quale \`e indubbiamente l'approccio pi\`u diffuso nel campo della computer grafica, 
+motivo per il quale, nei capitoli successivi, citeremo tecniche per campionare ciascun fattore delle funzioni integrande presentate in seguito.\par
+L'obiettivo dell'Importance sampling \`e concentrare i samples nelle regioni del dominio di integrazione in cui $|f(x)|$ sia relativamente elevato, 
+dunque campionando con PDF proporzionale alla funzione integranda $f(x)$. Per dimostrare la sua efficacia, consideriamo lo stimatore in 
+Equazione \ref{chapter6:MC:importanceEstimator}. Assumendo variabili incorrelate, la sua varianza \`e pari a
+\begin{equation}
+	V[\tilde{F}]=V\left[\frac{1}{n}\sum_{i=1}^n\frac{f(X_i)}{p(X_i)}\right]=\frac{1}{n^2}\sum_{i=1}^nV\left[\frac{f(X_i)}{p(X_i)}\right]
+\end{equation}
+Ci\`o vuol dire che, se il rapporto $f(X)/p(X)$ \`e approssimativamente costante, la varianza diminuisce. Nel caso ideale, in cui il rapporto \`e 
+costante, si ottiene uno stimatore perfetto. Al contrario, se la varianza di tale rapporto \`e alta, il che consegue dalla scelta di una PDF che 
+non segue l'andamento della funzione integranda, la varianza aumenta.\par
+Molto spesso ci troviamo di fronte ad integrali la cui funzione integranda \`e prodotto di pi\`u funzioni, $\int f_a(x)f_b(x)\mathrm{d}x$. Spesso
+\`e possibile individuare strategie di campionamento per ciascuna presa singolarmente, ma non insieme. \`E questo il caso dell'integrale della 
+Rendering Equation (Equazione \ref{chapter3:surface:renderingEq}), nella quale un singolo contributo \`e rappresentato come prodotto tra BSDF, 
+radianza incidente, fattore coseno. Trovati metodi di campionamento per ciascuno di essi singolarmente $p_a$ e $p_b$, introduciamo la strategia
+\textit{Multiple Importance Sampling}. Essa consiste nel combinare due strategie di campionamento utilizzanti Importance Sampling e sommarne i 
+contributi mediante una combinazione convessa con pesi opportunamente scelti. Siano $n_j$ numero di campioni scelti con PDF $p_j$, tali che la loro
+somma sia pari a $n$. Allora, il MIS Monte Carlo Estimator
+\begin{equation}\label{chapter6:variance:MISMC}
+	\tilde{F}=\sum_{j=1}^n\frac{1}{n_j}\sum_{i=1}^{n_j}w_j(X_{ij})\frac{f(X_{ij})}{p_j(X_{ij})}
+\end{equation}
+Dove i pesi sono ricavati applicando minimizzazione utilizzando moltiplicatori di Lagrange \cite{pegoraro} per ottenere una formula nota come 
+\textit{balance heuristic}
+\begin{equation}
+	W_j(x)=\frac{n_jp_j(x)}{\sum_{k=1}^{n_j}n_kp_k(x)}
+\end{equation}
+Da quest'ultima formula si pu\`o anche ricavare una controparte manovrabile, che permette di dare pi\`u rilevanza a dei campioni piuttosto che altri 
+tramite esponenziazione, detta \textit{power heuristic}
+\begin{equation}
+	w_j(x)=\frac{\left(n_jp_j(x)\right)^\beta}{\sum_{k=1}^{n_j}\left(n_kp_k(x)\right)^\beta}
+\end{equation}
 %\subsection{Russian Roulette}\label{chapter6:variance:russianRoulette}
 %Tecnica che mira a migliorare la efficienza dello stimatore di Monte Carlo saltando la valutazione di campioni che avrebbero piccolo contributo 
 %sul valore finale della stima dell'integrale. Tale tecnica \`e particolarmente conveniente per via del costo della valutazione della funzione 

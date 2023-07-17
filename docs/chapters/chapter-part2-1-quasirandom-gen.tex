@@ -3,30 +3,26 @@
 \newcommand{\intwhole}{\ensuremath{\int_{-\infty}^{+\infty}}}
 \newcommand{\sumwhole}[1]{\ensuremath{\sum_{#1=-\infty}^{+\infty}}}
 \chapter{Campionamento e Ricostruzione con Quasirandom Number Generation}\label{chapter5}
-La funzione immagine definita sul film plane \`e una funzione continua, che per il pinhole camera model dipende soltanto da coordinate normalizzate 
-\mbox{$(x,y)\in[-1,1]^2$}, ma l'output del sistema di rendering \`e una griglia 2D di punti colorati. Scegliere accuratamente la strategia di 
+La funzione immagine definita sull'Image plane \`e una funzione continua, ma l'output del sistema di rendering \`e una griglia 2D di punti colorati. 
+Scegliere accuratamente la strategia di 
 campionamento dal film plane \`e fondamentale per migliorare la qualit\`a del risultato finale.\par
-Al fine di poter formalizzare il processo di scelta di campioni dal film plane e valutazione della funzione continua dai campioni (Ricostruzione),
-si richiamao di seguito due distinte teorie: Analisi di Fourier del Segnale e Quasirandom Number Generation.\par
-Inoltre, si cita infine il legame tra il campionamento della funzione immagine e il sistema di percezione umano, il quale \`e pi\`u sensibile a 
-cambiamenti di segnale nelle basse frequenze, dunque campionando in modo tale da shiftare l'aliasing e bias nelle alte frequenze migliora la 
-qualit\`a percepita del segnale. Infine, immagini ricostruite con rumore blu\footnote{rumore il cui PSD aumenta $10\log_{10}2\;\si{dB}$ per ottava} 
-sono percepite migliori nonostante abbiano stesso errore numerico di altri metodi di campionamento.\par
+Al fine di poter formalizzare il processo di scelta di campioni dal film plane\footnote{Sinonimo di Image plane, nomenclatura introdotta da 
+\cite{pharr}} e valutazione della funzione continua dai campioni (Ricostruzione),
+si richiamano di seguito due distinte teorie: 
+\begin{altDescription}{Sampling}
+	\item[Analisi di Fourier del Segnale] Possiamo analizzare in frequenza la varianza di una strategia di campionamento. In particolare, 
+		analizzandone il suo spettro di potenza, \`e possibile analizzare quali frequenze contribuiscono maggiormente alla varianza stessa. Affinch\`e 
+		l'immagine finale risulti di qualit\`a, \`e desiderabile per una strategia di campionamento presentare varianza quasi nulla o nulla per le 
+		basse frequenze.\\ Un esempio di tale analisi \`e mostrato in Figura \ref{chapter5:sampling:owen}
+	\item[Quasirandom Number Generation] Al fine di migliorare la copertura dello spazio campionario dei campioni generati, ci si pu\`o affidare 
+		a sequenze deterministiche minimizzanti una metrica chiamata \textit{Discrepancy}, definita nelle sezioni successive
+\end{altDescription}
 Si precisa infine che la parola "pixel" \`e usata in due contesti differenti
 \begin{itemize}[topsep=0pt,noitemsep]
 	\item[] Un \textit{Display Pixel} \`e un elemento fisico di un display che emette luce di un determinato colore
 	\item[] Un \textit{Image Pixel} \`e un \textit{campione puntiforme privo di area} della funzione immagine filtrata $r_f(x,y)$, i quali 
 		definiscono il valore del display pixel integrando una cella definita da quest'ultimo
 \end{itemize}
-Possiamo convertire infine le coordinate continue dei pixel in indici discreti di una griglia, mappandoli prima da coordinate normalizzate a 
-screen coordinates
-\begin{equation*}
-	\vec{p}_{px}^{\mathrm{screen}}=\frac{\vec{p}_{px}^{\mathrm{NDC}}+1}{2}\odot
-	\begin{bmatrix}
-		\mathrm{width}-1 \\ \mathrm{height}-1
-	\end{bmatrix}
-\end{equation*}
-per poi troncare le coordinate ottenute $\vec{p}_{px}^*=\lfloor\vec{p}_{px}^{\mathrm{screen}}\rfloor$.
 \section{Campionamento}
 \subsection{Richiami Fourier Analysis}
 L'analisi di Fourier \`e usata per valutare la qualit\`a del segnale ricostruito rispetto all'uriginale. La \textit{Trasformazione di Fourier} 

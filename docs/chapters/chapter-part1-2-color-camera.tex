@@ -74,7 +74,7 @@ i risultati.\par
 	\label{chapter2:CMFs}
 \end{figure}
 Un \textit{color stimulus} pu\`o essere ricostruito dalla combinazione lineare da tre stimoli (distribuzioni spettrali) di base indipendenti 
-[\cite{color}], in quanto dei fotorecettori umani che distinguono il colore, i coni, ce ne sono di \textit{tre tipi} (vedi figura 
+\cite{color}, in quanto dei fotorecettori umani che distinguono il colore, i coni, ce ne sono di \textit{tre tipi} (vedi figura 
 \ref{chapter2:CMFs})\subref{chapter2:CMFs:coneSpectralSensitivity}. Tale mappa da SPD a \textit{tristimulus values} non \`e biunivoca, 
 infatti, nei diversi color 
 spaces che definiamo, esistono valori tristimolo che possono risultare dalla scomposizione di diverse SPDs. Tali colori 
@@ -149,8 +149,7 @@ dove
 	\end{aligned}\right.
 \end{equation}
 Si noti che le Color Matching Functions $\bar{x}(\lambda)$, $\bar{y}(\lambda)$, $\bar{z}(\lambda)$ sono tabulate ad intervalli di $1\,\si{nm}$, 
-rendendo possibile l'applicazione del metodo di Monte Carlo come indicato in Equazione \ref{chapter6:MC:unbiasedEstimator}
-\subsection{xy chromaticity diagram}
+rendendo possibile l'applicazione del metodo di Monte Carlo come indicato in Equazione \ref{chapter6:MC:crudeEstimator}
 \begin{figure}[tb]
 	\includesvg[width=0.8\textwidth, inkscapelatex=false]{../assets/chapter2_colorimetry_chromaticity_diagram_1931.svg}
 	\caption{xy Chromaticity Diagram del sistema tricromatico CIE XYZ 1931}
@@ -166,34 +165,12 @@ dove, in quanto $x+y+z=1$, soltanto le coordinate $xy$ sono necessarie per una c
 Il diagramma di cromaticit\`a \`e riportato in figura \ref{chapter2:colorimetry:cromaticityDiagram}. Il contorno curvo rappresenta l'insieme di punti
 nel diagramma corrispondente alle radiazioni monocromatiche, mentre la curva evidenziata rappresenta il \textit{Luogo Planckiano}, insieme di punti
 corrispondenti ad uno spettro di emissione di un corpo nero plankiano (formula \ref{chapter1:planckLaw}), con temperatura da $[1000,\infty]\,\si{K}$.
-Parametro utile per descrivere ciascun punto del diagramma, in particolare quelli legati alle sorgenti luminose, \`e quello di
-\begin{definitionS}
-	La \textit{Temperatura di colore Correlata}(CCT) $T_{cp}$ \`e definita come temperatura del radiatore planckiano il cui colore percepito si
-	avvicina di pi\`u allo stimolo dato nelle stesse condizioni di osservazione.\par
-	Ci\`o si traduce nel trovare il punto nel luogo planckiano con distanza minima al punto di cromaticit\`a dato
-\end{definitionS}
-Altrettanto importanti nella specifica del diagramma di cromaticit\`a sono gli \textit{Illuminanti Standard}, sorgenti luminose teoriche con SPD e 
-coordinate di cromaticit\`a note che approssimano determinate sorgenti luminose reali.
-\begin{table}
-	\begin{tabularx}{\linewidth}{cccY}
-		\toprule
-		Nome & CIE 1931 $2^o$ xy & CCT $\si{K}$ & Sorgente modellata\\
-		\midrule
-		A & $0.4476, 0.4075$ & $2856$ & Filamento di tungsteno incandescente\\
-		D50 & $0.3457, 0.3585$ & $5003$ & Luce diurna all'orizzonte\\
-		E & $\frac{1}{3}, \frac{1}{3}$ & $5454$ & SPD equienergia \\
-		D55 & $0.3324, 0.3474$ & $5503$ & Luce diurna mattina/pomeriggio \\
-		D65 & $0.3127, 0.3290$ & $6504$ & Luce diurna mezzogiorno\\
-		\bottomrule
-	\end{tabularx}
-	\caption{Illuminanti standard CIE}
-\end{table}
 \subsection{sRGB color space}
 Mentre per memorizzare image data un qualsiasi color space pu\`o essere utilizzato (infatti, si possono memorizzare anche dati relativi allo spettro 
-direttamente [\cite{fichet}]), per mostrare colore a schermo si preferisce scegliere 3 primari ed un punto bianco, punto nel quale i 3 primari danno
+direttamente \cite{fichet}), per mostrare colore a schermo si preferisce scegliere 3 primari ed un punto bianco, punto nel quale i 3 primari danno
 contributo massimo. La scelta dei primari \`e guidata dalla percentuale di gamut che si desidera coprire con tutte le combinazioni lineari dei tre
 primari scelti e limitazioni fisiche. Lo standard adottato per monitors e World Wide Web nel 1996 da IEC \`e \textit{sRGB}. Esso \`e un color space 
-additivo basato sui tre primari rosso, verde, blu, e white point, le cui coordinate di cromaticit\`a sono riportate in tabella 
+additivo basato sui tre primari rosso, verde, blu, e white point, le cui coordinate di cromaticit\`a sono riportate in Tabella 
 \ref{chapter2:colorimetry:sRGB}.\par
 \begin{table}
 	\begin{tabularx}{\linewidth}{ccccc}
@@ -205,8 +182,8 @@ additivo basato sui tre primari rosso, verde, blu, e white point, le cui coordin
 		$Y$ & $0.2126$ & $0.7152$ & $0.0722$ & $1$\\
 		\bottomrule
 	\end{tabularx}
-	\label{chapter2:colorimetry:sRGB}
 	\caption{Coordinate degli stimoli primari e del white point del sRGB color space}
+	\label{chapter2:colorimetry:sRGB}
 \end{table}
 Altro componente per la specifica di un color space per un display \`e la funzione di trasferimento del display, in particolare 
 \begin{definitionS}
@@ -230,7 +207,7 @@ definizione per il colore nello spazio sRGB gamma corrected $C_{linear}$ ed il c
 di avere derivata infinita nello zero, si definisce la funzione di gamma expansion per valori piccoli come divisione per una costante definita dallo 
 standard}
 \begin{equation}
-	\text{Applica trasformazione lineare\footnotemark{}: }\begin{bmatrix}
+	\text{Applica trasformazione lineare: }\begin{bmatrix}
 		X_{D65}\\ Y_{D65}\\ Z_{D65}
 	\end{bmatrix}=
 	\begin{bmatrix}
@@ -242,8 +219,8 @@ standard}
 		R_{linear} \\ G_{linear} \\ B_{linear}
 	\end{bmatrix}
 \end{equation}
-\footnotetext{i valori tristimolo X,Y,Z qui utilizzati/ottenuti sono scalati in modo tale che l'illuminante standard D65 abbia luminanza unitaria, 
-cio\`e moltiplicate per $\approx 3.039513678$}
+I valori tristimolo $X_{D65},Y_{D65},Z_{D65}$ sono infine scalati in modo tale che l'illuminante standard D65, utilizzato come bianco di riferimento,
+abbia luminanza unitaria, cio\`e moltiplicate per $\approx 3.039513678$, ottenendo $X,Y,Z$.\par
 \begin{figure}[tb]
 	\includesvg[width=0.6\textwidth, inkscapelatex=false]{../assets/chapter2_colorimetry_CIE1931xy_gamut_comparison.svg}
 	\caption{comparazione tra i diversi colorspaces, ed i colori percepibili che riescono a rappresentare. Notiamo che sRGB copre all'incirca $35\%$
@@ -261,7 +238,7 @@ eccessivamente pi\`u scuri e saturati.\par
 Si giustifica dunque l'affermazione precedente di dover interpretare i colori in input negli arbitrari formati/color spaces supportati in uno spettro,
 eseguire la computazione, ed infine convertire il risultato per ogni pixel in sRGB per display. Mentre la conversione 
 \mbox{SPD$\rightarrow$Color Space} \`e ben definita (vedi \ref{chapter2:colorimetry:spectrum2XYZ4Rad} e 
-\ref{chapter2:colorimetry:spectrum2XYZ4Source}), non vale lo stesso per l'operazione inversa ed \`e ad oggi oggetto di ricerca [\cite{spectrum}].
+\ref{chapter2:colorimetry:spectrum2XYZ4Source}), non vale lo stesso per l'operazione inversa ed \`e ad oggi oggetto di ricerca \cite{spectrum}.
 Ci\`o che complica tale compito sono i requisiti di 
 \begin{itemize}[topsep=0pt, noitemsep]
 	\item[] \textit{Identit\`a} La conversione da RGB a spettro, seguita dalla ben definita operazione inversa, deve restituire lo stesso risultato
@@ -309,40 +286,7 @@ minimzzazione della metrica di residuo seguente
 		S(\lambda, c_0, c_1, c_2) W_{D_{65}}(\lambda)\mathrm{d}\lambda
 	}
 \end{equation}
-dove $\norm{\cdot}$ \`e la CIE76 $\Delta E$ color distance\footnotemark{}
-\begin{align*}
-	\Delta E &= \sqrt{(L^*_2 - L^*_1)^2+(a^*_2 - a^*_1)^2+(b^*_2 - b^*_1)^2}\\
-	\text{dove}\\
-	f(x)  &= \left\{\begin{alignedat}{3}
-			&\sqrt[3]{t} &\,&\text{se }\frac{Y}{Y_n}>\left(\frac{6}{29}\right)^3 \\
-			&\frac{1}{3}\left(\frac{29}{6}\right)^2t+\frac{4}{29} \;\;&\,&\text{altrimenti}
-		\end{alignedat}\right.\\
-	L^* &= 16f\left(\frac{Y}{Y_n}\right)\\
-	a^* &= 500\left(f\left(\frac{X}{X_n}\right)-f\left(\frac{Y}{Y_n}\right)\right)\\
-	b^* &= 200\left(f\left(\frac{Y}{Y_n}\right)-f\left(\frac{Z}{Z_n}\right)\right)\\
-\end{align*}
-\footnotetext{Tale metrica richiede la conversione ad un color space uniforme, cio\`e dove la distanza fra colori \`e proporzionale alla differenza 
-percepita dall'occhio umano. Il color space utilizzato nella metrica sopracitata \`e il CIE 1976 L*a*b*}
-\begin{center}
-con $X_n = 0.950489\;Y_n = 1\; Z_n = 1.08884$\\
-se il bianco di riferimento \`e assunto come $Y_{white} = 1$\par
-\end{center}
-Tale problema di ottimizzazione \`e risolto con il metodo di Gauss-Newton (si rimanda a \cite{pharr}).\par
-Se questa operazione fosse eseguita per ogni colore sRGB nel processo di rendering, le performance ne risentirebbero. Dunque una lookup table 5D viene
-precomputata. La struttura di tale tabella \`e dovuta al fatto che il gamut del sRGB color space \`e suddiviso in tre quadrilateri, tali che 
-ciascuno di essi contenga rispettivamente 
-\begin{itemize}[topsep=0pt, noitemsep]
-	\item punti in cui $R = \max\{R, G, B\}$, corrispondente a indice 0 nella prima dimensione della LUT
-	\item punti in cui $G = \max\{R, G, B\}$, corrispondente a indice 1 nella prima dimensione della LUT
-	\item punti in cui $B = \max\{R, G, B\}$, corrispondente a indice 2 nella prima dimensione della LUT
-\end{itemize}
-Ciascuno di questi quadrilateri mappa a 4 cubi nello spazio RGB. Tali sottospazi sono campionati con una griglia uniforme 
-$64\times 64\times64$ (le tre dimensioni 
-delle 3 griglie costituiscono $2^a, 3^a, 4^a$ dimensioni della LUT). Per ciascuno di questi vengono calcolati i coefficienti del polinomio 
-desiderati (i quali costituiscono l'ultima dimensione della LUT).\par
-Nota aggiuntiva: spettri di illuminanti o di coefficienti che descrivono il mezzo trasmissivo tendono ad avere valori spettrali $>1$, il che significa
-che bisogna gestire anche la conversione per coordinate RGB $>1$. Tali coordinate vengono normalizzate a $1$ o $0.5$ (a seconda della saturazione), 
-affinch\`e si possa ottenere una migliore curva spettrale, e si memorizza un coefficiente di scala da utilizzare in seguito.
+dove $\norm{\cdot}$ \`e la CIE76 $\Delta E$ color distance. La completa dimostrazione e dettagli implementativi sono rimandati a \cite{pharr}
 \section{Camera}\label{chapter2:camera}
 Affinch\`e si possa associare ad ogni punto 2D nell'\textit{color buffer} che conterr\`a eventualmente l'immagine output uno o pi\`u coppie 
 $(\vec{p_0}, \hat{\omega_0})$ punto e direzione di partenza, necessitiamo di un \textit{camera model}
@@ -492,7 +436,8 @@ nel scegliere opportunamente un filtro che lascia passare solo i campioni all'in
 una distribuzione simile alla filter function. Tale approccio \`e nominato \textit{filter importance sampling} (vedi \ref{chapter6}).
 \begin{align*}
 	r_f(x,y) &\approx \frac{1}{n}\sum_{i=1}^n \left(\frac{f(x-x_i, y-y_i)}{p(x_i, y_i)} r(x_i, y_i)\right)\\
-			&= \frac{\left(\displaystyle{\int_{\mathbb{R}^2}} \vert f(x',y')\vert \mathrm{d}A\right)}{n}\sum_{i=1}^n \mathrm{sgn}(f(x-x_i,y-y_i))r(x_i,y_i)
+			&= \frac{\left(\displaystyle{\int_{\mathbb{R}^2}} \vert f(x',y')\vert \mathrm{d}A\right)}{n}
+				\sum_{i=1}^n \mathrm{sgn}(f(x-x_i,y-y_i))r(x_i,y_i)
 \end{align*}
 Combinando tale approccio con \textit{weighted importance sampling}
 \begin{equation}\label{chapter2:camera:weightEstimatorOne}
