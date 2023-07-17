@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  17 JUL 2023 11:08
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  17 JUL 2023 23:02
  system commands enabled.
 **presentation.tex
 (./presentation.tex
@@ -1204,15 +1204,15 @@ dflt;"<8.64-12.24>"LatinModernMath:mode=base;script=math;language=dflt;+ssty=0;
 (fontspec)             \__um_luatex_copy_fontdimens: 
 
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 56.
+(Font)              `operators' in the math version `normal' on input line 57.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/LatinModernMath(1)/m/n on input line
- 56.
+ 57.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 56.
+(Font)              `operators' in the math version `bold' on input line 57.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/LatinModernMath(1)/b/n on input lin
-e 56.
+e 57.
 
 Package fontspec Info: LatinModernMath scale = 1.0001.
 
@@ -1273,15 +1273,15 @@ nguage=dflt;+ssty=1;"
 (fontspec)             \fontdimen 21\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 56.
+(Font)              `symbols' in the math version `normal' on input line 57.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/LatinModernMath(2)/m/n on input lin
-e 56.
+e 57.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 56.
+(Font)              `symbols' in the math version `bold' on input line 57.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/LatinModernMath(2)/b/n on input lin
-e 56.
+e 57.
 
 Package fontspec Info: LatinModernMath scale = 0.9999.
 
@@ -1331,41 +1331,41 @@ nguage=dflt;+ssty=1;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
 (Font)              `largesymbols' in the math version `normal' on input line 5
-6.
+7.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/LatinModernMath(3)/m/n on input lin
-e 56.
+e 57.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 56.
+(Font)              `largesymbols' in the math version `bold' on input line 57.
 
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/LatinModernMath(3)/b/n on input lin
-e 56.
+e 57.
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 5
-6.
+7.
 
 (/usr/share/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 14.40152pt on input line 56.
+(Font)              scaled to size 14.40152pt on input line 57.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 10.08107pt on input line 56.
+(Font)              scaled to size 10.08107pt on input line 57.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 7.20076pt on input line 56.
+(Font)              scaled to size 7.20076pt on input line 57.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 14.39845pt on input line 56.
+(Font)              scaled to size 14.39845pt on input line 57.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 10.07892pt on input line 56.
+(Font)              scaled to size 10.07892pt on input line 57.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 7.19922pt on input line 56.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 56.
+(Font)              scaled to size 7.19922pt on input line 57.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 57.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 56.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 57.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1800,6 +1800,26 @@ File: pgflibraryplotmarks.code.tex 2023-01-15 v3.1.10 (3.1.10)
 ))) (/usr/share/texmf-dist/tex/latex/physics/physics.sty
 Package: physics 
 )
+(/usr/share/texmf-dist/tex/latex/cutwin/cutwin.sty
+Package: cutwin 2021/10/13 v0.2 cutout windows
+\c@twwinlines=\count534
+\c@twtoplines=\count535
+\c@twcnt=\count536
+\c@twlftside=\dimen362
+\c@twrtside=\dimen363
+\c@twtopht=\dimen364
+\c@twvsilg=\dimen365
+\c@twtoka=\toks60
+\c@twtokb=\toks61
+\c@twrawtext=\box103
+\c@twholdwin=\box104
+\c@twwindow=\box105
+\c@twfinaltext=\box106
+\c@twslicea=\box107
+\c@twsliceb=\box108
+\c@twdima=\dimen366
+\c@twdimb=\dimen367
+)
 (/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
 shadings.code.tex
 File: tikzlibraryshadings.code.tex 2023-01-15 v3.1.10 (3.1.10)
@@ -1817,14 +1837,14 @@ File: tikzlibraryarrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
 
 (/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex
 File: pgflibraryarrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\arrowsize=\dimen362
+\arrowsize=\dimen368
 ))
 (/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.code.tex
 File: pgflibraryarrows.meta.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfarrowinset=\dimen363
-\pgfarrowlength=\dimen364
-\pgfarrowwidth=\dimen365
-\pgfarrowlinewidth=\dimen366
+\pgfarrowinset=\dimen369
+\pgfarrowlength=\dimen370
+\pgfarrowwidth=\dimen371
+\pgfarrowlinewidth=\dimen372
 )
 (/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrary
 angles.code.tex
@@ -1837,8 +1857,8 @@ File: tikzlibraryquotes.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/graphs/tikz
 librarygraphs.code.tex
 File: tikzlibrarygraphs.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\tikz@lib@auto@number=\count534
-\tikz@qnode@count=\count535
+\tikz@lib@auto@number=\count537
+\tikz@qnode@count=\count538
 )
 (/usr/share/texmf-dist/tex/generic/pgf/graphdrawing/tex/tikzlibrarygraphdrawing
 .code.tex
@@ -1847,15 +1867,15 @@ File: tikzlibrarygraphdrawing.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (/usr/share/texmf-dist/tex/generic/pgf/graphdrawing/tex/pgflibrarygraphdrawing.
 code.tex
 File: pgflibrarygraphdrawing.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@gd@parameter@stack@height=\count536
-\pgf@gd@node@box=\box103
-\pgf@gd@edge@box=\box104
-\pgf@gd@prekind@box=\box105
-\pgf@gd@postkind@box=\box106
+\pgf@gd@parameter@stack@height=\count539
+\pgf@gd@node@box=\box109
+\pgf@gd@edge@box=\box110
+\pgf@gd@prekind@box=\box111
+\pgf@gd@postkind@box=\box112
 ))
-\measure@tikzpicture=\box107
-\myboxA=\box108
-\myboxB=\box109
+\measure@tikzpicture=\box113
+\myboxA=\box114
+\myboxB=\box115
 \mylenA=\skip173
  (/usr/share/texmf-dist/tex/latex/minted/minted.sty
 Package: minted 2022/12/12 v2.7 Yet another Pygments shim for LaTeX
@@ -1865,11 +1885,11 @@ Package: fvextra 2022/11/30 v1.5 fvextra - extensions and patches for fancyvrb
 
 (/usr/share/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2023/01/19 4.5a verbatim text (tvz,hv)
-\FV@CodeLineNo=\count537
+\FV@CodeLineNo=\count540
 \FV@InFile=\read4
-\FV@TabBox=\box110
-\c@FancyVerbLine=\count538
-\FV@StepNumber=\count539
+\FV@TabBox=\box116
+\c@FancyVerbLine=\count541
+\FV@StepNumber=\count542
 \FV@OutFile=\write6
 )
 (/usr/share/texmf-dist/tex/latex/upquote/upquote.sty
@@ -1881,69 +1901,69 @@ Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
 ))
 (/usr/share/texmf-dist/tex/latex/lineno/lineno.sty
 Package: lineno 2023/01/19 line numbers on paragraphs v5.1
-\linenopenalty=\count540
-\output=\toks60
-\linenoprevgraf=\count541
-\linenumbersep=\dimen367
-\linenumberwidth=\dimen368
-\c@linenumber=\count542
-\c@pagewiselinenumber=\count543
-\c@LN@truepage=\count544
-\c@internallinenumber=\count545
-\c@internallinenumbers=\count546
-\quotelinenumbersep=\dimen369
-\bframerule=\dimen370
-\bframesep=\dimen371
-\bframebox=\box111
-\linenoamsmath@ams@eqpen=\count547
+\linenopenalty=\count543
+\output=\toks62
+\linenoprevgraf=\count544
+\linenumbersep=\dimen373
+\linenumberwidth=\dimen374
+\c@linenumber=\count545
+\c@pagewiselinenumber=\count546
+\c@LN@truepage=\count547
+\c@internallinenumber=\count548
+\c@internallinenumbers=\count549
+\quotelinenumbersep=\dimen375
+\bframerule=\dimen376
+\bframesep=\dimen377
+\bframebox=\box117
+\linenoamsmath@ams@eqpen=\count550
 LaTeX Info: Redefining \\ on input line 3131.
 )
-\c@FV@TrueTabGroupLevel=\count548
-\c@FV@TrueTabCounter=\count549
-\FV@TabBox@Group=\box112
+\c@FV@TrueTabGroupLevel=\count551
+\c@FV@TrueTabCounter=\count552
+\FV@TabBox@Group=\box118
 \FV@TmpLength=\skip174
-\c@FV@HighlightLinesStart=\count550
-\c@FV@HighlightLinesStop=\count551
-\FV@LoopCount=\count552
-\FV@NCharsBox=\box113
-\FV@BreakIndent=\dimen372
-\FV@BreakIndentNChars=\count553
-\FV@BreakSymbolSepLeft=\dimen373
-\FV@BreakSymbolSepLeftNChars=\count554
-\FV@BreakSymbolSepRight=\dimen374
-\FV@BreakSymbolSepRightNChars=\count555
-\FV@BreakSymbolIndentLeft=\dimen375
-\FV@BreakSymbolIndentLeftNChars=\count556
-\FV@BreakSymbolIndentRight=\dimen376
-\FV@BreakSymbolIndentRightNChars=\count557
-\c@FancyVerbLineBreakLast=\count558
-\FV@LineBox=\box114
-\FV@LineIndentBox=\box115
-\c@FV@BreakBufferDepth=\count559
-\FV@LineWidth=\dimen377
+\c@FV@HighlightLinesStart=\count553
+\c@FV@HighlightLinesStop=\count554
+\FV@LoopCount=\count555
+\FV@NCharsBox=\box119
+\FV@BreakIndent=\dimen378
+\FV@BreakIndentNChars=\count556
+\FV@BreakSymbolSepLeft=\dimen379
+\FV@BreakSymbolSepLeftNChars=\count557
+\FV@BreakSymbolSepRight=\dimen380
+\FV@BreakSymbolSepRightNChars=\count558
+\FV@BreakSymbolIndentLeft=\dimen381
+\FV@BreakSymbolIndentLeftNChars=\count559
+\FV@BreakSymbolIndentRight=\dimen382
+\FV@BreakSymbolIndentRightNChars=\count560
+\c@FancyVerbLineBreakLast=\count561
+\FV@LineBox=\box120
+\FV@LineIndentBox=\box121
+\c@FV@BreakBufferDepth=\count562
+\FV@LineWidth=\dimen383
 )
 (/usr/share/texmf-dist/tex/generic/xstring/xstring.sty
 (/usr/share/texmf-dist/tex/generic/xstring/xstring.tex
-\integerpart=\count560
-\decimalpart=\count561
+\integerpart=\count563
+\decimalpart=\count564
 )
 Package: xstring 2023/01/14 v1.85 String manipulations (CT)
 )
 (/usr/share/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \OuterFrameSep=\skip175
-\fb@frw=\dimen378
-\fb@frh=\dimen379
-\FrameRule=\dimen380
-\FrameSep=\dimen381
+\fb@frw=\dimen384
+\fb@frh=\dimen385
+\FrameRule=\dimen386
+\FrameSep=\dimen387
 )
 \minted@appexistsfile=\read5
-\minted@bgbox=\box116
+\minted@bgbox=\box122
 \minted@code=\write7
-\c@minted@FancyVerbLineTemp=\count562
-\c@minted@pygmentizecounter=\count563
-\@float@every@listing=\toks61
-\c@listing=\count564
+\c@minted@FancyVerbLineTemp=\count565
+\c@minted@pygmentizecounter=\count566
+\@float@every@listing=\toks63
+\c@listing=\count567
 )
 runsystem(mkdir -p intermediate/_minted-presentation)...executed
 
@@ -1970,16 +1990,16 @@ Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
 
 (/usr/share/texmf-dist/tex/generic/xkeyval/xkeyval.tex
 (/usr/share/texmf-dist/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks62
-\XKV@tempa@toks=\toks63
+\XKV@toks=\toks64
+\XKV@tempa@toks=\toks65
 )
-\XKV@depth=\count565
+\XKV@depth=\count568
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))
 (/usr/share/texmf-dist/tex/latex/mfirstuc/mfirstuc.sty
 Package: mfirstuc 2022/10/14 v2.08 (NLCT)
-\@glsmfirst=\toks64
-\@glsmrest=\toks65
+\@glsmfirst=\toks66
+\@glsmrest=\toks67
 )
 (/usr/share/texmf-dist/tex/latex/xfor/xfor.sty
 Package: xfor 2009/02/05 v1.05 (NLCT)
@@ -1989,7 +2009,7 @@ Package: datatool-base 2019/09/27 v2.32 (NLCT)
 
 (/usr/share/texmf-dist/tex/latex/substr/substr.sty
 Package: substr 2009/10/20 v1.2 Handle substrings
-\c@su@anzahl=\count566
+\c@su@anzahl=\count569
 )
 (/usr/share/texmf-dist/tex/latex/datatool/datatool-fp.sty
 Package: datatool-fp 2019/09/27 v2.32 (NLCT)
@@ -2000,19 +2020,19 @@ Package: fp 1995/04/02
 `Fixed Point Package', Version 0.8, April 2, 1995 (C) Michael Mehlich
 (/usr/share/texmf-dist/tex/latex/fp/defpattern.sty
 Package: defpattern 1994/10/12
-\actioncount=\count567
+\actioncount=\count570
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-basic.sty
 Package: fp-basic 1996/05/13
-\FP@xs=\count568
-\FP@xia=\count569
-\FP@xib=\count570
-\FP@xfa=\count571
-\FP@xfb=\count572
-\FP@rega=\count573
-\FP@regb=\count574
-\FP@regs=\count575
-\FP@times=\count576
+\FP@xs=\count571
+\FP@xia=\count572
+\FP@xib=\count573
+\FP@xfa=\count574
+\FP@xfb=\count575
+\FP@rega=\count576
+\FP@regb=\count577
+\FP@regs=\count578
+\FP@times=\count579
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-addons.sty
 Package: fp-addons 1995/03/15
@@ -2031,7 +2051,7 @@ Package: fp-pas 1994/08/29
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-random.sty
 Package: fp-random 1995/02/23
-\FPseed=\count577
+\FPseed=\count580
 )
 (/usr/share/texmf-dist/tex/latex/fp/fp-eqn.sty
 Package: fp-eqn 1995/04/03
@@ -2042,15 +2062,15 @@ Package: fp-upn 1996/10/21
 (/usr/share/texmf-dist/tex/latex/fp/fp-eval.sty
 Package: fp-eval 1995/04/03
 )))
-\@dtl@toks=\toks66
-\@dtl@tmpcount=\count578
+\@dtl@toks=\toks68
+\@dtl@tmpcount=\count581
 \dtl@tmplength=\skip176
-\dtl@sortresult=\count579
-\@dtl@numgrpsepcount=\count580
-\@dtl@datatype=\count581
-\dtl@codeA=\count582
-\dtl@codeB=\count583
-\@dtl@foreach@level=\count584
+\dtl@sortresult=\count582
+\@dtl@numgrpsepcount=\count583
+\@dtl@datatype=\count584
+\dtl@codeA=\count585
+\dtl@codeB=\count586
+\@dtl@foreach@level=\count587
 )
 (/usr/share/texmf-dist/tex/latex/tracklang/tracklang.sty
 Package: tracklang 2022/12/13 v1.6.1 (NLCT) Track Languages
@@ -2059,13 +2079,13 @@ Package: tracklang 2022/12/13 v1.6.1 (NLCT) Track Languages
 (/usr/share/texmf-dist/tex/latex/glossaries-english/glossaries-english.ldf
 File: glossaries-english.ldf 2014/11/23 v1.0
 )
-\gls@level=\count585
-\@gls@tmpb=\toks67
+\gls@level=\count588
+\@gls@tmpb=\toks69
 \gls@tmplen=\skip177
-\glskeylisttok=\toks68
-\glslabeltok=\toks69
-\glsshorttok=\toks70
-\glslongtok=\toks71
+\glskeylisttok=\toks70
+\glslabeltok=\toks71
+\glsshorttok=\toks72
+\glslongtok=\toks73
 
 (/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-hypernav.sty
 Package: glossary-hypernav 2022/11/03 v4.52 (NLCT)
@@ -2083,18 +2103,18 @@ Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
 \LTright=\skip180
 \LTpre=\skip181
 \LTpost=\skip182
-\LTchunksize=\count586
-\LTcapwidth=\dimen382
-\LT@head=\box117
-\LT@firsthead=\box118
-\LT@foot=\box119
-\LT@lastfoot=\box120
-\LT@gbox=\box121
-\LT@cols=\count587
-\LT@rows=\count588
-\c@LT@tables=\count589
-\c@LT@chunks=\count590
-\LT@p@ftn=\toks72
+\LTchunksize=\count589
+\LTcapwidth=\dimen388
+\LT@head=\box123
+\LT@firsthead=\box124
+\LT@foot=\box125
+\LT@lastfoot=\box126
+\LT@gbox=\box127
+\LT@cols=\count590
+\LT@rows=\count591
+\c@LT@tables=\count592
+\c@LT@chunks=\count593
+\LT@p@ftn=\toks74
 )
 \glsdescwidth=\skip183
 \glspagelistwidth=\skip184
@@ -2104,21 +2124,21 @@ Package: glossary-super 2022/11/03 v4.52 (NLCT)
 
 (/usr/share/texmf-dist/tex/latex/supertabular/supertabular.sty
 Package: supertabular 2020/02/02 v4.1g the supertabular environment
-\c@tracingst=\count591
-\ST@wd=\dimen383
+\c@tracingst=\count594
+\ST@wd=\dimen389
 \ST@rightskip=\skip185
 \ST@leftskip=\skip186
 \ST@parfillskip=\skip187
-\ST@pageleft=\dimen384
-\ST@headht=\dimen385
-\ST@tailht=\dimen386
-\ST@pagesofar=\dimen387
-\ST@pboxht=\dimen388
-\ST@lineht=\dimen389
-\ST@prevht=\dimen390
-\ST@toadd=\dimen391
-\ST@dimen=\dimen392
-\ST@pbox=\box122
+\ST@pageleft=\dimen390
+\ST@headht=\dimen391
+\ST@tailht=\dimen392
+\ST@pagesofar=\dimen393
+\ST@pboxht=\dimen394
+\ST@lineht=\dimen395
+\ST@prevht=\dimen396
+\ST@toadd=\dimen397
+\ST@dimen=\dimen398
+\ST@pbox=\box128
 ))
 (/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-tree.sty
 Package: glossary-tree 2022/11/03 v4.52 (NLCT)
@@ -2129,21 +2149,21 @@ Package: import 2020/04/01  v 6.2
 )
 (/usr/share/texmf-dist/tex/latex/tools/tabularx.sty
 Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
-\TX@col@width=\dimen393
-\TX@old@table=\dimen394
-\TX@old@col=\dimen395
-\TX@target=\dimen396
-\TX@delta=\dimen397
-\TX@cols=\count592
-\TX@ftn=\toks73
+\TX@col@width=\dimen399
+\TX@old@table=\dimen400
+\TX@old@col=\dimen401
+\TX@target=\dimen402
+\TX@delta=\dimen403
+\TX@cols=\count595
+\TX@ftn=\toks75
 )
 (/usr/share/texmf-dist/tex/latex/tabulary/tabulary.sty
 Package: tabulary 2014/06/11 v0.10 tabulary package (DPC)
-\TY@count=\count593
-\TY@linewidth=\dimen398
-\tymin=\dimen399
-\tymax=\dimen400
-\TY@tablewidth=\dimen401
+\TY@count=\count596
+\TY@linewidth=\dimen404
+\tymin=\dimen405
+\tymax=\dimen406
+\TY@tablewidth=\dimen407
 )
 (/usr/share/texmf-dist/tex/latex/xltabular/xltabular.sty
 Package: xltabular 2020/11/04 v0.2e `xltabular' package (hv,RN)
@@ -2154,12 +2174,12 @@ Package: ltablex 2014/08/13 v1.1 Modified tabularx
 (/usr/share/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
 \multirow@colwidth=\skip189
-\multirow@cntb=\count594
+\multirow@cntb=\count597
 \multirow@dima=\skip190
-\bigstrutjot=\dimen402
+\bigstrutjot=\dimen408
 )
-\c@definitionS=\count595
-\c@theoremS=\count596
+\c@definitionS=\count598
+\c@theoremS=\count599
 luaotfload | aux : font no 49 (nil) does not define feature smcp for script latn
  with language dflt
 luaotfload | aux : font no 50 (nil) does not define feature smcp for script latn
@@ -2260,37 +2280,37 @@ e;script=latn;language=dflt;+smcp;"
 
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
 (Font)                  TU/LatinModernMath(1)/m/n --> TU/CharisSIL(1)/m/n on in
-put line 263.
+put line 268.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/CharisSIL(1)/m/it on input line 263
+(Font)                  OT1/lmr/m/it --> TU/CharisSIL(1)/m/it on input line 268
 .
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/CharisSIL(1)/b/n on input line 263.
+(Font)                  OT1/lmr/bx/n --> TU/CharisSIL(1)/b/n on input line 268.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  TU/LatinModernMath(1)/m/n --> TU/LatinModernMath(1)/m/n
- on input line 265.
+ on input line 270.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  TU/LatinModernMath(1)/b/n --> TU/LatinModernMath(1)/b/n
- on input line 265.
+ on input line 270.
 
 Package fontspec Info: LatinModernMath scale = 1.0001.
 
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  TU/LatinModernMath(2)/m/n --> TU/LatinModernMath(2)/m/n
- on input line 265.
+ on input line 270.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  TU/LatinModernMath(2)/b/n --> TU/LatinModernMath(2)/b/n
- on input line 265.
+ on input line 270.
 
 Package fontspec Info: LatinModernMath scale = 0.9999.
 
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  TU/LatinModernMath(3)/m/n --> TU/LatinModernMath(3)/m/n
- on input line 265.
+ on input line 270.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  TU/LatinModernMath(3)/b/n --> TU/LatinModernMath(3)/b/n
- on input line 265.
+ on input line 270.
 
 Package fontspec Info: Font family 'XITSMath-Regular(0)' created for font
 (fontspec)             'XITSMath-Regular' with options
@@ -2322,40 +2342,40 @@ cript=math;language=dflt;"
 \sym__um_fam1=\mathgroup7
 LaTeX Font Info:    Overwriting symbol font `__um_fam1' in version `normal'
 (Font)                  TU/XITSMath-Regular(0)/m/n --> TU/XITSMath-Regular(0)/m
-/n on input line 271.
+/n on input line 276.
 LaTeX Font Info:    Overwriting symbol font `__um_fam1' in version `bold'
 (Font)                  TU/XITSMath-Regular(0)/m/n --> TU/XITSMath-Regular(0)/b
-/n on input line 271.
+/n on input line 276.
 Package translations Info: No language package found. I am going to use `englis
-h' as default language. on input line 370.
-\@quotelevel=\count597
-\@quotereset=\count598
+h' as default language. on input line 375.
+\@quotelevel=\count600
+\@quotereset=\count601
 runsystem(which pygmentize && touch presentation.aex)...executed
 runsystem(rm presentation.aex)...executed
 
 (./intermediate/presentation.aux)
 \openout1 = presentation.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 370.
-LaTeX Font Info:    ... okay on input line 370.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 370.
-LaTeX Font Info:    ... okay on input line 370.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 370.
-LaTeX Font Info:    ... okay on input line 370.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 370.
-LaTeX Font Info:    ... okay on input line 370.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 370.
-LaTeX Font Info:    ... okay on input line 370.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 370.
-LaTeX Font Info:    ... okay on input line 370.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 370.
-LaTeX Font Info:    ... okay on input line 370.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 370.
-LaTeX Font Info:    ... okay on input line 370.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 370.
-LaTeX Font Info:    ... okay on input line 370.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 370.
-LaTeX Font Info:    ... okay on input line 370.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 375.
+LaTeX Font Info:    ... okay on input line 375.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 375.
+LaTeX Font Info:    ... okay on input line 375.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 375.
+LaTeX Font Info:    ... okay on input line 375.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 375.
+LaTeX Font Info:    ... okay on input line 375.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 375.
+LaTeX Font Info:    ... okay on input line 375.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 375.
+LaTeX Font Info:    ... okay on input line 375.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 375.
+LaTeX Font Info:    ... okay on input line 375.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 375.
+LaTeX Font Info:    ... okay on input line 375.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 375.
+LaTeX Font Info:    ... okay on input line 375.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 375.
+LaTeX Font Info:    ... okay on input line 375.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: luatex
@@ -2393,17 +2413,17 @@ LaTeX Font Info:    ... okay on input line 370.
 
 (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count599
-\scratchdimen=\dimen403
-\scratchbox=\box123
-\nofMPsegments=\count600
-\nofMParguments=\count601
-\everyMPshowfont=\toks74
-\MPscratchCnt=\count602
-\MPscratchDim=\dimen404
-\MPnumerator=\count603
-\makeMPintoPDFobject=\count604
-\everyMPtoPDFconversion=\toks75
+\scratchcounter=\count602
+\scratchdimen=\dimen409
+\scratchbox=\box129
+\nofMPsegments=\count603
+\nofMParguments=\count604
+\everyMPshowfont=\toks76
+\MPscratchCnt=\count605
+\MPscratchDim=\dimen410
+\MPnumerator=\count606
+\makeMPintoPDFobject=\count607
+\everyMPtoPDFconversion=\toks77
 ) (/usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -2413,7 +2433,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 370.
+Package hyperref Info: Link coloring OFF on input line 375.
 
 (./intermediate/presentation.out) (./intermediate/presentation.out)
 \@outlinefile=\write8
@@ -2462,7 +2482,7 @@ File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `english'. on input line 370.
+or `english'. on input line 375.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: longtable package is loaded.
  (/usr/share/texmf-dist/tex/latex/caption/ltcaption.sty
@@ -2471,13 +2491,13 @@ Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 Package caption Info: supertabular package is loaded.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 370.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 375.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 370.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 375.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 370.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 375.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 370.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 375.
 
 
 Package unicode-math Warning: Using \overbracket and \underbracket from
@@ -2512,28 +2532,28 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'presentation.bbl' not found.
 
 No file presentation.bbl.
-Package biblatex Info: Reference section=0 on input line 370.
-Package biblatex Info: Reference segment=0 on input line 370.
+Package biblatex Info: Reference section=0 on input line 375.
+Package biblatex Info: Reference segment=0 on input line 375.
 
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
 your preamble.
- on input line 370.
+ on input line 375.
 
 (./intermediate/presentation.nav)
 <./assets/Poliba_stemma.png, id=31, 401.5pt x 401.5pt>
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 370.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 375.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
 
-Overfull \hbox (389.7584pt too wide) in paragraph at lines 374--374
+Overfull \hbox (389.7584pt too wide) in paragraph at lines 379--379
 [][]  
  []
 
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 374.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 379.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
 [1
 
@@ -2544,163 +2564,286 @@ File: ../assets/intro_path_tracing_online_tech_tips.png Graphic file (type png)
 
 <use ../assets/intro_path_tracing_online_tech_tips.png>
 Package luatex.def Info: ../assets/intro_path_tracing_online_tech_tips.png  use
-d on input line 407.
-(luatex.def)             Requested size: 159.333pt x 114.57452pt.
+d on input line 429.
+(luatex.def)             Requested size: 139.42093pt x 100.25458pt.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 12.00128pt on input line 407.
+(Font)              scaled to size 12.00128pt on input line 429.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 8.00085pt on input line 407.
+(Font)              scaled to size 8.00085pt on input line 429.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 6.00064pt on input line 407.
+(Font)              scaled to size 6.00064pt on input line 429.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 407.
+(Font)              scaled to size 11.99872pt on input line 429.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 407.
+(Font)              scaled to size 7.99915pt on input line 429.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 407.
+(Font)              scaled to size 5.99936pt on input line 429.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 407.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 429.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [2
 
 <../assets/intro_path_tracing_online_tech_tips.png>]
-(./intermediate/presentation.toc)
+File: ../assets/intro_path_tracing_online_tech_tips.png Graphic file (type png)
+
+<use ../assets/intro_path_tracing_online_tech_tips.png>
+Package luatex.def Info: ../assets/intro_path_tracing_online_tech_tips.png  use
+d on input line 429.
+(luatex.def)             Requested size: 139.42093pt x 100.25458pt.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 411.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 429.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [3
 
 ]
-Overfull \hbox (10.92456pt too wide) detected at line 484
+File: ../assets/intro_path_tracing_online_tech_tips.png Graphic file (type png)
+
+<use ../assets/intro_path_tracing_online_tech_tips.png>
+Package luatex.def Info: ../assets/intro_path_tracing_online_tech_tips.png  use
+d on input line 429.
+(luatex.def)             Requested size: 139.42093pt x 100.25458pt.
+
+Overfull \hbox (5.84839pt too wide) detected at line 429
+\TU/LatinModernMath(1)/m/n/14.4 𝑟[](𝑥, 𝑦) ≈ [] [] 𝑓(𝑥 − 
+𝑥[], 𝑦 − 𝑦[])𝑟(𝑥[], 𝑦[])
+ []
+
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 429.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+[4
+
+]
+File: ../assets/intro_path_tracing_online_tech_tips.png Graphic file (type png)
+
+<use ../assets/intro_path_tracing_online_tech_tips.png>
+Package luatex.def Info: ../assets/intro_path_tracing_online_tech_tips.png  use
+d on input line 429.
+(luatex.def)             Requested size: 139.42093pt x 100.25458pt.
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 429.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [5
+
+] (./intermediate/presentation.toc)
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 433.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [6
+
+] (./intermediate/presentation.toc)
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 442.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+[7
+
+]
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 474.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [8
+
+]
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 474.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [9
+
+]
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 493.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [10
+
+]
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 493.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [11
+
+]
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 493.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [12
+
+]
+Overfull \hbox (4.76158pt too wide) detected at line 522
+\TU/LatinModernMath(1)/m/n/12 𝑓(𝑥) = []𝑒[]
+ []
+
+
+Overfull \vbox (12.4614pt too high) detected at line 522
+ []
+
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 522.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+[13
+
+] (./intermediate/presentation.toc)
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 524.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [14
+
+]
+Overfull \hbox (10.92456pt too wide) detected at line 593
 [][]\TU/LatinModernMath(1)/m/n/14.4 𝐿[]([], []) = 𝐿[]([], []) + [][] 
 𝐿[](𝑡([], []), −[])𝑓[]([], [], [])|⟨[], []⟩|d[][][]
  []
 
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 484.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 593.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
-[4
+[15
+
+] (./intermediate/presentation.toc)
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 595.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [16
+
+] (./intermediate/presentation.toc)
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 597.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+
+[17
 
 ]
-<../assets/appendixD_result_8.png, id=74, 1027.84pt x 770.88pt>
+<../assets/appendixD_result_8.png, id=163, 1027.84pt x 770.88pt>
 File: ../assets/appendixD_result_8.png Graphic file (type png)
 <use ../assets/appendixD_result_8.png>
-Package luatex.def Info: ../assets/appendixD_result_8.png  used on input line 5
-46.
+Package luatex.def Info: ../assets/appendixD_result_8.png  used on input line 6
+55.
 (luatex.def)             Requested size: 179.25114pt x 134.43552pt.
-<../assets/appendixD_result_40.png, id=75, 1027.84pt x 770.88pt>
+<../assets/appendixD_result_40.png, id=164, 1027.84pt x 770.88pt>
 File: ../assets/appendixD_result_40.png Graphic file (type png)
 <use ../assets/appendixD_result_40.png>
 Package luatex.def Info: ../assets/appendixD_result_40.png  used on input line 
-546.
+655.
 (luatex.def)             Requested size: 179.25114pt x 134.43552pt.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 546.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
- [5
+ [18
 
 <../assets/appendixD_result_8.png><../assets/appendixD_result_40.png>]
-Overfull \hbox (3.26343pt too wide) in paragraph at lines 546--546
+Overfull \hbox (3.26343pt too wide) in paragraph at lines 655--655
 []|[]| 
  []
 
 
-Underfull \hbox (badness 1668) in paragraph at lines 546--546
+Underfull \hbox (badness 1668) in paragraph at lines 655--655
 []|\TU/CharisSIL(0)/m/n/12 8 cam-pi-oni per stra-
  []
 
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 10.00107pt on input line 546.
+(Font)              scaled to size 10.00107pt on input line 655.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 7.00075pt on input line 546.
+(Font)              scaled to size 7.00075pt on input line 655.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 546.
+(Font)              scaled to size 9.99893pt on input line 655.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 546.
+(Font)              scaled to size 6.99925pt on input line 655.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 546.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
-[6
+[19
 
 ]
-<../assets/appendixD_result_200.png, id=85, 1027.84pt x 770.88pt>
+<../assets/appendixD_result_200.png, id=175, 1027.84pt x 770.88pt>
 File: ../assets/appendixD_result_200.png Graphic file (type png)
 <use ../assets/appendixD_result_200.png>
 Package luatex.def Info: ../assets/appendixD_result_200.png  used on input line
- 546.
+ 655.
 (luatex.def)             Requested size: 179.25114pt x 134.43552pt.
-<../assets/appendixD_result_1000.png, id=86, 1027.84pt x 770.88pt>
+<../assets/appendixD_result_1000.png, id=176, 1027.84pt x 770.88pt>
 File: ../assets/appendixD_result_1000.png Graphic file (type png)
 <use ../assets/appendixD_result_1000.png>
 Package luatex.def Info: ../assets/appendixD_result_1000.png  used on input lin
-e 546.
+e 655.
 (luatex.def)             Requested size: 179.25114pt x 134.43552pt.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 546.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
- [7
+ [20
 
 <../assets/appendixD_result_200.png><../assets/appendixD_result_1000.png>]
-Overfull \hbox (3.26343pt too wide) in paragraph at lines 546--546
+Overfull \hbox (3.26343pt too wide) in paragraph at lines 655--655
 []|[]| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 546--546
+Underfull \hbox (badness 10000) in paragraph at lines 655--655
 []|\TU/CharisSIL(0)/m/n/12 1000 cam-pi-oni per
  []
 
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 546.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
-[8
+[21
 
 ]
-<../assets/appendixD_result_5k.png, id=97, 1027.84pt x 770.88pt>
+<../assets/appendixD_result_5k.png, id=188, 1027.84pt x 770.88pt>
 File: ../assets/appendixD_result_5k.png Graphic file (type png)
 <use ../assets/appendixD_result_5k.png>
 Package luatex.def Info: ../assets/appendixD_result_5k.png  used on input line 
-546.
+655.
 (luatex.def)             Requested size: 179.25114pt x 134.43552pt.
-<../assets/appendixD_result_25k.png, id=98, 1027.84pt x 770.88pt>
+<../assets/appendixD_result_25k.png, id=189, 1027.84pt x 770.88pt>
 File: ../assets/appendixD_result_25k.png Graphic file (type png)
 <use ../assets/appendixD_result_25k.png>
 Package luatex.def Info: ../assets/appendixD_result_25k.png  used on input line
- 546.
+ 655.
 (luatex.def)             Requested size: 179.25114pt x 134.43552pt.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 546.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
- [9
+ [22
 
 <../assets/appendixD_result_5k.png><../assets/appendixD_result_25k.png>]
-Overfull \hbox (3.26343pt too wide) in paragraph at lines 546--546
+Overfull \hbox (3.26343pt too wide) in paragraph at lines 655--655
 []|[]| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 546--546
+Underfull \hbox (badness 10000) in paragraph at lines 655--655
 []|\TU/CharisSIL(0)/m/n/12 5000 cam-pi-oni per
  []
 
 
-Underfull \hbox (badness 5622) in paragraph at lines 546--546
+Underfull \hbox (badness 5622) in paragraph at lines 655--655
 []|\TU/CharisSIL(0)/m/n/12 25000 cam-pi-oni per
  []
 
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 546.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
-[10
+[23
 
 ]
 \tf@nav=\write9
@@ -2721,25 +2864,27 @@ Package logreq Info: Writing requests to 'presentation.run.xml'.
 )
 
 Here is how much of LuaTeX's memory you used:
- 73263 strings out of 478285
+ 73931 strings out of 478285
  100000,2848258 words of node,token memory allocated
- 7524 words of node memory still in use:
-   89 hlist, 29 vlist, 52 rule, 29 disc, 21 local_par, 2 math, 209 glue, 6 kern,
- 61 penalty, 336 glyph, 175 attribute, 125 glue_spec, 175 attribute_list, 4 writ
+ 7569 words of node memory still in use:
+   90 hlist, 29 vlist, 52 rule, 29 disc, 21 local_par, 2 math, 209 glue, 6 kern,
+ 61 penalty, 336 glyph, 184 attribute, 125 glue_spec, 184 attribute_list, 4 writ
 e, 26 pdf_colorstack nodes
-   avail lists: 1:7,2:3719,3:2314,4:235,5:186,6:53,7:2530,8:48,9:1371,10:14,11:7
+   avail lists: 1:7,2:3707,3:2294,4:235,5:189,6:53,7:2532,8:48,9:1367,10:14,11:7
 0,12:1
- 90738 multiletter control sequences out of 65536+600000
- 128 fonts using 58629871 bytes
+ 91248 multiletter control sequences out of 65536+600000
+ 137 fonts using 60300727 bytes
  99i,22n,114p,2240b,2933s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texmf-dist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr/
-share/fonts/TTF/CharisSIL-Bold.ttf></usr/share/texmf-dist/fonts/opentype/public/
-lm-math/latinmodern-math.otf></usr/share/texmf-dist/fonts/opentype/public/lm-mat
-h/latinmodern-math.otf></usr/share/fonts/TTF/CharisSIL-Regular.ttf>
-Output written on presentation.pdf (10 pages, 9885888 bytes).
+</usr/share/fonts/TTF/CharisSIL-Italic.ttf></usr/share/texmf-dist/fonts/opentype
+/public/lm/lmsans12-regular.otf></usr/share/fonts/TTF/CharisSIL-Bold.ttf></usr/s
+hare/texmf-dist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr/share/t
+exmf-dist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr/share/texmf-d
+ist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr/share/fonts/TTF/Cha
+risSIL-Regular.ttf>
+Output written on presentation.pdf (23 pages, 9941257 bytes).
 
-PDF statistics: 144 PDF objects out of 1000 (max. 8388607)
- 97 compressed objects within 1 object stream
- 27 named destinations out of 1000 (max. 131072)
- 88 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 250 PDF objects out of 1000 (max. 8388607)
+ 182 compressed objects within 2 object streams
+ 52 named destinations out of 1000 (max. 131072)
+ 98 words of extra memory for PDF output out of 10000 (max. 100000000)
 

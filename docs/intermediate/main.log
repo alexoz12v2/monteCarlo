@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  17 JUL 2023 15:49
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  17 JUL 2023 19:26
  system commands enabled.
 **main.tex
 (./main.tex
@@ -3315,10 +3315,10 @@ Here is how much of LuaTeX's memory you used:
  3342 words of node memory still in use:
    7 hlist, 2 vlist, 2 rule, 75 glue, 4 kern, 9 sub_mlist, 1 glyph, 480 attribut
 e, 126 glue_spec, 480 attribute_list, 2 write, 7 pdf_action nodes
-   avail lists: 1:23,2:20699,3:13196,4:2302,5:518,6:98,7:8480,8:103,9:1705,10:22
+   avail lists: 1:20,2:20698,3:13196,4:2302,5:518,6:98,7:8480,8:103,9:1705,10:22
 ,11:697,12:1
  88209 multiletter control sequences out of 65536+600000
- 136 fonts using 60430983 bytes
+ 136 fonts using 60430855 bytes
  95i,22n,114p,2265b,2933s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 warning  (pdf backend): unreferenced destination with name 'Hfootnote.52'
@@ -3336,7 +3336,7 @@ m-math/latinmodern-math.otf></usr/share/texmf-dist/fonts/opentype/public/lm-math
 /latinmodern-math.otf></usr/share/fonts/TTF/CharisSIL-Italic.ttf></usr/share/fon
 ts/TTF/CharisSIL-Regular.ttf></usr/share/fonts/TTF/CharisSIL-Bold.ttf></usr/shar
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on main.pdf (105 pages, 18723378 bytes).
+Output written on main.pdf (105 pages, 18723352 bytes).
 
 PDF statistics: 2037 PDF objects out of 2073 (max. 8388607)
  1594 compressed objects within 16 object streams

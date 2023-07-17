@@ -1,4 +1,4 @@
-\beamer@sectionintoc {1}{Monte Carlo Integration}{4}{0}{1}
-\beamer@sectionintoc {2}{Rendering Fundamentals}{4}{0}{2}
-\beamer@sectionintoc {3}{Campionamento e Ricostruzione}{5}{0}{3}
-\beamer@sectionintoc {4}{Path Tracing}{5}{0}{4}
+\beamer@sectionintoc {1}{Monte Carlo Integration}{7}{0}{1}
+\beamer@sectionintoc {2}{Rendering Fundamentals}{14}{0}{2}
+\beamer@sectionintoc {3}{Campionamento e Ricostruzione}{16}{0}{3}
+\beamer@sectionintoc {4}{Path Tracing}{17}{0}{4}

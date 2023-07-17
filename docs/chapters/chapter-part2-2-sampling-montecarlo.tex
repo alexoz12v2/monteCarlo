@@ -66,13 +66,13 @@ Si ricordi che la aspettazione di una variabile aleatoria $X$, la cui PDF $p_X$ 
 \end{equation*}
 \`E possibile ricavare uno stimatore per l'integrale di una funzione integranda arbitraria $f(x)$
 \begin{equation}
-	E\left[\frac{f(X)}{p_X(X)}\right]=\int_{\mathcal{D}}\frac{f(x)}{p_X(x)}p_X(x)\mathrm{d}x=\int_{\mathcal{D}}f(x)p_X(x)\mathrm{d}x
+	E\left[\frac{f(X)}{p_X(X)}\right]=\int_{\mathcal{D}}\frac{f(x)}{p_X(x)}p_X(x)\mathrm{d}x=\int_{\mathcal{D}}f(x)\mathrm{d}x
 \end{equation}
 Assumendo densit\`a di probabilit\`a uniforme nel dominio $\mathcal{D}$, si ottiene
 \begin{equation}
 	\norm{\mathcal{D}}E[f(X)]=\norm{\mathcal{D}}\int_{\mathcal{D}}f(x)p_X(x)\mathrm{d}x=\int_{\mathcal{D}}f(x)\mathrm{d}x
 \end{equation}
-Ssostituendo l'aspettazione con la media campionaria, otteniamo uno stimatore \textit{unbiased}\footnotemark{} per l'integrale
+Sostituendo l'aspettazione con la media campionaria, otteniamo uno stimatore \textit{unbiased}\footnotemark{} per l'integrale
 \begin{equation}\label{chapter6:MC:crudeEstimator}
 	\tilde{F}_n=\norm{\mathcal{D}}\tilde{E}_n[f(X)]=\frac{\norm{\mathcal{D}}}{n}\sum_{i=1}^nf(X_i)
 \end{equation}

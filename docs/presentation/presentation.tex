@@ -38,6 +38,7 @@
 \usepackage[inline]{enumitem}
 \usepackage{fancyhdr}
 \usepackage{hyperref}
+\usepackage{nameref}
 \usepackage{cleveref}
 \usepackage{graphicx}
 \usepackage{svg}
@@ -82,6 +83,8 @@
 \usepackage{pgfplots}
 \usepackage{physics}
 \usepackage{ifthen}
+\usepackage{cutwin} % wrapfigures with beamer https://tex.stackexchange.com/questions/56205/wrapfigure-beamer-style
+
 \usetikzlibrary{shadings}
 \usetikzlibrary{calc}
 \usetikzlibrary{arrows,arrows.meta} % Stealth arrows
@@ -156,6 +159,8 @@
   \endgroup
   \vfill
 }
+
+\newcommand*{\currentsectionname}{\@currentlabelname}
 
 \makeatother
 
@@ -305,7 +310,7 @@
 \date{Anno Accademico 2022/2023}
 \institute[]{Politecnico di Bari}
 
-\setbeamercovered{transparent} % permette di vedere il contenuto delle prossime slides del frame
+%\setbeamercovered{transparent} % permette di vedere il contenuto delle prossime slides del frame
 
 \pgfkeys{/tikz/.cd,
 	at/.initial={(0,0)},
@@ -375,12 +380,29 @@
 
 	\begin{frame}{Introduzione}
 		\begin{columns}
-			\begin{column}{0.4\textwidth}
+			\begin{column}{0.35\textwidth}
 				\includegraphics[width=\linewidth]{../assets/intro_path_tracing_online_tech_tips.png}
 				\small Stima della funzione immagine $r_f(x,y)$ attraverso Path Tracing.
 			\end{column}
-			\begin{column}{0.6\textwidth}
-				\only<1>{
+			\begin{column}{0.65\textwidth}
+				\only<1-3>{
+					\begin{itemize}[topsep=0pt,noitemsep]
+						\item[\bullet]<1-> Introduzione a bullets
+						\item[\bullet]<2-> ancora da fare
+						\item[\bullet]<3-> quando mi viene in mente
+					\end{itemize}
+					\hbox{\hfill}
+					\only<1>{\begin{equation*}
+						r_f(x,y)=\int_{A_{px}}r(x^\prime,y^\prime)\mathrm{d}A
+					\end{equation*} }
+					\only<2>{\begin{equation*}
+						r_f(x,y)=\int_{A_{px}}f(x-x^\prime,y-y^\prime)r(x^\prime,y^\prime)\mathrm{d}A
+					\end{equation*} }
+					\only<3>{\begin{equation*}
+						r_f(x,y)\approx\frac{\norm{A_{px}}}{n}\sum_{i=1}^{n}f(x-x_i,y-y_i)r(x_i,y_i)
+					\end{equation*} }
+				}
+				\only<4>{
 					\scriptsize
 					\begin{tabularx}{\linewidth}{X}
 					\toprule
@@ -407,10 +429,97 @@
 	\end{frame}
 
 	\begin{frame}{Indice}
-		\tableofcontents
+		\tableofcontents[hideallsubsections]
 	\end{frame}
 
+	\AtBeginSection[ ]
+	{
+	\begin{frame}{Indice: \currentsectionname}
+		\tableofcontents[currentsection,hideallsubsections]
+	\end{frame}
+	}
+
 	\section{Monte Carlo Integration}
+	\begin{frame}{Preliminari}
+		\only<1>{
+			\begin{altDescription}{probDefs}
+				\item[Probabilit\`a $\Pr(A)$] Funzione definita su un dominio $\Sigma$ avente immagine $[0,1]$.
+				\item[Variabile Casuale $X$] Formalizzazione matematica di quantit\`a numerica dipendente da eventi aleatori.
+			\end{altDescription}
+			\hbox{\hfill}
+			Caratterizzata univocamente da
+			\begin{altDescription}{PDF-CDF}
+				\item[CDF] %Funzione associante ad una variabile casuale $X$ la probabilit\`a di restituire un'osservazione $\leq$ ad un campione $X$
+					$\displaystyle P(x)=\Pr(X\leq x)$
+				\item[PDF] %Funzione associante ad una variabile casuale $X$ la "probabilit\`a per unit\`a di lunghezza" associata ad un campione $x$.
+					%Intuitivamente, probabilit\`a per $X\in[x,x+\mathrm{d}x]$
+					$\displaystyle p(x)=\frac{\mathrm{d}}{\mathrm{d}x}P(x)$
+			\end{altDescription}
+		}
+		\only<2>{
+			\begin{altDescription}{d}
+				\item[Stimatore $\tilde{F}_n$] funzione di una collezioni di variabili aleatorie $X_i$, $n$ campioni, mappati ad una 
+					stima di uno stimando $F$
+			\end{altDescription}
+			\begin{align*}
+			\begin{array}{lrl}
+				\mathsf{Aspettazione: }& E[f(X)]&=\displaystyle\int_{\mathcal{D}}f(x)p(x)\mathrm{d}x \\
+				\mathsf{Varianza: }& V[f(X)]&=E\left[(f(X)-E[f(X)])^2\right] \\
+				\mathsf{Bias: }& \beta&=E[\tilde{F}_n(X_1,\ldots,X_n)]-F \\
+				\mathsf{Efficienza: }& \epsilon[\tilde{F}_n]&=\displaystyle\frac{1}{T[\tilde{F}_n]V[\tilde{F}_n]} \\
+				\mathsf{MSE: }& MSE[\tilde{F}_n]&=E\left[(\tilde{F}_n-F)^2\right]=V[\tilde{F}_n]+\beta^2
+			\end{array}
+			\end{align*}
+		}
+	\end{frame}
+	\begin{frame}{Integrazione di Monte Carlo}
+		\only<1-2>{Stimatore Unbiased per l'Integrazione Monte Carlo}
+		\only<1>{\begin{equation*}
+			\tilde{F}_n=\norm{\mathcal{D}}\tilde{E}_n[f(X)]=\frac{1}{n}\sum_{i=1}^n\frac{f(X_i)}{p(x)}
+		\end{equation*}
+			Il campionamento secondo PDF $p(x)$ permette di scegliere accuratamente i campioni pi\`u significativi (\textit{Importance Sampling})
+		}
+		\only<2->{\begin{equation*}
+			\tilde{F}_n=\norm{\mathcal{D}}\tilde{E}_n[f(X)]=\frac{\norm{\mathcal{D}}}{n}\sum_{i=1}^nf(X_i)
+		\end{equation*}}
+		\only<2>{(Campionamento $\mathcal{U}(\mathcal{D})$)}
+		\only<3>{
+			Per $n$ campioni, la deviazione standard diminuisce di $\sqrt{n}$
+			\begin{equation*}
+				\sigma[\tilde{F}_n]=
+					\sqrt{V[\tilde{F}_n]}=\sqrt{\frac{\norm{\mathcal{D}}^2}{n}V[f(X)]}=\frac{\norm{\mathcal{D}}}{n^{\frac{1}{2}}}\sigma[f(X)]
+			\end{equation*}
+		}
+	\end{frame}
+
+	\begin{frame}{Esempio: Integrale monodimensionale}
+		\begin{columns}
+			\begin{column}{0.35\textwidth}
+				\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+					\begin{axis} [
+						axis lines = left,
+						ymin=0, ymax=4,
+						xmin=0, xmax=11,
+						declare function={
+							s(\x)=sqrt(((pi^2)/10)*\x);
+							func(\x)=sin(s(\x)*180/pi)*e^s(\x)/s(\x);
+						},
+					]
+						\addplot[color=black, domain=0.001:11, domain y=0:4, samples=50,]{func(x)};
+					\end{axis}
+				\end{tikzpicture}\end{scaletikzpicturetowidth}
+				{\small\begin{equation*}
+					f(x)=\frac{\sin\left(\sqrt{\frac{\pi^{2}}{10}x}\right)}{\sqrt{\frac{\pi^{2}}{10}x}}e^{\sqrt{\frac{\pi^{2}}{10}x}}
+				\end{equation*}}
+			\end{column}
+			\begin{column}{0.65\textwidth}
+				dslhflskajfkladsfdsajfldsjflkdsj
+				dslhflskajfkladsfdsajfldsjflkdsj
+				dslhflskajfkladsfdsajfldsjflkdsj
+				dslhflskajfkladsfdsajfldsjflkdsj
+			\end{column}
+		\end{columns}
+	\end{frame}
 	
 	\section{Rendering Fundamentals}
 
