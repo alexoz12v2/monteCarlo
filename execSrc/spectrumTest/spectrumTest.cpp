@@ -6,6 +6,7 @@
 #include "logging.h"
 
 #include <vector>
+#include <cmath>
 
 static auto constexpr spectrumTestLayer_name = "spectrumTestLayer";
 
@@ -18,6 +19,7 @@ struct SpectrumTestLayer_data
 	struct ImageInfo { VkDescriptorImageInfo descriptorInfo; VkImageLayout currentLayout;};
 	std::vector<ImageInfo> swapchainImageInfos;
 	mxc::CommandBuffer layoutTransitionCmdBuf;
+	bool ready;
 };
 
 SpectrumTestLayer_data data;
@@ -52,6 +54,8 @@ auto spectrumTestLayer_init(mxc::ApplicationPtr appPtr, void* layerData) -> bool
 	auto& renderer = app.getRenderer();
 	auto* ctx = renderer.getContextPointer();
 	auto& vulkanDevice = ctx->device;
+
+	spectrumTestLayerData->ready = true;
 
 	// create shaders and pipeline --------------------------------------------
 	uint32_t swapchainImageCount = ctx->swapchain.images.size();
@@ -99,39 +103,108 @@ auto spectrumTestLayer_init(mxc::ApplicationPtr appPtr, void* layerData) -> bool
 
 	// create descriptor sets update template ---------------------------------
 	uint32_t strides[POOLSIZES_COUNT] { sizeof(uint32_t) }; // VK_FORMAT_B8G8R8A8_UNORM
-	spectrumTestLayerData->shaderSet.resources.createUpdateTemplate(ctx, VK_PIPELINE_BIND_POINT_COMPUTE, 
-		spectrumTestLayerData->pipeline.layout,
-		strides
-	);
+	spectrumTestLayerData->shaderSet.resources.createUpdateTemplate(ctx,VK_PIPELINE_BIND_POINT_COMPUTE,spectrumTestLayerData->pipeline.layout,strides);
 
 	// create buffers ---------------------------------------------------------
-    MXC_ASSERT(spectrumTestLayerData->layoutTransitionCmdBuf.allocate(ctx, mxc::CommandType::GRAPHICS), 
-			   "Couldn't allocate image memory barrier command buffer");
+    //MXC_ASSERT(spectrumTestLayerData->layoutTransitionCmdBuf.allocate(ctx, mxc::CommandType::GRAPHICS), 
+	//		   "Couldn't allocate image memory barrier command buffer");
 
 	app.registerHandler(mxc::windowResizedEvent_name, spectrumTestLayer_name);
+
+	// set extent function pointer for renderer -------------------------------
+	renderer.fpGetSurfaceFramebufferSize = [&app](){
+		MXC_TRACE("RESIZING CALLBACK USED");
+		auto [width, height] = app.getWindowExtent();
+		return VkExtent2D{width, height};
+	};
+
+	// transition swapchain images to VK_LAYOUT_GENERAL -----------------------
+	mxc::CommandBuffer cmdBuf;
+	cmdBuf.allocate(ctx, mxc::CommandType::GRAPHICS);
+	cmdBuf.begin();
+	for (uint32_t i = 0; i != ctx->swapchain.images.size(); ++i)
+	{
+		VkImage image = ctx->swapchain.images[i].handle;
+		vulkanDevice.insertImageMemoryBarrier(cmdBuf.handle, image, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL,
+			VK_IMAGE_ASPECT_COLOR_BIT, VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT);
+
+		// release to compute queue if necessary 
+		if (ctx->device.queueFamilies.graphics != ctx->device.queueFamilies.compute)
+		{
+			VkImageMemoryBarrier imageMemoryBarrier{};
+			imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+			imageMemoryBarrier.oldLayout = VK_IMAGE_LAYOUT_GENERAL;
+			imageMemoryBarrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
+			imageMemoryBarrier.image = image;
+			imageMemoryBarrier.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+
+			imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT;
+			imageMemoryBarrier.dstAccessMask = 0;
+			imageMemoryBarrier.srcQueueFamilyIndex = ctx->device.queueFamilies.graphics;
+			imageMemoryBarrier.dstQueueFamilyIndex = ctx->device.queueFamilies.compute;
+			MXC_WARN("w2");
+		}
+	}
+	cmdBuf.end();
+	vulkanDevice.flushCommandBuffer(&cmdBuf, mxc::CommandType::GRAPHICS);
+	cmdBuf.free(ctx);
+
 	return true;
 }
 
 auto spectrumTestLayer_tick(mxc::ApplicationPtr appPtr, float deltaTime, void* layerData) -> mxc::ApplicationSignal_t
 {
+	static uint32_t loopCounter = 0;
 	mxc::VulkanApplication& app = appPtr.get<mxc::VulkanApplication>();
 	auto spectrumTestLayerData = reinterpret_cast<SpectrumTestLayer_data*>(layerData);
 	auto& renderer = app.getRenderer();
 	auto* ctx = renderer.getContextPointer();
 	auto& vulkanDevice = ctx->device;
 
-
-	mxc::RendererStatus status = 
-	renderer.recordComputeCommands([ct = spectrumTestLayerData, ctx, &app, vulkanDevice, renderer](VkCommandBuffer cmdBuf, VkImage swapchainImage, VkImageView swapchainView, uint32_t imageIndex) mutable -> VkResult 
+	if (!spectrumTestLayerData->ready)
 	{
-		// transition swapchain image to VK_IMAGE_LAYOUT_GENERAL (compute shader)
-		// Note that I'm beginning another primary command buffer "within the recording scope" of another one. I should be able to do it as long as
-		// the two of them are in 2 separate command pool
+		spectrumTestLayerData->ready = true;
+		return mxc::ApplicationSignal_v::NONE;
+	}
+
+	uint32_t* outImageIndex = nullptr;
+	MXC_WARN("-%u-", loopCounter);
+	mxc::RendererStatus status = 
+	renderer.recordComputeCommands([ct = spectrumTestLayerData, ctx, &app, vulkanDevice, renderer, outImageIndex]
+	(VkCommandBuffer cmdBuf, VkImage swapchainImage, VkImageView swapchainView, uint32_t imageIndex) mutable -> VkResult 
+	{
+		outImageIndex = &imageIndex;
+		VkCommandBuffer drawCmdBuf = ctx->syncObjs[imageIndex].commandBuffer;
+		auto [width, height] = app.getWindowExtent();
 		auto& [ descriptorInfo, currentLayout ] = ct->swapchainImageInfos[imageIndex];
 
-		vulkanDevice.insertImageMemoryBarrier(cmdBuf, swapchainImage, 
-											  currentLayout, VK_IMAGE_LAYOUT_GENERAL, VK_IMAGE_ASPECT_COLOR_BIT);
+		VkImageMemoryBarrier imageMemoryBarrier = {};
+		imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+		imageMemoryBarrier.oldLayout = VK_IMAGE_LAYOUT_GENERAL;
+		imageMemoryBarrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
+		imageMemoryBarrier.image = swapchainImage;
+		imageMemoryBarrier.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+
+		if (ctx->device.queueFamilies.graphics != ctx->device.queueFamilies.compute)
+		{
+			// Acquire barrier for compute queue
+			imageMemoryBarrier.srcAccessMask = 0;
+			imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT;
+			imageMemoryBarrier.srcQueueFamilyIndex = ctx->device.queueFamilies.graphics;
+			imageMemoryBarrier.dstQueueFamilyIndex = ctx->device.queueFamilies.compute;
+			vkCmdPipelineBarrier(
+				cmdBuf,
+				VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+				VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+				0,//VK_FLAGS_NONE,
+				0, nullptr,
+				0, nullptr,
+				1, &imageMemoryBarrier);
+			MXC_TRACE("Swapchain image %u acquired by compute queue", imageIndex);
+		}
+
 		currentLayout = VK_IMAGE_LAYOUT_GENERAL;
+		descriptorInfo.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
 
 		// update descriptors with current content of the swapchain image
 		//ct->shaderSet.resources.update(ctx, imageIndex, &descriptorInfo);
@@ -144,31 +217,45 @@ auto spectrumTestLayer_tick(mxc::ApplicationPtr appPtr, float deltaTime, void* l
 
 		vkCmdBindPipeline(cmdBuf, VK_PIPELINE_BIND_POINT_COMPUTE, ct->pipeline.handle);
 
-		auto [width, height] = app.getWindowExtent();
-		vkCmdDispatch(cmdBuf, width / 16, height / 16, 1);
+		vkCmdDispatch(cmdBuf, static_cast<uint32_t>(ceil(width / 16.f)), static_cast<uint32_t>(ceil(height / 16.f)), 1);
 
-		// transition swapchain image to VK_IMAGE_LAYOUT_PRESENT_SRC_KHR (after compute shader)
-		vulkanDevice.insertImageMemoryBarrier(cmdBuf, swapchainImage, 
-											  currentLayout,VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,VK_IMAGE_ASPECT_COLOR_BIT);
-		currentLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+		if (ctx->device.queueFamilies.graphics != ctx->device.queueFamilies.compute)
+		{
+			// Release barrier from compute queue
+			imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT;
+			imageMemoryBarrier.dstAccessMask = 0;
+			imageMemoryBarrier.srcQueueFamilyIndex = ctx->device.queueFamilies.compute;
+			imageMemoryBarrier.dstQueueFamilyIndex = ctx->device.queueFamilies.graphics;
+			vkCmdPipelineBarrier(
+				cmdBuf,
+				VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+				VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+				0,//VK_FLAGS_NONE,
+				0, nullptr,
+				0, nullptr,
+				1, &imageMemoryBarrier);
+			MXC_TRACE("Swapchain image %u released by compute queue", imageIndex);
+		}
 
 		return VK_SUCCESS;
 	});
 
+	MXC_WARN("--");
+	++loopCounter;
 	if (status == mxc::RendererStatus::FATAL)
 		return mxc::ApplicationSignal_v::CLOSE_APP;
 	else if (status == mxc::RendererStatus::WINDOW_RESIZED)
-		MXC_WARN("Manual resize Shouldn't be triggered. Where is GLFW?");
-
-	status = renderer.submitFrame();
-
-	if (status == mxc::RendererStatus::FATAL)
-		return mxc::ApplicationSignal_v::CLOSE_APP;
-	else if (status == mxc::RendererStatus::WINDOW_RESIZED)
-	{
-		MXC_WARN("Manual resize Shouldn't be triggered. Where is GLFW?");
 		return mxc::ApplicationSignal_v::NONE;
-	}
+
+	status = renderer.submitCompute();
+
+	MXC_WARN("--++");
+	status = renderer.transitionAndpresentFrame(VK_IMAGE_LAYOUT_GENERAL);
+
+	if (status == mxc::RendererStatus::FATAL)
+		return mxc::ApplicationSignal_v::CLOSE_APP;
+	else if (status == mxc::RendererStatus::WINDOW_RESIZED)
+		return mxc::ApplicationSignal_v::NONE;
 
 	return mxc::ApplicationSignal_v::NONE;
 }
@@ -197,10 +284,25 @@ auto spectrumTestLayer_handler([[maybe_unused]] mxc::ApplicationPtr appPtr, [[ma
 
 	if (name == mxc::windowResizedEvent_name)
 	{
+		MXC_WARN("I Should be running after Renderer::Resize");
+		spectrumTestLayerData->ready = false;
 		for (uint32_t i = 0; i != spectrumTestLayerData->swapchainImageInfos.size(); ++i)
 		{
 			spectrumTestLayerData->swapchainImageInfos[i].currentLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+			spectrumTestLayerData->swapchainImageInfos[i].descriptorInfo.imageView = ctx->swapchain.images[i].view;
+			spectrumTestLayerData->swapchainImageInfos[i].descriptorInfo.imageLayout = VK_IMAGE_LAYOUT_UNDEFINED;
 		}
+
+		// transition swapchain images to VK_LAYOUT_GENERAL -----------------------
+		mxc::CommandBuffer cmdBuf;
+		cmdBuf.allocate(ctx, mxc::CommandType::COMPUTE);
+		cmdBuf.begin();
+		for (uint32_t i = 0; i != ctx->swapchain.images.size(); ++i)
+			vulkanDevice.insertImageMemoryBarrier(cmdBuf.handle, ctx->swapchain.images[i].handle, 
+											VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL, VK_IMAGE_ASPECT_COLOR_BIT);
+		cmdBuf.end();
+		vulkanDevice.flushCommandBuffer(&cmdBuf, mxc::CommandType::COMPUTE);
+		cmdBuf.free(ctx);
 	}
 
 	return mxc::ApplicationSignal_v::NONE;

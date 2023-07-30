@@ -4,8 +4,245 @@
 
 [[vk::binding(0, 0)]] RWTexture2D<float4> res;
 
-[numthreads(16,16,1)]
-void main(uint3 dispatchTreadID : SV_DispatchThreadID)
+struct Camera 
 {
-    res[dispatchTreadID.xy] = float4(1,0,0,1);
+    float3 position;
+    float3 lookat;
+};
+
+struct Ray 
+{
+    float3 origin;
+    float3 direction;
+};
+
+struct LinearCongruentialGenerator
+{
+    uint state;
+};
+
+float random1D(inout LinearCongruentialGenerator lcg)
+{
+    uint next = 16807*(lcg.state+1) % 2147483647u;
+    lcg.state = next;
+    return float(next) / 2147483647u;
+}
+
+enum Refl_t { DIFF, SPEC, REFR };  
+struct Sphere 
+{ 
+    float radius;
+    float3 position;
+    float3 emission;
+    float3 color;
+    Refl_t refl;
+}; 
+
+float Sphere_intersect(in Sphere sphere, in Ray ray) 
+{
+    float3 centerToOrigin = ray.origin - sphere.position;
+    float eps = 1e-4, t;
+
+    //float a       = dot(ray.direction,ray.direction) = 1;
+    float b = dot(ray.direction, centerToOrigin);
+    float c = dot(centerToOrigin, centerToOrigin)-sphere.radius*sphere.radius;
+    float det = b*b-c;
+
+    if (det<0)
+        return 0;
+    else
+    {
+        det=sqrt(det);
+        return (t=b-det)>eps ? t 
+            : ((t=b+det)>eps ? t : 0);
+    }
+} 
+
+#define SPHERES_COUNT 9
+#define PI 3.141592654
+
+float2 intersect(in Ray ray)
+{
+    Sphere spheres[9] = {
+        {1e5, float3( 1e5+1,40.8,81.6) -float3(50,52,295.6), float3(0,0,0),   float3(.75,.25,.25),DIFF}, // Left Wall
+        {1e5, float3(-1e5+99,40.8,81.6)-float3(50,52,295.6), float3(0,0,0),   float3(.25,.25,.75),DIFF}, // Right Wall
+        {1e5, float3(50,40.8, 1e5)     -float3(50,52,295.6), float3(0,0,0),   float3(.75,.75,.75),DIFF}, // Back Wall
+        {1e5, float3(50,40.8,-1e5+170) -float3(50,52,295.6), float3(0,0,0),   float3(0,0,0),      DIFF}, // Front Wall
+        {1e5, float3(50, 1e5, 81.6)    -float3(50,52,295.6), float3(0,0,0),   float3(.75,.75,.75),DIFF}, // Bottom Wall
+        {1e5, float3(50,-1e5+81.6,81.6)-float3(50,52,295.6), float3(0,0,0),   float3(.75,.75,.75),DIFF}, // Top Wall
+        {16.5,float3(27,16.5,47)       -float3(50,52,295.6), float3(0,0,0),   float3(1,1,1)*.999, SPEC}, // Mirror Sphere
+        {16.5,float3(73,16.5,78)       -float3(50,52,295.6), float3(0,0,0),   float3(1,1,1)*.999, REFR}, // Glossy Sphere
+        {600, float3(50,681.6-.27,81.6)-float3(50,52,295.6), float3(12,12,12),float3(0,0,0),      DIFF}  // Light
+    }; 
+
+    float t = 1e20;
+    uint index = 9;
+    for (uint i = 0; i != SPHERES_COUNT; ++i)
+    {
+        float d = Sphere_intersect(spheres[i], ray);
+        if (d < t)
+        {
+            index = i;
+            t = d;
+        }
+    }
+
+    if (index == 9)
+        return float2(-1,9);
+    else
+        return float2(t,index);
+}
+
+float3 sampleLi(in Ray startRay, inout LinearCongruentialGenerator lcg)
+{
+    Sphere spheres[9] = {
+        {1e5, float3( 1e5+1,40.8,81.6) -float3(50,52,295.6), float3(0,0,0),   float3(.75,.25,.25),DIFF}, // Left Wall
+        {1e5, float3(-1e5+99,40.8,81.6)-float3(50,52,295.6), float3(0,0,0),   float3(.25,.25,.75),DIFF}, // Right Wall
+        {1e5, float3(50,40.8, 1e5)     -float3(50,52,295.6), float3(0,0,0),   float3(.75,.75,.75),DIFF}, // Back Wall
+        {1e5, float3(50,40.8,-1e5+170) -float3(50,52,295.6), float3(0,0,0),   float3(0,0,0),      DIFF}, // Front Wall
+        {1e5, float3(50, 1e5, 81.6)    -float3(50,52,295.6), float3(0,0,0),   float3(.75,.75,.75),DIFF}, // Bottom Wall
+        {1e5, float3(50,-1e5+81.6,81.6)-float3(50,52,295.6), float3(0,0,0),   float3(.75,.75,.75),DIFF}, // Top Wall
+        {16.5,float3(27,16.5,47)       -float3(50,52,295.6), float3(0,0,0),   float3(1,1,1)*.999, SPEC}, // Mirror Sphere
+        {16.5,float3(73,16.5,78)       -float3(50,52,295.6), float3(0,0,0),   float3(1,1,1)*.999, REFR}, // Glossy Sphere
+        {600, float3(50,681.6-.27,81.6)-float3(50,52,295.6), float3(12,12,12),float3(0,0,0),      DIFF}  // Light
+    }; 
+
+    Ray ray = startRay;
+    float3 radianceAccumulated    = float3(0,0,0);
+    float3 reflectanceAccumulated = float3(1,1,1);
+
+    for (uint depth = 0; ; ++depth)
+    {
+        // Intersect with scene
+        float2 t_Id = intersect(ray);
+        if (t_Id.x == -1)
+        {
+            return float3(0,1,0);
+            break;
+        }
+
+        switch (t_Id.y)
+        {
+            case 0: return float3(1,0,0);
+            case 1: return float3(0,0,1);
+            case 2: return float3(0.5,0.2,0.7);
+            case 3: return float3(0.2,1,0.4);
+            case 4: return float3(0.7,0.2,0.5);
+            case 5: return float3(0.3,0.1,0.9);
+            case 6: return float3(0.6,0.34,0.8);
+            case 7: return float3(0.5,0.5,0.5);
+            case 8: return float3(1,1,1);
+            case 9: return float3(0.2,0.2,0.2);
+        }
+
+        float3 position = ray.origin + t_Id.x * ray.direction;
+        float3 albedo = spheres[t_Id.y].color;
+
+        float3 normalG   = normalize(position - spheres[t_Id.y].position);
+        float3 normalObs = dot(normalG, ray.direction) > 0 ? -1*normalG : normalG;
+        float3 tangent   = normalize(cross(abs(normalObs.x) > 0.1 ? float3(0,1,0) : float3(1,0,0), normalObs));
+        float3 bitangent = cross(normalObs, tangent);
+
+        // check russian roulette condition
+        float p = max(max(albedo.x,albedo.y), albedo.z);
+        if (++depth > 100)
+        {
+            if (random1D(lcg) < p)
+                albedo /= p;
+            else 
+            {
+                break;
+            }
+        }
+
+        ray.origin = position;
+        radianceAccumulated += reflectanceAccumulated * spheres[t_Id.y].emission;
+        reflectanceAccumulated *= albedo;
+
+        // compute radiance
+        if (spheres[t_Id.y].refl == DIFF)
+        {
+            float azimuth = 2*PI*random1D(lcg);
+            float sin2Zenith = random1D(lcg), sinZenith = sqrt(sin2Zenith);
+
+            // chosen reflect direction, from spherical to cartesian
+            float3 omegaI = normalize(tangent*cos(azimuth)*sinZenith + bitangent*sin(azimuth)*sinZenith + normalObs*sqrt(1-sin2Zenith));
+
+            ray.direction = omegaI;
+        }
+        else if (spheres[t_Id.y].refl == SPEC)
+        {
+            ray.direction = float3(ray.direction - 2*dot(normalG,ray.direction)*normalG);
+        }
+        else
+        {
+            float3 reflDir= float3(ray.direction - 2*dot(normalG,ray.direction)*normalG);
+            bool out2In = dot(normalG, normalObs) > 0;
+            float etaA = 1, etaB = 1.5, eta = out2In ? etaA/etaB : etaB/etaA;
+            float nDotwi = dot(ray.direction, normalObs);
+
+            // total internal reflection
+            float cos2omegaT = 1-eta*eta*(1-nDotwi*nDotwi);
+            if (cos2omegaT < 0)
+            {
+                // possibly multiply by reflectance?
+                ray.direction = reflDir;
+            }
+            else
+            {
+                float3 omegaT = normalize(ray.direction*eta - normalG*((out2In ? 1 : -1)*(nDotwi*eta+sqrt(cos2omegaT))));
+
+                float a = etaB - etaA, b = etaB + etaA, c = 1 - (out2In ? -nDotwi : dot(omegaT,normalG));
+
+                // Schlick's Fresnel reflectance
+                float R0 = a*a/(b*b), Re = R0+(1-R0)*c*c*c*c*c;
+                float Tr = 1 - Re;
+
+                // Russian Roulette = then kill either reflected or transmitted ray. Which of them is to terminate is 
+                // decided by a factor of reflectance (TODO = support 2 rays at once)
+                float p = 0.25 + 0.5*Re;
+                float Rp = Re / p, Tp = Tr / (1-p);
+
+                if (random1D(lcg) < p)
+                {
+                    reflectanceAccumulated *= Rp;
+                    ray.direction = reflDir;
+                }
+                else
+                {
+                    reflectanceAccumulated *= Tp;
+                    ray.direction = omegaT;
+                }
+            }
+        }
+    }
+
+    return radianceAccumulated;
+}
+
+[numthreads(16,16,1)]
+void main(uint3 dispatchThreadID : SV_DispatchThreadID)
+{
+    // Get workgroup chunk dimensions
+    uint2 dim;
+    res.GetDimensions(dim.x, dim.y);
+
+    // get coordinates within chunk, [0,1]->[-1,1]
+    float2 xy = (-1.f + 2.f * (float2(dispatchThreadID.xy) / dim)) * float2(dim.x/dim.y, 1);
+    
+    // get camera from UBO (TODO) float3(50,52,295.6)
+    Camera camera = {float3(0,0,0), normalize(float3(0,0,1))};
+
+    // apply aspect ratio (TODO), focal distance (TODO), and construct ray direction
+    // use resolution to figure out pixel cell dimensions to sample within the pixel (TODO)
+
+    // assume origin = image plane center, then ray direction = camera lookat + xy
+    Ray ray = { camera.position, normalize(camera.lookat + float3(xy, 0.f)) };
+
+    LinearCongruentialGenerator lcg = {1000000u};
+    float3 finalColour = sampleLi(ray,lcg);//float3(0,0,0);
+    //for(uint i = 0; i != 200; ++i)
+    //    finalColour = (i*finalColour + sampleLi(ray, lcg)) / (i+1);
+
+    res[dispatchThreadID.xy] = float4(finalColour,1);
 }

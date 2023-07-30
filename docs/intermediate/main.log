@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  17 JUL 2023 19:26
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  19 JUL 2023 10:05
  system commands enabled.
 **main.tex
 (./main.tex
@@ -2547,7 +2547,7 @@ _sampling.png  used on input line 254.
 Underfull \vbox (badness 1383) has occurred while \output is active []
 
  [6]
-Underfull \vbox (badness 2181) has occurred while \output is active []
+Underfull \vbox (badness 1609) has occurred while \output is active []
 
  [7]
 [8<./chapters/../assets/chapter6_sampling_inverse_transform_sampling.png>]
@@ -2843,40 +2843,40 @@ Package fancyhdr Warning: \headheight is too small (15.0pt):
 File: chapters/../assets/appendixD_result_8.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_8.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_8.png  used on inp
-ut line 476.
+ut line 475.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
 <chapters/../assets/appendixD_result_40.png, id=881, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_40.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_40.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_40.png  used on in
-put line 481.
+put line 480.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
 <chapters/../assets/appendixD_result_200.png, id=882, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_200.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_200.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_200.png  used on i
-nput line 485.
+nput line 484.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
 <chapters/../assets/appendixD_result_1000.png, id=883, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_1000.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_1000.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_1000.png  used on 
-input line 490.
+input line 489.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
 <chapters/../assets/appendixD_result_5k.png, id=884, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_5k.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_5k.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_5k.png  used on in
-put line 495.
+put line 494.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
 <chapters/../assets/appendixD_result_25k.png, id=885, 1027.84pt x 770.88pt>
 File: chapters/../assets/appendixD_result_25k.png Graphic file (type png)
 <use chapters/../assets/appendixD_result_25k.png>
 Package luatex.def Info: chapters/../assets/appendixD_result_25k.png  used on i
-nput line 500.
+nput line 499.
 (luatex.def)             Requested size: 165.43602pt x 124.0726pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 474--503
+Underfull \hbox (badness 10000) in paragraph at lines 473--502
 []$[]$  $[]$
  []
 
@@ -2979,10 +2979,10 @@ f Graphic file (type pdf)
 <use ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_comparison_svg-raw.pdf
 >
 Package luatex.def Info: ./svg-inkscape/chapter2_colorimetry_CIE1931xy_gamut_co
-mparison_svg-raw.pdf  used on input line 225.
+mparison_svg-raw.pdf  used on input line 223.
 (luatex.def)             Requested size: 353.31061pt x 382.31715pt.
 
-Overfull \hbox (10.64745pt too wide) in paragraph at lines 238--243
+Overfull \hbox (10.64745pt too wide) in paragraph at lines 236--241
 \TU/CharisSIL(0)/m/n/10 con-ver-tire il risul-tato per ogni pixel in sRGB per di
 s-play. Men-tre la con-ver-sione []
  []
@@ -2995,7 +2995,7 @@ File: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf Graphic file (
 type pdf)
 <use ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf>
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw
-.pdf  used on input line 300.
+.pdf  used on input line 298.
 (luatex.def)             Requested size: 283.59032pt x 186.4892pt.
 <./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf, id=1233, 406.26328pt 
 x 272.47215pt>
@@ -3003,10 +3003,10 @@ File: ./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf Graphic file (typ
 e pdf)
 <use ./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pdf>
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_plot_svg-raw.pd
-f  used on input line 301.
+f  used on input line 299.
 (luatex.def)             Requested size: 406.26228pt x 272.47148pt.
 
-Overfull \hbox (1.67572pt too wide) in paragraph at lines 312--314
+Overfull \hbox (1.67572pt too wide) in paragraph at lines 310--312
 \TU/CharisSIL(0)/m/n/10 cam-era, dall’orig-ine $[]$. Definisce il \TU/CharisS
 IL(0)/m/it/10 field of view\TU/CharisSIL(0)/m/n/10 . An-che chiam-
  []
@@ -3018,10 +3018,10 @@ File: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf Graphic file
  (type pdf)
 <use ./svg-inkscape/chapter2_camera_pinhole_projected_svg-raw.pdf>
 Package luatex.def Info: ./svg-inkscape/chapter2_camera_pinhole_projected_svg-r
-aw.pdf  used on input line 333.
+aw.pdf  used on input line 331.
 (luatex.def)             Requested size: 318.22804pt x 143.87567pt.
 
-Underfull \hbox (badness 2547) in paragraph at lines 335--335
+Underfull \hbox (badness 2547) in paragraph at lines 333--333
 []\TU/CharisSIL(0)/m/n/9 (a) |Ge-ome-tria del pin-hole cam-era model visto
  []
 
@@ -3031,10 +3031,10 @@ File: chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png Grap
 hic file (type png)
 <use chapters/../assets/chapter2_camera_non_linear_mapping_learnwebgl.png>
 Package luatex.def Info: chapters/../assets/chapter2_camera_non_linear_mapping_
-learnwebgl.png  used on input line 338.
+learnwebgl.png  used on input line 336.
 (luatex.def)             Requested size: 206.79819pt x 139.7143pt.
 
-Overfull \hbox (1.95313pt too wide) in paragraph at lines 332--342
+Overfull \hbox (1.95313pt too wide) in paragraph at lines 330--340
 [][] [] 
  []
 
@@ -3043,7 +3043,7 @@ t>
 File: chapters/../assets/chapter2_view_frustum.png Graphic file (type png)
 <use chapters/../assets/chapter2_view_frustum.png>
 Package luatex.def Info: chapters/../assets/chapter2_view_frustum.png  used on 
-input line 350.
+input line 348.
 (luatex.def)             Requested size: 248.16034pt x 184.74654pt.
 [53<./svg-inkscape/chapter2_camera_pinhole_diagram_svg-raw.pdf><./svg-inkscape/c
 hapter2_camera_pinhole_plot_svg-raw.pdf>] [54<./chapters/../assets/chapter2_came
@@ -3311,11 +3311,11 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
 Here is how much of LuaTeX's memory you used:
  71790 strings out of 478285
- 195326,3417909 words of node,token memory allocated
+ 195321,3417909 words of node,token memory allocated
  3342 words of node memory still in use:
    7 hlist, 2 vlist, 2 rule, 75 glue, 4 kern, 9 sub_mlist, 1 glyph, 480 attribut
 e, 126 glue_spec, 480 attribute_list, 2 write, 7 pdf_action nodes
-   avail lists: 1:20,2:20698,3:13196,4:2302,5:518,6:98,7:8480,8:103,9:1705,10:22
+   avail lists: 1:19,2:20698,3:13196,4:2302,5:518,6:98,7:8480,8:103,9:1705,10:22
 ,11:697,12:1
  88209 multiletter control sequences out of 65536+600000
  136 fonts using 60430855 bytes
@@ -3336,7 +3336,7 @@ m-math/latinmodern-math.otf></usr/share/texmf-dist/fonts/opentype/public/lm-math
 /latinmodern-math.otf></usr/share/fonts/TTF/CharisSIL-Italic.ttf></usr/share/fon
 ts/TTF/CharisSIL-Regular.ttf></usr/share/fonts/TTF/CharisSIL-Bold.ttf></usr/shar
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on main.pdf (105 pages, 18723352 bytes).
+Output written on main.pdf (105 pages, 18723132 bytes).
 
 PDF statistics: 2037 PDF objects out of 2073 (max. 8388607)
  1594 compressed objects within 16 object streams

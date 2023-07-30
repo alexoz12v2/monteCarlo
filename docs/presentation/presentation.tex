@@ -1,5 +1,20 @@
 \documentclass[14pt, aspectratio=169]{beamer}
 
+% ------------------ uncomment to produce handout
+%\documentclass[handout,14pt, aspectratio=169]{beamer}
+%\usepackage{pgfpages}
+%%\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm]
+%\mode<handout>{
+%  \usepackage{pgfpages}
+%  \pgfpagesuselayout{4 on 1}[a4paper,landscape,border shrink=5mm]
+%  \usepackage{tikz}
+%  \setbeamertemplate{background canvas}{
+%    \begin{tikzpicture}[remember picture]
+%      \draw (current page.south west) rectangle (current page.north east);
+%    \end{tikzpicture}
+%  }
+%}
+
 % pseudocode first slide
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -93,7 +108,12 @@
 \usegdlibrary{trees}
 \tikzset{>=latex} % for LaTex arrow head
 
+% stuff for explained equation
+\tikzset{mathterm/.style={draw=black,fill=white,rectangle,anchor=base}}
+\tikzstyle{every picture}+=[remember picture]
+
 \newcommand{\professor}{Prof.ssa Marina Popolizio}
+
 \makeatletter
 \newsavebox{\measure@tikzpicture}
 \NewEnviron{scaletikzpicturetowidth}[1]{%
@@ -162,10 +182,32 @@
 
 \newcommand*{\currentsectionname}{\@currentlabelname}
 
+\newcommand{\betweensmallandscript}{\@setfontsize\betweensmallandscript{9pt}{10.8pt}}
+
+% Designate a term in a math environment to point to
+% Syntax: \mathterm[node label]{some math}
+\newcommand\mathterm[2][]{%
+   \tikz [baseline] { \node [mathterm] (#1) {$#2$}; }}
+
+% A command to draw an arrow from the current position to a labelled math term
+% Default color=black, default arrow head=stealth
+% Syntax: \indicate[color]{term to point to}[path options]
+\newcommand\indicate[2][black]{%
+   \tikz [baseline] \node [inner sep=0pt,anchor=base] (i#2) {\vphantom|};
+   \@ifnextchar[{\@indicateopts{#1}{#2}}{\@indicatenoopts{#1}{#2}}}
+\def\@indicatenoopts#1#2{%
+   {\color{#1} \tikz[overlay] \path[line width=1pt,draw=#1,-stealth] (i#2) edge (#2);}}
+\def\@indicateopts#1#2[#3]{%
+   {\color{#1} \tikz[overlay] \path[line width=1pt,draw=#1,-stealth] (i#2) [#3] edge (#2);}}
+
 \makeatother
 
 % -------------------------- code highlighting 
 \usepackage[outputdir=intermediate]{minted}
+
+% --------------------- empty table captions
+\usepackage{caption}
+\captionsetup{labelformat=empty}
 
 % ------------------------- colors and other stuff for figures
 % EM wavw
@@ -373,13 +415,13 @@
 	\end{figure}
 }}
 \begin{document}
-
+	\pgfplotsset{compat=newest}
 	\begin{frame}
 		\maketitle
 	\end{frame}
 
 	\begin{frame}{Introduzione}
-		\begin{columns}
+		\begin{columns}[T]
 			\begin{column}{0.35\textwidth}
 				\includegraphics[width=\linewidth]{../assets/intro_path_tracing_online_tech_tips.png}
 				\small Stima della funzione immagine $r_f(x,y)$ attraverso Path Tracing.
@@ -387,9 +429,9 @@
 			\begin{column}{0.65\textwidth}
 				\only<1-3>{
 					\begin{itemize}[topsep=0pt,noitemsep]
-						\item[\bullet]<1-> Introduzione a bullets
-						\item[\bullet]<2-> ancora da fare
-						\item[\bullet]<3-> quando mi viene in mente
+						\item[\bullet]<1-> Calcolo della Funzione Immagine
+						\item[\bullet]<2-> Attraverso il suo campionamento
+						\item[\bullet]<3-> Approssimazione con MC
 					\end{itemize}
 					\hbox{\hfill}
 					\only<1>{\begin{equation*}
@@ -465,9 +507,9 @@
 			\begin{array}{lrl}
 				\mathsf{Aspettazione: }& E[f(X)]&=\displaystyle\int_{\mathcal{D}}f(x)p(x)\mathrm{d}x \\
 				\mathsf{Varianza: }& V[f(X)]&=E\left[(f(X)-E[f(X)])^2\right] \\
-				\mathsf{Bias: }& \beta&=E[\tilde{F}_n(X_1,\ldots,X_n)]-F \\
-				\mathsf{Efficienza: }& \epsilon[\tilde{F}_n]&=\displaystyle\frac{1}{T[\tilde{F}_n]V[\tilde{F}_n]} \\
-				\mathsf{MSE: }& MSE[\tilde{F}_n]&=E\left[(\tilde{F}_n-F)^2\right]=V[\tilde{F}_n]+\beta^2
+				\mathsf{Bias: }& \beta&=E\left[\tilde{F}_n(X_1,\ldots,X_n)\right]-F \\
+				\mathsf{Efficienza: }& \epsilon\left[\tilde{F}_n\right]&=\displaystyle\frac{1}{T\left[\tilde{F}_n\right]V\left[\tilde{F}_n\right]} \\
+				\mathsf{MSE: }& \mathit{MSE}\left[\tilde{F}_n\right]&=E\left[(\tilde{F}_n-F)^2\right]=V\left[\tilde{F}_n\right]+\beta^2
 			\end{array}
 			\end{align*}
 		}
@@ -491,13 +533,16 @@
 			\end{equation*}
 		}
 	\end{frame}
-
-	\begin{frame}{Esempio: Integrale monodimensionale}
-		\begin{columns}
+	\begin{frame}[t,fragile]
+		\frametitle{Esempio: Integrale monodimensionale}
+		\only<1>{\begin{columns}
 			\begin{column}{0.35\textwidth}
 				\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
 					\begin{axis} [
 						axis lines = left,
+						xlabel={$x$}, ylabel={$f(x)$},
+						every axis y label/.style={at=(current axis.above origin),anchor=south east},
+						every axis x label/.style={at=(current axis.right of origin),anchor=north west},
 						ymin=0, ymax=4,
 						xmin=0, xmax=11,
 						declare function={
@@ -509,22 +554,200 @@
 					\end{axis}
 				\end{tikzpicture}\end{scaletikzpicturetowidth}
 				{\small\begin{equation*}
-					f(x)=\frac{\sin\left(\sqrt{\frac{\pi^{2}}{10}x}\right)}{\sqrt{\frac{\pi^{2}}{10}x}}e^{\sqrt{\frac{\pi^{2}}{10}x}}
+					\int_0^{10}\frac{\sin\left(\sqrt{\frac{\pi^{2}}{10}x}\right)}{\sqrt{\frac{\pi^{2}}{10}x}}e^{\sqrt{\frac{\pi^{2}}{10}x}}\mathrm{d}x
 				\end{equation*}}
 			\end{column}
 			\begin{column}{0.65\textwidth}
-				dslhflskajfkladsfdsajfldsjflkdsj
-				dslhflskajfkladsfdsajfldsjflkdsj
-				dslhflskajfkladsfdsajfldsjflkdsj
-				dslhflskajfkladsfdsajfldsjflkdsj
+				\`e possibile giungere alla soluzione analitica
+				\begin{equation*}
+					F=\frac{10e^\pi+10}{\pi^2}\approx 24.45963551499059
+				\end{equation*}
+				Possiamo applicare il Metodo di Monte Carlo
+				\begin{equation*}
+					\tilde{F}_n=\norm{\mathcal{D}}\tilde{E}_n[f(X)]=\frac{10}{n}\sum_{i=1}^nf(X_i)
+				\end{equation*}
+				Campionando uniformemente $[0,10]$
 			\end{column}
-		\end{columns}
+		\end{columns}}
+		\only<2-3>{\begin{figure}[ht]
+			\scriptsize	
+			\only<2>{\begin{subfigure}[t]{0.45\textwidth}
+				\begin{scaletikzpicturetowidth}{\textwidth}\begin{tikzpicture}[scale=\tikzscale]
+					\begin{axis} [
+						axis lines = left,
+						xlabel={$n$}, ylabel=$\tilde{F}_n-F$,
+						every axis y label/.style={at=(current axis.above origin),anchor=south east},
+						every axis x label/.style={at=(current axis.right of origin),anchor=north west},
+						ymax=2, ymin=-2,
+					]
+						\addplot [black,] table[ignore chars={(,)},col sep=comma] {../assets/chapter6_error_data.dat};
+					\end{axis}
+				\end{tikzpicture}\end{scaletikzpicturetowidth}
+				\caption{Funzione Errore per $\tilde{F}_n$}
+			\end{subfigure}
+			\begin{subfigure}[t]{0.45\textwidth}
+				\begin{scaletikzpicturetowidth}{\textwidth}\begin{tikzpicture}[scale=\tikzscale]
+					\begin{axis} [
+						axis lines = left,
+						xlabel={$n$}, ylabel={$\epsilon\left[\tilde{F}_n\right]$},
+						every axis y label/.style={at=(current axis.above origin),anchor=south east},
+						every axis x label/.style={at=(current axis.right of origin),anchor=north west},
+						ymax=5, ymin=0,
+					]
+						\addplot [black,] table[ignore chars={(,)},col sep=comma] {../assets/chapter6_efficiency.dat};
+					\end{axis}
+				\end{tikzpicture}\end{scaletikzpicturetowidth}
+				\caption{Funzione efficienza $\epsilon\left[\tilde{F}_n\right]$}
+			\end{subfigure}}
+			\only<3>{\begin{subfigure}[t]{0.45\textwidth}
+				\begin{scaletikzpicturetowidth}{\textwidth}\begin{tikzpicture}[scale=\tikzscale]
+					\begin{axis} [
+						axis lines = left,
+						xlabel={$n$}, ylabel={$MSE\left[\tilde{F}_n\right]$},
+						every axis y label/.style={at=(current axis.above origin),anchor=south east},
+						every axis x label/.style={at=(current axis.right of origin),anchor=north west},
+						ymax=5, ymin=0,
+					]
+						\addplot [black,] table[ignore chars={(,)},col sep=comma] {../assets/chapter6_mse_data.dat};
+					\end{axis}
+				\end{tikzpicture}\end{scaletikzpicturetowidth}
+				\caption{$MSE[\tilde{F}_n]$ dello stimatore unbiased}
+			\end{subfigure}
+			\begin{subfigure}[t]{0.45\textwidth}
+				\begin{scaletikzpicturetowidth}{\textwidth}\begin{tikzpicture}[scale=\tikzscale]
+					\begin{axis} [
+						axis lines = left,
+						xlabel={$n$}, ylabel=$\tilde{F}_n^{\beta}-F$,
+						every axis y label/.style={at=(current axis.above origin),anchor=south east},
+						every axis x label/.style={at=(current axis.right of origin),anchor=north west},
+						ymin=-2, ymax=0,
+					]
+						\addplot [black,] table[ignore chars={(,)},col sep=comma] {../assets/chapter6_biased_estimator_error_data.dat};
+					\end{axis}
+				\end{tikzpicture}\end{scaletikzpicturetowidth}
+				\caption{Funzione errore per stimatore biased $\tilde{F}_n^{\beta}=\tfrac{1}{2}\operatorname{max}\{f(X_1),\ldots\}$}
+			\end{subfigure}}
+		\end{figure}}
+	\end{frame}
+
+	\begin{frame}\frametitle{Metodi di Riduzione della Varianza}
+		\begin{altDescription}{variance}
+			\item[Stratified Sampling] Suddivisione del dominio di integrazione in $n$ regioni chiamate \textit{strata}
+			\item[Importance Sampling] Concentra i punti campionati per la stima dell'integrale utilizzando PDF
+				proporzionale alla funzione integranda, per catturarne pi\`u rapidamente i contributi pi\`u significativi
+			\item[Russian Roulette] Salta la valutazione di campioni che contribuiscono poco
+			\item[Splitting] Aumenta il numero di campioni in alcune dimensioni di un integrale multidimensionale
+		\end{altDescription}
 	\end{frame}
 	
 	\section{Rendering Fundamentals}
 
+	\begin{frame}
+		\frametitle{Radiometria}
+		\only<1>{
+			Modello matematico per studiare e misurare la propagazione delle radiazioni elettromagnetiche con la sola ottica geometrica.
+			\begin{itemize}
+				\item[\bullet] \textsf{Linearit\`a}
+				\item[\bullet] \textsf{Conservazione dell'energia}
+				\item[\bullet] \textsf{No polarizzazione}
+				\item[\bullet] \textsf{No fluorescenza o fosforescenza}
+				\item[\bullet] \textsf{A regime}
+			\end{itemize}
+		}
+		\only<2>{\begin{table}[tb]
+			\betweensmallandscript
+			\begin{tabularx}{\linewidth}{>{\textsf}l >{$}p{\widthof{Simbolo}}<{$} p{\widthof{$\si{W/(sr.m^2)}$}} r@{}l}
+				\toprule
+				\textrm{Quantit\`a} & \text{Simbolo} & unit\`a S.I. & \multicolumn{2}{c}{Formula} \\
+				\midrule
+				{Energia Radiante}	 & Q_e			& $\si{J}$	& $\displaystyle Q_{e,\lambda}=$&$\displaystyle\frac{\partial Q_e}{\partial\lambda}$ \\
+				{Flusso Radiante}	 & \Phi_e		& $\si{W}$	& $\displaystyle\Phi_e=$		&$\displaystyle\frac{\partial Q_e}{\partial t}$ \\
+				{Intensita Radiante} & I_{e,\Omega} &$\si{W/sr}$& $\displaystyle I_{e,\Omega}=$ &$\displaystyle\frac{\partial\Phi_e}{\partial\Omega}$\\
+				{Irradianza}		 & E_e			& \multirow{3}{*}{$\si{W/m^2}$}  
+													& \multirow{3}{*}{$\displaystyle E_e | J_e | M_e=$} 
+													& \multirow{3}{*}{$\displaystyle\frac{\partial\Phi_e}{\partial A}$} \\
+				{Emittanza Radiante} & M_e 			&  & &\\
+				{Radiosita}			 & J_e 			&  & &\\
+				{Radianza}			 & L_{e,\Omega} & $\si{W/(sr.m^2)}$& $\displaystyle L_{e,\Omega}=$	
+																	   & $\displaystyle\frac{\partial^2\Phi_e}{\partial\Omega\partial(A\cos\theta)}$ \\
+				\bottomrule
+			\end{tabularx}
+			\normalsize
+			\caption{nomenclatura e misure delle quantit\`a radiometriche per noi rilevanti}
+			\label{chapter1:radiometric-quantities}
+		\end{table}}
+	\end{frame}
+
+	%\begin{frame}[t,fragile]\frametitle{Fotometria e Colorimetria}
+	%	\begin{columns}[T]
+	%		\begin{column}{0.35\textwidth}
+	%			\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+	%				\begin{axis} [
+	%					axis lines = left,
+	%					xlabel={$\lambda\,[\si{nm}]$}, ylabel={$\bar{x}(\lambda),\bar{y}(\lambda),\bar{z}(\lambda)$},
+	%					every axis y label/.style={at=(current axis.above origin),anchor=south east},
+	%					every axis x label/.style={at=(current axis.right of origin),anchor=north west},
+	%					xlabel absolute,
+	%					ymin=0, ymax=2,
+	%					xmin=360, xmax=830,
+	%				]
+	%					\addplot [red,] table[x=L, y=X,col sep=comma] {./assets/CIE_xyz_1931_2deg.csv};
+	%					\addplot [green,] table[x=L, y=Y,col sep=comma] {./assets/CIE_xyz_1931_2deg.csv};
+	%					\addplot [blue,] table[x=L, y=Z,col sep=comma] {./assets/CIE_xyz_1931_2deg.csv};
+	%				\end{axis}
+	%			\end{tikzpicture}\end{scaletikzpicturetowidth}
+	%		\end{column}
+	%		\begin{column}{0.65\textwidth}
+	%			\only<1>{Ciascuna grandezza radiometrica $X_e$ pu\`o essere scomposta nella sua controparte spettrale
+	%			\begin{equation*}
+	%				X_{e,\lambda}(\lambda) = \tfrac{\mathrm{d}X_e}{\mathrm{d}\lambda}
+	%			\end{equation*}}
+	%			\only<2>{\textsf{Fotometria:} modulazione delle grandezze radiometriche secondo la percezione umana, tramite la Funzione di 
+	%			Efficacia Luminosa Spettrale Fotopica $V(\lambda)$ e l'Efficacia Luminosa Fotopica $K=683.002\,\si{lm/W}$}
+	%			\only<3>{\textsf{Colorimetria:} modulazione delle grandezze radiometriche secondo la percezione umana, scomponendole secondo 
+	%			distribuzioni spettrali costituenti la base di uno spazio vettoriale (Color Space), $\bar{x},\bar{y},\bar{z}$
+	%			}
+	%			\only<4>{\textsf{sRGB$\rightleftarrows$Radianza Spettrale}:
+	%			\begin{altDescription}{spec}
+	%				\item[Spettro$\to$sRGB] Utilizzo di una LUT precomputata per ottenere un colore XYZ. Dopodich\`e Trasformare tale colore in sRGB
+	%				\item[sRGB$\to$Spettro] Applicare trasformazione inversa per ottenere un colore XYZ. Dopodich\`e somma pesata delle tre CMFs
+	%			\end{altDescription}}
+	%		\end{column}
+	%	\end{columns}
+	%	\only<2->{\vbox{\vfill}}
+	%	\only<2>{\small\begin{equation*}
+	%		L_v = K\int_{360\,\si{nm}}^{830\,\si{nm}}L_{e,\lambda}(\lambda)V(\lambda)\mathrm{d}\lambda\;[\si{nit}=\si{cd/m^2}]
+	%	\end{equation*}
+	%	per definizione, $V(\lambda)=\bar{y}(\lambda)$
+	%	}
+	%	\only<3>{\small\begin{equation*}
+	%		X|Y|Z = \frac{1}{\int_\Lambda L_{e,\Omega,\lambda}(\lambda)\bar{y}(\lambda)\mathrm{d}\lambda}
+	%			\int_\Lambda S(\lambda)L_{e,\Omega,\lambda}(\lambda)\bar{x}|\bar{y}|\bar{z}(\lambda)\mathrm{d}\lambda
+	%	\end{equation*}}
+	%	\only<4>{\tiny\begin{align*}
+	%		\begin{array}{cc}
+	%			C_{linear} = \left\{\begin{alignedat}{2}
+	%				&\frac{C_{srgb}}{12.92}, &C_{srgb}\leq 0.04045\\
+	%				&\left(\frac{C_{srgb}+0.055}{1.055}\right)^{2.4},\;&C_{srgb}> 0.04045
+	%			\end{alignedat}\right.
+	%			&
+	%			\begin{bmatrix}
+	%				X \\ Y \\ Z
+	%			\end{bmatrix}=
+	%			\begin{bmatrix}
+	%				0.4124 & 0.3576 & 0.1805 \\
+	%				0.2126 & 0.7152 & 0.0722 \\
+	%				0.0193 & 0.1192 & 0.9505 
+	%			\end{bmatrix}
+	%			\begin{bmatrix}
+	%				R_{linear} \\ G_{linear} \\ B_{linear}
+	%			\end{bmatrix}
+	%		\end{array}
+	%	\end{align*}}
+	%\end{frame}
+
 	\begin{frame}{Rendering Equation}
-		\begin{figure}[tb]
+		\only<1>{\begin{figure}[tb]
 			\fontsize{8pt}{9.6pt}
 			\centering
 			\begin{subfigure}[b]{0.3\textwidth}
@@ -565,7 +788,16 @@
 						\draw[dashed, fill=myblue!70] (BaseRight) arc (0:180:\r cm and 0.2*\r cm);
 					\end{scope}
 
+					% low probability hemisphere
+					\draw[fill=myblue, opacity=.7] 
+						($(R) - (1.5,0)$) arc (0:180:0.5cm) arc (180:360:0.5cm and 0.15cm);
+
+					% outline of the reflection hemisphere
+					\draw ($(R) - (1.5,0)$) arc (0:180:0.5cm) arc (180:360:0.5cm and 0.15cm); 
+					\draw [dashed] ($(R) - (1.5,0)$) arc (0:180:0.5cm and 0.15cm);
+
 				\end{tikzpicture}\end{scaletikzpicturetowidth}
+
 				\caption{Glossy BRDF}
 			\end{subfigure}\hspace*{\fill}
 			\begin{subfigure}[b]{0.3\textwidth}
@@ -574,7 +806,7 @@
 					\node[at={(0,0)}, hemi]{};
 
 					% diffuse reflection ball
-					\shade[ball color=myblue, opacity=.5] 
+					\draw[fill=myblue, opacity=.7] 
 						($(R) - (1,0)$) arc (0:180:1cm) arc (180:360:1cm and 0.3cm);
 						
 					% outline of the reflection hemisphere
@@ -583,18 +815,169 @@
 				\end{tikzpicture}\end{scaletikzpicturetowidth}
 				\caption{Diffuse BRDF}
 			\end{subfigure}
-		\end{figure}
-
-		\begin{equation*}\label{chapter3:surface:renderingEq}
+		\end{figure}}
+		\only<1-2>{\begin{equation*}
 			L_o(\vec{p},\hat{\omega}_o) = L_e(\vec{p},\hat{\omega}_o) + \int_{\mathcal{S}^2}%
 				L_o(t(\vec{p}, \hat{\omega}_i),-\hat{\omega}_i)f_s(\vec{p},\hat{\omega}_o,\hat{\omega}_i)%
 				\vert\langle\hat{n},\hat{\omega}_i\rangle\vert\mathrm{d}\hat{\omega}_i
-		\end{equation*}
+		\end{equation*}}
+		\only<2>{
+			\begin{itemize}
+				\item[\bullet]$\vec{p},\hat{\omega}_i,\hat{\omega}_o$ risp. punto superficie considerato, direzione incidente considerata, 
+					direzione uscente
+				\item[\bullet] $t(\vec{p},\hat{\omega}_i)$ \textit{Ray Tracing Function}: dati punto di partenza e direzione, restituisce un punto
+					$\vec{q}$, prima intersezione incontrata
+				\item[\bullet] $\mathcal{S}^2$ sfera unitaria di centro $\vec{p}$
+				\item[\bullet] $\int_{\mathcal{S}^2}$ Integrale in tutte le direzioni $\hat{\omega}_i$
+			\end{itemize}
+		}
+	\end{frame}
+
+	\begin{frame}[t,fragile]\frametitle{BSDF}
+		\only<1>{
+			Densit\`a di Distribuzione\footnote{Non normalizzata, con integrale su emisfera proiettata pari all'albedo della superficie} di radianza 
+			incidente riflessa (BRDF $f_r$) o trasmessa (BTDF $f_t$) in una data direzione
+			\begin{equation*}
+				f_s(\vec{p},\hat{\omega}_o,\hat{\omega}_i) = f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i) + f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i)
+			\end{equation*}
+			dove
+			\begin{align*}
+				f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i) 
+					&= 0,\;\;\mathrm{se}\,\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle\leq0\\
+				f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i) 
+					&= 0,\;\;\mathrm{se}\,\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle\geq0
+			\end{align*}
+		}
+		\only<2-3>{\begin{columns}[T]
+			\only<2>{\begin{column}{0.5\textwidth}
+				\textsf{Lambertian BRDF:}
+				\begin{center}\scalebox{0.6}{\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+					\coordinate (R) at (2,0); % point to the right
+					\node[at={(0,0)}, hemi]{};
+
+					% diffuse reflection ball
+					\draw[fill=myblue, opacity=.7] 
+						($(R) - (1,0)$) arc (0:180:1cm) arc (180:360:1cm and 0.3cm);
+						
+					% outline of the reflection hemisphere
+					\draw ($(R) - (1,0)$) arc (0:180:1cm) arc (180:360:1cm and 0.3cm); 
+					\draw [dashed] ($(R) - (1,0)$) arc (0:180:1cm and 0.3cm);
+				\end{tikzpicture}\end{scaletikzpicturetowidth}}\end{center}
+				\begin{equation*}
+					f_r(\vec{p}) = \frac{\rho(\vec{p})}{\pi}
+				\end{equation*}
+			\end{column}}
+			\begin{column}{0.5\textwidth}
+				\textsf{Perfectly Specular BRDF:}
+				\begin{center}\scalebox{0.6}{\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+					\def\ang{30}
+					\def\projang{15}
+					\def\projdist{0.2cm}
+					\def\ray{1.7cm}
+					\coordinate (O) at (0,0); % origin
+					\coordinate (OR) at (canvas polar cs:angle=90-\ang, radius=\ray-\projdist); % reflected direction
+					\node[at={(0,0)}, hemi]{};
+					\draw[light beam] (O) -- (OR) node [anchor=north, right=0.1] {$\hat{\omega}_r$};
+					\draw pic["",draw=black,angle radius=20,angle eccentricity=1.3]{angle= OR--O--N}node[anchor=north,above=23,right=0.05]{$\theta_r$};
+				\end{tikzpicture}\end{scaletikzpicturetowidth}}\end{center}
+				\begin{equation*}
+					\only<2>{\hspace*{-1em}}f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)=F_r(\langle\hat{n},\hat{\omega}_o\rangle)%
+						\frac{\delta(\hat{\omega}_i-\hat{\omega}_r)}{\vert\langle\hat{n},\hat{\omega}_i\rangle\vert}
+				\end{equation*}
+			\end{column}
+			\only<3>{\begin{column}{0.5\textwidth}
+				\begin{align*}
+					F_r(\mu) &\approx F_0+(1-F_0)(1-\mu)^5 \\
+					F_0 &= \frac{(\eta-1)^2+\kappa^2}{(\eta+1)^2+\kappa^2} \stackrel{\kappa\approx0}{=} \left(\frac{\eta-1}{\eta+1}\right)^2\\
+					\hat{\omega}_r&=2\langle\hat{n},\hat{\omega}_i\rangle - \hat{\omega}_i
+				\end{align*}
+			\end{column}}
+		\end{columns}}
 	\end{frame}
 
 	\section{Campionamento e Ricostruzione}
+	\begin{frame}\frametitle{Campionamento}
+		\only<1>{
+			Affich\`e si sfruttino al meglio i campioni estratti per lo Stimatore di Monte Carlo
+			\begin{itemize}[topsep=0.1pt,noitemsep]
+				\item[\bullet]Riduzione della Varianza per lo stimatore di Monte Carlo tramite scelta accurata della distribuzione dei campioni...
+				\item[\bullet]...Con conseguente bisogno di algoritmi capaci di estrarre osservazioni da una distribuzione
+					arbitraria, dati campioni distribuiti uniformemente in $\mathcal{U}(0,1)$
+			\end{itemize}
+		}
+		\only<2>{
+			\begin{columns}
+			\begin{column}{0.35\textwidth}
+				\includegraphics[width=\linewidth]{../assets/intro_path_tracing_online_tech_tips.png}
+				\small Stima della funzione immagine $r_f(x,y)$ attraverso Path Tracing.
+			\end{column}
+			\begin{column}{0.65\textwidth}
+			In un sistema di rendering,
+			\begin{itemize}[topsep=0.1pt,noitemsep]
+				\item[\bullet] Ciascun pixel \`e campionato generando raggi e accumulando radianza in ciascuno di essi
+				\item[\bullet] Ogni superficie intersecata da ciascun raggio \`e campionata per generare un nuovo raggio
+			\end{itemize}
+			\end{column}
+			\end{columns}
+		}
+		\only<3>{
+			\begin{table}[t]
+			\begin{tabularx}{\textwidth}{>{\textsf}cc}
+				\toprule	
+				{Variance Reduction} & {PDF Sampling} \\
+				\midrule
+				Stratified Sampling & Inverse Transform Sampling \\
+				Importance Sampling & Acceptance-Rejection Sampling \\
+				Russian Roulette & Metropolis-Hastings Sampling \\
+				Splitting & \\
+				\bottomrule
+			\end{tabularx}
+			\end{table}
+			Inverse Transform Sampling Lambertian BRDF ($\xi_\theta,\xi_\varphi\sim\mathcal{U}(0,1)$)
+			\begin{align*}
+				\varphi_i&=2\pi\xi_\varphi \\
+				\theta_i&=\arccos\left(\sqrt{1-\xi_\theta}\right)
+			\end{align*}
+		}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Filtro di Ricostruzione}
+		\begin{figure}[tb]
+			\centering 
+			\includegraphics[width=0.6\linewidth]{../assets/chapter5_reconstruction_box.png}
+		\end{figure}
+		Ricostruzione della funzione immagine dai suoi campioni.\\
+		\textsf{Box Filter}: considera solamente campioni all'interno del pixel considerato, aggregati come spiegato nell'Introduzione
+	\end{frame}
 
-	\section{Path Tracing}
+	%\section{Path Tracing}
+	%\begin{frame}\frametitle{Rendering Equation, "Path Form"}
+	%\end{frame}
+
+	%\begin{frame}\frametitle{Path Tracing, Espressione}
+	%\end{frame}
+	
+	\section{Simulazione}
+	\begin{frame}\frametitle{Simulazione: Cornell Box}
+		\begin{columns}
+			\begin{column}{0.6\textwidth}
+				Path Tracer semplificato, supportante
+				\begin{itemize}[topsep=0.1pt,noitemsep]
+				\item[\bullet] Tre tipi di BRDF, in particolare Lambertiana, Speculare opaca o traslucente
+				\item[\bullet] \textsf{Russian Roulette}, applicata per terminare la valutazione di una path
+				\item[\bullet] \textsf{Stratified Sampling}, dividendo ciascun pixel in 4 caselle (strata)
+				\item[\bullet] Ciascun sample in ciascun strata è scelto casualmente con PDF triangolare
+				\end{itemize}
+			\end{column}
+			\begin{column}{0.4\textwidth}
+				\begin{figure}[t]
+					\centering
+					\includegraphics[width=\textwidth]{../assets/appendixD_result_25k.png}
+				\end{figure}
+				Scena \textsf{Cornell Box}.
+			\end{column}
+		\end{columns}
+	\end{frame}
 
 	\begin{frame}{Risultati Simulazione}
 		\showslide{1}{8}{40}

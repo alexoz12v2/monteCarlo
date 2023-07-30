@@ -1,0 +1,60 @@
+\frametitle{BSDF}
+		\only<1>{
+			Densit\`a di Distribuzione\footnote{Non normalizzata, con integrale su emisfera proiettata pari all'albedo della superficie} di radianza
+			incidente riflessa (BRDF $f_r$) o trasmessa (BTDF $f_t$) in una data direzione
+			\begin{equation*}
+				f_s(\vec{p},\hat{\omega}_o,\hat{\omega}_i) = f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i) + f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i)
+			\end{equation*}
+			dove
+			\begin{align*}
+				f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)
+					&= 0,\;\;\mathrm{se}\,\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle\leq0\\
+				f_t(\vec{p},\hat{\omega}_o,\hat{\omega}_i)
+					&= 0,\;\;\mathrm{se}\,\langle\hat{n},\hat{\omega}_o\rangle\langle\hat{n},\hat{\omega}_i\rangle\geq0
+			\end{align*}
+		}
+		\only<2-3>{\begin{columns}[T]
+			\only<2>{\begin{column}{0.5\textwidth}
+				\textsf{Lambertian BRDF:}
+				\begin{center}\scalebox{0.6}{\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+					\coordinate (R) at (2,0); % point to the right
+					\node[at={(0,0)}, hemi]{};
+
+					% diffuse reflection ball
+					\draw[fill=myblue, opacity=.7]
+						($(R) - (1,0)$) arc (0:180:1cm) arc (180:360:1cm and 0.3cm);
+						
+					% outline of the reflection hemisphere
+					\draw ($(R) - (1,0)$) arc (0:180:1cm) arc (180:360:1cm and 0.3cm);
+					\draw [dashed] ($(R) - (1,0)$) arc (0:180:1cm and 0.3cm);
+				\end{tikzpicture}\end{scaletikzpicturetowidth}}\end{center}
+				\begin{equation*}
+					f_r(\vec{p}) = \frac{\rho(\vec{p})}{\pi}
+				\end{equation*}
+			\end{column}}
+			\begin{column}{0.5\textwidth}
+				\textsf{Perfectly Specular BRDF:}
+				\begin{center}\scalebox{0.6}{\begin{scaletikzpicturetowidth}{\linewidth}\begin{tikzpicture}[scale=\tikzscale]
+					\def\ang{30}
+					\def\projang{15}
+					\def\projdist{0.2cm}
+					\def\ray{1.7cm}
+					\coordinate (O) at (0,0); % origin
+					\coordinate (OR) at (canvas polar cs:angle=90-\ang, radius=\ray-\projdist); % reflected direction
+					\node[at={(0,0)}, hemi]{};
+					\draw[light beam] (O) -- (OR) node [anchor=north, right=0.1] {$\hat{\omega}_r$};
+					\draw pic["",draw=black,angle radius=20,angle eccentricity=1.3]{angle= OR--O--N}node[anchor=north,above=23,right=0.05]{$\theta_r$};
+				\end{tikzpicture}\end{scaletikzpicturetowidth}}\end{center}
+				\begin{equation*}
+					\only<2>{\hspace*{-1em}}f_r(\vec{p},\hat{\omega}_o,\hat{\omega}_i)=F_r(\langle\hat{n},\hat{\omega}_o\rangle)%
+						\frac{\delta(\hat{\omega}_i-\hat{\omega}_r)}{\vert\langle\hat{n},\hat{\omega}_i\rangle\vert}
+				\end{equation*}
+			\end{column}
+			\only<3>{\begin{column}{0.5\textwidth}
+				\begin{align*}
+					F_r(\mu) &\approx F_0+(1-F_0)(1-\mu)^5 \\
+					F_0 &= \frac{(\eta-1)^2+\kappa^2}{(\eta+1)^2+\kappa^2} \stackrel{\kappa\approx0}{=} \left(\frac{\eta-1}{\eta+1}\right)^2\\
+					\hat{\omega}_r&=2\langle\hat{n},\hat{\omega}_i\rangle - \hat{\omega}_i
+				\end{align*}
+			\end{column}}
+		\end{columns}}

@@ -207,14 +207,14 @@ Altre caratteristiche dello stimatore sono \textit{efficienza}, \textit{bias}, \
 			\begin{axis} [
 				axis lines = left,
 				xlabel=nSamples,
-				ylabel={$T\left[\tilde{F}_n\right]$},
+				ylabel={$\epsilon\left[\tilde{F}_n\right]$},
 				ymax=5, ymin=0,
 			]
 				\addplot [black,] table[ignore chars={(,)},col sep=comma] {../assets/chapter6_efficiency.dat};
 			\end{axis}
 		\end{tikzpicture}\end{scaletikzpicturetowidth}
-		\caption{Funzione efficienza $T[\tilde{F}_n]$ dello stimatore unbiased. Si noti come esso presenta varie fluttuazioni, 
-			derivanti dalle condizioni continuamente variabili del calcolatore.}
+		\caption{Funzione efficienza $\epsilon\left[\tilde{F}_n\right]=\tfrac{1}{V[\tilde{F}_n]T[\tilde{F}_n]}$ dello stimatore unbiased. 
+			Si noti come esso presenta varie fluttuazioni, derivanti dalle condizioni continuamente variabili del calcolatore.}
 		\label{chapter6:MCExample:1Dfunction:efficiency}
 	\end{subfigure}
 	\caption{Ulteriori risultati dell'Esempio presentato in Sezione \ref{chapter6:MCExample}}

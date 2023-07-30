@@ -10,6 +10,10 @@
 #include "CommandBuffer.h"
 
 // TODO remove
+#include <cassert>
+#include <functional>
+
+// TODO remove
 #include "logging.h"
 
 #include "VulkanContext.inl"
@@ -59,16 +63,21 @@ namespace mxc
         auto recordComputeCommands(F&& func) -> RendererStatus;
 
         [[nodiscard]] auto submitFrame() -> RendererStatus;
+        [[nodiscard]] auto transitionAndpresentFrame(VkImageLayout inLayout) -> RendererStatus;
         [[nodiscard]] auto presentFrame() -> RendererStatus;
+	    [[nodiscard]] auto submitCompute() -> RendererStatus;
 
-        auto resetCommandBuffers() -> void;
+        auto resetGraphicsCommandBuffers() -> void;
+        auto resetComputeCommandBuffer() -> void;
         auto resetCommandBuffersForDestruction() -> void; //difference from previous is that this calls vkDeviceWaitIdle()
         
     public:
         PFN_vkCmdPushDescriptorSetWithTemplateKHR fpCmdPushDescriptorSetWithTemplateKHR = nullptr;
+        std::function<VkExtent2D()> fpGetSurfaceFramebufferSize = nullptr; // TODO remove
 
     public: // events
-        auto onResize(uint32_t const newWidth, uint32_t const newHeight) -> void;
+        auto onResize() -> void;
+        auto resizeFramebufferSizes(uint32_t newWidth, uint32_t newHeight) -> void;
 
     private:
         VulkanContext m_ctx;
@@ -95,6 +104,8 @@ namespace mxc
 
         auto createSynchronizationPrimitives() -> bool;
         auto destroySynchronizationPrimitives() -> void;
+
+        auto getFramebufferSizes() -> VkExtent2D;
     };
 
     // records commands to the next command buffer. NOT all
@@ -168,7 +179,8 @@ namespace mxc
         SwapchainStatus acquireImageStatus = m_ctx.swapchain.acquireNextImage(&m_ctx, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].presentCompleteSemaphore, UINT32_MAX, VK_NULL_HANDLE, nullptr);
         if (acquireImageStatus == SwapchainStatus::WINDOW_RESIZED)
         {
-            m_ctx.currentFramebufferIndex = 0;
+            MXC_WARN("Window Resizing BEFORE swapchain image acquisition");
+            onResize();
             return RendererStatus::WINDOW_RESIZED;
         }
         else if (acquireImageStatus == SwapchainStatus::FATAL)
@@ -177,17 +189,18 @@ namespace mxc
         VK_CHECK(vkWaitForFences(m_ctx.device.logical, 1, &m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteFence, VK_TRUE, UINT64_MAX));
         VK_CHECK(vkResetFences(m_ctx.device.logical, 1, &m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteFence));
 
-        if (m_ctx.commandBuffers[i].isPending())
-            m_ctx.commandBuffers[i].signalCompletion();
-        m_ctx.commandBuffers[i].reset();
+        if (m_ctx.computeCommandBuffer.isPending())
+            m_ctx.computeCommandBuffer.signalCompletion();
+        m_ctx.computeCommandBuffer.reset();
 
-        // MXC_ASSERT(m_ctx.commandBuffers.size() == m_ctx.presentFramebuffers.size(), "assuming framebuffer number = graphics command buffer number");
+        // MXC_ASSERT(m_ctx.computeCommandBuffers.size() == m_ctx.presentFramebuffers.size(), 
+        // "assuming framebuffer number = graphics command buffer number");
         // begin command buffer
-        m_ctx.commandBuffers[i].begin();
+        m_ctx.computeCommandBuffer.begin();
         
-        VkResult res = func(m_ctx.commandBuffers[i].handle, m_ctx.swapchain.images[i].handle, m_ctx.swapchain.images[i].view, i);
+        VkResult res = func(m_ctx.computeCommandBuffer.handle, m_ctx.swapchain.images[i].handle, m_ctx.swapchain.images[i].view, i);
 
-        bool succ = m_ctx.commandBuffers[i].end();
+        bool succ = m_ctx.computeCommandBuffer.end();
         
         if (res != VK_SUCCESS || !succ)
             return RendererStatus::FATAL;

@@ -1,0 +1,116 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage{enumerate}
+\usepackage[inline]{enumitem}
+
+\begin{document}
+\section{Introduzione}
+\subsection{Slide 1}
+La sintesi di immagini fotorealistiche involve una serie di integrali altamente dimensionali. Al fine di poter costruire il risultato finale, 
+costituito da una griglia di colori sRGB, \`e necessario accumulare, in un pixel, i valori assunti dalla funzione immagine
+
+\subsection{Slide 2}
+In pratica, tale funzione non \`e nota analiticamente, ma soltanto campionabile, e l'algoritmo qui proposto a tal scopo \`e il Path Tracing, il quale 
+consiste nel generare raggi nella scena per accumulare la luce che giunge nel piano dell'osservatore. Dunque, il colore finale \`e risultato della 
+convoluzione tra un filtro di ricostruzione ed i campioni estratti.
+
+\subsection{Slide 3}
+Tale equazione integrale si presta alla risoluzione mediante i metodi di monte carlo
+
+\subsection{Slide 4}
+Qui \`e riportato lo pseudocodice della procedura seguita per la computazione
+
+\section{Integrazione di Monte Carlo}
+\subsection{Slide 6/7}
+Sono qui riportati dei preliminari sulle teorie di probabilit\`a e statistica,
+in particolare Stimatore, funzione di variabili casuali atto alla stima di un parametro detto stimando
+
+\subsection{Slide 8}
+Di seguito \`e riportato lo stimatore di Monte Carlo, definito in termini della media campionaria, la quale \`e a sua volta stimatore dell'aspettazione
+di una variabile casuale. Si noti come tale stima dipende dalla distribuzione con cui \`e estratto il campione
+
+\subsection{Slide 9}
+Che si semplifica in questo modo nel caso in cui il campionamento \`e uniforme
+
+\subsection{Slide 10}
+Come si vede, l'ordine di convergenza dello stimatore \`e $1/2$, cio\`e sono necessari $n^2$ campioni per diminuire l'errore di $n$ volte
+
+\subsection{Slide 11}
+Si propone un esempio per dimostrare il funzionamento del metodo di monte carlo, considerando un integrale la cui soluzione analitica \`e nota,
+campionando uniformemente il dominio considerato
+
+\subsection{Slide 12/13}
+Questi sono i risultati ottenuti
+
+\subsection{Slide 14}
+Al fine di migliorare la convergenza dello stimatore esistono numerose tecniche, e di seguito sono riportate le pi\`u rilevanti nel campo della 
+computer grafica\par
+Esse puntano a sfruttare al massimo ciascun campione estratto, suddividendo il dominio di integrazione o modificando 
+la densit\`a di distribuzione per cogliere i contributi pi\`u significativi della funzione integranda
+
+\section{Rendering Fundamentals}
+\subsection{Slide 15}
+Il modello matematico che utilizziamo \`e la Radiometria, basata sull'ottica geometrica e sulle assunzioni qui riportate
+\begin{itemize*}
+	\item Linearit\'a
+	\item Conservazione dell'energia 
+	\item Assenza di effetti propri della natura ondulatoria della luce 
+	\item Assunzione di radiazione a regime, cioe'
+\end{itemize*}
+gia' propagata nello spazio circostante e dunque stabile nei valori assunti
+
+\subsection{Slide 16 - Radiometria Tabella}
+In particolare, la grandezza di interesse \`e la Radianza, potenza per unit\`a di area per unit\`a di angolo solido,
+
+\subsection{Slide 17}
+La quale pu\`o essere scomposta nei suoi contributi nelle varie lunghezza d'onda, calcolando la derivata della radianza rispetto a $\lambda$, al fine 
+di caratterizzare una distribuzione spettrale per intensit\`a e colore.
+
+\subsection{Slide 18 - Rendering Equation}
+Accompagnata dalle Illustrazioni dei principali modelli stocastici di riflessione, \`e presentata L'equazione del rendering. Analizzandone i termini
+
+\subsection{Slide 19}
+La radianza uscente da un punto $\vec{p}$ su una superficie intersecata da un raggio in direzione di provenienza di quest'ultimo, 
+$\omega_o$, \`e pari alla 
+somma tra la radianza emessa dalla superficie (sorgente luminosa) e la radianza riflessa e trasmessa accumulata da tutte le possibili direzioni.\par
+Quest'ultima \`e espressa in termini della radianza uscente dalla prima superficie intersecata da un raggio generato da $\vec{p}$ 
+in direzione incidente considerata $\omega_i$.
+
+\subsection{Slide 20}
+Fattore fondamentale della rendering equation \`e la distribuzione di radianza incidente riflessa o trasmessa, BSDF (Bidirectional Scattering 
+Distribution Function), della quale...
+
+\subsection{Slide 21}
+...Analizziamo i modelli di riflessione Lambertiano e Speculare. 
+\begin{itemize}[topsep=0pt,noitemsep]
+	\item Nel modello lambertiano, la superficie ha equa possibilit\`a di riflettere radianza 
+incidented in tutte le direzionied assume un valore pari a $\rho/\pi$, dove rho riflettanza direzionale-emisferica o albedo (informalmente colore).
+	\item Nel modello speculare, la superficie riflette in una sola direzione, dettata dalla legge della riflessione, con valore proporzionale alla 
+ Riflettanza di Fresnel, ...
+\end{itemize}
+
+\subsection{Slide 22}
+...Per la quale si riporta l'approssimazione di Schlick
+
+\section{Campionamento e Ricostruzione}
+\subsection{Slide 23/24/25}
+Sia per campionare punti sul piano dell'immagine che per campionare direzioni su ciascuna direzione intersecata, necessitiamo di tecniche di 
+campionamento.
+\begin{itemize}[topsep=0pt,noitemsep]
+	\item Nella simulazione utilizziamo una distribuzione triangolare per campionare ciascun pixel, affinch\`e ci sia maggiore densit\`a 
+		di punti attorno al suo centro.
+	\item Per le superfici, la strategia dipende dalla BSDF considerata, qui riportiamo la procedura seguita per campionare una superficie lambertiana
+\end{itemize}
+
+\subsection{Slide 26}
+Al termine della valutazione dei campioni, essi vanno aggregati con un filtro di ricostruzione, il pi\`u semplice dei quali \`e 
+un box filter, il quale considera esclusivamente i samples all'interno del pixel corrente e, seguendo l'equazione presentata nell'introduzione, 
+ne calcola la media.
+
+\section{Simulazione}
+\subsection{Slide 27/28-{}-Fine}
+Di seguito \`e descritto un semplice path tracer implementato nella celebre scena "Cornel Box", e sono riportati i risultati ottenuti sottoforma di 
+immagine e tabella delle varianze. Da queste Ultime si evince meglio come il guadagno in termini di accuratezza diminuisce all'aumentare dei campioni
+
+Grazie per l'attenzione
+\end{document}

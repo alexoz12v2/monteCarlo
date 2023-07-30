@@ -21,7 +21,7 @@ tra radianza e etendue \ref{chapter1:basicRadiance}, o le relazioni tra grandezz
 \begin{align} \label{chapter2:photometricQuantities}
 	\text{\Gls{Energia Luminosa} } Q_v &= K\int_\Lambda Q_{e,\lambda}(\lambda)V(\lambda)\mathrm{d}\lambda\\
 	\text{\Gls{Flusso Luminoso} } \Phi_v &= K\int_\Lambda\Phi_{e,\lambda}(t, \lambda)V(\lambda)\mathrm{d}\lambda\\
-	\text{\Gls{Illuminanza}|\Gls{Emittanza Luminosa} } E_v|M_v &= K\int_\Lambda E_{e,\lambda}|M_{e,\lambda}(\vec{p},\lambda)V(\lambda)\mathrm{d}\lambda\\
+	\text{\Gls{Illuminanza}|\Gls{Emittanza Luminosa}} E_v|M_v &= K\int_\Lambda E_{e,\lambda}|M_{e,\lambda}(\vec{p},\lambda)V(\lambda)\mathrm{d}\lambda\\
 	\text{\Gls{Intensita Luminosa} } I_v &= K\int_\Lambda I_{e,\Omega,\lambda}(\hat{\omega},\lambda)V(\lambda)\mathrm{d}\lambda\\
 	\text{\Gls{Luminanza}\footnotemark{} } Y &= K\int_\Lambda L_{e,\Omega,\lambda}(\vec{p},\hat{\omega},\lambda)V(\lambda)\mathrm{d}\lambda
 \end{align}
@@ -219,8 +219,6 @@ standard}
 		R_{linear} \\ G_{linear} \\ B_{linear}
 	\end{bmatrix}
 \end{equation}
-I valori tristimolo $X_{D65},Y_{D65},Z_{D65}$ sono infine scalati in modo tale che l'illuminante standard D65, utilizzato come bianco di riferimento,
-abbia luminanza unitaria, cio\`e moltiplicate per $\approx 3.039513678$, ottenendo $X,Y,Z$.\par
 \begin{figure}[tb]
 	\includesvg[width=0.6\textwidth, inkscapelatex=false]{../assets/chapter2_colorimetry_CIE1931xy_gamut_comparison.svg}
 	\caption{comparazione tra i diversi colorspaces, ed i colori percepibili che riescono a rappresentare. Notiamo che sRGB copre all'incirca $35\%$

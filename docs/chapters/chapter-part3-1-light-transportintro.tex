@@ -402,8 +402,7 @@ Una BRDF speculare opaca non calcola alcuna direzione casuale, per via della dis
 	&=L_e(\vec{p},\hat{\omega}_o)+F_r(\vert\langle\hat{n},\hat{\omega}_o\rangle\vert)L_i(\vec{p},\hat{\omega}_r)\nonumber\\
 	&=L_e(\vec{p},\hat{\omega}_o)+\bar{F}_rL_i(\vec{p},\hat{\omega}_r)
 \end{align}
-Dove $\xoverline{F}_r$ indica il valor medio della Fresnel Reflectance, rappresentato dal parametro \texttt{c} memorizzato dalle \texttt{Sphere}s, 
-approssimazione valida solamente per i dielettrici.
+Dove $\xoverline{F}_r$ indica il valor medio della Fresnel Reflectance, rappresentato dal parametro \texttt{c} memorizzato dalle \texttt{Sphere}s.
 \codesnippet{Calcola contributo per BRDF Speculare Opaca e reitera}
 \begin{minted}[tabsize=2,obeytabs,escapeinside=¬¬,mathescape=true]{C++}
 	return obj.e + f.mult(radiance(Ray(x,r.d-n*2*n.dot(r.d)),depth,Xi));

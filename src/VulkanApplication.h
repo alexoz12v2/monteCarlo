@@ -81,7 +81,7 @@ auto main([[maybe_unused]]int32_t argc, [[maybe_unused]]char** argv) -> int32_t
 
     MXC_INFO("Running the application...");
     app.run();
-	MXC_ERROR("--- OUT OF SCOPE ---");
+	MXC_INFO("Shutting down Application");
 }
 
 #endif //MXC_PREVENT_VULKAN_APPLICATION_DEFINE_MAIN

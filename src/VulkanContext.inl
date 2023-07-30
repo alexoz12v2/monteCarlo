@@ -37,6 +37,8 @@ namespace mxc
 
 		// TODO maybe to change to some other structure, cause we need command buffers for compute too
 		std::vector<CommandBuffer> commandBuffers; // as many as frames in flight, ie maxSwapchainImages-1 in the common case
+		CommandBuffer computeCommandBuffer;
+		VkSemaphore computeSemaphore;
 		std::vector<FrameObjects> syncObjs;
 
 		VkRenderPass renderPass;

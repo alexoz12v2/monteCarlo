@@ -100,7 +100,8 @@ auto windowResized(GLFWwindow *window, int width, int height) -> void
 {
 	auto cubeTestLayerData = reinterpret_cast<CubeTestLayer_data*>(glfwGetWindowUserPointer(window));
 
-	cubeTestLayerData->renderer.onResize(static_cast<uint32_t>(width), static_cast<uint32_t>(height));
+	cubeTestLayerData->renderer.resizeFramebufferSizes(static_cast<uint32_t>(width), static_cast<uint32_t>(height));
+	cubeTestLayerData->renderer.onResize();
 }
 
 auto cubeTestLayer_init(mxc::ApplicationPtr appPtr, void* layerData) -> bool
@@ -261,7 +262,8 @@ auto cubeTestLayer_tick(mxc::ApplicationPtr appPtr, float deltaTime, void* layer
 	{
 		int32_t width, height;
 		glfwGetFramebufferSize(data.window, &width, &height);
-		data.renderer.onResize(static_cast<uint32_t>(width), static_cast<uint32_t>(height)); 
+		data.renderer.resizeFramebufferSizes(static_cast<uint32_t>(width), static_cast<uint32_t>(height));
+		data.renderer.onResize();
 		return mxc::ApplicationSignal_v::NONE;
 	}
 
@@ -273,7 +275,8 @@ auto cubeTestLayer_tick(mxc::ApplicationPtr appPtr, float deltaTime, void* layer
 	{
 		int32_t width, height;
 		glfwGetFramebufferSize(data.window, &width, &height);
-		data.renderer.onResize(static_cast<uint32_t>(width), static_cast<uint32_t>(height)); 
+		data.renderer.resizeFramebufferSizes(static_cast<uint32_t>(width), static_cast<uint32_t>(height));
+		data.renderer.onResize();
 		return mxc::ApplicationSignal_v::NONE;
 	}
 

@@ -53,37 +53,6 @@ namespace mxc
         return VK_FALSE;
     }
 
-    auto vulkanResultToString(VkResult res) -> char const*
-    {
-        if(res == VK_SUCCESS) return "VK_SUCCESS";
-        if(res == VK_NOT_READY) return "VK_NOT_READY";
-        if(res == VK_TIMEOUT) return "VK_TIMEOUT";
-        if(res == VK_EVENT_SET) return "VK_EVENT_SET";
-        if(res == VK_EVENT_RESET) return "VK_EVENT_RESET";
-        if(res == VK_INCOMPLETE) return "VK_INCOMPLETE";
-        if(res == VK_ERROR_OUT_OF_HOST_MEMORY) return "VK_ERROR_OUT_OF_HOST_MEMORY";
-        if(res == VK_ERROR_OUT_OF_DEVICE_MEMORY) return "VK_ERROR_OUT_OF_DEVICE_MEMORY";
-        if(res == VK_ERROR_INITIALIZATION_FAILED) return "VK_ERROR_INITIALIZATION_FAILED";
-        if(res == VK_ERROR_DEVICE_LOST) return "VK_ERROR_DEVICE_LOST";
-        if(res == VK_ERROR_MEMORY_MAP_FAILED) return "VK_ERROR_MEMORY_MAP_FAILED";
-        if(res == VK_ERROR_LAYER_NOT_PRESENT) return "VK_ERROR_LAYER_NOT_PRESENT";
-        if(res == VK_ERROR_EXTENSION_NOT_PRESENT) return "VK_ERROR_EXTENSION_NOT_PRESENT";
-        if(res == VK_ERROR_FEATURE_NOT_PRESENT) return "VK_ERROR_FEATURE_NOT_PRESENT";
-        if(res == VK_ERROR_INCOMPATIBLE_DRIVER) return "VK_ERROR_INCOMPATIBLE_DRIVER";
-        if(res == VK_ERROR_TOO_MANY_OBJECTS) return "VK_ERROR_TOO_MANY_OBJECTS";
-        if(res == VK_ERROR_FORMAT_NOT_SUPPORTED) return "VK_ERROR_FORMAT_NOT_SUPPORTED";
-        if(res == VK_ERROR_FRAGMENTED_POOL) return "VK_ERROR_FRAGMENTED_POOL";
-        if(res == VK_ERROR_UNKNOWN) return "VK_ERROR_UNKNOWN";
-        if(res == VK_ERROR_SURFACE_LOST_KHR) return "VK_ERROR_SURFACE_LOST_KHR";
-        // Provided by VK_KHR_surface
-        if(res == VK_ERROR_NATIVE_WINDOW_IN_USE_KHR) return "VK_ERROR_NATIVE_WINDOW_IN_USE_KHR";
-        // Provided by VK_KHR_swapchain
-        if(res == VK_SUBOPTIMAL_KHR) return "VK_SUBOPTIMAL_KHR";
-        // Provided by VK_KHR_swapchain
-        if(res == VK_ERROR_OUT_OF_DATE_KHR) return "VK_ERROR_OUT_OF_DATE_KHR";
-        return "unknown";
-    }
-
     auto Renderer::init(RendererConfig const& config) -> bool
     {
         MXC_INFO("Initializing the Renderer...");
@@ -361,6 +330,7 @@ namespace mxc
         // Command buffers
         MXC_DEBUG("Freeing %zu command buffers...", m_ctx.commandBuffers.size());
         CommandBuffer::freeMany(&m_ctx, m_ctx.commandBuffers.data(), static_cast<uint32_t>(m_ctx.commandBuffers.size()));
+        m_ctx.computeCommandBuffer.free(&m_ctx);
 
         // Swapchain
         MXC_DEBUG("Destroying the Swapchain...");
@@ -509,7 +479,7 @@ namespace mxc
             .pNext = nullptr,
             .semaphore = m_ctx.syncObjs[m_ctx.currentFramebufferIndex].presentCompleteSemaphore,
             .value = 0, // ignored for binary semaphores
-            .stageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+            .stageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT | VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
             .deviceIndex = 0, // index of a device within a group
         };
         VkCommandBufferSubmitInfo commandBufferInfo {
@@ -523,7 +493,7 @@ namespace mxc
             .pNext = nullptr,
             .semaphore = m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore,
             .value = 0, // ignored for binary semaphores
-            .stageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+            .stageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
             .deviceIndex = 0, // index of a device within a group
         };
         VkSubmitInfo2 submitInfo {
@@ -546,7 +516,11 @@ namespace mxc
             // swapchain checks for resize and calls it if necessary
             SwapchainStatus status = m_ctx.swapchain.present(&m_ctx, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore);
             if (status == SwapchainStatus::WINDOW_RESIZED)
+            {
+                MXC_WARN("Window Resize on present");
+                onResize();
                 return RendererStatus::WINDOW_RESIZED;
+            }
             if (status == SwapchainStatus::FATAL)
                 return RendererStatus::FATAL;
 
@@ -559,16 +533,185 @@ namespace mxc
         return RendererStatus::OK;
     }
 
+    [[nodiscard]] auto Renderer::submitCompute() -> RendererStatus
+    {
+        VkSemaphoreSubmitInfo waitSemaphoreInfo {
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO,
+            .pNext = nullptr,
+            .semaphore = m_ctx.syncObjs[m_ctx.currentFramebufferIndex].presentCompleteSemaphore,
+            .value = 0, // ignored for binary semaphores
+            .stageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+            .deviceIndex = 0,
+        };
+        VkCommandBufferSubmitInfo commandBufferInfo {
+            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO,
+            .pNext = nullptr,
+            .commandBuffer = m_ctx.computeCommandBuffer.handle,
+            .deviceMask = 0
+        };
+        VkSemaphoreSubmitInfo signalSemaphoreInfo {
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO,
+            .pNext = nullptr,
+            .semaphore = m_ctx.computeSemaphore,
+            .value = 0, // ignored for binary semaphores
+            .stageMask = VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+            .deviceIndex = 0,
+        };
+        VkSubmitInfo2 submitInfo {
+            .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2,
+            .pNext = nullptr,
+            .flags = 0,
+            .waitSemaphoreInfoCount = 1, // presentCompleteSemaphores[m_ctx.currentFramebufferIndex]
+            .pWaitSemaphoreInfos = &waitSemaphoreInfo,
+            .commandBufferInfoCount = 1,
+            .pCommandBufferInfos = &commandBufferInfo,
+            .signalSemaphoreInfoCount = 1, // renderCompleteSemaphores[m_ctx.currentFramebufferIndex]
+            .pSignalSemaphoreInfos = &signalSemaphoreInfo
+        };
+
+        VK_CHECK(vkQueueSubmit2(m_ctx.device.computeQueue, 1, &submitInfo, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteFence));
+        m_ctx.computeCommandBuffer.signalSubmit();
+        vkQueueWaitIdle(m_ctx.device.computeQueue);
+        MXC_WARN("11");
+
+        return RendererStatus::OK;
+    }
+
+    [[nodiscard]] auto Renderer::transitionAndpresentFrame([[maybe_unused]] VkImageLayout inLayout) -> RendererStatus
+    {
+        uint32_t const i = m_ctx.currentFramebufferIndex;
+        VkImage swapchainImage = m_ctx.swapchain.images[i].handle;
+        CommandBuffer& cmdBuf = m_ctx.commandBuffers[i];
+
+        cmdBuf.begin();
+        MXC_ASSERT(cmdBuf.canRecord(), "Image memory barrier Command Buffer is not in recording state");
+
+
+        // Image memory barrier to make sure that compute shader writes are finished before sampling from the texture
+        VkImageMemoryBarrier imageMemoryBarrier = {};
+        imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+        imageMemoryBarrier.oldLayout = VK_IMAGE_LAYOUT_GENERAL;
+        imageMemoryBarrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
+        imageMemoryBarrier.image = swapchainImage;
+        imageMemoryBarrier.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+
+	MXC_TRACE("Swapchain image %u released by graphics queue");
+        if (m_ctx.device.queueFamilies.graphics != m_ctx.device.queueFamilies.compute)
+        {
+            // Acquire barrier for graphics queue
+            imageMemoryBarrier.srcAccessMask = 0;
+            imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
+            imageMemoryBarrier.srcQueueFamilyIndex = m_ctx.device.queueFamilies.compute;
+            imageMemoryBarrier.dstQueueFamilyIndex = m_ctx.device.queueFamilies.graphics;
+            vkCmdPipelineBarrier(
+                cmdBuf.handle,
+                VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
+                VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+                0,//VK_FLAGS_NONE,
+                0, nullptr,
+                0, nullptr,
+                1, &imageMemoryBarrier);
+	    MXC_DEBUG("Swapchain image %u acquired by graphics queue");
+        }
+        else
+        {
+            // Combined barrier on single queue family
+            imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT;
+            imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
+            imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            vkCmdPipelineBarrier(
+                cmdBuf.handle,
+                VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
+                VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+                0,//VK_FLAGS_NONE,
+                0, nullptr,
+                0, nullptr,
+                1, &imageMemoryBarrier);
+        }
+
+        m_ctx.device.insertImageMemoryBarrier(
+            cmdBuf.handle, swapchainImage,
+            VK_IMAGE_LAYOUT_GENERAL, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, 
+            VK_IMAGE_ASPECT_COLOR_BIT);
+        imageMemoryBarrier.oldLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        imageMemoryBarrier.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+        if (m_ctx.device.queueFamilies.graphics != m_ctx.device.queueFamilies.compute)
+        {
+            // Release barrier from graphics queue
+            imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
+            imageMemoryBarrier.dstAccessMask = 0;
+            imageMemoryBarrier.srcQueueFamilyIndex = m_ctx.device.queueFamilies.graphics;
+            imageMemoryBarrier.dstQueueFamilyIndex = m_ctx.device.queueFamilies.compute;
+            vkCmdPipelineBarrier(
+                cmdBuf.handle,
+                VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+                VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+                0,//VK_FLAGS_NONE,
+                0, nullptr,
+                0, nullptr,
+                1, &imageMemoryBarrier);
+	    MXC_TRACE("Swapchain image %u released by graphics queue");
+        }
+
+        MXC_ASSERT(cmdBuf.end(), "Couldn't end recording of image memory barrier Command Buffer");
+
+        m_ctx.device.flushCommandBuffer(&cmdBuf, CommandType::GRAPHICS);
+
+        RendererStatus status = presentFrame();
+        if (status == RendererStatus::OK)
+        { 
+            MXC_WARN("Post presentation");
+            VkImage swapchainImage = m_ctx.swapchain.images[m_ctx.currentFramebufferIndex].handle;
+            cmdBuf.begin();
+            m_ctx.device.insertImageMemoryBarrier(
+                cmdBuf.handle, swapchainImage,
+                VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, VK_IMAGE_LAYOUT_GENERAL,
+                VK_IMAGE_ASPECT_COLOR_BIT);
+
+            if (m_ctx.device.queueFamilies.graphics != m_ctx.device.queueFamilies.compute)
+            {
+                VkImageMemoryBarrier imageMemoryBarrier{};
+                imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+                imageMemoryBarrier.oldLayout = VK_IMAGE_LAYOUT_GENERAL;
+                imageMemoryBarrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
+                imageMemoryBarrier.image = swapchainImage;
+                imageMemoryBarrier.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
+
+                imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT;
+                imageMemoryBarrier.dstAccessMask = 0;
+                imageMemoryBarrier.srcQueueFamilyIndex = m_ctx.device.queueFamilies.graphics;
+                imageMemoryBarrier.dstQueueFamilyIndex = m_ctx.device.queueFamilies.compute;
+            }
+
+            cmdBuf.end();
+            m_ctx.device.flushCommandBuffer(&cmdBuf, CommandType::GRAPHICS);
+            vkQueueWaitIdle(m_ctx.device.graphicsQueue);
+            MXC_WARN("Post transition");
+        }
+
+        MXC_WARN("submission Done");
+        return RendererStatus::OK;
+    }
+
     [[nodiscard]] auto Renderer::presentFrame() -> RendererStatus
     {
-        SwapchainStatus status = m_ctx.swapchain.present(&m_ctx, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore);
-        if (status == SwapchainStatus::WINDOW_RESIZED)
-            return RendererStatus::WINDOW_RESIZED;
-        if (status == SwapchainStatus::FATAL)
-            return RendererStatus::FATAL;
+        if (m_prepared)
+        {
+            SwapchainStatus status = m_ctx.swapchain.present(&m_ctx, m_ctx.computeSemaphore);// m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore);
+            if (status == SwapchainStatus::WINDOW_RESIZED)
+            {
+                MXC_WARN("Window Resize on present");
+                onResize();
+                return RendererStatus::WINDOW_RESIZED;
+            }
+            if (status == SwapchainStatus::FATAL)
+                return RendererStatus::FATAL;
 
-        if (++m_ctx.currentFramebufferIndex >= m_ctx.presentFramebuffers.size())
-            m_ctx.currentFramebufferIndex = 0;
+            if (++m_ctx.currentFramebufferIndex >= m_ctx.presentFramebuffers.size())
+                m_ctx.currentFramebufferIndex = 0;
+        }
         return RendererStatus::OK;
     }
     
@@ -628,7 +771,12 @@ namespace mxc
         MXC_DEBUG("Vulkan depth images destroyed");
     }
 
-    auto Renderer::resetCommandBuffers() -> void
+    auto Renderer::resetComputeCommandBuffer() -> void
+    {   
+        m_ctx.computeCommandBuffer.reset();
+    }
+
+    auto Renderer::resetGraphicsCommandBuffers() -> void
     {
         for (uint32_t i = 0; i != m_ctx.commandBuffers.size(); ++i)
         {
@@ -645,12 +793,36 @@ namespace mxc
                 m_ctx.commandBuffers[i].signalCompletion();
             m_ctx.commandBuffers[i].reset();
         }
+
+        if (m_ctx.computeCommandBuffer.isPending())
+            m_ctx.computeCommandBuffer.signalCompletion();
+        m_ctx.computeCommandBuffer.reset();
     }
 
-    // TODO add function pointer
-    auto Renderer::onResize(uint32_t const newWidth, uint32_t const newHeight) -> void
+    auto Renderer::resizeFramebufferSizes(uint32_t newWidth, uint32_t newHeight) -> void
+    {
+        m_ctx.framebufferWidth = newWidth;
+        m_ctx.framebufferHeight = newHeight;
+    }
+
+    auto Renderer::getFramebufferSizes() -> VkExtent2D
+    {
+        VkExtent2D size = fpGetSurfaceFramebufferSize ? fpGetSurfaceFramebufferSize() : VkExtent2D{m_ctx.framebufferWidth, m_ctx.framebufferHeight};
+        return size;
+    }
+
+    auto Renderer::onResize() -> void
     {
         m_prepared = false;
+        //bool upToDate = false;
+
+        //while (!upToDate)
+        //{
+        auto [newWidth, newHeight] = getFramebufferSizes();
+        MXC_ASSERT(newWidth == getFramebufferSizes().width && newHeight == getFramebufferSizes().height, 
+               "framebufferWidth = %u, framebufferHeight = %u\nwidth = %u, height = %u\n", 
+               newWidth, newHeight, getFramebufferSizes().width, getFramebufferSizes().height);
+
         // wait previous pending command buffers on the device 
         vkDeviceWaitIdle(m_ctx.device.logical);
         MXC_DEBUG("Resizing the Renderer...");
@@ -681,6 +853,7 @@ namespace mxc
         MXC_DEBUG("Recreating command buffers...");
         resetCommandBuffersForDestruction();
         CommandBuffer::freeMany(&m_ctx, m_ctx.commandBuffers.data(), static_cast<uint32_t>(m_ctx.commandBuffers.size()));
+        m_ctx.computeCommandBuffer.free(&m_ctx);
         createCommandBuffers(&m_ctx);
         MXC_DEBUG("Recreated command buffers");
 
@@ -693,7 +866,11 @@ namespace mxc
         // renderpass and graphics pipeline as well. Won't handle that now TODO?
 
         vkDeviceWaitIdle(m_ctx.device.logical);
+        //   upToDate = newWidth == getFramebufferSizes().width && newHeight == getFramebufferSizes().height;
+        //}
+
         MXC_DEBUG("Resized the Renderer");
+        m_prepared = true;
     }
     
     auto Renderer::createSynchronizationPrimitives() -> bool
@@ -728,6 +905,9 @@ namespace mxc
             // m_ctx.syncObjs.emplace_back(m_ctx.commandBuffers[i].handle, fence, semaphore[0], semaphore[1]); substitution failure?
             m_ctx.syncObjs.push_back(f); // TODO cmdBuffers configurable
         }
+
+        VK_CHECK(vkCreateSemaphore(m_ctx.device.logical, &semaphoreCI, nullptr, &m_ctx.computeSemaphore));
+
         return true;
     }
 
@@ -740,7 +920,11 @@ namespace mxc
 
             vkDestroyFence(m_ctx.device.logical, m_ctx.syncObjs[i].renderCompleteFence, nullptr);
         }
+
+        vkDestroySemaphore(m_ctx.device.logical, m_ctx.computeSemaphore, nullptr);
+
         m_ctx.syncObjs.clear();
+        MXC_DEBUG("Cleared synchronization objects. vector<SynchObjs> size = %zu", m_ctx.syncObjs.size());
     }
 
     auto createCommandBuffers(VulkanContext* ctx) -> void
@@ -748,6 +932,7 @@ namespace mxc
         uint32_t const count = static_cast<uint32_t>(ctx->swapchain.images.size());
         ctx->commandBuffers.resize(count);
         CommandBuffer::allocateMany(ctx, CommandType::GRAPHICS, ctx->commandBuffers.data(), count);
+        ctx->computeCommandBuffer.allocate(ctx, CommandType::COMPUTE);
         MXC_DEBUG("Vulkan Command Buffers Allocated");
     }
 

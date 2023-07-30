@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  17 JUL 2023 23:02
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023/Arch Linux)  (format=lualatex 2023.5.5)  20 JUL 2023 14:15
  system commands enabled.
 **presentation.tex
 (./presentation.tex
@@ -1204,15 +1204,15 @@ dflt;"<8.64-12.24>"LatinModernMath:mode=base;script=math;language=dflt;+ssty=0;
 (fontspec)             \__um_luatex_copy_fontdimens: 
 
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 57.
+(Font)              `operators' in the math version `normal' on input line 72.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> TU/LatinModernMath(1)/m/n on input line
- 57.
+ 72.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 57.
+(Font)              `operators' in the math version `bold' on input line 72.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  OT1/lmr/bx/n --> TU/LatinModernMath(1)/b/n on input lin
-e 57.
+e 72.
 
 Package fontspec Info: LatinModernMath scale = 1.0001.
 
@@ -1273,15 +1273,15 @@ nguage=dflt;+ssty=1;"
 (fontspec)             \fontdimen 21\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 57.
+(Font)              `symbols' in the math version `normal' on input line 72.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  OMS/lmsy/m/n --> TU/LatinModernMath(2)/m/n on input lin
-e 57.
+e 72.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 57.
+(Font)              `symbols' in the math version `bold' on input line 72.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  OMS/lmsy/b/n --> TU/LatinModernMath(2)/b/n on input lin
-e 57.
+e 72.
 
 Package fontspec Info: LatinModernMath scale = 0.9999.
 
@@ -1330,42 +1330,42 @@ nguage=dflt;+ssty=1;"
 (fontspec)             \fontdimen 13\font =0pt\relax 
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `normal' on input line 5
-7.
+(Font)              `largesymbols' in the math version `normal' on input line 7
+2.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  OMX/lmex/m/n --> TU/LatinModernMath(3)/m/n on input lin
-e 57.
+e 72.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 57.
+(Font)              `largesymbols' in the math version `bold' on input line 72.
 
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  OMX/lmex/m/n --> TU/LatinModernMath(3)/b/n on input lin
-e 57.
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 5
-7.
+e 72.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 7
+2.
 
 (/usr/share/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 14.40152pt on input line 57.
+(Font)              scaled to size 14.40152pt on input line 72.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 10.08107pt on input line 57.
+(Font)              scaled to size 10.08107pt on input line 72.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 7.20076pt on input line 57.
+(Font)              scaled to size 7.20076pt on input line 72.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 14.39845pt on input line 57.
+(Font)              scaled to size 14.39845pt on input line 72.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 10.07892pt on input line 57.
+(Font)              scaled to size 10.07892pt on input line 72.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 7.19922pt on input line 57.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 57.
+(Font)              scaled to size 7.19922pt on input line 72.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 72.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 57.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 72.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -2280,37 +2280,37 @@ e;script=latn;language=dflt;+smcp;"
 
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
 (Font)                  TU/LatinModernMath(1)/m/n --> TU/CharisSIL(1)/m/n on in
-put line 268.
+put line 310.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/lmr/m/it --> TU/CharisSIL(1)/m/it on input line 268
+(Font)                  OT1/lmr/m/it --> TU/CharisSIL(1)/m/it on input line 310
 .
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/lmr/bx/n --> TU/CharisSIL(1)/b/n on input line 268.
+(Font)                  OT1/lmr/bx/n --> TU/CharisSIL(1)/b/n on input line 310.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  TU/LatinModernMath(1)/m/n --> TU/LatinModernMath(1)/m/n
- on input line 270.
+ on input line 312.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
 (Font)                  TU/LatinModernMath(1)/b/n --> TU/LatinModernMath(1)/b/n
- on input line 270.
+ on input line 312.
 
 Package fontspec Info: LatinModernMath scale = 1.0001.
 
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
 (Font)                  TU/LatinModernMath(2)/m/n --> TU/LatinModernMath(2)/m/n
- on input line 270.
+ on input line 312.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
 (Font)                  TU/LatinModernMath(2)/b/n --> TU/LatinModernMath(2)/b/n
- on input line 270.
+ on input line 312.
 
 Package fontspec Info: LatinModernMath scale = 0.9999.
 
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
 (Font)                  TU/LatinModernMath(3)/m/n --> TU/LatinModernMath(3)/m/n
- on input line 270.
+ on input line 312.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 (Font)                  TU/LatinModernMath(3)/b/n --> TU/LatinModernMath(3)/b/n
- on input line 270.
+ on input line 312.
 
 Package fontspec Info: Font family 'XITSMath-Regular(0)' created for font
 (fontspec)             'XITSMath-Regular' with options
@@ -2342,12 +2342,12 @@ cript=math;language=dflt;"
 \sym__um_fam1=\mathgroup7
 LaTeX Font Info:    Overwriting symbol font `__um_fam1' in version `normal'
 (Font)                  TU/XITSMath-Regular(0)/m/n --> TU/XITSMath-Regular(0)/m
-/n on input line 276.
+/n on input line 318.
 LaTeX Font Info:    Overwriting symbol font `__um_fam1' in version `bold'
 (Font)                  TU/XITSMath-Regular(0)/m/n --> TU/XITSMath-Regular(0)/b
-/n on input line 276.
+/n on input line 318.
 Package translations Info: No language package found. I am going to use `englis
-h' as default language. on input line 375.
+h' as default language. on input line 417.
 \@quotelevel=\count600
 \@quotereset=\count601
 runsystem(which pygmentize && touch presentation.aex)...executed
@@ -2356,26 +2356,26 @@ runsystem(rm presentation.aex)...executed
 (./intermediate/presentation.aux)
 \openout1 = presentation.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 375.
-LaTeX Font Info:    ... okay on input line 375.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 375.
-LaTeX Font Info:    ... okay on input line 375.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 375.
-LaTeX Font Info:    ... okay on input line 375.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 375.
-LaTeX Font Info:    ... okay on input line 375.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 375.
-LaTeX Font Info:    ... okay on input line 375.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 375.
-LaTeX Font Info:    ... okay on input line 375.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 375.
-LaTeX Font Info:    ... okay on input line 375.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 375.
-LaTeX Font Info:    ... okay on input line 375.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 375.
-LaTeX Font Info:    ... okay on input line 375.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 375.
-LaTeX Font Info:    ... okay on input line 375.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 417.
+LaTeX Font Info:    ... okay on input line 417.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 417.
+LaTeX Font Info:    ... okay on input line 417.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 417.
+LaTeX Font Info:    ... okay on input line 417.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 417.
+LaTeX Font Info:    ... okay on input line 417.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 417.
+LaTeX Font Info:    ... okay on input line 417.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 417.
+LaTeX Font Info:    ... okay on input line 417.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 417.
+LaTeX Font Info:    ... okay on input line 417.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 417.
+LaTeX Font Info:    ... okay on input line 417.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 417.
+LaTeX Font Info:    ... okay on input line 417.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 417.
+LaTeX Font Info:    ... okay on input line 417.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: luatex
@@ -2433,7 +2433,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 375.
+Package hyperref Info: Link coloring OFF on input line 417.
 
 (./intermediate/presentation.out) (./intermediate/presentation.out)
 \@outlinefile=\write8
@@ -2482,7 +2482,7 @@ File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `english'. on input line 375.
+or `english'. on input line 417.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: longtable package is loaded.
  (/usr/share/texmf-dist/tex/latex/caption/ltcaption.sty
@@ -2491,13 +2491,13 @@ Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 Package caption Info: supertabular package is loaded.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 375.
+(Font)                  OT1/lmss/m/n --> TU/lmss/m/n on input line 417.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 375.
+(Font)                  OT1/lmss/bx/n --> TU/lmss/b/n on input line 417.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 375.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/m/n on input line 417.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 375.
+(Font)                  OT1/lmtt/m/n --> TU/lmtt/b/n on input line 417.
 
 
 Package unicode-math Warning: Using \overbracket and \underbracket from
@@ -2532,28 +2532,28 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'presentation.bbl' not found.
 
 No file presentation.bbl.
-Package biblatex Info: Reference section=0 on input line 375.
-Package biblatex Info: Reference segment=0 on input line 375.
+Package biblatex Info: Reference section=0 on input line 417.
+Package biblatex Info: Reference segment=0 on input line 417.
 
 Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
 ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
 your preamble.
- on input line 375.
+ on input line 417.
 
 (./intermediate/presentation.nav)
 <./assets/Poliba_stemma.png, id=31, 401.5pt x 401.5pt>
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 375.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 417.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
 
-Overfull \hbox (389.7584pt too wide) in paragraph at lines 379--379
+Overfull \hbox (389.7584pt too wide) in paragraph at lines 421--421
 [][]  
  []
 
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 379.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 421.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
 [1
 
@@ -2564,23 +2564,23 @@ File: ../assets/intro_path_tracing_online_tech_tips.png Graphic file (type png)
 
 <use ../assets/intro_path_tracing_online_tech_tips.png>
 Package luatex.def Info: ../assets/intro_path_tracing_online_tech_tips.png  use
-d on input line 429.
+d on input line 471.
 (luatex.def)             Requested size: 139.42093pt x 100.25458pt.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 12.00128pt on input line 429.
+(Font)              scaled to size 12.00128pt on input line 471.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 8.00085pt on input line 429.
+(Font)              scaled to size 8.00085pt on input line 471.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 6.00064pt on input line 429.
+(Font)              scaled to size 6.00064pt on input line 471.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 11.99872pt on input line 429.
+(Font)              scaled to size 11.99872pt on input line 471.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 7.99915pt on input line 429.
+(Font)              scaled to size 7.99915pt on input line 471.
 LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 429.
+(Font)              scaled to size 5.99936pt on input line 471.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 429.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 471.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [2
 
@@ -2589,11 +2589,11 @@ File: ../assets/intro_path_tracing_online_tech_tips.png Graphic file (type png)
 
 <use ../assets/intro_path_tracing_online_tech_tips.png>
 Package luatex.def Info: ../assets/intro_path_tracing_online_tech_tips.png  use
-d on input line 429.
+d on input line 471.
 (luatex.def)             Requested size: 139.42093pt x 100.25458pt.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 429.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 471.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [3
 
@@ -2602,17 +2602,17 @@ File: ../assets/intro_path_tracing_online_tech_tips.png Graphic file (type png)
 
 <use ../assets/intro_path_tracing_online_tech_tips.png>
 Package luatex.def Info: ../assets/intro_path_tracing_online_tech_tips.png  use
-d on input line 429.
+d on input line 471.
 (luatex.def)             Requested size: 139.42093pt x 100.25458pt.
 
-Overfull \hbox (5.84839pt too wide) detected at line 429
+Overfull \hbox (5.84839pt too wide) detected at line 471
 \TU/LatinModernMath(1)/m/n/14.4 𝑟[](𝑥, 𝑦) ≈ [] [] 𝑓(𝑥 − 
 𝑥[], 𝑦 − 𝑦[])𝑟(𝑥[], 𝑦[])
  []
 
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 429.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 471.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
 [4
 
@@ -2621,229 +2621,408 @@ File: ../assets/intro_path_tracing_online_tech_tips.png Graphic file (type png)
 
 <use ../assets/intro_path_tracing_online_tech_tips.png>
 Package luatex.def Info: ../assets/intro_path_tracing_online_tech_tips.png  use
-d on input line 429.
+d on input line 471.
 (luatex.def)             Requested size: 139.42093pt x 100.25458pt.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 429.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 471.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [5
 
 ] (./intermediate/presentation.toc)
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 433.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 475.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [6
 
 ] (./intermediate/presentation.toc)
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 442.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 484.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
 [7
 
 ]
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 474.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 516.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [8
 
 ]
+Overfull \vbox (3.867pt too high) detected at line 516
+ []
+
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 474.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 516.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
- [9
+[9
 
 ]
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 493.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 535.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [10
 
 ]
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 493.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 535.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [11
 
 ]
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 493.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 535.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [12
 
 ]
-Overfull \hbox (4.76158pt too wide) detected at line 522
-\TU/LatinModernMath(1)/m/n/12 𝑓(𝑥) = []𝑒[]
+\openout4 = presentation.vrb
+ (./intermediate/presentation.vrb
+Overfull \hbox (4.787pt too wide) detected at line 35
+[][] []\TU/LatinModernMath(1)/m/n/12 𝑒[]d𝑥
  []
 
-
-Overfull \vbox (12.4614pt too high) detected at line 522
+)
+Overfull \vbox (23.13643pt too high) detected at line 631
  []
 
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 522.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 631.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
 [13
 
-] (./intermediate/presentation.toc)
+] (./intermediate/presentation.vrb
+PGFPlots: reading {../assets/chapter6_error_data.dat}
+PGFPlots: reading {../assets/chapter6_error_data.dat}
+LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
+(Font)              scaled to size 10.00107pt on input line 94.
+LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
+(Font)              scaled to size 7.00075pt on input line 94.
+LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
+(Font)              scaled to size 9.99893pt on input line 94.
+LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
+(Font)              scaled to size 6.99925pt on input line 94.
+PGFPlots: reading {../assets/chapter6_efficiency.dat}
+PGFPlots: reading {../assets/chapter6_efficiency.dat}
+)
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 524.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 631.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [14
 
-]
-Overfull \hbox (10.92456pt too wide) detected at line 593
-[][]\TU/LatinModernMath(1)/m/n/14.4 𝐿[]([], []) = 𝐿[]([], []) + [][] 
-𝐿[](𝑡([], []), −[])𝑓[]([], [], [])|⟨[], []⟩|d[][][]
+] (./intermediate/presentation.vrb
+PGFPlots: reading {../assets/chapter6_mse_data.dat}
+PGFPlots: reading {../assets/chapter6_mse_data.dat}
+PGFPlots: reading {../assets/chapter6_biased_estimator_error_data.dat}
+PGFPlots: reading {../assets/chapter6_biased_estimator_error_data.dat}
+)
+Overfull \vbox (8.77072pt too high) detected at line 631
  []
 
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 593.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 631.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
 [15
 
-] (./intermediate/presentation.toc)
+]
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 595.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 641.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [16
 
 ] (./intermediate/presentation.toc)
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 597.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 643.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
-
-[17
+ [17
 
 ]
-<../assets/appendixD_result_8.png, id=163, 1027.84pt x 770.88pt>
-File: ../assets/appendixD_result_8.png Graphic file (type png)
-<use ../assets/appendixD_result_8.png>
-Package luatex.def Info: ../assets/appendixD_result_8.png  used on input line 6
-55.
-(luatex.def)             Requested size: 179.25114pt x 134.43552pt.
-<../assets/appendixD_result_40.png, id=164, 1027.84pt x 770.88pt>
-File: ../assets/appendixD_result_40.png Graphic file (type png)
-<use ../assets/appendixD_result_40.png>
-Package luatex.def Info: ../assets/appendixD_result_40.png  used on input line 
-655.
-(luatex.def)             Requested size: 179.25114pt x 134.43552pt.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 679.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
  [18
 
-<../assets/appendixD_result_8.png><../assets/appendixD_result_40.png>]
-Overfull \hbox (3.26343pt too wide) in paragraph at lines 655--655
-[]|[]| 
+]
+Underfull \hbox (badness 10000) in alignment at lines 679--679
+[][][][][]
  []
 
-
-Underfull \hbox (badness 1668) in paragraph at lines 655--655
-[]|\TU/CharisSIL(0)/m/n/12 8 cam-pi-oni per stra-
- []
-
-LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 10.00107pt on input line 655.
-LaTeX Font Info:    Font shape `TU/LatinModernMath(2)/m/n' will be
-(Font)              scaled to size 7.00075pt on input line 655.
-LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 655.
-LaTeX Font Info:    Font shape `TU/LatinModernMath(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 655.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 679.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
 [19
 
 ]
-<../assets/appendixD_result_200.png, id=175, 1027.84pt x 770.88pt>
-File: ../assets/appendixD_result_200.png Graphic file (type png)
-<use ../assets/appendixD_result_200.png>
-Package luatex.def Info: ../assets/appendixD_result_200.png  used on input line
- 655.
+Overfull \hbox (10.92456pt too wide) detected at line 834
+\TU/LatinModernMath(1)/m/n/14.4 𝐿[]([], []) = 𝐿[]([], []) + [][] 𝐿[](
+𝑡([], []), −[])𝑓[]([], [], [])|⟨[], []⟩|d[]
+ []
+
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 834.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+[20
+
+]
+Overfull \hbox (10.92456pt too wide) detected at line 834
+\TU/LatinModernMath(1)/m/n/14.4 𝐿[]([], []) = 𝐿[]([], []) + [][] 𝐿[](
+𝑡([], []), −[])𝑓[]([], [], [])|⟨[], []⟩|d[]
+ []
+
+
+Overfull \vbox (3.73235pt too high) detected at line 834
+ []
+
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 834.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+[21
+
+]
+\openout4 = presentation.vrb
+ (./intermediate/presentation.vrb)
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 896.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [22
+
+] (./intermediate/presentation.vrb
+Overfull \hbox (13.44441pt too wide) detected at line 60
+| \TU/LatinModernMath(1)/m/n/14.4 𝑓[]([], [], []) = 𝐹[](⟨[], []⟩)[]
+ []
+
+)
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 896.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [23
+
+] (./intermediate/presentation.vrb
+Overfull \hbox (27.8444pt too wide) detected at line 60
+\TU/LatinModernMath(1)/m/n/14.4 𝑓[]([], [], []) = 𝐹[](⟨[], []⟩)[]
+ []
+
+
+Overfull \hbox (30.1555pt too wide) detected at line 60
+[]
+ []
+
+)
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 896.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [24
+
+] (./intermediate/presentation.toc)
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 898.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [25
+
+]
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 942.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [26
+
+]
+File: ../assets/intro_path_tracing_online_tech_tips.png Graphic file (type png)
+
+<use ../assets/intro_path_tracing_online_tech_tips.png>
+Package luatex.def Info: ../assets/intro_path_tracing_online_tech_tips.png  use
+d on input line 942.
+(luatex.def)             Requested size: 139.42093pt x 100.25458pt.
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 942.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [27
+
+]
+Underfull \hbox (badness 10000) in alignment at lines 942--942
+[][]
+ []
+
+
+Overfull \vbox (33.4146pt too high) detected at line 942
+ []
+
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 942.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+[28
+
+]
+<../assets/chapter5_reconstruction_box.png, id=213, 1393.205pt x 690.58pt>
+File: ../assets/chapter5_reconstruction_box.png Graphic file (type png)
+<use ../assets/chapter5_reconstruction_box.png>
+Package luatex.def Info: ../assets/chapter5_reconstruction_box.png  used on inp
+ut line 951.
+(luatex.def)             Requested size: 239.00558pt x 118.46132pt.
+
+Overfull \vbox (3.30327pt too high) detected at line 951
+ []
+
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 951.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+[29
+
+<../assets/chapter5_reconstruction_box.png>]
+(./intermediate/presentation.toc)
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 960.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [30
+
+]
+<../assets/appendixD_result_25k.png, id=229, 1027.84pt x 770.88pt>
+File: ../assets/appendixD_result_25k.png Graphic file (type png)
+<use ../assets/appendixD_result_25k.png>
+Package luatex.def Info: ../assets/appendixD_result_25k.png  used on input line
+ 980.
+(luatex.def)             Requested size: 159.333pt x 119.49692pt.
+
+Overfull \vbox (21.55211pt too high) detected at line 980
+ []
+
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 980.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+[31
+
+<../assets/appendixD_result_25k.png>]
+<../assets/appendixD_result_8.png, id=236, 1027.84pt x 770.88pt>
+File: ../assets/appendixD_result_8.png Graphic file (type png)
+<use ../assets/appendixD_result_8.png>
+Package luatex.def Info: ../assets/appendixD_result_8.png  used on input line 1
+038.
 (luatex.def)             Requested size: 179.25114pt x 134.43552pt.
-<../assets/appendixD_result_1000.png, id=176, 1027.84pt x 770.88pt>
-File: ../assets/appendixD_result_1000.png Graphic file (type png)
-<use ../assets/appendixD_result_1000.png>
-Package luatex.def Info: ../assets/appendixD_result_1000.png  used on input lin
-e 655.
+<../assets/appendixD_result_40.png, id=237, 1027.84pt x 770.88pt>
+File: ../assets/appendixD_result_40.png Graphic file (type png)
+<use ../assets/appendixD_result_40.png>
+Package luatex.def Info: ../assets/appendixD_result_40.png  used on input line 
+1038.
 (luatex.def)             Requested size: 179.25114pt x 134.43552pt.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 1038.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
- [20
+ [32
 
-<../assets/appendixD_result_200.png><../assets/appendixD_result_1000.png>]
-Overfull \hbox (3.26343pt too wide) in paragraph at lines 655--655
+<../assets/appendixD_result_8.png><../assets/appendixD_result_40.png>]
+Overfull \hbox (3.26343pt too wide) in paragraph at lines 1038--1038
 []|[]| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 655--655
+Underfull \hbox (badness 1668) in paragraph at lines 1038--1038
+[]|\TU/CharisSIL(0)/m/n/12 8 cam-pi-oni per stra-
+ []
+
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 1038.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+[33
+
+]
+<../assets/appendixD_result_200.png, id=248, 1027.84pt x 770.88pt>
+File: ../assets/appendixD_result_200.png Graphic file (type png)
+<use ../assets/appendixD_result_200.png>
+Package luatex.def Info: ../assets/appendixD_result_200.png  used on input line
+ 1038.
+(luatex.def)             Requested size: 179.25114pt x 134.43552pt.
+<../assets/appendixD_result_1000.png, id=249, 1027.84pt x 770.88pt>
+File: ../assets/appendixD_result_1000.png Graphic file (type png)
+<use ../assets/appendixD_result_1000.png>
+Package luatex.def Info: ../assets/appendixD_result_1000.png  used on input lin
+e 1038.
+(luatex.def)             Requested size: 179.25114pt x 134.43552pt.
+File: ./assets/Poliba_stemma.png Graphic file (type png)
+<use ./assets/Poliba_stemma.png>
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 1038.
+(luatex.def)             Requested size: 27.88661pt x 27.88118pt.
+ [34
+
+<../assets/appendixD_result_200.png><../assets/appendixD_result_1000.png>]
+Overfull \hbox (3.26343pt too wide) in paragraph at lines 1038--1038
+[]|[]| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1038--1038
 []|\TU/CharisSIL(0)/m/n/12 1000 cam-pi-oni per
  []
 
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 1038.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
-[21
+[35
 
 ]
-<../assets/appendixD_result_5k.png, id=188, 1027.84pt x 770.88pt>
+<../assets/appendixD_result_5k.png, id=260, 1027.84pt x 770.88pt>
 File: ../assets/appendixD_result_5k.png Graphic file (type png)
 <use ../assets/appendixD_result_5k.png>
 Package luatex.def Info: ../assets/appendixD_result_5k.png  used on input line 
-655.
+1038.
 (luatex.def)             Requested size: 179.25114pt x 134.43552pt.
-<../assets/appendixD_result_25k.png, id=189, 1027.84pt x 770.88pt>
 File: ../assets/appendixD_result_25k.png Graphic file (type png)
 <use ../assets/appendixD_result_25k.png>
 Package luatex.def Info: ../assets/appendixD_result_25k.png  used on input line
- 655.
+ 1038.
 (luatex.def)             Requested size: 179.25114pt x 134.43552pt.
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 1038.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
- [22
+ [36
 
-<../assets/appendixD_result_5k.png><../assets/appendixD_result_25k.png>]
-Overfull \hbox (3.26343pt too wide) in paragraph at lines 655--655
+<../assets/appendixD_result_5k.png>]
+Overfull \hbox (3.26343pt too wide) in paragraph at lines 1038--1038
 []|[]| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 655--655
+Underfull \hbox (badness 10000) in paragraph at lines 1038--1038
 []|\TU/CharisSIL(0)/m/n/12 5000 cam-pi-oni per
  []
 
 
-Underfull \hbox (badness 5622) in paragraph at lines 655--655
+Underfull \hbox (badness 5622) in paragraph at lines 1038--1038
 []|\TU/CharisSIL(0)/m/n/12 25000 cam-pi-oni per
  []
 
 File: ./assets/Poliba_stemma.png Graphic file (type png)
 <use ./assets/Poliba_stemma.png>
-Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
+Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 1038.
 (luatex.def)             Requested size: 27.88661pt x 27.88118pt.
-[23
+[37
 
 ]
 \tf@nav=\write9
@@ -2856,35 +3035,43 @@ Package luatex.def Info: ./assets/Poliba_stemma.png  used on input line 655.
 
 \openout11 = presentation.snm
  (./intermediate/presentation.aux)
+
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `presentation.out' has not changed.
-(rerunfilecheck)             Checksum: 31CF7A189F9CCB04402B18948D03460A;620.
+(rerunfilecheck)             Checksum: 85564E19524C9BA16ED8D74B3E8E4FE3;612.
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                presentation
+(biblatex)                and rerun LaTeX afterwards.
+
 Package logreq Info: Writing requests to 'presentation.run.xml'.
 
 \openout1 = presentation.run.xml
 )
 
 Here is how much of LuaTeX's memory you used:
- 73931 strings out of 478285
- 100000,2848258 words of node,token memory allocated
- 7569 words of node memory still in use:
-   90 hlist, 29 vlist, 52 rule, 29 disc, 21 local_par, 2 math, 209 glue, 6 kern,
- 61 penalty, 336 glyph, 184 attribute, 125 glue_spec, 184 attribute_list, 4 writ
-e, 26 pdf_colorstack nodes
-   avail lists: 1:7,2:3707,3:2294,4:235,5:189,6:53,7:2532,8:48,9:1367,10:14,11:7
-0,12:1
- 91248 multiletter control sequences out of 65536+600000
- 137 fonts using 60300727 bytes
- 99i,22n,114p,2240b,2933s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/fonts/TTF/CharisSIL-Italic.ttf></usr/share/texmf-dist/fonts/opentype
-/public/lm/lmsans12-regular.otf></usr/share/fonts/TTF/CharisSIL-Bold.ttf></usr/s
-hare/texmf-dist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr/share/t
-exmf-dist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr/share/texmf-d
-ist/fonts/opentype/public/lm-math/latinmodern-math.otf></usr/share/fonts/TTF/Cha
-risSIL-Regular.ttf>
-Output written on presentation.pdf (23 pages, 9941257 bytes).
+ 74268 strings out of 478285
+ 100000,3417909 words of node,token memory allocated
+ 7536 words of node memory still in use:
+   90 hlist, 29 vlist, 52 rule, 28 disc, 21 local_par, 2 math, 208 glue, 6 kern,
+ 61 penalty, 2 sub_mlist, 329 glyph, 191 attribute, 125 glue_spec, 191 attribute
+_list, 4 write, 26 pdf_colorstack nodes
+   avail lists: 1:7,2:14233,3:7383,4:235,5:195,6:53,7:2611,8:47,9:1346,10:14,11:
+149,12:1
+ 91362 multiletter control sequences out of 65536+600000
+ 159 fonts using 71742055 bytes
+ 99i,21n,114p,2240b,2933s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/fonts/TTF/CharisSIL-Italic.ttf></usr/share/fonts/TTF/CharisSIL-Itali
+c.ttf></usr/share/texmf-dist/fonts/opentype/public/lm/lmsans12-regular.otf></usr
+/share/fonts/TTF/CharisSIL-Bold.ttf></usr/share/texmf-dist/fonts/opentype/public
+/lm-math/latinmodern-math.otf></usr/share/texmf-dist/fonts/opentype/public/lm-ma
+th/latinmodern-math.otf></usr/share/texmf-dist/fonts/opentype/public/lm-math/lat
+inmodern-math.otf></usr/share/fonts/TTF/CharisSIL-Regular.ttf>
+Output written on presentation.pdf (37 pages, 10066334 bytes).
 
-PDF statistics: 250 PDF objects out of 1000 (max. 8388607)
- 182 compressed objects within 2 object streams
- 52 named destinations out of 1000 (max. 131072)
- 98 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 329 PDF objects out of 1000 (max. 8388607)
+ 242 compressed objects within 3 object streams
+ 79 named destinations out of 1000 (max. 131072)
+ 88 words of extra memory for PDF output out of 10000 (max. 100000000)
 
