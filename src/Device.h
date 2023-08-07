@@ -115,7 +115,8 @@ namespace mxc
 			VkImageTiling tiling,
 			Image* inOutImage, 
 			VkImageLayout const* targetLayout = nullptr, 
-			ImageView* inOutView = nullptr) -> bool;
+			ImageView* inOutView = nullptr,
+			CommandType cmdType = CommandType::GRAPHICS) -> bool;
 		auto insertImageMemoryBarrier(
             VkCommandBuffer cmdBuf,
             VkImage image,

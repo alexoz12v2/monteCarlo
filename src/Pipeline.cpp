@@ -8,7 +8,8 @@
 
 namespace mxc
 {
-    auto Pipeline::create(VulkanContext* ctx, ShaderSet const& shaderSet,uint32_t initialWidth, uint32_t initialHeight, VkRenderPass renderPass) -> bool
+    auto Pipeline::create(VulkanContext* ctx, ShaderSet const& shaderSet,uint32_t initialWidth, uint32_t initialHeight, VkRenderPass renderPass, 
+                          VkPushConstantRange const* pPushConstantRanges, uint32_t pushConstantRanges_count) -> bool
     {
         MXC_ASSERT(ctx, "Pipeline::create needs a valid VulkanContext!");
 
@@ -21,7 +22,9 @@ namespace mxc
             bindPoint = VK_PIPELINE_BIND_POINT_COMPUTE;
             ComputePipelineConfig const config {
                 .descriptorSetLayouts = shaderSet.noResources ? nullptr : shaderSet.resources.descriptorSetLayouts.data(),
+                .pPushConstantRanges = pPushConstantRanges,
                 .stage = shaderSet.stages[0],
+                .pushConstantRangesCount = pushConstantRanges_count,
                 .descriptorSetLayoutCount = shaderSet.noResources ? 0 : static_cast<uint32_t>(shaderSet.resources.descriptorSetLayouts.size())
             };
 
@@ -49,8 +52,10 @@ namespace mxc
                 .descriptorSetLayouts = shaderSet.noResources ? nullptr : shaderSet.resources.descriptorSetLayouts.data(),
                 .stages = shaderSet.stages.data(),
                 .vertexBuffersBindingDescs = shaderSet.bindingDescriptions,
+                .pPushConstantRanges = pPushConstantRanges,
                 .initialViewport = viewport,
                 .initialScissor = scissor,
+                .pushConstantRangesCount = pushConstantRanges_count,
                 .vertexBuffersCount = shaderSet.bindingDescriptions_count,
                 .attributeCount = shaderSet.attributeDescriptions_count,
                 .descriptorSetLayoutCount = shaderSet.noResources ? 0 : static_cast<uint32_t>(shaderSet.resources.descriptorSetLayouts.size()),
@@ -161,7 +166,8 @@ namespace mxc
         dynamicState.dynamicStateCount = dynamicStates_count;
         dynamicState.pDynamicStates = dynamicStates;
 
-        createCacheAndLayout(ctx, config.descriptorSetLayouts, config.descriptorSetLayoutCount);
+        createCacheAndLayout(ctx, config.descriptorSetLayouts, config.descriptorSetLayoutCount, 
+                             config.pushConstantRangesCount, config.pPushConstantRanges);
 
         // pipeline creation
         VkGraphicsPipelineCreateInfo createInfo {
@@ -203,7 +209,8 @@ namespace mxc
 
     auto Pipeline::create(VulkanContext* ctx, ComputePipelineConfig const& config) -> bool
     {
-        createCacheAndLayout(ctx, config.descriptorSetLayouts, config.descriptorSetLayoutCount);
+        createCacheAndLayout(ctx, config.descriptorSetLayouts, config.descriptorSetLayoutCount, 
+                             config.pushConstantRangesCount, config.pPushConstantRanges);
         
         VkComputePipelineCreateInfo const createInfo {
             .sType = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO,
@@ -231,7 +238,9 @@ namespace mxc
         return true;
     }
 
-    auto Pipeline::createCacheAndLayout(VulkanContext* ctx,VkDescriptorSetLayout const* descriptorSetLayouts, uint16_t descriptorSetLayoutCount) -> bool
+    auto Pipeline::createCacheAndLayout(VulkanContext* ctx,VkDescriptorSetLayout const* descriptorSetLayouts, 
+                                        uint16_t descriptorSetLayoutCount, uint32_t pushConstantRangeCount, 
+                                        VkPushConstantRange const* pPushConstantRanges) -> bool
     {
         // pipeline layout
         VkPipelineLayoutCreateInfo const layoutCreateInfo {
@@ -240,8 +249,8 @@ namespace mxc
             .flags = 0,
             .setLayoutCount = descriptorSetLayoutCount,
             .pSetLayouts = descriptorSetLayouts,
-            .pushConstantRangeCount = 0, // TODO push constants
-            .pPushConstantRanges = nullptr,
+            .pushConstantRangeCount = pushConstantRangeCount,
+            .pPushConstantRanges = pPushConstantRanges,
         };
         VK_CHECK(vkCreatePipelineLayout(ctx->device.logical, &layoutCreateInfo, nullptr, &layout));
 

@@ -11,7 +11,7 @@ namespace mxc
 	// created From a device
 	struct Image
 	{
-		constexpr Image(VkImageType type, VkExtent3D extent, VkFormat format, VkImageUsageFlagBits usage, uint8_t mipLevels = 1, uint8_t arrayLayers= 1) 
+		constexpr Image(VkImageType type, VkExtent3D extent,VkFormat format, VkImageUsageFlagBits usage, uint8_t mipLevels = 1, uint8_t arrayLayers= 1) 
 			: extent(extent), type(type), format(format), usage(usage), mipLevels(mipLevels), arrayLayers(arrayLayers) {}
 
         VkExtent3D extent;

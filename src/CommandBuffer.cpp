@@ -129,9 +129,17 @@ namespace mxc
             .flags = 0,
             .pInheritanceInfo = nullptr
         };
-        VK_CHECK(vkBeginCommandBuffer(handle, &beginInfo));
+#if defined(_DEBUG)
+        if (VK_SUCCESS == VK_CHECK(vkBeginCommandBuffer(handle, &beginInfo)))
+        {
+            m_state = State::RECORDING;
+            return true;
+        }
+        else return false;
+#elif
         m_state = State::RECORDING;
-        return true;
+        return VK_SUCCESS == VK_CHECK(vkBeginCommandBuffer(handle, &beginInfo));
+#endif
     }
 
     auto CommandBuffer::signalSubmit() -> bool 
@@ -151,18 +159,22 @@ namespace mxc
     auto CommandBuffer::end() -> bool 
     {
         MXC_ASSERT(m_state == State::RECORDING, "Cannot end recording of a non-recording command buffer!");
-        if (VK_SUCCESS != vkEndCommandBuffer(handle))
-        {   
-            MXC_ERROR("Couldn't end the command buffer");
-            return false;
+#if defined(_DEBUG)
+        if (VK_SUCCESS == VK_CHECK(vkEndCommandBuffer(handle)))
+        {
+            m_state = State::EXECUTABLE;
+            return true;
         }
+        else return false;
+#elif
         m_state = State::EXECUTABLE;
-        return true;
+        return VK_SUCCESS == VK_CHECK(vkEndCommandBuffer(handle));
+#endif
     }
 
     auto CommandBuffer::reset() -> void 
     {   
-        MXC_ASSERT(m_state != State::PENDING, "Cannot reset a pending Command Buffer");
+        //MXC_ASSERT(m_state != State::PENDING, "Cannot reset a pending Command Buffer");
         VK_CHECK(vkResetCommandBuffer(handle, 0));
         m_state = State::INITIAL;
     } 

@@ -605,7 +605,7 @@ namespace mxc
         return true;
     }
 
-	auto Device::copyToBuffer(void const* data, VkDeviceSize size, Buffer* dst) -> bool
+    auto Device::copyToBuffer(void const* data, VkDeviceSize size, Buffer* dst) -> bool
     {
         MXC_ASSERT( dst && dst->mapped && dst->type == BufferType_v::STAGING && 
                     (dst->memoryPropertyFlags & (VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)) != 0,
@@ -662,7 +662,7 @@ namespace mxc
         pCmdBuf->signalSubmit();
         VK_CHECK(vkQueueSubmit2(queue, 1, &submitInfo, fence));
 
-        VK_CHECK(vkWaitForFences(logical, 1, &fence, VK_TRUE, 100000000000/*ns*/)); // configurable? 
+        vkWaitForFences(logical, 1, &fence, VK_TRUE, UINT64_MAX/*ns*/); // configurable? 
         vkDestroyFence(logical, fence, nullptr);
         pCmdBuf->signalCompletion();
 
@@ -715,7 +715,8 @@ namespace mxc
         VkImageTiling tiling, 
         Image* inOutImage, 
         VkImageLayout const* targetLayout, 
-        ImageView* inOutView) -> bool
+        ImageView* inOutView,
+        CommandType cmdType) -> bool
     {
         MXC_ASSERT(inOutImage, "Need a valid blank image to create data for it");
 
@@ -758,7 +759,7 @@ namespace mxc
             MXC_TRACE("Target Layout given to image Creation, performing memory barrier operation");
 
             CommandBuffer cmdBuf;
-            MXC_ASSERT(cmdBuf.allocate(ctx, CommandType::GRAPHICS), "Couldn't allocate image memory barrier command buffer");
+            MXC_ASSERT(cmdBuf.allocate(ctx, cmdType), "Couldn't allocate image memory barrier command buffer");
 
             cmdBuf.begin();
             MXC_ASSERT(cmdBuf.canRecord(), "Image memory barrier Command Buffer is not in recording state");
@@ -767,7 +768,7 @@ namespace mxc
 
             MXC_ASSERT(cmdBuf.end(), "Couldn't end recording of image memory barrier Command Buffer");
 
-            flushCommandBuffer(&cmdBuf, CommandType::GRAPHICS);
+            flushCommandBuffer(&cmdBuf, cmdType);
             cmdBuf.free(ctx);
         }
 
@@ -925,12 +926,14 @@ namespace mxc
             case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR:
                 // Image is presented by the presentation engine
                 // Make sure present operation on the image has completed
-                imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+                imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
                 break;
             case VK_IMAGE_LAYOUT_GENERAL:
                 // Image is being used as storage image in a compute shader
                 // Make sure any writes to the image are finihed
-                imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT;
+                imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT
+                                                 | VK_ACCESS_MEMORY_READ_BIT  | VK_ACCESS_MEMORY_WRITE_BIT;
+                break;
             default:
                 // Other source layouts aren't handled (yet)
                 break;
@@ -978,9 +981,10 @@ namespace mxc
                 // Make sure any writes are completed
                 if (imageMemoryBarrier.srcAccessMask == 0)
                 {
-                    imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT;
+                    imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT
+                                                     | VK_ACCESS_MEMORY_READ_BIT  | VK_ACCESS_MEMORY_WRITE_BIT;
                 }
-                imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
+                imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
                 break;
             case VK_IMAGE_LAYOUT_GENERAL:
                 // Image will be used as storage image in a compute shader
@@ -989,7 +993,9 @@ namespace mxc
                 {
                     imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT | VK_ACCESS_SHADER_WRITE_BIT;
                 }
-                imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT;
+                imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT 
+                                                 | VK_ACCESS_MEMORY_READ_BIT  | VK_ACCESS_MEMORY_WRITE_BIT;
+                break;
             default:
                 // Other source layouts aren't handled (yet)
                 break;

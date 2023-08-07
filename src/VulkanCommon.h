@@ -5,7 +5,7 @@
 
 #include <cassert>
 #include <cstdint>
-#define VK_CHECK(result) assert(result == VK_SUCCESS)
+#define VK_CHECK(result) [&]()->VkResult{VkResult res = (result); assert(res == VK_SUCCESS); return res;}()
 
 namespace mxc
 {

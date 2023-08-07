@@ -19,6 +19,10 @@ namespace mxc
     constexpr auto subpassDependency2() -> VkSubpassDependency2;
     constexpr auto attachmentReference2() -> VkAttachmentReference2;
     constexpr auto subpassDescription2() -> VkSubpassDescription2;
+    constexpr auto commandBufferSubmitInfo(VkCommandBuffer const cmdBuf = VK_NULL_HANDLE) -> VkCommandBufferSubmitInfo;
+    constexpr auto semaphoreSubmitInfo(VkSemaphore semaphore, 
+                                       VkPipelineStageFlags2 stageMask = VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT) -> VkSemaphoreSubmitInfo;
+    auto previousFrameIndex(VulkanContext const* ctx) -> uint32_t;
 
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
         VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
@@ -300,6 +304,18 @@ namespace mxc
         
         m_prepared = true;
 
+        // compute shader stuff TODO refactor?
+        VkFenceCreateInfo const fenceCI {
+            .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
+            .pNext = nullptr,
+            .flags = VK_FENCE_CREATE_SIGNALED_BIT
+        };
+
+        VK_CHECK(vkCreateFence(m_ctx.device.logical, &fenceCI, nullptr, &m_computeFence));
+
+        m_computePrePresentationCmdBuf.allocate(&m_ctx, CommandType::COMPUTE);
+        m_computePostPresentationCmdBuf.allocate(&m_ctx, CommandType::COMPUTE);
+
         MXC_INFO("Vulkan renderer initialized successfully.");
         return true;
     }
@@ -314,6 +330,10 @@ namespace mxc
 //        renderer_renderbuffer_destroy(&context->object_vertex_buffer);
 //        renderer_renderbuffer_destroy(&context->object_index_buffer);
 //
+        m_computePrePresentationCmdBuf.free(&m_ctx);
+        m_computePostPresentationCmdBuf.free(&m_ctx);
+        vkDestroyFence(m_ctx.device.logical, m_computeFence, nullptr);
+        
         // TODO move elsewhere: Renderpass and framebuffers
         MXC_DEBUG("Destroying Framebuffers and RenderPass...");
         destroyPresentFramebuffers();
@@ -471,40 +491,23 @@ namespace mxc
 
     [[nodiscard]] auto Renderer::submitFrame() -> RendererStatus
     {
-        if (!m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].isExecutable()) m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].signalCompletion();
-        MXC_ASSERT(m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].isExecutable(), "command buffer is not executable");
+        uint32_t i = m_ctx.currentFramebufferIndex;
+        if (!m_ctx.commandBuffers[i].isExecutable()) m_ctx.commandBuffers[i].signalCompletion();
+        MXC_ASSERT(m_ctx.commandBuffers[i].isExecutable(), "command buffer is not executable");
         
-        VkSemaphoreSubmitInfo waitSemaphoreInfo {
-            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO,
-            .pNext = nullptr,
-            .semaphore = m_ctx.syncObjs[m_ctx.currentFramebufferIndex].presentCompleteSemaphore,
-            .value = 0, // ignored for binary semaphores
-            .stageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT | VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-            .deviceIndex = 0, // index of a device within a group
-        };
-        VkCommandBufferSubmitInfo commandBufferInfo {
-            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO,
-            .pNext = nullptr,
-            .commandBuffer = m_ctx.commandBuffers[m_ctx.currentFramebufferIndex].handle,
-            .deviceMask = 0
-        };
-        VkSemaphoreSubmitInfo signalSemaphoreInfo {
-            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO,
-            .pNext = nullptr,
-            .semaphore = m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore,
-            .value = 0, // ignored for binary semaphores
-            .stageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-            .deviceIndex = 0, // index of a device within a group
-        };
+        auto waitSemaphoreInfo   = semaphoreSubmitInfo(m_ctx.syncObjs[i].presentCompleteSemaphore);
+        auto signalSemaphoreInfo = semaphoreSubmitInfo(m_ctx.syncObjs[i].renderCompleteSemaphore);
+        auto commandBufferInfo   = commandBufferSubmitInfo(m_ctx.commandBuffers[i].handle);
+
         VkSubmitInfo2 submitInfo {
             .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2,
             .pNext = nullptr,
             .flags = 0,
-            .waitSemaphoreInfoCount = 1, // presentCompleteSemaphores[m_ctx.currentFramebufferIndex]
+            .waitSemaphoreInfoCount = 1,
             .pWaitSemaphoreInfos = &waitSemaphoreInfo,
             .commandBufferInfoCount = 1,
             .pCommandBufferInfos = &commandBufferInfo,
-            .signalSemaphoreInfoCount = 1, // renderCompleteSemaphores[m_ctx.currentFramebufferIndex]
+            .signalSemaphoreInfoCount = 1,
             .pSignalSemaphoreInfos = &signalSemaphoreInfo
         };
 
@@ -533,173 +536,111 @@ namespace mxc
         return RendererStatus::OK;
     }
 
-    [[nodiscard]] auto Renderer::submitCompute() -> RendererStatus
+    [[nodiscard]] auto Renderer::submitCompute(bool present) -> RendererStatus
     {
-        VkSemaphoreSubmitInfo waitSemaphoreInfo {
-            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO,
-            .pNext = nullptr,
-            .semaphore = m_ctx.syncObjs[m_ctx.currentFramebufferIndex].presentCompleteSemaphore,
-            .value = 0, // ignored for binary semaphores
-            .stageMask = VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-            .deviceIndex = 0,
-        };
-        VkCommandBufferSubmitInfo commandBufferInfo {
-            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO,
-            .pNext = nullptr,
-            .commandBuffer = m_ctx.computeCommandBuffer.handle,
-            .deviceMask = 0
-        };
-        VkSemaphoreSubmitInfo signalSemaphoreInfo {
-            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO,
-            .pNext = nullptr,
-            .semaphore = m_ctx.computeSemaphore,
-            .value = 0, // ignored for binary semaphores
-            .stageMask = VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
-            .deviceIndex = 0,
-        };
+        uint32_t i = m_ctx.currentFramebufferIndex;
+        VkImage swapchainImage = m_ctx.swapchain.images[i].handle;
+        mxc::CommandBuffer& cmdBuf2 = m_computePostPresentationCmdBuf;
+
+        auto waitSemaphoreInfo   = semaphoreSubmitInfo(m_ctx.syncObjs[i].presentCompleteSemaphore);
+        auto signalSemaphoreInfo = semaphoreSubmitInfo(m_ctx.computeSemaphore, VK_PIPELINE_STAGE_2_COMPUTE_SHADER_BIT | VK_PIPELINE_STAGE_2_ALL_COMMANDS_BIT);
+        auto commandBufferInfo   = commandBufferSubmitInfo(cmdBuf2.handle);
+
         VkSubmitInfo2 submitInfo {
             .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2,
             .pNext = nullptr,
             .flags = 0,
-            .waitSemaphoreInfoCount = 1, // presentCompleteSemaphores[m_ctx.currentFramebufferIndex]
+            .waitSemaphoreInfoCount =  1,
             .pWaitSemaphoreInfos = &waitSemaphoreInfo,
             .commandBufferInfoCount = 1,
             .pCommandBufferInfos = &commandBufferInfo,
-            .signalSemaphoreInfoCount = 1, // renderCompleteSemaphores[m_ctx.currentFramebufferIndex]
+            .signalSemaphoreInfoCount = 1,
             .pSignalSemaphoreInfos = &signalSemaphoreInfo
         };
 
-        VK_CHECK(vkQueueSubmit2(m_ctx.device.computeQueue, 1, &submitInfo, m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteFence));
+        cmdBuf2.reset();
+        cmdBuf2.begin();
+
+        m_ctx.device.insertImageMemoryBarrier(
+            cmdBuf2.handle, 
+            swapchainImage, 
+            VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, 
+            VK_IMAGE_LAYOUT_GENERAL, 
+            VK_IMAGE_ASPECT_COLOR_BIT);
+        
+        cmdBuf2.end();
+
+        MXC_DEBUG("Renderer::submitCompute, transitioning swapchain image %u to general", i);
+        VK_CHECK(vkQueueSubmit2(m_ctx.device.computeQueue, 1, &submitInfo, VK_NULL_HANDLE));
+        cmdBuf2.signalSubmit();
+
+        MXC_DEBUG("Renderer::submitCompute, submitting compute workload");
+        submitInfo.pWaitSemaphoreInfos = &signalSemaphoreInfo;
+        commandBufferInfo.commandBuffer = m_ctx.computeCommandBuffer.handle; 
+
+        VK_CHECK(vkQueueSubmit2(m_ctx.device.computeQueue, 1, &submitInfo, VK_NULL_HANDLE));//m_computeFence));
+        
         m_ctx.computeCommandBuffer.signalSubmit();
-        vkQueueWaitIdle(m_ctx.device.computeQueue);
-        MXC_WARN("11");
 
-        return RendererStatus::OK;
-    }
-
-    [[nodiscard]] auto Renderer::transitionAndpresentFrame([[maybe_unused]] VkImageLayout inLayout) -> RendererStatus
-    {
-        uint32_t const i = m_ctx.currentFramebufferIndex;
-        VkImage swapchainImage = m_ctx.swapchain.images[i].handle;
-        CommandBuffer& cmdBuf = m_ctx.commandBuffers[i];
-
-        cmdBuf.begin();
-        MXC_ASSERT(cmdBuf.canRecord(), "Image memory barrier Command Buffer is not in recording state");
-
-
-        // Image memory barrier to make sure that compute shader writes are finished before sampling from the texture
-        VkImageMemoryBarrier imageMemoryBarrier = {};
-        imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-        imageMemoryBarrier.oldLayout = VK_IMAGE_LAYOUT_GENERAL;
-        imageMemoryBarrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
-        imageMemoryBarrier.image = swapchainImage;
-        imageMemoryBarrier.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
-
-	MXC_TRACE("Swapchain image %u released by graphics queue");
-        if (m_ctx.device.queueFamilies.graphics != m_ctx.device.queueFamilies.compute)
+        if (present)
         {
-            // Acquire barrier for graphics queue
-            imageMemoryBarrier.srcAccessMask = 0;
-            imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
-            imageMemoryBarrier.srcQueueFamilyIndex = m_ctx.device.queueFamilies.compute;
-            imageMemoryBarrier.dstQueueFamilyIndex = m_ctx.device.queueFamilies.graphics;
-            vkCmdPipelineBarrier(
-                cmdBuf.handle,
-                VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,
-                VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-                0,//VK_FLAGS_NONE,
-                0, nullptr,
-                0, nullptr,
-                1, &imageMemoryBarrier);
-	    MXC_DEBUG("Swapchain image %u acquired by graphics queue");
+            return transitionAndPresentFrame(&signalSemaphoreInfo);
         }
         else
         {
-            // Combined barrier on single queue family
-            imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT;
-            imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
-            imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-            imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-            vkCmdPipelineBarrier(
-                cmdBuf.handle,
-                VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT,
-                VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
-                0,//VK_FLAGS_NONE,
-                0, nullptr,
-                0, nullptr,
-                1, &imageMemoryBarrier);
+            return RendererStatus::OK;
         }
-
-        m_ctx.device.insertImageMemoryBarrier(
-            cmdBuf.handle, swapchainImage,
-            VK_IMAGE_LAYOUT_GENERAL, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, 
-            VK_IMAGE_ASPECT_COLOR_BIT);
-        imageMemoryBarrier.oldLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-        imageMemoryBarrier.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-
-        if (m_ctx.device.queueFamilies.graphics != m_ctx.device.queueFamilies.compute)
-        {
-            // Release barrier from graphics queue
-            imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
-            imageMemoryBarrier.dstAccessMask = 0;
-            imageMemoryBarrier.srcQueueFamilyIndex = m_ctx.device.queueFamilies.graphics;
-            imageMemoryBarrier.dstQueueFamilyIndex = m_ctx.device.queueFamilies.compute;
-            vkCmdPipelineBarrier(
-                cmdBuf.handle,
-                VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-                VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-                0,//VK_FLAGS_NONE,
-                0, nullptr,
-                0, nullptr,
-                1, &imageMemoryBarrier);
-	    MXC_TRACE("Swapchain image %u released by graphics queue");
-        }
-
-        MXC_ASSERT(cmdBuf.end(), "Couldn't end recording of image memory barrier Command Buffer");
-
-        m_ctx.device.flushCommandBuffer(&cmdBuf, CommandType::GRAPHICS);
-
-        RendererStatus status = presentFrame();
-        if (status == RendererStatus::OK)
-        { 
-            MXC_WARN("Post presentation");
-            VkImage swapchainImage = m_ctx.swapchain.images[m_ctx.currentFramebufferIndex].handle;
-            cmdBuf.begin();
-            m_ctx.device.insertImageMemoryBarrier(
-                cmdBuf.handle, swapchainImage,
-                VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, VK_IMAGE_LAYOUT_GENERAL,
-                VK_IMAGE_ASPECT_COLOR_BIT);
-
-            if (m_ctx.device.queueFamilies.graphics != m_ctx.device.queueFamilies.compute)
-            {
-                VkImageMemoryBarrier imageMemoryBarrier{};
-                imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-                imageMemoryBarrier.oldLayout = VK_IMAGE_LAYOUT_GENERAL;
-                imageMemoryBarrier.newLayout = VK_IMAGE_LAYOUT_GENERAL;
-                imageMemoryBarrier.image = swapchainImage;
-                imageMemoryBarrier.subresourceRange = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 };
-
-                imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_WRITE_BIT | VK_ACCESS_SHADER_READ_BIT;
-                imageMemoryBarrier.dstAccessMask = 0;
-                imageMemoryBarrier.srcQueueFamilyIndex = m_ctx.device.queueFamilies.graphics;
-                imageMemoryBarrier.dstQueueFamilyIndex = m_ctx.device.queueFamilies.compute;
-            }
-
-            cmdBuf.end();
-            m_ctx.device.flushCommandBuffer(&cmdBuf, CommandType::GRAPHICS);
-            vkQueueWaitIdle(m_ctx.device.graphicsQueue);
-            MXC_WARN("Post transition");
-        }
-
-        MXC_WARN("submission Done");
-        return RendererStatus::OK;
     }
 
-    [[nodiscard]] auto Renderer::presentFrame() -> RendererStatus
+    [[nodiscard]] auto Renderer::transitionAndPresentFrame(VkSemaphoreSubmitInfo const* pWaitSemaphoreInfo) -> RendererStatus
+    {
+        MXC_ASSERT(pWaitSemaphoreInfo, "pWaitSemaphoreInfo cannot be nullptr");
+
+        VkImage swapchainImage = m_ctx.swapchain.images[m_ctx.currentFramebufferIndex].handle;
+        MXC_DEBUG("Renderer::transitionAndPresentFrame, beginning");
+
+        mxc::CommandBuffer& cmdBuf = m_computePrePresentationCmdBuf;
+        cmdBuf.reset();
+        cmdBuf.begin();
+    
+        m_ctx.device.insertImageMemoryBarrier(
+            cmdBuf.handle, 
+            swapchainImage, 
+            VK_IMAGE_LAYOUT_GENERAL, 
+            VK_IMAGE_LAYOUT_PRESENT_SRC_KHR, 
+            VK_IMAGE_ASPECT_COLOR_BIT);
+
+        cmdBuf.end();
+
+        auto commandBufferInfo = commandBufferSubmitInfo(cmdBuf.handle);
+        VkSubmitInfo2 submitInfo {
+            .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2,
+            .pNext = nullptr,
+            .flags = 0,
+            .waitSemaphoreInfoCount = pWaitSemaphoreInfo ? 1 : 0,
+            .pWaitSemaphoreInfos = pWaitSemaphoreInfo,
+            .commandBufferInfoCount = 1,
+            .pCommandBufferInfos = &commandBufferInfo,
+            .signalSemaphoreInfoCount = pWaitSemaphoreInfo ? 1 : 0,
+            .pSignalSemaphoreInfos = pWaitSemaphoreInfo
+        };
+
+        VK_CHECK(vkQueueSubmit2(m_ctx.device.computeQueue, 1, &submitInfo, VK_NULL_HANDLE));
+        cmdBuf.signalSubmit();
+
+        MXC_DEBUG("Renderer::transitionAndPresentFrame, after first submit");
+        RendererStatus status = presentFrame(pWaitSemaphoreInfo->semaphore);
+        MXC_ASSERT(status == RendererStatus::OK || status == RendererStatus::WINDOW_RESIZED, "aa");
+
+        MXC_DEBUG("Renderer::transitionAndPresentFrame, after presentation");
+        return status;
+    }
+
+    [[nodiscard]] auto Renderer::presentFrame(VkSemaphore waitSemaphore) -> RendererStatus
     {
         if (m_prepared)
         {
-            SwapchainStatus status = m_ctx.swapchain.present(&m_ctx, m_ctx.computeSemaphore);// m_ctx.syncObjs[m_ctx.currentFramebufferIndex].renderCompleteSemaphore);
+            SwapchainStatus status = m_ctx.swapchain.present(&m_ctx, waitSemaphore);
             if (status == SwapchainStatus::WINDOW_RESIZED)
             {
                 MXC_WARN("Window Resize on present");
@@ -709,8 +650,7 @@ namespace mxc
             if (status == SwapchainStatus::FATAL)
                 return RendererStatus::FATAL;
 
-            if (++m_ctx.currentFramebufferIndex >= m_ctx.presentFramebuffers.size())
-                m_ctx.currentFramebufferIndex = 0;
+            m_ctx.currentFramebufferIndex = (m_ctx.currentFramebufferIndex + 1) % static_cast<uint32_t>(m_ctx.presentFramebuffers.size());
         }
         return RendererStatus::OK;
     }
@@ -1010,5 +950,33 @@ namespace mxc
             .preserveAttachmentCount = 0,
             .pPreserveAttachments = nullptr
         };
+    }
+
+    constexpr auto commandBufferSubmitInfo(VkCommandBuffer const cmdBuf) -> VkCommandBufferSubmitInfo
+    {
+        return {
+            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO,
+            .pNext = nullptr,
+            .commandBuffer = cmdBuf,
+            .deviceMask = 0
+        };
+    }
+
+    constexpr auto semaphoreSubmitInfo(VkSemaphore semaphore, VkPipelineStageFlags2 stageMask) -> VkSemaphoreSubmitInfo 
+    {
+        return {
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO,
+            .pNext = nullptr,
+            .semaphore = semaphore,
+            .value = 0, // ignored for binary semaphores
+            .stageMask = stageMask,
+            .deviceIndex = 0, // index of a device within a group
+        };
+    }
+
+    auto previousFrameIndex(VulkanContext const* ctx) -> uint32_t
+    {
+        uint32_t swapchainImagesCount = static_cast<uint32_t>(ctx->swapchain.images.size());
+        return (ctx->currentFramebufferIndex + swapchainImagesCount - 1) % swapchainImagesCount;
     }
 } // namespace mxc

@@ -288,9 +288,9 @@ namespace mxc
         presentInfo.pResults = 0;
 
         VkResult result = vkQueuePresentKHR(ctx->device.presentQueue, &presentInfo);
+        MXC_DEBUG("vkQueuePresentKHR VkResult: %s", vulkanResultToString(result));
         if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR)
         {
-            MXC_DEBUG("vkQueuePresentKHR VkResult: %s", vulkanResultToString(result));
             return SwapchainStatus::WINDOW_RESIZED;
         } 
         else if (result != VK_SUCCESS) 

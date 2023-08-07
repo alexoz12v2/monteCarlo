@@ -16,6 +16,7 @@ namespace mxc
 	{
 		VkDescriptorPoolSize const* pPoolSizes;
 		uint32_t const* pBindingNumbers;
+		uint32_t const* pBindingNumbers_counts;
 		uint32_t poolSizes_count;
 	};
 	
@@ -35,7 +36,7 @@ namespace mxc
 		auto copy(VulkanContext* ctx, uint8_t srcDescriptorSet, uint8_t dstDescriptorSet, uint8_t binding, uint8_t arrayElement, uint8_t count) -> void;
 
 	public:
-		VkDescriptorPool descriptorPool = VK_NULL_HANDLE; // TODO remove this bottleneck
+		VkDescriptorPool descriptorPool = VK_NULL_HANDLE; 
 		std::vector<VkDescriptorSetLayout> descriptorSetLayouts;
 		VkDescriptorSet descriptorSets[MAX_DESCRIPTOR_SETS_COUNT]; // as many as framebuffers/command buffers
 		std::vector<VkDescriptorUpdateTemplate> descriptorUpdateTemplates;
@@ -46,7 +47,7 @@ namespace mxc
 		{
 			VkDescriptorType type;
 			uint32_t descriptorCount;
-			uint32_t bindingNumber;
+			uint32_t bindingNumber[MAX_DESCRIPTOR_COUNT_PER_TYPE];
 		};
 		std::vector<DescriptorInfo> m_descriptorsInfo;
 		bool m_updateTemplateCreated = false; // Note if you see yourself add more of these refactor into an enum
