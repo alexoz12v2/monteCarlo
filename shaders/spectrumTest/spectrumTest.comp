@@ -138,9 +138,9 @@ static Sphere spheres[SPHERES_COUNT] = {
     {1e5, float3(0, 0, 1e5 + 2.15), float3(0, 0, 0), float3(.75, .75, .75), DIFF}, // Front Wall (White)
     {1e5, float3(0, -1e5 - 1, 0), float3(0, 0, 0), float3(.75, .75, .75), DIFF}, // Bottom Wall (White)
     {1e5, float3(0, 1e5 + 1, 0), float3(0, 0, 0), float3(.75, .75, .75), DIFF}, // Top Wall (White)
-    {0.33, float3(-0.5,1-0.33,1.2), float3(0, 0, 0), float3(1, 1, 1) * 0.999, SPEC}, // Mirror Sphere (Specular reflection)
-    {0.45, float3(0.35,1-0.45,1.5), float3(0, 0, 0), float3(1, 1, 1) * 0.999, REFR}, // Glossy Sphere (Refractive material)
-    {1, float3(0,-1.9,1.5), float3(12, 12, 12), float3(0, 0, 0), DIFF} // Light Sphere (Light-emitting sphere)
+    {0.33, float3(-0.5,1-0.33,1.2), float3(0, 0, 0), float3(0.4, 0.2, 0.2), SPEC}, // Mirror Sphere (Specular reflection)
+    {0.45, float3(0.35,1-0.45,1.5), float3(0, 0, 0), float3(0.3, 1, 1), REFR}, // Glossy Sphere (Refractive material)
+    {1,    float3(0,-1.9,1.5), float3(1, 1, 1), float3(0, 0, 0), DIFF} // Light Sphere (Light-emitting sphere)
 }; 
 
 static Sphere lights[LIGHTS_COUNT] = {
@@ -175,6 +175,38 @@ float3 sampleUniformCone(in float2 u, in float cosThetaMax)
     float sinTheta = sqrt(max(1-cosTheta*cosTheta, 0));
     float phi = u[1] * 2 * PI;
     return sphericalDirection(sinTheta, cosTheta, phi);
+}
+
+// pbrt
+float2 sampleUniformDiskConcentric(in float2 u)
+{
+    // Map _u_ to $[-1,1]^2$ and handle degeneracy at the origin
+    float2 uOffset = 2 * u - float2(1, 1);
+    if (uOffset.x == 0 && uOffset.y == 0)
+        return float2(0, 0);
+
+    // Apply concentric mapping to point
+    float theta, r;
+    if (abs(uOffset.x) > abs(uOffset.y)) {
+        r = uOffset.x;
+        theta = PI/4* (uOffset.y / uOffset.x);
+    } else {
+        r = uOffset.y;
+        theta = PI/2 - PI/4 * (uOffset.x / uOffset.y);
+    }
+    return r * float2(cos(theta), sin(theta));
+}
+
+float3 sampleCosineHemisphere(in float2 u) 
+{
+    float2 d = sampleUniformDiskConcentric(u);
+    float z = sqrt(max(0.f, 1.f - sqr(d.x) - sqr(d.y)));
+    return float3(d.x,d.y,z);
+}
+
+float cosineHemispherePDF(in float cosTheta)
+{
+    return cosTheta / PI;
 }
 
 opt_Intersection intersect(in Ray ray)
@@ -229,6 +261,15 @@ struct ShapeSampleContext
     float3 n, ns; // geometric and shading normal of reference point
     float time;   // ray parameter for the ray that intersected the reference point
 };
+
+struct ShapeIntersection
+{
+    // TODO surface interaction
+    Interaction intr;
+    float tHit;
+};
+
+opt_def(ShapeIntersection);
 
 float3 ShapeSampleContext_offsetRayOrigin(in ShapeSampleContext ctx, float3 w)
 {
@@ -362,6 +403,28 @@ opt_LightLiSample DiffuseAreaLight_sampleLi(in Sphere light, in LightSampleConte
     return si;
 }
 
+struct BSDFSample
+{
+    float3 f;
+    float3 wi;
+    float pdf;
+    //float eta;
+    //bool pdfIsProportional; flags, ...
+};
+
+opt_def(BSDFSample);
+
+opt_BSDFSample Diff_sample_f(float3 R, in float3 wo, in float uc, in float2 u)
+{
+    float3 wi = sampleCosineHemisphere(u);
+    if (wo.z < 0)
+        wi.z *= -1;
+
+    float pdf = cosineHemispherePDF(abs(wi.z));
+    opt_BSDFSample bs = {{ R / PI, wi, pdf }, true};
+    return bs;
+}
+
 // TODO switch to interval arithmetic and to using more structures about sampling. Switch to surface interaction when implementing properly system.
 // compose a proper bsdf
 float3 sampleLd(in Interaction intr, in Refl_t bsdf, inout LCG lcg)
@@ -389,7 +452,7 @@ float3 sampleLd(in Interaction intr, in Refl_t bsdf, inout LCG lcg)
     // Return light's contribution to reflected radiance
     float p_l = /*light.p * */ls.value.pdf; // TODO
     // - TODO add check deltalight page 837
-    float p_b = 1.f / PI; // TODO
+    float p_b = cosineHemispherePDF(abs(wi.z)); // TODO
     float w_l = powerHeuristic(1, p_l, 1, p_b);
     return w_l * ls.value.L * f / p_l;
 }
@@ -415,7 +478,11 @@ float3 Li(in Ray startRay, inout LCG lcg)
             // TODO lights at infinity
             break;
         }
+
         uint i = isect.value.i;
+        float3 p  = ray.origin + isect.value.t * ray.direction;
+        float3 n  = normalize(p - spheres[i].position);
+        float3 wo = -ray.direction;
 
         // incorporate Le if surface is emissive
         float3 Le = spheres[i].emission;
@@ -444,26 +511,28 @@ float3 Li(in Ray startRay, inout LCG lcg)
 
         // if the BSDF is diffuse, then compute direct lighting, because if the surface accumulates and scatters light from many directions,
         // it can almost surely see most of the light sources
-        float3 p  = ray.origin + isect.value.t * ray.direction;
-        float3 n  = normalize(p - spheres[i].position);
-        float3 wo = -ray.direction;
         Interaction intr = { p, n, isect.value.t, wo };
         if (bsdf == DIFF /*change to checking if non specular*/)
         {
             float3 Ld = sampleLd(intr, DIFF, lcg);
         }
-        
+
         // Sample BSDF to get new path direction TODO better
         float2 xi = random2D(lcg);
-        float cos2Theta = max(0.f, 1.f-xi[0]);
-        float cosTheta = sqrt(cos2Theta);
-        float sinTheta = sqrt(max(0.f, 1.f-cos2Theta));
-        float phi = 2 * PI * xi[1];
-        float3 dir = sphericalDirection(sinTheta, cosTheta, phi);
+        //float cos2Theta = max(0.f, 1.f-xi[0]);
+        //float cosTheta = sqrt(cos2Theta);
+        //float sinTheta = sqrt(max(0.f, 1.f-cos2Theta));
+        //float phi = 2 * PI * xi[1];
+        //float3 dir = sphericalDirection(sinTheta, cosTheta, phi);
+        
+        float u = random1D(lcg);
+        opt_BSDFSample bs = Diff_sample_f(spheres[i].color, wo, u, xi);
+        if (bs.present == false)
+            break;
         
         // - Update path state variables after surface scattering TODO readjust to follow pbrt
-        beta *= spheres[i].color/PI * abs(dot(dir, /*isect.shading.*/n)) / /*BSDF pdf*/(0.25f/PI);
-        p_b = 0.25f/PI;
+        beta *= spheres[i].color * abs(dot(bs.value.wi, /*isect.shading.*/n)) / /*BSDF pdf*/bs.value.pdf;
+        p_b = bs.value.pdf;
         specularBounce = bsdf != DIFF;
         anyNonSpecularBounces |= bsdf == DIFF;
         // TODO transmission
@@ -471,7 +540,7 @@ float3 Li(in Ray startRay, inout LCG lcg)
         prevIntrCtx = ctx;
 
         ray.origin = p;
-        ray.direction = dir;
+        ray.direction = bs.value.wi;
 
         // Possibly terminate the path with Russian roulette
         float3 rrBeta = beta * etaScale;
@@ -491,6 +560,7 @@ float3 Li(in Ray startRay, inout LCG lcg)
 [numthreads(16,16,1)]
 void main(uint3 dispatchThreadID : SV_DispatchThreadID)
 {
+    uint raysPerPixel = 8;
     LCG lcg = {push.rngSeed};
     // TODO move this check in C++
     if (push.sampleIndex < push.samplesPerPixel)
@@ -511,13 +581,17 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
         // use resolution to figure out pixel cell dimensions to sample within the pixel (TODO)
 
         // assume origin = image plane center, then ray direction = camera lookat + xy
-        Ray ray = { camera.position, normalize(camera.lookat + float3(xy, 0.f)) };
+        float3 weightedColour = float3(0,0,0);
+        Ray ray = { camera.position, float3(0,0,1) };
+        for (uint i = 0; i != raysPerPixel; ++i)
+        {
+            float2 offset = float2(random1D(lcg) * pxdim.x / 2, random1D(lcg) * pxdim.y / 2);
+            ray.direction = normalize(camera.lookat + float3(xy + offset, 0.f));
+            float3 finalColour = Li(ray, lcg);
+            weightedColour = (push.sampleIndex * transaction[dispatchThreadID.xy].xyz + finalColour) / (push.sampleIndex + 1);
+        }
 
-        float2 offset = float2(random1D(lcg) * pxdim.x / 2, random1D(lcg) * pxdim.y / 2);
-        ray.direction = normalize(camera.lookat + float3(xy + offset, 0.f));
-        float3 finalColour = Li(ray, lcg);
-
-        transaction[dispatchThreadID.xy] = (push.sampleIndex * transaction[dispatchThreadID.xy] + float4(finalColour,1)) / (push.sampleIndex + 1);
+        transaction[dispatchThreadID.xy] = float4(weightedColour, 1.f);
     }
 
     res[dispatchThreadID.xy] = transaction[dispatchThreadID.xy];

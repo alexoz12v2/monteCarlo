@@ -79,12 +79,14 @@ auto spectrumTestLayer_init(mxc::ApplicationPtr appPtr, void* layerData) -> bool
 	resConfig.pBindingNumbers = bindingNumbers;
 	resConfig.pBindingNumbers_counts = bindingNumbers_counts;
 
+	wchar_t const shaderDir[] = L"" SHADER_DIR;
 	wchar_t const* filenames[] = { SHADER_DIR L"/spectrumTest.comp" };
 	VkShaderStageFlagBits stageFlags[] = {VK_SHADER_STAGE_COMPUTE_BIT};
 	mxc::ShaderConfiguration shaderConfig{};
 	shaderConfig.stage_count = 1;
 	shaderConfig.filenames = filenames;
 	shaderConfig.stageFlags = stageFlags;
+	shaderConfig.shaderDir = shaderDir;
 
 	if (!spectrumTestLayerData->shaderSet.create(ctx, shaderConfig, resConfig))
 		return false;

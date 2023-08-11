@@ -58,12 +58,12 @@ namespace mxc
 	{
 		wchar_t const** filenames; 
 		VkShaderStageFlagBits const* stageFlags;
-		uint32_t stage_count;
-
+		wchar_t const* shaderDir;
 		VkVertexInputAttributeDescription const* attributeDescriptions; 
 		VkVertexInputBindingDescription const* bindingDescriptions;
 		uint32_t bindingDescriptions_count;
 		uint32_t attributeDescriptions_count;
+		uint32_t stage_count;
 	};
 
 	// Note TODO Maybe add support for storage of more shader resources, and then choose one? Or sets with different layouts?

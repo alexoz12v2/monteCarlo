@@ -3,9 +3,12 @@
 
 #include <dxc/dxcapi.h>
 
+// TODO remove
 #include <array>
 #include <string>
+#include <string_view>
 #include <numeric>
+#include <algorithm>
 
 // TODO support for wchar_t logging
 #if defined(_DEBUG)
@@ -20,7 +23,7 @@
 namespace mxc
 {
     constexpr auto vkCopyDescriptorSet(VkDescriptorSet srcSet = VK_NULL_HANDLE, VkDescriptorSet dstSet = VK_NULL_HANDLE, uint8_t binding = UINT8_MAX, uint8_t arrayElement = 0, uint8_t count = 0) -> VkCopyDescriptorSet;
-    auto compileShader(std::wstring filename) -> CComPtr<IDxcBlob>;
+    auto compileShader(std::wstring const& filename, std::wstring_view shaderDir) -> CComPtr<IDxcBlob>;
 
     // TODO FIX IT IMMEDIATELY. BINDING NUMBERS SIZE != POOLSIZES COUNT
     auto ShaderResources::create(VulkanContext* ctx, ResourceConfiguration const& config, VkShaderStageFlagBits const* stageFlags) -> bool
@@ -122,7 +125,7 @@ namespace mxc
 
         for (uint8_t i = 0; i != config.stage_count; ++i)
         {
-            CComPtr<IDxcBlob> compiledShader = compileShader(config.filenames[i]);
+            CComPtr<IDxcBlob> compiledShader = compileShader(config.filenames[i], config.shaderDir);
             VkShaderModule shaderModule;
 
             createInfo.codeSize = static_cast<uint32_t>(compiledShader->GetBufferSize()); // code size IN BYTES
@@ -270,9 +273,9 @@ namespace mxc
             count)};
         vkUpdateDescriptorSets(ctx->device.logical, 0, nullptr, descriptorSets_count - 1, descriptorCopies);
     }
-    
+
     // https://registry.khronos.org/vulkan/site/guide/latest/hlsl.html
-    auto compileShader(std::wstring filename) -> CComPtr<IDxcBlob> // TODO remove string
+    auto compileShader(std::wstring const& filename, std::wstring_view shaderDir) -> CComPtr<IDxcBlob> // TODO remove string
     {
     #if defined(_DEBUG)
         std::wcout << __FILE__ << L' ' << __LINE__ << L" [TRACE]: " << "filename of shader to compile = " << filename << L'\n';
@@ -282,6 +285,7 @@ namespace mxc
         static CComPtr<IDxcLibrary> pLibrary{nullptr};
         static CComPtr<IDxcUtils> pUtils{nullptr};
         static CComPtr<IDxcCompiler3> pCompiler{nullptr};
+        static CComPtr<IDxcIncludeHandler> pIncludeHandler{nullptr};
 
         HRESULT hres;
 
@@ -300,13 +304,16 @@ namespace mxc
             // initialize DXC utility
             hres = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&pUtils));
             MXC_ASSERT(!FAILED(hres), "Failed to create Utilities for DXC library");
+
+            hres = pUtils->CreateDefaultIncludeHandler(&pIncludeHandler);
+            MXC_ASSERT(!FAILED(hres), "Failed to create Include Handler for DXC library");
         }
 
         // Load HLSL shader from disk
         uint32_t codePage = DXC_CP_ACP; // ansi code page i.e. the default for the system
         CComPtr<IDxcBlobEncoding> pSourceBlob{nullptr};
         hres = pUtils->LoadFile(filename.c_str(), &codePage, &pSourceBlob);
-        MXC_ASSERT(!FAILED(hres), "Failed to load file at %s", filename.c_str());
+        MXC_ASSERT(!FAILED(hres), "Failed to load file");
 
         // select shader target profile based on extension (basically the version of the shader language, model, type of shader)
         LPCWSTR targetProfile{};
@@ -325,13 +332,14 @@ namespace mxc
 
         // compile shader
         std::array args { (LPCWSTR)
-            filename.c_str(),               // optional filename to be displayed in case of compilation error
+            filename.data(),                // optional filename to be displayed in case of compilation error
             L"-Zpc",                        // matrices in column-major order
             L"-HV", L"2021",                // HLSL version 2021
             L"-T", targetProfile,           // targetProfile       
             L"-E", L"main",                 // entryPoint TODO might expose as parameter
             L"-spirv",                      // compile to spirv
-            L"-fspv-target-env=vulkan1.3"   // use vulkan1.3 environment
+            L"-fspv-target-env=vulkan1.3",  // use vulkan1.3 environment
+            L"-I", shaderDir.data()         // Shader Include Directories
         };
 
         DxcBuffer srcBuffer {
@@ -345,21 +353,22 @@ namespace mxc
             &srcBuffer,         // DxcBuffer containing the shader source
             args.data(),        // arguments passed to the dxc compiler
             static_cast<uint32_t>(args.size()),
-            nullptr,            // optional include handler to manage #includes in the shaders TODO 
+            pIncludeHandler.p,            // optional include handler to manage #includes in the shaders TODO 
             IID_PPV_ARGS(&pResult)
         );
 
         // Compilation failure handling
-        if (FAILED(hres) && (pResult)) // checking result because the compile function might fail because of a compilation error or memory exhaustion
+        CComPtr<IDxcBlobUtf8> pErrors{nullptr};
+        pResult->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&pErrors), nullptr);
+        if (pErrors && pErrors->GetStringLength() > 0)
         {
-            CComPtr<IDxcBlobEncoding> pErrorBlob;
-            hres = pResult->GetErrorBuffer(&pErrorBlob);
-            if (SUCCEEDED(hres) && pErrorBlob) [[likely]]
-            {
-                MXC_ERROR("Vertex Shader Compilation Error: %s", reinterpret_cast<char const*>(&pErrorBlob));
-                assert(false);
-            }
+            MXC_ERROR(pErrors->GetStringPointer());
+            std::ranges::for_each(args, [](auto const& arg) { 
+                std::wcout << L"\033[31m" << __FILE__ << L" " << __LINE__ << L" [ERROR]: Argument passed = " << arg << L'\n';
+            });
+            assert(false);
         }
+        MXC_TRACE("compilation passed");
 
         // get the compilation result
         CComPtr<IDxcBlob> spirvBinaryCode;
@@ -368,7 +377,8 @@ namespace mxc
     }
 
     // TODO force inline
-    constexpr auto vkCopyDescriptorSet(VkDescriptorSet srcSet, VkDescriptorSet dstSet, uint8_t binding, uint8_t arrayElement, uint8_t count) -> VkCopyDescriptorSet
+    constexpr auto vkCopyDescriptorSet(VkDescriptorSet srcSet, VkDescriptorSet dstSet, uint8_t binding, 
+                                       uint8_t arrayElement, uint8_t count) -> VkCopyDescriptorSet
     {
         return {
             .sType = VK_STRUCTURE_TYPE_COPY_DESCRIPTOR_SET,
