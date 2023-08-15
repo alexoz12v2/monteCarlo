@@ -18,6 +18,7 @@ namespace mxc
         {   
             MXC_ASSERT(shaderSet.stages.size() == 1, "compute shaders should be just a single shader");
             MXC_DEBUG("Pipeline::create trying to create a compute pipeline");
+            MXC_ASSERT(!shaderSet.noResources, "spectrum test should have resources"); // TODO remove
 
             bindPoint = VK_PIPELINE_BIND_POINT_COMPUTE;
             ComputePipelineConfig const config {

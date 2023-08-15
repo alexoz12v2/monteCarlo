@@ -1,0 +1,54 @@
+#pragma once
+
+#include "common.comp"
+
+// assumes sphere in origin, taken from pbrt straight. See also pegoraro page 272
+float3 sampleUniformSphere(in float2 u)
+{
+    float z = 1 - 2 * u[0];
+    float r = sqrt(max(0,1-sqr(z)));
+    float phi = 2 * PI * u[1];
+    return float3(r * cos(phi), r * sin(phi), z);
+}
+
+// assumes cone normal (0,0,1)
+float3 sampleUniformCone(in float2 u, in float cosThetaMax)
+{
+    float cosTheta = lerp(1, cosThetaMax, u[0]);
+    float sinTheta = sqrt(max(1-cosTheta*cosTheta, 0));
+    float phi = u[1] * 2 * PI;
+    return sphericalDirection(sinTheta, cosTheta, phi);
+}
+
+// pbrt
+float2 sampleUniformDiskConcentric(in float2 u)
+{
+    // Map _u_ to $[-1,1]^2$ and handle degeneracy at the origin
+    float2 uOffset = 2 * u - float2(1, 1);
+    if (uOffset.x == 0 && uOffset.y == 0)
+        return float2(0, 0);
+
+    // Apply concentric mapping to point
+    float theta, r;
+    if (abs(uOffset.x) > abs(uOffset.y)) {
+        r = uOffset.x;
+        theta = PI/4* (uOffset.y / uOffset.x);
+    } else {
+        r = uOffset.y;
+        theta = PI/2 - PI/4 * (uOffset.x / uOffset.y);
+    }
+    return r * float2(cos(theta), sin(theta));
+}
+
+float3 sampleCosineHemisphere(in float2 u) 
+{
+    float2 d = sampleUniformDiskConcentric(u);
+    float z = sqrt(max(0.f, 1.f - sqr(d.x) - sqr(d.y)));
+    return float3(d.x,d.y,z);
+}
+
+float cosineHemispherePDF(in float cosTheta)
+{
+    return cosTheta / PI;
+}
+

@@ -18,6 +18,7 @@ namespace mxc
 		uint32_t const* pBindingNumbers;
 		uint32_t const* pBindingNumbers_counts;
 		uint32_t poolSizes_count;
+		bool usePushDescriptors;
 	};
 	
 	class ShaderResources
@@ -26,7 +27,7 @@ namespace mxc
 		static uint32_t constexpr MAX_DESCRIPTOR_SETS_COUNT = 8;
 	public:
 		// as many stageFlags as poolSizes_count
-		auto create(VulkanContext* ctx, ResourceConfiguration const& config, VkShaderStageFlagBits const* stageFlags) -> bool;
+		auto create(VulkanContext* ctx, ResourceConfiguration const& config, VkShaderStageFlagBits const* stageFlags, bool usePushDescriptor) -> bool;
 		auto destroy(VulkanContext* ctx) -> void;
 
 		// stride is the size of each descriptor in bytes, returned from vkGet*MemoryRequirements. assumed to be equal to the count of descriptor sets
@@ -43,15 +44,15 @@ namespace mxc
 		uint8_t descriptorSets_count = 0;
 
 	private:
-		struct DescriptorInfo
+		struct DescriptorMetadata
 		{
 			VkDescriptorType type;
 			uint32_t descriptorCount;
 			uint32_t bindingNumber[MAX_DESCRIPTOR_COUNT_PER_TYPE];
 		};
-		std::vector<DescriptorInfo> m_descriptorsInfo;
-		bool m_updateTemplateCreated = false; // Note if you see yourself add more of these refactor into an enum
-		// uint8_t* m_referenceCounter = nullptr; // TODO resource sharing between sets?
+		std::vector<DescriptorMetadata> m_descriptorsMetadata;
+		bool m_updateTemplateCreated = false;
+		bool m_usePushDescriptors;
 	};
 	
 	struct ShaderConfiguration

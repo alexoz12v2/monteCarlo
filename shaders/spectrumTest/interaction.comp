@@ -1,0 +1,11 @@
+#pragma once
+// only surface 
+struct Interaction
+{
+    float3 p;   // point of surface intersected
+    float3 n;   // geometric normal of intersected
+    // no uv for now
+    float time; // ray step parameter 
+    float3 wo;  // direction negative to the direction of the ray (hence, outgoing)
+};
+

@@ -25,6 +25,7 @@ struct SpectrumTestLayer_data
 	mxc::CommandBuffer layoutTransitionCmdBuf;
 	uint32_t samplesPerPixel;
 	uint32_t sampleIndex;
+	bool usePushDescriptors;
 	bool ready;
 };
 
@@ -78,10 +79,11 @@ auto spectrumTestLayer_init(mxc::ApplicationPtr appPtr, void* layerData) -> bool
 	resConfig.pPoolSizes = poolSizes;
 	resConfig.pBindingNumbers = bindingNumbers;
 	resConfig.pBindingNumbers_counts = bindingNumbers_counts;
+	resConfig.usePushDescriptors = spectrumTestLayerData->usePushDescriptors = false;
 
 	wchar_t const shaderDir[] = L"" SHADER_DIR;
-	wchar_t const* filenames[] = { SHADER_DIR L"/spectrumTest.comp" };
-	VkShaderStageFlagBits stageFlags[] = {VK_SHADER_STAGE_COMPUTE_BIT};
+	wchar_t const* filenames[] = { SHADER_DIR L"/spectrumTest.comp" }; // TODO: filenames relative to shaderDir
+	VkShaderStageFlagBits stageFlags[] = {VK_SHADER_STAGE_COMPUTE_BIT}; // as many as layouts i.e., one
 	mxc::ShaderConfiguration shaderConfig{};
 	shaderConfig.stage_count = 1;
 	shaderConfig.filenames = filenames;
@@ -127,7 +129,6 @@ auto spectrumTestLayer_init(mxc::ApplicationPtr appPtr, void* layerData) -> bool
 		});	
 
 		spectrumTestLayerData->transactionImageViews.push_back({ VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT });
-
 		spectrumTestLayerData->transactionImageInfos.push_back(VkDescriptorImageInfo{
 			.sampler = VK_NULL_HANDLE, // only used for descriptors of type sampler and combined image samplers
 			.imageView = spectrumTestLayerData->transactionImageViews[i].handle,
@@ -140,7 +141,9 @@ auto spectrumTestLayer_init(mxc::ApplicationPtr appPtr, void* layerData) -> bool
 			&spectrumTestLayerData->transactionImages[i], 
 			&targetLayout, 
 			&spectrumTestLayerData->transactionImageViews[i],
-			mxc::CommandType::COMPUTE);
+			mxc::CommandType::GRAPHICS);
+		MXC_ASSERT(spectrumTestLayerData->transactionImageViews[i].handle != VK_NULL_HANDLE, "transactionImageViews[%u].handle is null", i);
+		spectrumTestLayerData->transactionImageInfos[i].imageView = spectrumTestLayerData->transactionImageViews[i].handle;
 	}
 
 	uint32_t strides[POOLSIZES_COUNT] { sizeof(uint32_t) }; // VK_FORMAT_B8G8R8A8_UNORM
@@ -161,16 +164,16 @@ auto spectrumTestLayer_init(mxc::ApplicationPtr appPtr, void* layerData) -> bool
 
 	// transition swapchain images to VK_LAYOUT_GENERAL -----------------------
 	mxc::CommandBuffer cmdBuf;
-	cmdBuf.allocate(ctx, mxc::CommandType::COMPUTE);
+	cmdBuf.allocate(ctx, mxc::CommandType::GRAPHICS);
 	cmdBuf.begin();
 	for (uint32_t i = 0; i != ctx->swapchain.images.size(); ++i)
 	{
 		VkImage image = ctx->swapchain.images[i].handle;
-		vulkanDevice.insertImageMemoryBarrier(cmdBuf.handle, image, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+		vulkanDevice.insertImageMemoryBarrier(cmdBuf.handle, image, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL,//PRESENT_SRC_KHR,
 			VK_IMAGE_ASPECT_COLOR_BIT, VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT, VK_PIPELINE_STAGE_ALL_COMMANDS_BIT);
 	}
 	cmdBuf.end();
-	vulkanDevice.flushCommandBuffer(&cmdBuf, mxc::CommandType::COMPUTE);
+	vulkanDevice.flushCommandBuffer(&cmdBuf, mxc::CommandType::GRAPHICS);
 	cmdBuf.free(ctx);
 
 	// Other Variables --------------------------------------------------------
@@ -209,19 +212,37 @@ auto spectrumTestLayer_tick(mxc::ApplicationPtr appPtr, float deltaTime, void* l
 		auto [width, height] = app.getWindowExtent();
 		auto& [ descriptorInfo, currentLayout ] = ct->swapchainImageInfos[imageIndex];
 		auto& transactionDescriptorInfo = ct->transactionImageInfos[0];
-
 		currentLayout = VK_IMAGE_LAYOUT_GENERAL;
 		descriptorInfo.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
 		descriptorInfo.imageView = swapchainView;
-		// update descriptors with current content of the swapchain image
-		//ct->shaderSet.resources.update(ctx, imageIndex, &descriptorInfo);
 
-		VkDescriptorImageInfo thing[] = { descriptorInfo, transactionDescriptorInfo };
-		renderer.fpCmdPushDescriptorSetWithTemplateKHR(cmdBuf, 
-			ct->shaderSet.resources.descriptorUpdateTemplates[0],
-			ct->pipeline.layout,
-			0/*imageIndex*/, // set number . TODO fix this
-			&thing);
+		MXC_ASSERT(transactionDescriptorInfo.imageView != VK_NULL_HANDLE 
+				   && transactionDescriptorInfo.imageLayout == VK_IMAGE_LAYOUT_GENERAL, "transaction image info is not valid");
+		MXC_ASSERT(descriptorInfo.imageView != VK_NULL_HANDLE 
+				   && descriptorInfo.imageLayout == VK_IMAGE_LAYOUT_GENERAL, "transaction image info is not valid");
+		MXC_ASSERT(renderer.fpCmdPushDescriptorSetWithTemplateKHR, "function pointer for push descriptors is nullptr");
+
+		// update descriptors with current content of the swapchain image
+		VkDescriptorImageInfo const thing[] = { descriptorInfo, transactionDescriptorInfo };
+		if (ct->usePushDescriptors)
+			renderer.fpCmdPushDescriptorSetWithTemplateKHR(cmdBuf, 
+				ct->shaderSet.resources.descriptorUpdateTemplates[0],
+				ct->pipeline.layout,
+				0, // set number
+				thing);
+		else
+		{
+			ct->shaderSet.resources.update(ctx, imageIndex, thing);
+			vkCmdBindDescriptorSets(
+				cmdBuf,
+				VK_PIPELINE_BIND_POINT_COMPUTE,
+				ct->pipeline.layout,
+				0/*firstSet*/,
+				1/*descriptorSetCount*/,
+				&ct->shaderSet.resources.descriptorSets[imageIndex],
+				0/*dynamicOffsetCount*/,
+				nullptr/*pDynamicOffsets*/);
+		}
 
 		uint32_t rndSeed = uniformDist(e1);
 		uint32_t samplesIndex = ct->sampleIndex++;
@@ -293,13 +314,13 @@ auto spectrumTestLayer_handler(mxc::ApplicationPtr appPtr, mxc::EventName name,
 
 		// transition swapchain images to VK_LAYOUT_GENERAL -----------------------
 		mxc::CommandBuffer cmdBuf;
-		cmdBuf.allocate(ctx, mxc::CommandType::COMPUTE);
+		cmdBuf.allocate(ctx, mxc::CommandType::GRAPHICS);
 		cmdBuf.begin();
 		for (uint32_t i = 0; i != ctx->swapchain.images.size(); ++i)
 			vulkanDevice.insertImageMemoryBarrier(cmdBuf.handle, ctx->swapchain.images[i].handle, 
 											VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL, VK_IMAGE_ASPECT_COLOR_BIT);
 		cmdBuf.end();
-		vulkanDevice.flushCommandBuffer(&cmdBuf, mxc::CommandType::COMPUTE);
+		vulkanDevice.flushCommandBuffer(&cmdBuf, mxc::CommandType::GRAPHICS);
 		cmdBuf.free(ctx);
 
 		// destroy and recreate transaction image
@@ -309,7 +330,9 @@ auto spectrumTestLayer_handler(mxc::ApplicationPtr appPtr, mxc::EventName name,
 		for (auto& image : spectrumTestLayerData->transactionImages)
 			vulkanDevice.destroyImage(&image);
 
-		for (uint32_t i = 0; i != 3; ++i)
+		spectrumTestLayerData->transactionImageViews.clear();
+		spectrumTestLayerData->transactionImages.clear();
+		for (uint32_t i = 0; i != 1; ++i)
 		{	
 			spectrumTestLayerData->transactionImages.push_back({ 
 				VK_IMAGE_TYPE_2D, 
@@ -319,12 +342,22 @@ auto spectrumTestLayer_handler(mxc::ApplicationPtr appPtr, mxc::EventName name,
 			});	
 
 			spectrumTestLayerData->transactionImageViews.push_back({ VK_IMAGE_VIEW_TYPE_2D, VK_IMAGE_ASPECT_COLOR_BIT });
-
 			spectrumTestLayerData->transactionImageInfos.push_back({
 				.sampler = VK_NULL_HANDLE, // only used for descriptors of type sampler and combined image samplers
 				.imageView = spectrumTestLayerData->transactionImageViews[i].handle,
 				.imageLayout = VK_IMAGE_LAYOUT_GENERAL
 			});
+
+			VkImageLayout constexpr targetLayout = VK_IMAGE_LAYOUT_GENERAL;
+			vulkanDevice.createImage(
+				ctx, 
+				VK_IMAGE_TILING_OPTIMAL, 
+				&spectrumTestLayerData->transactionImages[i], 
+				&targetLayout, 
+				&spectrumTestLayerData->transactionImageViews[i],
+				mxc::CommandType::GRAPHICS);
+
+			spectrumTestLayerData->transactionImageInfos[i].imageView = spectrumTestLayerData->transactionImageViews[i].handle;
 		}
 	}
 

@@ -1,0 +1,73 @@
+#pragma once
+
+// TODO: This Temporary file holding math functions and anything used in multiple places
+
+#define PI 3.141592654
+
+bool nonZero(in float3 v)
+{
+    return all(v != float3(0,0,0));
+}
+
+float sqr(in float x)
+{
+    return x*x;
+}
+
+// TODO: with interface LinearCongruentialGenerator
+struct LCG
+{
+    uint state;
+};
+
+float random1D(inout LCG lcg)
+{
+    uint next = 16807*(lcg.state+1) % 2147483647u;
+    lcg.state = next;
+    return float(next) / 2147483647u;
+}
+
+float2 random2D(inout LCG lcg)
+{
+    return float2(random1D(lcg), random1D(lcg));
+}
+
+float3x3 identity()
+{
+    return float3x3(
+        1.f, 0.f, 0.f,
+        0.f, 1.f, 0.f,
+        0.f, 0.f, 1.f
+    );
+}
+
+// power heuristic for MIS, computing weight whose nSamples and pdf is the first.
+// using power of 2
+float powerHeuristic(in uint nf, in float fpdf, in uint ng, in float gpdf)
+{
+    float num = nf * fpdf;
+    if (isinf(sqr(num))) 
+        return 1;
+
+    return sqr(num) / (sqr(num)+sqr(ng*gpdf));
+}
+
+float3 sphericalDirection(in float sinTheta, in float cosTheta, in float phi)
+{
+    return normalize(float3( sinTheta*cos(phi), sinTheta*sin(phi), cosTheta));
+}
+
+// implementation of the following formula: given a 3D vector v1, a base with it
+// can be constructed as
+// v2 = [ (1-v1.x^2)/(1+v1.z), -(v1.x*v1.y)/(1+v1.z), -v1.x ]
+// v3 = [ -(v1.x*v1.y)/(1+v1.z), (1-v1.y^2)/(1+v1.z), -v1.y ]
+void coordinateSystem(in float3 v1, out float3 v2, out float3 v3)
+{
+    float sgn = sign(v1.z);
+    float a = -1/(sgn+v1.z);
+    float b = v1.x*v1.y*a;
+
+    v2 = float3(1+sgn+sqr(v1.x)*a, sgn*b, -sgn*v1.x);
+    v3 = float3(b, sgn+sqr(v1.x)*a, -v1.y);
+}
+

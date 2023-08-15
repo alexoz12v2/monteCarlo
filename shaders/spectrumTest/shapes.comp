@@ -1,0 +1,152 @@
+#pragma once
+#include "interaction.comp"
+#include "optional.comp"
+#include "ray.comp"
+#include "common.comp"
+#include "sampling.comp"
+
+enum Refl_t { DIFF, SPEC, REFR };  
+struct Sphere 
+{ 
+    float radius;
+    float3 position;
+    float3 emission;
+    float3 color;
+    Refl_t refl;
+}; 
+
+Optional<float> Sphere_intersect(in Sphere sphere, in Ray ray, in float tMax)
+{
+    Optional<float> result = Optional<float>::New(nullopt);
+
+    // transform to coordinate frame 
+    float3 ori = ray.origin - sphere.position;
+    float eps = 1e-4;
+
+    float a = dot(ray.direction,ray.direction);
+    float b = dot(ray.direction, ori);
+    float c = dot(ori, ori)-sphere.radius*sphere.radius;
+    float det = b*b-a*c;
+
+    if (det>-eps)
+    {
+        det=sqrt(max(det,0));
+        result.value = (-b-det)/a;
+        if (result.value < eps)
+            result.value = (-b+det)/a;
+
+        if (result.value > eps && result.value <= tMax)
+            result.present = true;
+    }
+
+    return result;
+} 
+
+struct ShapeSampleContext
+{
+    float3 p;     // reference point, i.e. a point from which we are observing the shape
+    float3 n, ns; // geometric and shading normal of reference point
+    float time;   // ray parameter for the ray that intersected the reference point
+};
+
+struct ShapeIntersection
+{
+    // TODO surface interaction
+    Interaction intr;
+    float tHit;
+};
+
+float3 ShapeSampleContext_offsetRayOrigin(in ShapeSampleContext ctx, float3 w)
+{
+    // TODO interval arithmetic
+    float3 po = ctx.p;
+    return po;
+}
+
+struct ShapeSample
+{
+    Interaction intr;
+    float pdf;
+};
+
+Optional<ShapeSample> Sphere_sample(in Sphere sphere, in float2 u)
+{
+    float3 pObj = float3(0,0,0) + sphere.radius*sampleUniformSphere(u);
+    // TODO interval arithmetic
+
+    // compute surface normal (point itself normalized in object space) for sphere sample and return
+    float3 nObj = normalize(pObj);
+    // TODO renderFromObject transform
+    float3 p = pObj - sphere.position;
+    // TODO support for inverse orientation normal
+    Interaction intr = {p, nObj, 0, float3(0,0,0)};
+    Optional<ShapeSample> ss = {{intr, 1 /(4*PI)}, true};
+    return ss;
+}
+
+Optional<ShapeSample> Sphere_sampleW(in Sphere sphere, in ShapeSampleContext ctx, in float2 u)
+{
+    // sample uniformly on sphere if ctx.p is inside it, since the whole sphere is visible from within. 
+    // TODO change sphere to be in object space and carry a transform
+    float3 pCenter = sphere.position;
+    float3 pOrigin = ShapeSampleContext_offsetRayOrigin(ctx,pCenter-ctx.p);
+
+    if (dot(pOrigin, pCenter) <= sqr(sphere.radius))
+    {
+        // sample by area sphere and compute incident direction wi
+        Optional<ShapeSample> ss = Sphere_sample(sphere, u);
+        ss.value.intr.time = ctx.time;
+        float3 wi = ss.value.intr.p - ctx.p;
+        if (dot(wi,wi) == 0) 
+        {
+            ss.present = false;
+            return ss;
+        }
+
+        wi = normalize(wi);
+
+        // convert area sampling PDF to solid angle, dwi/dA = cosThetaO / r^2 by the definition of solid angle
+        ss.value.pdf /= abs(dot(ss.value.intr.n, -wi)) / dot(ctx.p, ss.value.intr.p);
+        ss.present = true;
+        if (isinf(ss.value.pdf)) ss.present = false;
+        
+        return ss;
+    }
+
+    // sample sphere uniformly inside subtended cone (visible portion of sphere from reference point ctx.p)
+    // 1- compute quantities related to the thetaMax (TODO) for the visibility cone
+    float sinThetaMax  = sphere.radius / distance(ctx.p, pCenter);
+    float sin2ThetaMax = sqr(sinThetaMax);
+    float cosThetaMax  = sqrt(max(0.f,1.f-sin2ThetaMax));
+    float oneMinusCosThetaMax = 1 - cosThetaMax;
+
+    // 2- compute theta and phi values for sample in cone
+    float cosTheta = (cosThetaMax - 1) * u[0] + 1;
+    float sin2Theta = 1 - sqr(cosTheta);
+    if (sin2ThetaMax < 0.00068523f/*= sin^2(1.5 deg)*/)
+    {
+        // compute sona sample via Taylor series expnasion for small angles
+        sin2Theta = sin2ThetaMax * u[0];
+        cosTheta = sqrt(1 - sin2Theta);
+        oneMinusCosThetaMax = sin2ThetaMax / 2;
+    }
+  
+    // 3- compute angle alpha from center of sphere to sampled point on surface
+    float cosAlpha = sin2Theta / sinThetaMax + cosTheta * sqrt(max(0.f, 1.f - sin2Theta / sin2ThetaMax));
+    float sinAlpha = sqrt(max(0.f, 1.f - sqr(cosAlpha)));
+   
+    // 4- compute surface normal and sampled point on sphere
+    float phi = u[1] * 2 * PI;
+    float3 w = sphericalDirection(sinAlpha, cosAlpha, phi); // sampled direction, whose negation gives the normal of the sphere (used in line 322)
+    // TODO: refactor in Frame class, as in pbrt
+    float3 x, y, z = normalize(pCenter - ctx.p);
+    coordinateSystem(z, x, y);
+    float3 n = -w.x * x - w.y * y - w.z * z;
+    float3 p = pCenter + sphere.radius * n;
+    //TODO: support for reverse orientation
+ 
+    // return result
+    // TODO: compute error and uv coordinates for sampled point on sphere
+    Optional<ShapeSample> ss = {{ {p, n, ctx.time,/*no uv*/ /*wo*/float3(0,0,0)}, 1 / (2 * PI * oneMinusCosThetaMax) }, true};
+    return ss;
+}

@@ -1,0 +1,45 @@
+#pragma once
+
+template <typename T, typename U>
+interface func_t
+{
+    U call(T);
+};
+
+struct nullopt_t {};
+static nullopt_t nullopt;
+
+template <typename T>
+struct Optional
+{
+    static Optional<T> New(T val) 
+    {
+        Optional<T> opt = {val, true};
+        return opt;
+    }
+
+    static Optional<T> New(nullopt_t nlpt)
+    {
+        Optional<T> opt;
+        opt.present = false;
+        return opt;
+    }
+
+    operator bool() { return present; }
+
+    template <typename U>
+    Optional<U> fmap(func_t<T, U> f) 
+    {
+        if (present) return f(this);
+        return New();
+    }
+
+    template <typename U>
+    Optional<U> operator|(func_t<T, U> f) 
+    {
+        return fmap(f);
+    }
+
+    T value;
+    bool present;
+};

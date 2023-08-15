@@ -1,6 +1,9 @@
 // test.compute
 
 #pragma kernel main
+#include "optional.comp"
+#include "shapes.comp"
+#include "common.comp"
 
 [[vk::binding(0, 0)]] RWTexture2D<float4> res;
 [[vk::binding(1, 0)]] RWTexture2D<float4> transaction;
@@ -16,135 +19,23 @@ struct Camera
     float3 lookat;
 };
 
-struct Ray 
-{
-    float3 origin;
-    float3 direction;
-};
-
-bool nonZero(in float3 v)
-{
-    return any(v != float3(0,0,0));
-}
-
-float sqr(float x)
-{
-    return x*x;
-}
-
-// implementation of formulas: given a 3D vector v1, a base with it
-// can be constructed as
-// v2 = [ (1-v1.x^2)/(1+v1.z), -(v1.x*v1.y)/(1+v1.z), -v1.x ]
-// v3 = [ -(v1.x*v1.y)/(1+v1.z), (1-v1.y^2)/(1+v1.z), -v1.y ]
-void coordinateSystem(in float3 v1, out float3 v2, out float3 v3)
-{
-    float sgn = sign(v1.z);
-    float a = -1/(sgn+v1.z);
-    float b = v1.x*v1.y*a;
-
-    v2 = float3(1+sgn+sqr(v1.x)*a, sgn*b, -sgn*v1.x);
-    v3 = float3(b, sgn+sqr(v1.x)*a, -v1.y);
-}
-
-// LinearCongruentialGenerator
-struct LCG
-{
-    uint state;
-};
-
-float random1D(inout LCG lcg)
-{
-    uint next = 16807*(lcg.state+1) % 2147483647u;
-    lcg.state = next;
-    return float(next) / 2147483647u;
-}
-
-float2 random2D(inout LCG lcg)
-{
-    return float2(random1D(lcg), random1D(lcg));
-}
-
-float3x3 identity()
-{
-    return float3x3(
-        1.f, 0.f, 0.f,
-        0.f, 1.f, 0.f,
-        0.f, 0.f, 1.f
-    );
-}
-
-// power heuristic for MIS, computing weight whose nSamples and pdf is the first.
-// using power of 2
-float powerHeuristic(in uint nf, in float fpdf, in uint ng, in float gpdf)
-{
-    float num = nf * fpdf;
-    if (isinf(sqr(num))) 
-        return 1;
-
-    return sqr(num) / (sqr(num)+sqr(ng*gpdf));
-}
-
-enum Refl_t { DIFF, SPEC, REFR };  
-struct Sphere 
-{ 
-    float radius;
-    float3 position;
-    float3 emission;
-    float3 color;
-    Refl_t refl;
-}; 
-
-#define opt_def(T) struct opt_##T { T value; bool present; }
-#define opt(T) opt_##T
-
-opt_def(float);
-
-opt_float Sphere_intersect(in Sphere sphere, in Ray ray, in float tMax)
-{
-    opt_float result;
-    result.present = false;
-
-    // transform to coordinate frame 
-    float3 ori = ray.origin - sphere.position;
-    float eps = 1e-4;
-
-    float a = dot(ray.direction,ray.direction);
-    float b = dot(ray.direction, ori);
-    float c = dot(ori, ori)-sphere.radius*sphere.radius;
-    float det = b*b-a*c;
-
-    if (det>-eps)
-    {
-        det=sqrt(max(det,0));
-        result.value = (-b-det)/a;
-        if (result.value < eps)
-            result.value = (-b+det)/a;
-
-        if (result.value > eps && result.value <= tMax)
-            result.present = true;
-    }
-
-    return result;
-} 
-
 #define SPHERES_COUNT 9
 #define LIGHTS_COUNT 1
-#define PI 3.141592654
 
 static Sphere spheres[SPHERES_COUNT] = {
-    {1e5, float3( 1e5 + 1, 0, 0), float3(0, 0, 0), float3(.75, .25, .25), DIFF}, // Left Wall (Red)
+    {1e5, float3( 1e5 + 1, 0, 0), float3(0, 0, 0),  float3(0.63, 0.065, 0.05), DIFF}, // Left Wall (Red)
     {1e5, float3(-1e5 - 1, 0, 0), float3(0, 0, 0), float3(.25, .25, .75), DIFF}, // Right Wall (Blue)
     {1e5, float3(0, 0, -1e5 - 1), float3(0, 0, 0), float3(.75, .75, .75), DIFF}, // Back Wall (White)
     {1e5, float3(0, 0, 1e5 + 2.15), float3(0, 0, 0), float3(.75, .75, .75), DIFF}, // Front Wall (White)
     {1e5, float3(0, -1e5 - 1, 0), float3(0, 0, 0), float3(.75, .75, .75), DIFF}, // Bottom Wall (White)
     {1e5, float3(0, 1e5 + 1, 0), float3(0, 0, 0), float3(.75, .75, .75), DIFF}, // Top Wall (White)
-    {0.33, float3(-0.5,1-0.33,1.2), float3(0, 0, 0), float3(0.4, 0.2, 0.2), SPEC}, // Mirror Sphere (Specular reflection)
-    {0.45, float3(0.35,1-0.45,1.5), float3(0, 0, 0), float3(0.3, 1, 1), REFR}, // Glossy Sphere (Refractive material)
-    {1,    float3(0,-1.9,1.5), float3(1, 1, 1), float3(0, 0, 0), DIFF} // Light Sphere (Light-emitting sphere)
+    {0.33, float3(-0.5,1-0.33,1.2), float3(0, 0, 0), float3(0.4, 0.2, 0.2), DIFF}, // Mirror Sphere (Specular reflection)
+    {0.45, float3(0.35,1-0.45,1.5), float3(0, 0, 0), float3(0.14, 0.45, 0.091), DIFF}, // Glossy Sphere (Refractive material)
+    {1,    float3(0,-1.9,1.5), float3(0.8, 0.8, 0.8), float3(0.8, 0.8, 0.8), DIFF} // Light Sphere (Light-emitting sphere)
 }; 
 
 static Sphere lights[LIGHTS_COUNT] = {
-    {1, float3(0,-1.9,1.5), float3(12, 12, 12), float3(0, 0, 0), DIFF} // Light Sphere (Light-emitting sphere)
+    {1, float3(0,-1.9,1.5), float3(0.8, 0.8, 0.8), float3(0.8, 0.8, 0.8), DIFF} // Light Sphere (Light-emitting sphere)
 };
 
 struct Intersection {
@@ -152,73 +43,16 @@ struct Intersection {
     uint i;
 };
 
-opt_def(Intersection);
-
-float3 sphericalDirection(in float sinTheta, in float cosTheta, in float phi)
+Optional<Intersection> intersect(in Ray ray)
 {
-    return normalize(float3( sinTheta*cos(phi), sinTheta*sin(phi), cosTheta));
-}
-
-// assumes sphere in origin, taken from pbrt straight. See also pegoraro page 272
-float3 sampleUniformSphere(in float2 u)
-{
-    float z = 1 - 2 * u[0];
-    float r = sqrt(max(0,1-sqr(z)));
-    float phi = 2 * PI * u[1];
-    return float3(r * cos(phi), r * sin(phi), z);
-}
-
-// assumes cone normal (0,0,1)
-float3 sampleUniformCone(in float2 u, in float cosThetaMax)
-{
-    float cosTheta = lerp(1, cosThetaMax, u[0]);
-    float sinTheta = sqrt(max(1-cosTheta*cosTheta, 0));
-    float phi = u[1] * 2 * PI;
-    return sphericalDirection(sinTheta, cosTheta, phi);
-}
-
-// pbrt
-float2 sampleUniformDiskConcentric(in float2 u)
-{
-    // Map _u_ to $[-1,1]^2$ and handle degeneracy at the origin
-    float2 uOffset = 2 * u - float2(1, 1);
-    if (uOffset.x == 0 && uOffset.y == 0)
-        return float2(0, 0);
-
-    // Apply concentric mapping to point
-    float theta, r;
-    if (abs(uOffset.x) > abs(uOffset.y)) {
-        r = uOffset.x;
-        theta = PI/4* (uOffset.y / uOffset.x);
-    } else {
-        r = uOffset.y;
-        theta = PI/2 - PI/4 * (uOffset.x / uOffset.y);
-    }
-    return r * float2(cos(theta), sin(theta));
-}
-
-float3 sampleCosineHemisphere(in float2 u) 
-{
-    float2 d = sampleUniformDiskConcentric(u);
-    float z = sqrt(max(0.f, 1.f - sqr(d.x) - sqr(d.y)));
-    return float3(d.x,d.y,z);
-}
-
-float cosineHemispherePDF(in float cosTheta)
-{
-    return cosTheta / PI;
-}
-
-opt_Intersection intersect(in Ray ray)
-{
-    opt_Intersection isect;
+    Optional<Intersection> isect;
     isect.present = false;
     isect.value.t = 1e20;
     isect.value.i = SPHERES_COUNT;
 
     for (uint i = 0; i != SPHERES_COUNT; ++i)
     {
-        opt_float sIsect = Sphere_intersect(spheres[i], ray, isect.value.t);
+        Optional<float> sIsect = Sphere_intersect(spheres[i], ray, isect.value.t);
         if (sIsect.present)
         {
             isect.present = true;
@@ -229,16 +63,6 @@ opt_Intersection intersect(in Ray ray)
     
     return isect;
 }
-
-// only surface 
-struct Interaction
-{
-    float3 p;   // point of surface intersected
-    float3 n;   // geometric normal of intersected
-    // no uv for now
-    float time; // ray step parameter 
-    float3 wo;  // direction negative to the direction of the ray (hence, outgoing)
-};
 
 struct LightSampleContext
 {
@@ -253,122 +77,6 @@ struct LightLiSample
     float pdf; // PDF value for the returned sample
     Interaction pLight;
 };
-opt_def(Interaction);
-
-struct ShapeSampleContext
-{
-    float3 p;     // reference point, i.e. a point from which we are observing the shape
-    float3 n, ns; // geometric and shading normal of reference point
-    float time;   // ray parameter for the ray that intersected the reference point
-};
-
-struct ShapeIntersection
-{
-    // TODO surface interaction
-    Interaction intr;
-    float tHit;
-};
-
-opt_def(ShapeIntersection);
-
-float3 ShapeSampleContext_offsetRayOrigin(in ShapeSampleContext ctx, float3 w)
-{
-    // TODO interval arithmetic
-    float3 po = ctx.p;
-    return po;
-}
-
-struct ShapeSample
-{
-    Interaction intr;
-    float pdf;
-};
-
-opt_def(ShapeSample);
-
-opt_def(LightLiSample);
-
-opt_ShapeSample Sphere_sample(in Sphere sphere, in float2 u)
-{
-    float3 pObj = float3(0,0,0) + sphere.radius*sampleUniformSphere(u);
-    // TODO interval arithmetic
-
-    // compute surface normal (point itself normalized in object space) for sphere sample and return
-    float3 nObj = normalize(pObj);
-    // TODO renderFromObject transform
-    float3 p = pObj - sphere.position;
-    // TODO support for inverse orientation normal
-    Interaction intr = {p, nObj, 0, float3(0,0,0)};
-    opt_ShapeSample ss = {{intr, 1 /(4*PI)}, true};
-    return ss;
-}
-
-opt_ShapeSample Sphere_sampleW(in Sphere sphere, in ShapeSampleContext ctx, in float2 u)
-{
-    // sample uniformly on sphere if ctx.p is inside it, since the whole sphere is visible from within. 
-    // TODO change sphere to be in object space and carry a transform
-    float3 pCenter = sphere.position;
-    float3 pOrigin = ShapeSampleContext_offsetRayOrigin(ctx,pCenter-ctx.p);
-
-    if (dot(pOrigin, pCenter) <= sqr(sphere.radius))
-    {
-        // sample by area sphere and compute incident direction wi
-        opt_ShapeSample ss = Sphere_sample(sphere, u);
-        ss.value.intr.time = ctx.time;
-        float3 wi = ss.value.intr.p - ctx.p;
-        if (dot(wi,wi) == 0) 
-        {
-            ss.present = false;
-            return ss;
-        }
-
-        wi = normalize(wi);
-
-        // convert area sampling PDF to solid angle, dwi/dA = cosThetaO / r^2 by the definition of solid angle
-        ss.value.pdf /= abs(dot(ss.value.intr.n, -wi)) / dot(ctx.p, ss.value.intr.p);
-        ss.present = true;
-        if (isinf(ss.value.pdf)) ss.present = false;
-        
-        return ss;
-    }
-
-    // sample sphere uniformly inside subtended cone (visible portion of sphere from reference point ctx.p)
-    // 1- compute quantities related to the thetaMax (TODO) for the visibility cone
-    float sinThetaMax  = sphere.radius / distance(ctx.p, pCenter);
-    float sin2ThetaMax = sqr(sinThetaMax);
-    float cosThetaMax  = sqrt(max(0.f,1.f-sin2ThetaMax));
-    float oneMinusCosThetaMax = 1 - cosThetaMax;
-
-    // 2- compute theta and phi values for sample in cone
-    float cosTheta = (cosThetaMax - 1) * u[0] + 1;
-    float sin2Theta = 1 - sqr(cosTheta);
-    if (sin2ThetaMax < 0.00068523f/*= sin^2(1.5 deg)*/)
-    {
-        // compute sona sample via Taylor series expnasion for small angles
-        sin2Theta = sin2ThetaMax * u[0];
-        cosTheta = sqrt(1 - sin2Theta);
-        oneMinusCosThetaMax = sin2ThetaMax / 2;
-    }
-  
-    // 3- compute angle alpha from center of sphere to sampled point on surface
-    float cosAlpha = sin2Theta / sinThetaMax + cosTheta * sqrt(max(0.f, 1.f - sin2Theta / sin2ThetaMax));
-    float sinAlpha = sqrt(max(0.f, 1.f - sqr(cosAlpha)));
-   
-    // 4- compute surface normal and sampled point on sphere
-    float phi = u[1] * 2 * PI;
-    float3 w = sphericalDirection(sinAlpha, cosAlpha, phi); // sampled direction, whose negation gives the normal of the sphere (used in line 322)
-    // TODO: refactor in Frame class, as in pbrt
-    float3 x, y, z = normalize(pCenter - ctx.p);
-    coordinateSystem(z, x, y);
-    float3 n = -w.x * x - w.y * y - w.z * z;
-    float3 p = pCenter + sphere.radius * n;
-    //TODO: support for reverse orientation
- 
-    // return result
-    // TODO: compute error and uv coordinates for sampled point on sphere
-    opt_ShapeSample ss = {{ {p, n, ctx.time,/*no uv*/ /*wo*/float3(0,0,0)}, 1 / (2 * PI * oneMinusCosThetaMax) }, true};
-    return ss;
-}
 
 // TODO add support for image with alpha texture, and refactor to use light instead of sphere or shape
 float3 DiffuseAreaLight_L(in Sphere shape, in float3 p, in float3 n, /*in float2 uv,*/ in float3 w)
@@ -381,13 +89,13 @@ float3 DiffuseAreaLight_L(in Sphere shape, in float3 p, in float3 n, /*in float2
 }
 
 // should take the light, not the shape
-opt_LightLiSample DiffuseAreaLight_sampleLi(in Sphere light, in LightSampleContext ctx, in float2 u)
+Optional<LightLiSample> DiffuseAreaLight_sampleLi(in Sphere light, in LightSampleContext ctx, in float2 u)
 {
-    opt_LightLiSample si;
+    Optional<LightLiSample> si;
     si.present = false;
 
     // sample point on shape
-    opt_ShapeSample ss = Sphere_sample(light, u);
+    Optional<ShapeSample> ss = Sphere_sample(light, u);
     if (!ss.present || ss.value.pdf == 0 || dot(ss.value.intr.p - ctx.p, ss.value.intr.p - ctx.p) == 0)
         return si;
 
@@ -399,7 +107,7 @@ opt_LightLiSample DiffuseAreaLight_sampleLi(in Sphere light, in LightSampleConte
     if (all(Le == float3(0,0,0)))
         return si;
 
-    opt_LightLiSample ssi = {{Le, wi, ss.value.pdf, ss.value.intr}, true};
+    Optional<LightLiSample> ssi = {{Le, wi, ss.value.pdf, ss.value.intr}, true};
     return si;
 }
 
@@ -412,16 +120,14 @@ struct BSDFSample
     //bool pdfIsProportional; flags, ...
 };
 
-opt_def(BSDFSample);
-
-opt_BSDFSample Diff_sample_f(float3 R, in float3 wo, in float uc, in float2 u)
+Optional<BSDFSample> Diff_sample_f(float3 R, in float3 wo, in float uc, in float2 u)
 {
     float3 wi = sampleCosineHemisphere(u);
     if (wo.z < 0)
         wi.z *= -1;
 
     float pdf = cosineHemispherePDF(abs(wi.z));
-    opt_BSDFSample bs = {{ R / PI, wi, pdf }, true};
+    Optional<BSDFSample> bs = {{ R / PI, wi, pdf }, true};
     return bs;
 }
 
@@ -439,14 +145,14 @@ float3 sampleLd(in Interaction intr, in Refl_t bsdf, inout LCG lcg)
 
     // Sample a point on the light source for direct lighting
     float2 uLight = random2D(lcg);
-    opt_LightLiSample ls = DiffuseAreaLight_sampleLi(light, ctx, uLight);
-    if (!ls.present || all(ls.value.L == float3(0,0,0)) || ls.value.pdf == 0.f)
+    Optional<LightLiSample> ls = DiffuseAreaLight_sampleLi(light, ctx, uLight);
+    if (!ls.present || !nonZero(ls.value.L) || ls.value.pdf == 0.f)
         return float3(0,0,0);
 
     // Evaluate BSDF for light sample and check light visibility: a shadow ray is traced only if BSDF for the sampled direction is nonzero and visible
     float3 wo = intr.wo, wi = ls.value.wi;
     float3 f = 1.f / PI * abs(dot(wi, intr/*.shading.n*/.n)); // TODO
-    if (all(f == float3(0,0,0)) /*|| !Unoccluded(intr, ls.value.pLight)*/) // TODO
+    if (!nonZero(f) /*|| !Unoccluded(intr, ls.value.pLight)*/) // TODO
         return float3(0,0,0);
 
     // Return light's contribution to reflected radiance
@@ -472,7 +178,7 @@ float3 Li(in Ray startRay, inout LCG lcg)
     while (true)
     {
         // Scene Intersection
-        opt_Intersection isect = intersect(ray);
+        Optional<Intersection> isect = intersect(ray);
         if (!isect.present)
         {
             // TODO lights at infinity
@@ -481,11 +187,14 @@ float3 Li(in Ray startRay, inout LCG lcg)
 
         uint i = isect.value.i;
         float3 p  = ray.origin + isect.value.t * ray.direction;
-        float3 n  = normalize(p - spheres[i].position);
+        float3 n  = abs(normalize(p - spheres[i].position));
         float3 wo = -ray.direction;
 
         // incorporate Le if surface is emissive
         float3 Le = spheres[i].emission;
+
+        //return nonZero(Le) ? Le : spheres[i].color;
+
         if (nonZero(Le))
         {
             // if ray comes from a specular bounce or the light source is the first intersection,
@@ -515,6 +224,7 @@ float3 Li(in Ray startRay, inout LCG lcg)
         if (bsdf == DIFF /*change to checking if non specular*/)
         {
             float3 Ld = sampleLd(intr, DIFF, lcg);
+            L += beta * Ld;
         }
 
         // Sample BSDF to get new path direction TODO better
@@ -526,12 +236,12 @@ float3 Li(in Ray startRay, inout LCG lcg)
         //float3 dir = sphericalDirection(sinTheta, cosTheta, phi);
         
         float u = random1D(lcg);
-        opt_BSDFSample bs = Diff_sample_f(spheres[i].color, wo, u, xi);
+        Optional<BSDFSample> bs = Diff_sample_f(spheres[i].color, wo, u, xi);
         if (bs.present == false)
             break;
         
         // - Update path state variables after surface scattering TODO readjust to follow pbrt
-        beta *= spheres[i].color * abs(dot(bs.value.wi, /*isect.shading.*/n)) / /*BSDF pdf*/bs.value.pdf;
+        beta *= 2*bs.value.f * abs(dot(bs.value.wi, /*isect.shading.*/n)) / /*BSDF pdf*/bs.value.pdf;
         p_b = bs.value.pdf;
         specularBounce = bsdf != DIFF;
         anyNonSpecularBounces |= bsdf == DIFF;
@@ -539,7 +249,7 @@ float3 Li(in Ray startRay, inout LCG lcg)
         LightSampleContext ctx = {intr.p, intr.n, intr.n/* = ns, maybe?*/};
         prevIntrCtx = ctx;
 
-        ray.origin = p;
+        ray.origin = p + 0.0001 * intr.n;
         ray.direction = bs.value.wi;
 
         // Possibly terminate the path with Russian roulette
@@ -583,7 +293,7 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
         // assume origin = image plane center, then ray direction = camera lookat + xy
         float3 weightedColour = float3(0,0,0);
         Ray ray = { camera.position, float3(0,0,1) };
-        for (uint i = 0; i != raysPerPixel; ++i)
+        for (uint i = 0; i != raysPerPixel * 20; ++i)
         {
             float2 offset = float2(random1D(lcg) * pxdim.x / 2, random1D(lcg) * pxdim.y / 2);
             ray.direction = normalize(camera.lookat + float3(xy + offset, 0.f));

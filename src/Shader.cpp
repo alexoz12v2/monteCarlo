@@ -9,6 +9,8 @@
 #include <string_view>
 #include <numeric>
 #include <algorithm>
+#include <unordered_set>
+#include <filesystem>
 
 // TODO support for wchar_t logging
 #if defined(_DEBUG)
@@ -22,44 +24,52 @@
 
 namespace mxc
 {
-    constexpr auto vkCopyDescriptorSet(VkDescriptorSet srcSet = VK_NULL_HANDLE, VkDescriptorSet dstSet = VK_NULL_HANDLE, uint8_t binding = UINT8_MAX, uint8_t arrayElement = 0, uint8_t count = 0) -> VkCopyDescriptorSet;
+    constexpr auto vkCopyDescriptorSet(VkDescriptorSet srcSet = VK_NULL_HANDLE, VkDescriptorSet dstSet = VK_NULL_HANDLE, 
+                                       uint8_t binding = UINT8_MAX, uint8_t arrayElement = 0, uint8_t count = 0) -> VkCopyDescriptorSet;
     auto compileShader(std::wstring const& filename, std::wstring_view shaderDir) -> CComPtr<IDxcBlob>;
+    constexpr auto VkDescriptorTypeToString(VkDescriptorType descriptorType) -> char const*;
 
-    // TODO FIX IT IMMEDIATELY. BINDING NUMBERS SIZE != POOLSIZES COUNT
-    auto ShaderResources::create(VulkanContext* ctx, ResourceConfiguration const& config, VkShaderStageFlagBits const* stageFlags) -> bool
+    auto ShaderResources::create(VulkanContext* ctx, ResourceConfiguration const& config, VkShaderStageFlagBits const* stageFlags, 
+                                 bool usePushDescriptors) -> bool
     {
-        // TODO: separate pool and set creation
+        MXC_WARN("Current version of shaderResources puts all bindings, even bindings destined to different descriptor pools, in the same"
+                 " descriptor set layout.");
+        m_usePushDescriptors = usePushDescriptors;
+        // Create Descriptor Pool ---------------------------------------------
         std::vector<VkDescriptorPoolSize> maxPoolSizes(config.poolSizes_count);
         for (uint32_t i = 0; i != maxPoolSizes.size(); ++i)
         {
-            maxPoolSizes[i] = {config.pPoolSizes[i].type, MAX_DESCRIPTOR_COUNT_PER_TYPE};
+            maxPoolSizes[i] = {config.pPoolSizes[i].type, MAX_DESCRIPTOR_SETS_COUNT*MAX_DESCRIPTOR_COUNT_PER_TYPE/*4 times 8*/};
         }
 
         VkDescriptorPoolCreateInfo const createInfo {
             .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
             .pNext = nullptr,
             .flags = 0,
-            .maxSets = MAX_DESCRIPTOR_SETS_COUNT,
+            .maxSets = MAX_DESCRIPTOR_SETS_COUNT/*8*/,
             .poolSizeCount = config.poolSizes_count,
             .pPoolSizes = maxPoolSizes.data()
         };
         VK_CHECK(vkCreateDescriptorPool(ctx->device.logical, &createInfo, nullptr, &descriptorPool));
 
+        // Create Descriptor Set Layouts --------------------------------------
         VkDescriptorSetLayoutBinding setLayoutBinding[MAX_DESCRIPTOR_COUNT_PER_TYPE * MAX_DESCRIPTOR_SETS_COUNT];
         uint32_t runningOffset = 0;
 
-        VkDescriptorSetLayoutCreateInfo layoutCreateInfo {};
-        layoutCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-        layoutCreateInfo.flags = VK_DESCRIPTOR_SET_LAYOUT_CREATE_PUSH_DESCRIPTOR_BIT_KHR;
-        layoutCreateInfo.bindingCount = std::accumulate(config.pBindingNumbers_counts, config.pBindingNumbers_counts+config.poolSizes_count, 0);
-        layoutCreateInfo.pBindings = setLayoutBinding;
+        VkDescriptorSetLayoutCreateInfo const layoutCreateInfo {
+            .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
+            .pNext = nullptr,
+            .flags = usePushDescriptors ? VK_DESCRIPTOR_SET_LAYOUT_CREATE_PUSH_DESCRIPTOR_BIT_KHR : 0,
+            .bindingCount = std::accumulate(config.pBindingNumbers_counts, config.pBindingNumbers_counts+config.poolSizes_count, 0), /*==2*/
+            .pBindings = setLayoutBinding};
+        MXC_ASSERT(layoutCreateInfo.bindingCount == 2, "What"); // TODO remove
 
-        descriptorSetLayouts.resize(1); // TODO configurable?
+        descriptorSetLayouts.resize(ctx->swapchain.images.size()); // TODO configurable?
         uint32_t index = 0;
-        for (uint32_t i = 0; i != descriptorSetLayouts.size(); ++i)
+        for (uint32_t i = 0; i!=1/*i != descriptorSetLayouts.size()*/; ++i) // TODO 
         {
             MXC_DEBUG("Creating Descriptor Set Layout with %u bindings", config.pBindingNumbers_counts[i]);
-            for (uint32_t j = 0; j != config.pBindingNumbers_counts[i]; ++j)
+            for (uint32_t j = 0; j != 2/*config.pBindingNumbers_counts[i]*/; ++j)
             {
                 setLayoutBinding[index].binding = config.pBindingNumbers[runningOffset + j];
                 setLayoutBinding[index].descriptorType = config.pPoolSizes[i].type;
@@ -68,35 +78,38 @@ namespace mxc
                 setLayoutBinding[index].stageFlags = stageFlags[i];
                 setLayoutBinding[index++].pImmutableSamplers = nullptr;
             }
+            runningOffset += config.pBindingNumbers_counts[i];
         }
 
         VK_CHECK(vkCreateDescriptorSetLayout(ctx->device.logical, &layoutCreateInfo, nullptr, descriptorSetLayouts.data()));
-
         MXC_ASSERT(ctx->swapchain.images.size() <= 3, "More than three swapchain images. Not allowed");
         descriptorSets_count = static_cast<uint8_t>(ctx->swapchain.images.size());
+        if (!usePushDescriptors)
+        {
+            std::fill(++descriptorSetLayouts.begin(), descriptorSetLayouts.end(), descriptorSetLayouts[0]);
+            VkDescriptorSetAllocateInfo allocateInfo {
+                .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
+                .pNext = nullptr,
+                .descriptorPool = descriptorPool,
+                .descriptorSetCount = descriptorSets_count,
+                .pSetLayouts = descriptorSetLayouts.data()
+            };
 
-        [[maybe_unused]] VkDescriptorSetAllocateInfo allocateInfo {
-            .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
-            .pNext = nullptr,
-            .descriptorPool = descriptorPool,
-            .descriptorSetCount = descriptorSets_count,
-            .pSetLayouts = descriptorSetLayouts.data() 
-        };
-        // TODO: clean up interface so that you can choose to use either regular desctiptor sets or push desctiptor sets
-        // VK_CHECK(vkAllocateDescriptorSets(ctx->device.logical, &allocateInfo, descriptorSets));
+            VK_CHECK(vkAllocateDescriptorSets(ctx->device.logical, &allocateInfo, descriptorSets));
+        }
 
-        // copy all descriptor pool sizes in descriptor info
+        // copy all descriptor pool sizes in descriptor metadata --------------
         runningOffset = 0;
-        m_descriptorsInfo.reserve(config.poolSizes_count);
+        m_descriptorsMetadata.reserve(config.poolSizes_count);
         for (uint32_t i = 0; i != config.poolSizes_count; ++i)
         {
-            MXC_DEBUG("descriptor type number: %u", i);
+            MXC_DEBUG("descriptor type number: %u, %s", i, VkDescriptorTypeToString(config.pPoolSizes[i].type));
             // TODO refactor
-            m_descriptorsInfo.push_back({config.pPoolSizes[i].type, config.pPoolSizes[i].descriptorCount, {0}});
+            m_descriptorsMetadata.push_back({config.pPoolSizes[i].type, config.pPoolSizes[i].descriptorCount, {0}});
             for (uint32_t j = 0; j != config.pBindingNumbers_counts[i]; ++j)
             {
-                MXC_DEBUG("binding number: %u", j);
-                m_descriptorsInfo[i].bindingNumber[j] = config.pBindingNumbers[runningOffset + j];
+                MXC_DEBUG("\tbinding number: %u", j);
+                m_descriptorsMetadata[i].bindingNumber[j] = config.pBindingNumbers[runningOffset + j];
             }
             runningOffset += config.pBindingNumbers_counts[i];
         }
@@ -126,7 +139,7 @@ namespace mxc
         for (uint8_t i = 0; i != config.stage_count; ++i)
         {
             CComPtr<IDxcBlob> compiledShader = compileShader(config.filenames[i], config.shaderDir);
-            VkShaderModule shaderModule;
+            VkShaderModule shaderModule; // not necessary to store, as it is copied in the stages vector
 
             createInfo.codeSize = static_cast<uint32_t>(compiledShader->GetBufferSize()); // code size IN BYTES
             createInfo.pCode = reinterpret_cast<uint32_t const*>(compiledShader->GetBufferPointer());
@@ -152,7 +165,7 @@ namespace mxc
                 if (!resConfig.pPoolSizes)
                     MXC_WARN("creating shader resources with a poolSizes count > 0 but pPoolSizes == nullptr");
                 #endif
-                resources.create(ctx, resConfig, config.stageFlags);
+                resources.create(ctx, resConfig, config.stageFlags, resConfig.usePushDescriptors); // TODO configurable bool 
                 noResources = false;
             }
             else
@@ -187,31 +200,30 @@ namespace mxc
     }
 
     auto ShaderResources::createUpdateTemplate(VulkanContext* ctx, VkPipelineBindPoint bindPoint, 
-                                               VkPipelineLayout layout, uint32_t const* strides) -> bool
+                                               VkPipelineLayout layout, [[maybe_unused]]uint32_t const* strides) -> bool
     {
         std::vector<VkDescriptorUpdateTemplateEntry> descriptorUpdateTemplateEntries;
-        descriptorUpdateTemplateEntries.reserve(m_descriptorsInfo.size() * MAX_DESCRIPTOR_COUNT_PER_TYPE);
-        //MXC_ASSERT(descriptorUpdateTemplateEntries.capacity() == 4, "dfs");
+        descriptorUpdateTemplateEntries.reserve(m_descriptorsMetadata.size() * MAX_DESCRIPTOR_COUNT_PER_TYPE);
+
         uint32_t runningTotal = 0;
-        for (uint32_t i = 0; i != m_descriptorsInfo.size(); ++i)
+        for (uint32_t i = 0; i != m_descriptorsMetadata.size(); ++i) // for each descriptor type in a VkPoolSize
         {
-            for (uint32_t j = 0; j != m_descriptorsInfo[i].descriptorCount; ++j)
+            for (uint32_t j = 0; j != m_descriptorsMetadata[i].descriptorCount; ++j) // for each descriptor
             {
-                MXC_WARN("update entry %u binding number: %u", i, m_descriptorsInfo[i].bindingNumber[j]);
+                MXC_WARN("update entry %u binding number: %u", i, m_descriptorsMetadata[i].bindingNumber[j]);
                 descriptorUpdateTemplateEntries.push_back({
-                    .dstBinding = m_descriptorsInfo[i].bindingNumber[j],
+                    .dstBinding = m_descriptorsMetadata[i].bindingNumber[j],
                     .dstArrayElement = 0,
                     .descriptorCount = 1,
-                    .descriptorType = m_descriptorsInfo[i].type,
-                    .offset = 0,
-                    .stride = strides[i]
+                    .descriptorType = m_descriptorsMetadata[i].type,
+                    .offset = j * sizeof(VkDescriptorImageInfo), // TODO: make configurable
+                    .stride = 0 // no stride since we are binding storage images for now. TODO: make configurable
                 });
             }
 
-            runningTotal += m_descriptorsInfo[i].descriptorCount;
+            runningTotal += m_descriptorsMetadata[i].descriptorCount;
         }
-
-        //MXC_ASSERT(runningTotal == 2, "fdsafsadfsd");
+        MXC_ASSERT(descriptorUpdateTemplateEntries.size()==2&&runningTotal==2,"in spectrum test there should be 2 descriptorUpdateTemplateEntries");
 
         // create a template for each set
         VkDescriptorUpdateTemplateCreateInfo templateCreateInfo {
@@ -220,7 +232,8 @@ namespace mxc
             .flags = 0,
             .descriptorUpdateEntryCount = runningTotal,
             .pDescriptorUpdateEntries = descriptorUpdateTemplateEntries.data(), // structs describing descriptors
-            .templateType = VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_PUSH_DESCRIPTORS_KHR,
+            .templateType = m_usePushDescriptors ? VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_PUSH_DESCRIPTORS_KHR 
+                                                 : VK_DESCRIPTOR_UPDATE_TEMPLATE_TYPE_DESCRIPTOR_SET,
             .descriptorSetLayout = descriptorSetLayouts[0],
             .pipelineBindPoint = bindPoint,
             .pipelineLayout = layout,
@@ -232,10 +245,10 @@ namespace mxc
         // TODO: when using push descriptor sets, 1 layout == one push descriptor set. Handle case in which regular descriptor sets are created
         for (uint32_t i = 0; i != descriptorSets_count; ++i) 
         {
-            // TODO refactor
-            templateCreateInfo.set = 0;//i;
+            templateCreateInfo.set = i;
             templateCreateInfo.descriptorSetLayout = descriptorSetLayouts[i];
             VK_CHECK(vkCreateDescriptorUpdateTemplate(ctx->device.logical, &templateCreateInfo, nullptr, &descriptorUpdateTemplates[i]));
+            if (m_usePushDescriptors) break;
         }
         m_updateTemplateCreated = true;
         
@@ -249,7 +262,7 @@ namespace mxc
         MXC_ASSERT(m_updateTemplateCreated, "Cannot Update Descriptor Set without a template");
         for (uint8_t i = 0; i != descriptorSets_count; ++i)
         {
-            vkUpdateDescriptorSetWithTemplate(ctx->device.logical, descriptorSets[i], descriptorUpdateTemplates[i], data);
+            vkUpdateDescriptorSetWithTemplate(ctx->device.logical, descriptorSets[i], descriptorUpdateTemplates[0], data);
         }
         return true;
     }
@@ -274,6 +287,52 @@ namespace mxc
         vkUpdateDescriptorSets(ctx->device.logical, 0, nullptr, descriptorSets_count - 1, descriptorCopies);
     }
 
+    class CustomIncludeHandler : public IDxcIncludeHandler
+    {
+    public:
+        CustomIncludeHandler(CComPtr<IDxcUtils> pUtils) : includedFiles(), pUtils(std::move(pUtils)) {}
+
+        HRESULT STDMETHODCALLTYPE LoadSource(_In_ LPCWSTR pFilename, _COM_Outptr_result_maybenull_ IDxcBlob** ppIncludeSource) override
+        {
+            CComPtr<IDxcBlobEncoding> pEncoding;
+
+            // Convert the Unicode filename to a multibyte filename using std::filesystem
+            std::string multibyteFilename = std::filesystem::path(pFilename).string();
+            
+            // Normalize the file path using std::filesystem
+            std::filesystem::path normalizedPath = std::filesystem::canonical(multibyteFilename);
+    
+            std::string path = normalizedPath.string();
+            if (includedFiles.find(path) != includedFiles.end())
+            {
+                // Return empty string blob if this file has been included before
+                static char const nullStr[] = " ";
+                pUtils->CreateBlobFromPinned(nullStr, ARRAYSIZE(nullStr), DXC_CP_ACP, &pEncoding);
+                *ppIncludeSource = pEncoding.Detach();
+                return S_OK;
+            }
+
+            HRESULT hr = pUtils->LoadFile(pFilename, nullptr, &pEncoding);
+            if (SUCCEEDED(hr))
+            {
+                includedFiles.insert(path);
+                *ppIncludeSource = pEncoding.Detach();
+            }
+            return hr;
+        }
+
+        HRESULT STDMETHODCALLTYPE QueryInterface([[maybe_unused]]REFIID riid, 
+                                                 [[maybe_unused]]_COM_Outptr_ void**/*__RPC_FAR* __RPC_FAR**/ ppvObject) override 
+        { 
+            return E_NOINTERFACE; 
+        }
+        ULONG STDMETHODCALLTYPE AddRef(void) override {	return 0; }
+        ULONG STDMETHODCALLTYPE Release(void) override { return 0; }
+
+        std::unordered_set<std::string> includedFiles;
+        CComPtr<IDxcUtils> pUtils;
+    };
+
     // https://registry.khronos.org/vulkan/site/guide/latest/hlsl.html
     auto compileShader(std::wstring const& filename, std::wstring_view shaderDir) -> CComPtr<IDxcBlob> // TODO remove string
     {
@@ -285,7 +344,7 @@ namespace mxc
         static CComPtr<IDxcLibrary> pLibrary{nullptr};
         static CComPtr<IDxcUtils> pUtils{nullptr};
         static CComPtr<IDxcCompiler3> pCompiler{nullptr};
-        static CComPtr<IDxcIncludeHandler> pIncludeHandler{nullptr};
+        static CComPtr<CustomIncludeHandler> pIncludeHandler{nullptr};
 
         HRESULT hres;
 
@@ -305,7 +364,8 @@ namespace mxc
             hres = DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&pUtils));
             MXC_ASSERT(!FAILED(hres), "Failed to create Utilities for DXC library");
 
-            hres = pUtils->CreateDefaultIncludeHandler(&pIncludeHandler);
+            pIncludeHandler = new CustomIncludeHandler(pUtils);
+            //hres = pUtils->CreateDefaultIncludeHandler(&pIncludeHandler);
             MXC_ASSERT(!FAILED(hres), "Failed to create Include Handler for DXC library");
         }
 
@@ -391,5 +451,35 @@ namespace mxc
             .dstArrayElement = arrayElement,
             .descriptorCount = count
         };
+    }
+
+    constexpr auto VkDescriptorTypeToString(VkDescriptorType descriptorType) -> char const*
+    {
+        switch (descriptorType) {
+            case VK_DESCRIPTOR_TYPE_SAMPLER:
+                return "VK_DESCRIPTOR_TYPE_SAMPLER";
+            case VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER:
+                return "VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER";
+            case VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE:
+                return "VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE";
+            case VK_DESCRIPTOR_TYPE_STORAGE_IMAGE:
+                return "VK_DESCRIPTOR_TYPE_STORAGE_IMAGE";
+            case VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER:
+                return "VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER";
+            case VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER:
+                return "VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER";
+            case VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER:
+                return "VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER";
+            case VK_DESCRIPTOR_TYPE_STORAGE_BUFFER:
+                return "VK_DESCRIPTOR_TYPE_STORAGE_BUFFER";
+            case VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC:
+                return "VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC";
+            case VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC:
+                return "VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC";
+            case VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT:
+                return "VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT";
+            default:
+                return "Unknown Descriptor Type";
+        }
     }
 }
