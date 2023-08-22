@@ -15,30 +15,118 @@ struct Sphere
     Refl_t refl;
 }; 
 
-Optional<float> Sphere_intersect(in Sphere sphere, in Ray ray, in float tMax)
+struct QuadricIntersection
 {
-    Optional<float> result = Optional<float>::New(nullopt);
+    float3 p;  // intersection point
+    float t;   // ray t parameter at intersection
+    float phi;    // azimuthal coordinate of intersection (sampling)
+};
 
-    // transform to coordinate frame 
-    float3 ori = ray.origin - sphere.position;
-    float eps = 1e-4;
+Optional<QuadricIntersection> Sphere_intersect(in Sphere sphere, in Ray ray, in float tMax)
+{
+    Optional<QuadricIntersection> result = Optional<QuadricIntersection>::New(nullopt);
+    result.value.phi = 0;
 
-    float a = dot(ray.direction,ray.direction);
-    float b = dot(ray.direction, ori);
+    float3 ori = ray.o - sphere.position;
+
+    float a = dot(ray.d,ray.d);
+    float b = dot(ray.d, ori);
     float c = dot(ori, ori)-sphere.radius*sphere.radius;
-    float det = b*b-a*c;
 
-    if (det>-eps)
+    float len = length(ori - (b/a)*ray.d);
+    float det = a * (sphere.radius-len)*(sphere.radius+len);
+    if (det<0)
+        return result;
+
+    det=sqrt(det);
+
+    uint bGT0 = (b >= 0) * (-2) + 1;
+    float q = -b - bGT0 * det;
+    float t0 = q / a;
+    float t1 = c / q;
+    if (t0 > t1)
     {
-        det=sqrt(max(det,0));
-        result.value = (-b-det)/a;
-        if (result.value < eps)
-            result.value = (-b+det)/a;
-
-        if (result.value > eps && result.value <= tMax)
-            result.present = true;
+        q = t0;
+        t0 = t1;
+        t1 = q;
     }
 
+    if (t0 > tMax || t1 <= 0)
+        return result;
+
+    float tShapeHit = t0;
+    if (tShapeHit <= 0)
+    {
+        tShapeHit = t1;
+        if (tShapeHit > tMax)
+            return result;
+    }
+
+    result.present = true;
+    result.value.t = tShapeHit;
+    result.value.p = ray.o + tShapeHit * ray.d;
+
+    return result;
+} 
+
+// painfully slow
+Optional<QuadricIntersection> Sphere_intersectI(in Sphere sphere, in Ray ray, in float tMax)
+{
+    Optional<QuadricIntersection> result = Optional<QuadricIntersection>::New(nullopt);
+
+    // transform to coordinate frame 
+    Vector3fi ori = Vector3fi(ray.o - sphere.position, float3(0,0,0)/*error*/);
+    Vector3fi di = Vector3fi(ray.d, float3(0,0,0)/*error*/);
+    float eps = Epsilon;
+
+    // compute sphere quadratic coefficients
+    Interval a     = Sqr(di.x) + Sqr(di.y) + Sqr(di.z);
+    Interval bDiv2 = di.x * ori.x + di.y * ori.y + di.z * ori.z;
+    Interval c     = Sqr(ori.x) + Sqr(ori.y) + Sqr(ori.z) - Sqr(Interval(sphere.radius));
+
+    // compute the determinant
+    Interval len = Length(ori - di.operator*(bDiv2 / a));
+    Interval ri = Interval(sphere.radius);
+    Interval discrim = a * (ri + len) * (ri - len);
+    if (discrim.LowerBound() < 0)
+        return result;
+
+    Interval rootDiscrim = Sqrt(discrim);
+
+    // compute the solutions t1, t2, to the quadratic equation
+    uint bGT0 = (bDiv2.asFloat() >= 0) * (-2) + 1;
+    Interval q = (bDiv2 + rootDiscrim.operator*(float(bGT0))).operator-();
+    Interval t0 = q / a;
+    Interval t1 = c / q; // this could be the smallest if its lower bound is smaller (interval arithmetic)
+
+    if (t0.LowerBound() > t1.LowerBound())
+    {
+        q = t0;
+        t0 = t1;
+        t1 = q;
+    }
+
+    // check if both intersections are in the valid range
+    if (t0.LowerBound() > tMax || t1.UpperBound() <= 0)
+        return result;
+    
+    Interval tShapeHit = t0;
+    if (tShapeHit.UpperBound() <= 0) 
+    {
+        tShapeHit = t1;
+        if (tShapeHit.LowerBound() > tMax)
+            return result;
+    }
+
+    // TODO complete implementation
+    float3 pHit = float3(ori.x.asFloat(), ori.y.asFloat(), ori.z.asFloat()) + sphere.position
+                + tShapeHit.asFloat() * float3(di.x.asFloat(), di.y.asFloat(), di.z.asFloat());
+    //pHit *= sphere.radius / distance(pHit, float3(0,0,0));
+    pHit *= sphere.radius / distance(pHit, sphere.position);
+    result.value.t   = tShapeHit.asFloat();
+    result.value.p   = pHit;
+    result.value.phi = 0; // TODO
+    result.present   = true;
     return result;
 } 
 
@@ -149,4 +237,47 @@ Optional<ShapeSample> Sphere_sampleW(in Sphere sphere, in ShapeSampleContext ctx
     // TODO: compute error and uv coordinates for sampled point on sphere
     Optional<ShapeSample> ss = {{ {p, n, ctx.time,/*no uv*/ /*wo*/float3(0,0,0)}, 1 / (2 * PI * oneMinusCosThetaMax) }, true};
     return ss;
+}
+
+Ray ShapeSampleContext_SpawnRay(in ShapeSampleContext ctx, in float3 w)
+{
+    Ray ray; 
+    ray.o = ShapeSampleContext_offsetRayOrigin(ctx, w);
+    ray.d = w; 
+    ray.time = 0;
+    return ray;
+}
+
+float Sphere_PDF(in Sphere sphere, in ShapeSampleContext ctx, in float3 wi) 
+{
+    float3 pCenter = sphere.position;
+    float3 pOrigin = ShapeSampleContext_offsetRayOrigin(ctx, pCenter);
+    if (dot(pOrigin, pCenter) <= sqr(sphere.radius)) 
+    {
+        // Return solid angle PDF for point inside sphere
+        // Intersect sample ray with shape geometry
+        Ray ray = ShapeSampleContext_SpawnRay(ctx, wi);
+        Optional<QuadricIntersection> isect = Sphere_intersect(sphere, ray, 1e20);
+        if (!isect.present)
+            return 0;
+
+        float3 n = abs(normalize(isect.value.p - sphere.position));
+        // Compute PDF in solid angle measure from shape intersection point
+        float pdf = (1 / 4*PI/*Area()*/) / (abs(dot(n, -wi)) /
+                                    dot(ctx.p, isect.value/*.intr*/.p));
+        if (isinf(pdf))
+            pdf = 0;
+
+        return pdf;
+    }
+
+    // Compute general solid angle sphere PDF
+    float sin2ThetaMax = sphere.radius * sphere.radius / dot(ctx.p, pCenter);
+    float cosThetaMax = sqrt(max(0,1 - sin2ThetaMax));
+    float oneMinusCosThetaMax = 1 - cosThetaMax;
+    // Compute more accurate _oneMinusCosThetaMax_ for small solid angle
+    if (sin2ThetaMax < 0.00068523f /* sin^2(1.5 deg) */)
+        oneMinusCosThetaMax = sin2ThetaMax / 2;
+
+    return 1 / (2 * PI * oneMinusCosThetaMax);
 }

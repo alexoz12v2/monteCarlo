@@ -31,14 +31,15 @@ static Sphere spheres[SPHERES_COUNT] = {
     {1e5, float3(0, 1e5 + 1, 0), float3(0, 0, 0), float3(.75, .75, .75), DIFF}, // Top Wall (White)
     {0.33, float3(-0.5,1-0.33,1.2), float3(0, 0, 0), float3(0.4, 0.2, 0.2), DIFF}, // Mirror Sphere (Specular reflection)
     {0.45, float3(0.35,1-0.45,1.5), float3(0, 0, 0), float3(0.14, 0.45, 0.091), DIFF}, // Glossy Sphere (Refractive material)
-    {1,    float3(0,-1.9,1.5), float3(0.8, 0.8, 0.8), float3(0.8, 0.8, 0.8), DIFF} // Light Sphere (Light-emitting sphere)
+    {1,    float3(0,-1.9,1.5), 10*float3(0.8, 0.8, 0.8), float3(0,0,0), DIFF} // Light Sphere (Light-emitting sphere)
 }; 
 
 static Sphere lights[LIGHTS_COUNT] = {
-    {1, float3(0,-1.9,1.5), float3(0.8, 0.8, 0.8), float3(0.8, 0.8, 0.8), DIFF} // Light Sphere (Light-emitting sphere)
+    {1, float3(0,-1.9,1.5), 10*float3(0.8, 0.8, 0.8), float3(0, 0, 0), DIFF} // Light Sphere (Light-emitting sphere)
 };
 
 struct Intersection {
+    float3 p;
     float t;
     uint i;
 };
@@ -52,11 +53,12 @@ Optional<Intersection> intersect(in Ray ray)
 
     for (uint i = 0; i != SPHERES_COUNT; ++i)
     {
-        Optional<float> sIsect = Sphere_intersect(spheres[i], ray, isect.value.t);
+        Optional<QuadricIntersection> sIsect = Sphere_intersect(spheres[i], ray, isect.value.t);
         if (sIsect.present)
         {
             isect.present = true;
-            isect.value.t = sIsect.value;
+            isect.value.t = sIsect.value.t;
+            isect.value.p = sIsect.value.p;
             isect.value.i = i;
         }
     }
@@ -131,6 +133,7 @@ Optional<BSDFSample> Diff_sample_f(float3 R, in float3 wo, in float uc, in float
     return bs;
 }
 
+
 // TODO switch to interval arithmetic and to using more structures about sampling. Switch to surface interaction when implementing properly system.
 // compose a proper bsdf
 float3 sampleLd(in Interaction intr, in Refl_t bsdf, inout LCG lcg)
@@ -171,9 +174,10 @@ float3 Li(in Ray startRay, inout LCG lcg)
     float3 L = {0,0,0}, beta = {1,1,1}; // L <- radiance, beta <- throughput
     bool specularBounce = false, anyNonSpecularBounces = false;
     uint depth = 0;
-    Ray ray = startRay;
+    Ray ray = startRay; 
     float p_b = 1, etaScale = 1; // PDF for chosen BSDF in the path
     LightSampleContext prevIntrCtx;
+    prevIntrCtx.p = prevIntrCtx.n = prevIntrCtx.ns = float3(0,0,0);
 
     while (true)
     {
@@ -186,14 +190,12 @@ float3 Li(in Ray startRay, inout LCG lcg)
         }
 
         uint i = isect.value.i;
-        float3 p  = ray.origin + isect.value.t * ray.direction;
+        float3 p  = isect.value.p;
         float3 n  = abs(normalize(p - spheres[i].position));
-        float3 wo = -ray.direction;
+        float3 wo = -ray.d;
 
         // incorporate Le if surface is emissive
         float3 Le = spheres[i].emission;
-
-        //return nonZero(Le) ? Le : spheres[i].color;
 
         if (nonZero(Le))
         {
@@ -201,11 +203,16 @@ float3 Li(in Ray startRay, inout LCG lcg)
             // then don't apply MIS
             if (specularBounce || depth == 0)
                 L += beta * Le;
-            else
+            else // prevIntrCtx is fully initialized because depth > 0
             {
                 // compute PDF for chosen light as product of PMF of choosing the light and PDF of the distribution of directions of the light
                 // TODO: now there is just one light, and it is known to have uniform PDF in all directions
-                float p_l = 1/*PMF*/ * 1/(4*PI)/*PDF*/;
+                ShapeSampleContext ctx;
+                ctx.p = prevIntrCtx.p;
+                ctx.n = prevIntrCtx.n;
+                ctx.ns = prevIntrCtx.ns;
+                ctx.time = 0;
+                float p_l = 1/*PMF*/ * Sphere_PDF(spheres[i], ctx, ray.d);
                 float w_l = powerHeuristic(1, p_l, 1, p_b);
                 L += beta * w_l * Le;
             }
@@ -229,11 +236,6 @@ float3 Li(in Ray startRay, inout LCG lcg)
 
         // Sample BSDF to get new path direction TODO better
         float2 xi = random2D(lcg);
-        //float cos2Theta = max(0.f, 1.f-xi[0]);
-        //float cosTheta = sqrt(cos2Theta);
-        //float sinTheta = sqrt(max(0.f, 1.f-cos2Theta));
-        //float phi = 2 * PI * xi[1];
-        //float3 dir = sphericalDirection(sinTheta, cosTheta, phi);
         
         float u = random1D(lcg);
         Optional<BSDFSample> bs = Diff_sample_f(spheres[i].color, wo, u, xi);
@@ -241,7 +243,7 @@ float3 Li(in Ray startRay, inout LCG lcg)
             break;
         
         // - Update path state variables after surface scattering TODO readjust to follow pbrt
-        beta *= 2*bs.value.f * abs(dot(bs.value.wi, /*isect.shading.*/n)) / /*BSDF pdf*/bs.value.pdf;
+        beta *= bs.value.f * abs(dot(bs.value.wi, /*isect.shading.*/n)) / /*BSDF pdf*/bs.value.pdf;
         p_b = bs.value.pdf;
         specularBounce = bsdf != DIFF;
         anyNonSpecularBounces |= bsdf == DIFF;
@@ -249,8 +251,10 @@ float3 Li(in Ray startRay, inout LCG lcg)
         LightSampleContext ctx = {intr.p, intr.n, intr.n/* = ns, maybe?*/};
         prevIntrCtx = ctx;
 
-        ray.origin = p + 0.0001 * intr.n;
-        ray.direction = bs.value.wi;
+        Vector3fi pi = Vector3fi(p, float3(0.01,0.01,0.01));
+        ray.o = OffsetRayOrigin(pi, n, bs.value.wi);
+        ray.d = bs.value.wi;
+        ray.time = 0;
 
         // Possibly terminate the path with Russian roulette
         float3 rrBeta = beta * etaScale;
@@ -287,16 +291,18 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID)
         // get camera from UBO (TODO) float3(50,52,295.6)
         Camera camera = {float3(0,0,0), normalize(float3(0,0,1))};
 
-        // apply aspect ratio (TODO), focal distance (TODO), and construct ray direction
+        // apply aspect ratio (TODO), focal distance (TODO), and construct ray.d
         // use resolution to figure out pixel cell dimensions to sample within the pixel (TODO)
 
-        // assume origin = image plane center, then ray direction = camera lookat + xy
+        // assume origin = image plane center, then ray.d = camera lookat + xy
         float3 weightedColour = float3(0,0,0);
-        Ray ray = { camera.position, float3(0,0,1) };
-        for (uint i = 0; i != raysPerPixel * 20; ++i)
+        Ray ray; 
+        ray.o = camera.position;
+        ray.d = float3(0,0,1);
+        for (uint i = 0; i != raysPerPixel * 10; ++i)
         {
             float2 offset = float2(random1D(lcg) * pxdim.x / 2, random1D(lcg) * pxdim.y / 2);
-            ray.direction = normalize(camera.lookat + float3(xy + offset, 0.f));
+            ray.d = normalize(camera.lookat + float3(xy + offset, 0.f));
             float3 finalColour = Li(ray, lcg);
             weightedColour = (push.sampleIndex * transaction[dispatchThreadID.xy].xyz + finalColour) / (push.sampleIndex + 1);
         }

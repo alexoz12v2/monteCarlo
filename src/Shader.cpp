@@ -397,6 +397,7 @@ namespace mxc
             L"-HV", L"2021",                // HLSL version 2021
             L"-T", targetProfile,           // targetProfile       
             L"-E", L"main",                 // entryPoint TODO might expose as parameter
+            L"-Wno-macro-redefined",                            // disable warning to allow constructors macro magic
             L"-spirv",                      // compile to spirv
             L"-fspv-target-env=vulkan1.3",  // use vulkan1.3 environment
             L"-I", shaderDir.data()         // Shader Include Directories

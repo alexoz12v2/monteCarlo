@@ -9,7 +9,7 @@
 
 namespace mxc 
 {
-    auto clamp(float value, float min, float max) -> float;
+    constexpr auto clamp(float value, float min, float max) -> float;
 
     auto Application::handleSignal(ApplicationSignal_t sig, uint32_t emitterIndex) -> bool
     {
@@ -208,5 +208,11 @@ namespace mxc
                 ++pairIter;
             }
         }
+    }
+
+    
+    constexpr auto clamp(float value, float min, float max) -> float
+    {
+        return value < max ? (value > min ? value : min) : max;
     }
 }

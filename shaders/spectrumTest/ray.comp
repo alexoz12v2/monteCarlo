@@ -1,8 +1,624 @@
 #pragma once
 
-struct Ray 
+#define floatOneMinusEpsilon float(0x1.fffffep-1)
+#define OneMinusEpsilon floatOneMinusEpsilon
+#define Infinity 1.#INF
+#define Epsilon 1.1920928955078125E-7
+#define MachineEpsilon Epsilon / 2
+
+uint floatToBits(float f) { return asuint(f); }
+
+float BitsTofloat(uint ui) { return asfloat(ui); }
+
+int Exponent(float v) { return (floatToBits(v) >> 23) - 127; }
+
+int Significand(float v) { return floatToBits(v) & ((1 << 23) - 1); }
+
+uint SignBit(float v) { return floatToBits(v) & 0x80000000; }
+
+float NextFloatUp(float v) 
 {
-    float3 origin;
-    float3 direction;
+    // Handle infinity and negative zero for _NextfloatUp()_
+    if (isinf(v) && v > 0.f)
+        return v;
+    if (v == -0.f)
+        v = 0.f;
+
+    // Advance _v_ to next higher float
+    uint ui = floatToBits(v);
+    if (v >= 0)
+        ++ui;
+    else
+        --ui;
+    return BitsTofloat(ui);
+}
+
+float NextFloatDown(float v) 
+{
+    // Handle infinity and positive zero for _NextfloatDown()_
+    if (isinf(v) && v < 0.)
+        return v;
+    if (v == 0.f)
+        v = -0.f;
+    uint ui = floatToBits(v);
+    if (v > 0)
+        --ui;
+    else
+        ++ui;
+    return BitsTofloat(ui);
+}
+
+float gamma(int n) { return (n * MachineEpsilon) / (1 - n * MachineEpsilon); }
+
+float AddRoundUp(float a, float b) { return NextFloatUp(a + b); }
+
+float AddRoundDown(float a, float b) { return NextFloatDown(a + b); }
+
+float SubRoundUp(float a, float b) { return AddRoundUp(a, -b); }
+
+float SubRoundDown(float a, float b) { return AddRoundDown(a, -b); }
+
+float MulRoundUp(float a, float b) { return NextFloatUp(a * b); }
+
+float MulRoundDown(float a, float b) { return NextFloatDown(a * b); }
+
+float DivRoundUp(float a, float b) { return NextFloatUp(a / b); }
+
+float DivRoundDown(float a, float b) { return NextFloatDown(a / b);  }
+
+float SqrtRoundUp(float a) { return NextFloatUp(sqrt(a)); } 
+
+float SqrtRoundDown(float a) { return max(0.f, NextFloatDown(sqrt(a))); }
+
+// TODO: find alternative instead of converting to double. (context: hlsl has an intrinsic fma only for double)
+float FMARoundUp(float a, float b, float c) { return NextFloatUp(float(fma(double(a), double(b), double(c)))); }
+
+float FMARoundDown(float a, float b, float c) { return NextFloatDown(float(fma(double(a), double(b), double(c)))); }
+
+// SEGMENTATION FAULT
+//void swap(inout float a, inout float b)
+//{
+//    float tmp = a;
+//    a = b;
+//    b = tmp;
+//}
+
+// taken from pbrt
+
+// Interval Definition
+#define Interval(...) static Interval ctor(__VA_ARGS__)
+class Interval 
+{
+    Interval(float low, float high)
+    {
+        Interval i; 
+        i.low = min(low, high); 
+        i.high = max(low, high);
+        return i;
+    }
+
+    Interval(float v) 
+    {
+        return Interval::ctor(v,v);
+    }
+
+    static Interval FromValueAndError(float v, float err) 
+    {
+        Interval i;
+        if (err == 0)
+            i.low = i.high = v;
+        else {
+            i.low = SubRoundDown(v, err);
+            i.high = AddRoundUp(v, err);
+        }
+        return i;
+    }
+
+    void assignFloat(float v) 
+    {
+        low = high = v;
+    }
+
+    float UpperBound() { return high; }
+
+    float LowerBound() { return low; }
+
+    float Midpoint() { return (low + high) / 2; }
+
+    float Width() { return high - low; }
+
+    //precondition: (i == 0 || i == 1);
+    float operator[](int i) { return (i == 0) ? low : high; }
+
+    float asFloat() { return Midpoint(); }
+
+    bool Exactly(float v) { return low == v && high == v; }
+
+    bool operator==(float v) { return Exactly(v); }
+
+    Interval operator-() { return ctor(-high, -low); }
+
+    Interval operator+(Interval i) { return ctor(AddRoundDown(low, i.low), AddRoundUp(high, i.high)); }
+
+    Interval operator-(Interval i) { return ctor(SubRoundDown(low, i.high), SubRoundUp(high, i.low)); }
+    
+    Interval operator*(Interval i) 
+    {
+        float lp[4] = {MulRoundDown(low, i.low), MulRoundDown(high, i.low),
+                       MulRoundDown(low, i.high), MulRoundDown(high, i.high)};
+        float hp[4] = {MulRoundUp(low, i.low), MulRoundUp(high, i.low),
+                       MulRoundUp(low, i.high), MulRoundUp(high, i.high)};
+        // TODO: store temporaries
+        return ctor(min(min(min(lp[0], lp[1]), lp[2]), lp[3]),
+                    max(max(max(hp[0], hp[1]), hp[2]), hp[3]));
+    }
+
+    Interval operator/(Interval i);
+
+    bool operator==(Interval i) { return low == i.low && high == i.high; }
+
+    bool operator!=(float f) { return f < low || f > high; }
+
+    Interval operator*(float f) 
+    {
+        if (f > 0)
+            return Interval::ctor(MulRoundDown(f, LowerBound()), MulRoundUp(f, UpperBound()));
+        else
+            return Interval::ctor(MulRoundDown(f, UpperBound()), MulRoundUp(f, LowerBound()));
+    }
+
+    Interval operator/(float f) {
+        if (f == 0)
+            return Interval::ctor(-Infinity, Infinity);
+
+        if (f > 0)
+            return Interval::ctor(DivRoundDown(LowerBound(), f), DivRoundUp(UpperBound(), f));
+        else
+            return Interval::ctor(DivRoundDown(UpperBound(), f), DivRoundUp(LowerBound(), f));
+    }
+
+    float low, high;
+};
+#define Interval(...) Interval::ctor(__VA_ARGS__)
+
+#define IntervalPi Interval(3.1415925f, 3.14159274f)
+#define Pi Interval(3.1415925f, 3.14159274f).Midpoint()
+//static const Interval IntervalPi = Interval(3.1415925f, 3.14159274f); segmentation fault for some reason
+//static const float Pi = IntervalPi.Midpoint();
+
+bool InRange(float v, Interval i) { return v >= i.LowerBound() && v <= i.UpperBound(); }
+
+bool InRange(Interval a, Interval b) { return a.LowerBound() <= b.UpperBound() && a.UpperBound() >= b.LowerBound(); }
+
+Interval Interval::operator/(Interval i)
+{
+    if (InRange(0, i))
+        // The interval we're dividing by straddles zero, so just
+        // return an interval of everything.
+        return ctor(-Infinity, Infinity);
+
+    float lowQuot[4] = {DivRoundDown(low, i.low), DivRoundDown(high, i.low),
+                        DivRoundDown(low, i.high), DivRoundDown(high, i.high)};
+    float highQuot[4] = {DivRoundUp(low, i.low), DivRoundUp(high, i.low),
+                            DivRoundUp(low, i.high), DivRoundUp(high, i.high)};
+    return ctor(min(min(min(lowQuot[0], lowQuot[1]), lowQuot[2]), lowQuot[3]),
+                max(max(max(highQuot[0], highQuot[1]), highQuot[2]), highQuot[3]));
+}
+
+//-------------------------------------------------------------------------------------
+
+Interval Sqr(Interval i) 
+{
+    float alow = abs(i.LowerBound()), ahigh = abs(i.UpperBound());
+    if (alow > ahigh)
+    {
+        // swap(alow, ahigh);
+        float tmp = alow;
+        alow  = ahigh;
+        ahigh = tmp;
+    }
+    if (InRange(0, i))
+        return Interval(0, MulRoundUp(ahigh, ahigh));
+    return Interval(MulRoundDown(alow, alow), MulRoundUp(ahigh, ahigh));
+}
+
+Interval MulPow2(Interval i, float s) 
+{
+    float as = abs(s);
+    //if (as < 1)
+    //    DCHECK_EQ(1 / as, 1ull << Log2Int(1 / as));
+    //else
+    //    DCHECK_EQ(as, 1ull << Log2Int(as));
+
+    // Multiplication by powers of 2 is exaact
+    return Interval(min(i.LowerBound() * s, i.UpperBound() * s),
+                    max(i.LowerBound() * s, i.UpperBound() * s));
+}
+
+Interval MulPow2(float s, Interval i) {
+    return MulPow2(i, s);
+}
+
+Interval operator+(float f, Interval i) { return Interval(f) + i; }
+
+Interval operator-(float f, Interval i) { return Interval(f) - i; }
+
+Interval operator*(float f, Interval i) 
+{
+    if (f > 0)
+        return Interval(MulRoundDown(f, i.LowerBound()), MulRoundUp(f, i.UpperBound()));
+    else
+        return Interval(MulRoundDown(f, i.UpperBound()), MulRoundUp(f, i.LowerBound()));
+}
+
+ Interval operator/(float f, Interval i) {
+    if (InRange(0, i))
+        // The interval we're dividing by straddles zero, so just
+        // return an interval of everything.
+        return Interval(-Infinity, Infinity);
+
+    if (f > 0)
+        return Interval(DivRoundDown(f, i.UpperBound()), DivRoundUp(f, i.LowerBound()));
+    else
+        return Interval(DivRoundDown(f, i.LowerBound()), DivRoundUp(f, i.UpperBound()));
+}
+
+Interval operator+(Interval i, float f) { return i + Interval(f); }
+
+Interval operator-(Interval i, float f) { return i - Interval(f); }
+
+Interval operator*(Interval i, float f) 
+{
+    if (f > 0)
+        return Interval(MulRoundDown(f, i.LowerBound()), MulRoundUp(f, i.UpperBound()));
+    else
+        return Interval(MulRoundDown(f, i.UpperBound()), MulRoundUp(f, i.LowerBound()));
+}
+
+Interval operator/(Interval i, float f) {
+    if (f == 0)
+        return Interval(-Infinity, Infinity);
+
+    if (f > 0)
+        return Interval(DivRoundDown(i.LowerBound(), f), DivRoundUp(i.UpperBound(), f));
+    else
+        return Interval(DivRoundDown(i.UpperBound(), f), DivRoundUp(i.LowerBound(), f));
+}
+//------------------------------------------
+
+float Floor(Interval i) { return floor(i.LowerBound()); }
+
+float Ceil(Interval i) { return ceil(i.UpperBound()); }
+
+float Min(Interval a, Interval b) { return min(a.LowerBound(), b.LowerBound()); }
+
+float Max(Interval a, Interval b) { return max(a.UpperBound(), b.UpperBound()); }
+
+Interval Sqrt(Interval i) { return Interval(SqrtRoundDown(i.LowerBound()), SqrtRoundUp(i.UpperBound())); }
+
+// TODO substitute with fma intrinsic function
+Interval FMA(Interval a, Interval b, Interval c) 
+{
+    float low = 
+    min(min(min(FMARoundDown(a.LowerBound(), b.LowerBound(), c.LowerBound()),
+                FMARoundDown(a.UpperBound(), b.LowerBound(), c.LowerBound())),
+            FMARoundDown(a.LowerBound(), b.UpperBound(), c.LowerBound())),
+        FMARoundDown(a.UpperBound(), b.UpperBound(), c.LowerBound()));
+    float high = 
+    max(max(max(FMARoundUp(a.LowerBound(), b.LowerBound(), c.UpperBound()),
+                FMARoundUp(a.UpperBound(), b.LowerBound(), c.UpperBound())),
+            FMARoundUp(a.LowerBound(), b.UpperBound(), c.UpperBound())),
+        FMARoundUp(a.UpperBound(), b.UpperBound(), c.UpperBound()));
+    return Interval(low, high);
+}
+
+float DifferenceOfProducts(float a, float b, float c, float d) {
+    float cd = c * d;
+    float differenceOfProducts = float(fma(double(a), double(b), double(-cd)));
+    float error = float(fma(double(-c), double(d), double(cd)));
+    return differenceOfProducts + error;
+}
+
+Interval DifferenceOfProducts(Interval a, Interval b, Interval c, Interval d) 
+{
+    float ab[4] = {a.LowerBound() * b.LowerBound(), a.UpperBound() * b.LowerBound(),
+                   a.LowerBound() * b.UpperBound(), a.UpperBound() * b.UpperBound()};
+    float abLow = min(min(min(ab[0], ab[1]), ab[2]), ab[3]);
+    float abHigh = max(max(max(ab[0], ab[1]), ab[2]), ab[3]);
+    int abLowIndex = abLow == ab[0] ? 0 : (abLow == ab[1] ? 1 : (abLow == ab[2] ? 2 : 3));
+    int abHighIndex =
+        abHigh == ab[0] ? 0 : (abHigh == ab[1] ? 1 : (abHigh == ab[2] ? 2 : 3));
+
+    float cd[4] = {c.LowerBound() * d.LowerBound(), c.UpperBound() * d.LowerBound(),
+                   c.LowerBound() * d.UpperBound(), c.UpperBound() * d.UpperBound()};
+    float cdLow = min(min(min(cd[0], cd[1]), cd[2]), cd[3]);
+    float cdHigh = max(max(max(cd[0], cd[1]), cd[2]), cd[3]);
+    int cdLowIndex = cdLow == cd[0] ? 0 : (cdLow == cd[1] ? 1 : (cdLow == cd[2] ? 2 : 3));
+    int cdHighIndex =
+        cdHigh == cd[0] ? 0 : (cdHigh == cd[1] ? 1 : (cdHigh == cd[2] ? 2 : 3));
+
+    // Invert cd Indices since it's subtracted...
+    float low = DifferenceOfProducts(a[abLowIndex & 1], b[abLowIndex >> 1],
+                                     c[cdHighIndex & 1], d[cdHighIndex >> 1]);
+    float high = DifferenceOfProducts(a[abHighIndex & 1], b[abHighIndex >> 1],
+                                      c[cdLowIndex & 1], d[cdLowIndex >> 1]);
+    //DCHECK_LE(low, high);
+
+    return Interval(NextFloatDown(NextFloatDown(low)), NextFloatUp(NextFloatUp(high)));
+}
+
+Interval SumOfProducts(Interval a, Interval b, Interval c, Interval d) 
+{ 
+    Interval mc = c.operator-();
+    return DifferenceOfProducts(a, b, mc, d); 
+}
+
+Interval Abs(Interval i) 
+{
+    if (i.LowerBound() >= 0)
+        // The entire interval is greater than zero, so we're all set.
+        return i;
+    else if (i.UpperBound() <= 0)
+        // The entire interval is less than zero.
+        return Interval(-i.UpperBound(), -i.LowerBound());
+    else
+        // The interval straddles zero.
+        return Interval(0, max(-i.LowerBound(), i.UpperBound()));
+}
+
+Interval ACos(Interval i) 
+{
+    float low = acos(min(1, i.UpperBound()));
+    float high = acos(max(-1, i.LowerBound()));
+
+    return Interval(max(0, NextFloatDown(low)), NextFloatUp(high));
+}
+
+Interval Sin(Interval i) 
+{
+    //CHECK_GE(i.LowerBound(), -1e-16);
+    //CHECK_LE(i.UpperBound(), 2.0001 * Pi);
+    float low = sin(max(0, i.LowerBound()));
+    float high = sin(i.UpperBound());
+    if (low > high)
+    {
+        //swap(low, high);
+        float tmp = low; 
+        low = high;
+        high = tmp;
+    }
+    low = max(-1, NextFloatDown(low));
+    high = min(1, NextFloatUp(high));
+    if (InRange(Pi / 2, i))
+        high = 1;
+    if (InRange((3.f / 2.f) * Pi, i))
+        low = -1;
+
+    return Interval(low, high);
+}
+
+Interval Cos(Interval i) 
+{
+    //CHECK_GE(i.LowerBound(), -1e-16);
+    //CHECK_LE(i.UpperBound(), 2.0001 * Pi);
+    float low = cos(max(0, i.LowerBound()));
+    float high = cos(i.UpperBound());
+    if (low > high)
+    {
+        //swap(low, high);
+        float tmp = low; 
+        low  = high;
+        high = tmp;
+    }
+    low = max(-1, NextFloatDown(low));
+    high = min(1, NextFloatUp(high));
+    if (InRange(Pi, i))
+        low = -1;
+
+    return Interval(low, high);
+}
+
+//// causes segmentation fault?
+//void swap(inout Interval a, inout Interval b)
+//{
+//    Interval tmp = a;
+//    a = b;
+//    b = tmp;
+//}
+
+bool Quadratic(Interval a, Interval b, Interval c, inout Interval t0, inout Interval t1) {
+    // Find quadratic discriminant
+    Interval discrim = DifferenceOfProducts(b, b, MulPow2(4, a), c);
+    if (discrim.LowerBound() < 0)
+        return false;
+    Interval floatRootDiscrim = Sqrt(discrim);
+
+    // Compute quadratic _t_ values
+    Interval q;
+    if ((float)b < 0)
+        q = MulPow2(-.5, b - floatRootDiscrim);
+    else
+        q = MulPow2(-.5, b + floatRootDiscrim);
+    t0 = q / a;
+    t1 = c / q;
+    if (t0.LowerBound() > t1.LowerBound())
+    {
+        //swap(t0, t1);
+        q = t0;
+        t0 = t1;
+        t1 = q;
+    }
+    return true;
+}
+
+//Interval SumSquares(Interval i) { return Sqr(i); }
+
+//// No variadic templates in HLSL
+//template <typename... Args>
+//Interval SumSquares(Interval i, Args... args) {
+//    Interval ss = FMA(i, i, SumSquares(args...));
+//    return Interval(max<float>(0, ss.LowerBound()), ss.UpperBound());
+//}
+
+bool HasNaN(float3 v)
+{
+    return any(float3(isnan(v.x),isnan(v.y),isnan(v.z)));
+}
+
+#define Vector3fi(...) Vector3fi static ctor(__VA_ARGS__)
+class Vector3fi 
+{
+    // methods NOTE: "constructors" cause sigsegv TODO REMOVE CONSTRUCTORS?
+    Vector3fi(Interval x, Interval y, Interval z)
+    {
+        Vector3fi v;
+        v.x = x;
+        v.y = y;
+        v.z = z;
+        return v;
+    }
+
+    Vector3fi(float x, float y, float z)
+    {
+        Vector3fi v = {Interval(x),Interval(y),Interval(z)};
+        return v;
+    }
+
+    Vector3fi(float3 value, float3 error)
+    {
+        Vector3fi v;
+        v.x = Interval::FromValueAndError(value.x, error.x);
+        v.y = Interval::FromValueAndError(value.y, error.y);
+        v.z = Interval::FromValueAndError(value.z, error.z);
+        return v;
+    }
+
+    float3 Error() { return float3(x.Width() / 2, y.Width() / 2, z.Width() / 2); }
+    bool IsExact() { return x.Width() == 0 && y.Width() == 0 && z.Width() == 0; }
+	
+    Vector3fi operator-(Vector3fi p) { return ctor(x - p.x, y - p.y, z - p.z); }
+
+    Vector3fi operator-() { return ctor(x.operator-(), y.operator-(), z.operator-()); }
+
+    Vector3fi operator+(Vector3fi p) { return ctor(x + p.x, y + p.y, z + p.z); }
+
+    Vector3fi operator*(Vector3fi p) { return ctor(x * p.x, y * p.y, z * p.z); }
+		
+    Vector3fi operator*(float f) { return ctor(::operator*(x,f), ::operator*(y,f), ::operator*(z,f)); }
+
+    Vector3fi operator*(Interval scalari) { return ctor(scalari * x, scalari * y, scalari * z); }
+
+    //Vector3fi operator/(float f) { return ctor(x / f, y / f, z / f); }
+    Vector3fi operator/(float f) { return ctor(x.operator/(f), y.operator/(f), z.operator/(f)); }
+
+    Vector3fi operator/(Interval scalari) { return ctor(x / scalari, y / scalari, z / scalari); }
+
+    float3 Midpoint() { return float3(x.Midpoint(), y.Midpoint(), z.Midpoint()); }
+	
+    // data members
+    Interval x,y,z;
 };
 
+#define Vector3fi(...) Vector3fi::ctor(__VA_ARGS__)
+
+Interval Length(in Vector3fi vi)
+{
+    return Sqrt(Sqr(vi.x)+Sqr(vi.y)+Sqr(vi.z));
+}
+
+// Ray Definition
+#define Ray(...) static Ray ctor(__VA_ARGS__)
+class Ray 
+{
+    // Ray Public Methods
+    bool HasNaN()  { return (::HasNaN(o) || ::HasNaN(d)); }
+    
+    float3 operator()(float t) { return o + d * t; }
+
+    Ray(float3 o, float3 d, float time/*, Medium medium = nullptr*/)
+    {
+        Ray ray = {o, d, time/*, medium(medium)*/ };
+        return ray;
+    }
+
+    // Ray Public Members
+    float3 o;
+    float3 d;
+    float time;
+    //Medium medium = nullptr;
+};
+#define Ray(...) Ray::ctor(__VA_ARGS__)
+
+// RayDifferential Definition
+#define RayDifferential(...) RayDifferential static ctor(__VA_ARGS__)
+class RayDifferential : Ray 
+{
+    // RayDifferential Public Methods
+    RayDifferential(float3 o, float3 d, float time/*, Medium medium = nullptr*/)
+    {
+        RayDifferential ray = {o, d, time/*, medium*/, false, float3(0,0,0),float3(0,0,0),float3(0,0,0),float3(0,0,0)};
+        return ray;
+    }
+
+    RayDifferential(Ray r)
+    {
+        RayDifferential ray = {r.o, r.d, r.time/*, r.medium*/, false, float3(0,0,0),float3(0,0,0),float3(0,0,0),float3(0,0,0)};
+        return ray;
+    }
+
+    void ScaleDifferentials(float s) {
+        rxOrigin = o + (rxOrigin - o) * s;
+        ryOrigin = o + (ryOrigin - o) * s;
+        rxDirection = d + (rxDirection - d) * s;
+        ryDirection = d + (ryDirection - d) * s;
+    }
+
+    bool HasNaN() 
+    {
+        return Ray::HasNaN() ||
+           (hasDifferentials && (::HasNaN(rxOrigin) || ::HasNaN(ryOrigin) ||
+                                 ::HasNaN(rxDirection) || ::HasNaN(ryDirection)));
+    }
+
+    // RayDifferential Public Members
+    bool hasDifferentials;
+    float3 rxOrigin, ryOrigin;
+    float3 rxDirection, ryDirection;
+};
+#define RayDifferential(...) RayDifferential::ctor(__VA_ARGS)
+
+// Ray Functions
+float3 OffsetRayOrigin(Vector3fi pi, float3 n, float3 w) {
+    // Find vector _offset_ to corner of error bounds and compute initial _po_
+    float d = dot(abs(n), pi.Error());
+    float3 offset = d * n;
+    if (dot(w, n) < 0)
+        offset = -offset;
+    float3 po = pi.Midpoint() + offset;
+
+    // Round offset point _po_ away from _p_
+    for (int i = 0; i < 3; ++i) {
+        if (offset[i] > 0)
+            po[i] = NextFloatUp(po[i]);
+        else if (offset[i] < 0)
+            po[i] = NextFloatDown(po[i]);
+    }
+
+    return po;
+}
+
+ Ray SpawnRay(Vector3fi pi, float3 n, float time, float3 d) {
+    return Ray(OffsetRayOrigin(pi, n, d), d, time);
+}
+
+ Ray SpawnRayTo(Vector3fi pFrom, float3 n, float time, float3 pTo) {
+    float3 d = pTo - pFrom.Midpoint();
+    return SpawnRay(pFrom, n, time, d);
+}
+
+ Ray SpawnRayTo(Vector3fi pFrom, float3 nFrom, float time,
+                                   Vector3fi pTo, float3 nTo) {
+    float3 pf = OffsetRayOrigin(pFrom, nFrom, pTo.Midpoint() - pFrom.Midpoint());
+    float3 pt = OffsetRayOrigin(pTo, nTo, pf - pTo.Midpoint());
+    return Ray(pf, pt - pf, time);
+}
